@@ -255,17 +255,19 @@ function HomeContent({
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl p-8 text-white">
-        <div className="flex flex-col md:flex-row items-center justify-between">
+      <div className="bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-400 rounded-2xl p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-[1.01] relative overflow-hidden group animate-fade-in">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+        <div className="flex flex-col md:flex-row items-center justify-between relative z-10">
           <div className="mb-6 md:mb-0">
-            <h3 className="text-2xl font-bold mb-2">Yeni Video Oluştur</h3>
-            <p className="text-blue-50 text-lg">AI ile profesyonel video reklamları oluşturun</p>
+            <h3 className="text-2xl font-bold mb-2 animate-fade-in-up">Yeni Video Oluştur</h3>
+            <p className="text-blue-50 text-lg animate-fade-in-up" style={{ animationDelay: '0.1s' }}>AI ile profesyonel video reklamları oluşturun</p>
           </div>
           <button
             onClick={onCreateVideo}
-            className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-colors inline-flex items-center space-x-2 shadow-lg"
+            className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 inline-flex items-center space-x-2 shadow-2xl hover:shadow-3xl transform hover:scale-110 animate-fade-in-up group"
+            style={{ animationDelay: '0.2s' }}
           >
-            <Sparkles className="w-5 h-5" />
+            <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
             <span>Hemen Başla</span>
           </button>
         </div>
