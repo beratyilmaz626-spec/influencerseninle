@@ -186,48 +186,6 @@ export default function Dashboard({ onLogout }: DashboardProps) {
       {/* Main Content - Full Width */}
       <main className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
         <div className="animate-fade-in">
-              {/* Main Navigation Items */}
-              {sidebarItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setCurrentView(item.id as ViewType)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 whitespace-nowrap group ${
-                    currentView === item.id
-                      ? 'bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-600 shadow-md border border-blue-200 scale-105'
-                      : 'text-gray-600 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:text-gray-900 hover:shadow-sm hover:scale-105'
-                  }`}
-                >
-                  <item.icon className={`w-4 h-4 transition-transform duration-300 ${currentView === item.id ? 'scale-110' : 'group-hover:scale-110'}`} />
-                  <span className="hidden sm:inline">{item.label}</span>
-                </button>
-              ))}
-
-              {/* Divider */}
-              <div className="w-px h-6 bg-gradient-to-b from-transparent via-gray-300 to-transparent mx-2"></div>
-
-              {/* Bottom Items */}
-              {bottomItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setCurrentView(item.id as ViewType)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 whitespace-nowrap group ${
-                    currentView === item.id
-                      ? 'bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-600 shadow-md border border-blue-200 scale-105'
-                      : 'text-gray-600 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:text-gray-900 hover:shadow-sm hover:scale-105'
-                  }`}
-                >
-                  <item.icon className={`w-4 h-4 transition-transform duration-300 ${currentView === item.id ? 'scale-110' : 'group-hover:scale-110'}`} />
-                  <span className="hidden sm:inline">{item.label}</span>
-                </button>
-              ))}
-            </div>
-          </nav>
-        </div>
-      </header>
-
-      {/* Main Content Area */}
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
-        <div className="animate-fade-in">
           {currentView === 'home' && <HomeContent videos={videos} onCreateVideo={() => setCurrentView('create')} />}
           {currentView === 'videos' && <VideoLibrary />}
           {currentView === 'create' && <VideoCreateContent styleOptions={styleOptions} />}
