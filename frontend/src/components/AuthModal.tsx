@@ -59,13 +59,13 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
 
         <div className="text-center mb-6">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center mx-auto mb-4">
-            <User className="w-6 h-6 text-white" />
+          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl animate-pulse-glow">
+            <User className="w-8 h-8 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-2">
             {mode === 'signin' ? 'Tekrar Hoş Geldiniz' : 'Hesap Oluştur'}
           </h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-base">
             {mode === 'signin' 
               ? 'Video kütüphanenize erişmek için giriş yapın' 
               : 'Video oluşturmaya başlamak için ReklamDeha\'ya katılın'
