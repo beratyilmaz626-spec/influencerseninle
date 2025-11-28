@@ -252,9 +252,10 @@ function HomeContent({
                   <span>{stat.change}</span>
                 </div>
               </div>
-            <div>
-              <p className="text-4xl font-black bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent mb-2">{stat.value}</p>
-              <p className="text-gray-600 text-sm font-semibold uppercase tracking-wide">{stat.title}</p>
+              <div>
+                <p className="text-4xl font-black bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent mb-2">{stat.value}</p>
+                <p className="text-gray-600 text-sm font-semibold uppercase tracking-wide">{stat.title}</p>
+              </div>
             </div>
           </div>
         ))}
