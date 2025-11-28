@@ -234,15 +234,15 @@ function HomeContent({
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <div key={index} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+          <div key={index} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-md hover:shadow-2xl hover:border-blue-200 transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-1 group animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
             <div className="flex items-center justify-between mb-4">
-              <div className={`w-12 h-12 ${stat.color} rounded-xl flex items-center justify-center`}>
+              <div className={`w-12 h-12 ${stat.color} rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300`}>
                 <stat.icon className="w-6 h-6" />
               </div>
-              <div className={`flex items-center space-x-1 text-sm ${
+              <div className={`flex items-center space-x-1 text-sm font-semibold ${
                 stat.trend === 'up' ? 'text-green-600' : 'text-red-600'
               }`}>
-                <TrendingUp className={`w-4 h-4 ${stat.trend === 'down' ? 'rotate-180' : ''}`} />
+                <TrendingUp className={`w-4 h-4 ${stat.trend === 'down' ? 'rotate-180' : ''} transition-transform duration-200`} />
                 <span>{stat.change}</span>
               </div>
             </div>
