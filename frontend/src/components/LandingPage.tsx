@@ -21,20 +21,23 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
       {/* Background Grid Effect */}
       <BackgroundGrid />
       
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200/50 shadow-sm transition-all duration-300">
+      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-2xl border-b border-purple-100/50 shadow-xl transition-all duration-300">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2 group cursor-pointer">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-                <Play className="w-5 h-5 text-white" fill="white" />
+          <div className="flex justify-between items-center h-20">
+            <div className="flex items-center space-x-3 group cursor-pointer">
+              <div className="relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-500"></div>
+                <div className="relative w-12 h-12 bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 rounded-xl flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-all duration-300">
+                  <Play className="w-7 h-7 text-white" fill="white" />
+                </div>
               </div>
-              <div className="text-xl text-gray-900">
-                <span className="font-bold text-orange-500 transition-colors duration-200 group-hover:text-orange-600">Influencer</span>
-                <span className="font-bold text-black transition-colors duration-200 group-hover:text-gray-700">Seninle</span>
+              <div className="text-2xl">
+                <span className="font-black bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">Influencer</span>
+                <span className="font-black text-gray-900">Seninle</span>
               </div>
             </div>
 
