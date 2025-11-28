@@ -233,22 +233,27 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-blue-500 via-blue-600 to-cyan-500 hover:from-blue-600 hover:via-blue-700 hover:to-cyan-600 disabled:from-blue-300 disabled:via-blue-400 disabled:to-cyan-300 text-white py-4 rounded-xl font-bold text-base transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] disabled:transform-none disabled:cursor-not-allowed"
+            className="relative w-full group/submit"
           >
-            {loading ? 'Lütfen bekleyin...' : mode === 'signin' ? 'Giriş Yap' : 'Hesap Oluştur'}
+            <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl blur opacity-50 group-hover/submit:opacity-100 transition duration-300"></div>
+            <div className="relative w-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 hover:from-purple-600 hover:via-pink-600 hover:to-blue-600 disabled:from-gray-300 disabled:via-gray-400 disabled:to-gray-300 text-white py-4 rounded-2xl font-black text-lg transition-all duration-300 shadow-2xl transform hover:scale-[1.02] disabled:transform-none disabled:cursor-not-allowed">
+              {loading ? 'Please wait...' : mode === 'signin' ? 'Sign In' : 'Create Account'}
+            </div>
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-gray-600 text-sm">
-            {mode === 'signin' ? "Hesabınız yok mu? " : "Zaten hesabınız var mı? "}
+        <div className="mt-8 text-center">
+          <p className="text-gray-600">
+            {mode === 'signin' ? "Don't have an account? " : "Already have an account? "}
             <button
               onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
-              className="text-blue-600 hover:text-blue-700 font-bold hover:underline transition-all duration-200"
+              className="text-purple-600 hover:text-pink-600 font-bold hover:underline transition-all duration-200"
             >
-              {mode === 'signin' ? 'Kayıt ol' : 'Giriş yap'}
+              {mode === 'signin' ? 'Sign Up' : 'Sign In'}
             </button>
           </p>
+        </div>
+          </div>
         </div>
       </div>
     </div>
