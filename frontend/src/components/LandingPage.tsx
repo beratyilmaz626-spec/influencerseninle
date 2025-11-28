@@ -156,23 +156,29 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
         </div>
       </section>
 
-      <section className="py-24 bg-gradient-to-br from-blue-50 via-white to-cyan-50 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-100/30 via-transparent to-cyan-100/30"></div>
-        <div className="max-w-7xl mx-auto text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in">
+      <section className="py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600"></div>
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-white/10 rounded-full blur-3xl"></div>
+        
+        <div className="max-w-7xl mx-auto text-center relative z-10 text-white">
+          <h2 className="text-5xl md:text-7xl font-black mb-8 animate-fade-in leading-tight">
             Ürün Pazarlamanızı Dönüştürmeye Hazır mısınız?
           </h2>
-          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <p className="text-2xl text-white/90 mb-12 max-w-3xl mx-auto animate-fade-in leading-relaxed font-medium" style={{ animationDelay: '0.1s' }}>
             AI ile yüksek dönüşümlü video reklamları oluşturan binlerce pazarlamacıya katılın
           </p>
-          <GradientButton
+          <button
             onClick={onGetStarted}
-            className="px-10 py-5 text-lg transform hover:scale-110 inline-flex items-center space-x-2 shadow-2xl hover:shadow-3xl transition-all duration-300 animate-fade-in group"
+            className="relative group animate-fade-in"
             style={{ animationDelay: '0.2s' }}
           >
-            <span>İlk Reklamınızı Oluşturun</span>
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
-          </GradientButton>
+            <div className="absolute -inset-1 bg-white rounded-2xl blur opacity-50 group-hover:opacity-100 transition duration-500"></div>
+            <div className="relative bg-white text-purple-600 px-12 py-6 rounded-2xl font-black text-xl inline-flex items-center space-x-3 shadow-2xl transform hover:scale-110 transition-all duration-300">
+              <span>İlk Reklamınızı Oluşturun</span>
+              <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+            </div>
+          </button>
         </div>
       </section>
 
