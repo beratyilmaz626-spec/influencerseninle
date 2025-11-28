@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Play, Sparkles, Link2, Mic, FileText, Zap, ShoppingBag, TrendingUp, Users, CheckCircle2, ArrowRight, Video, X } from 'lucide-react';
+import { Play, Sparkles, Link2, Mic, FileText, Zap, ShoppingBag, TrendingUp, Users, CheckCircle2, ArrowRight, Video, X, Upload, Download } from 'lucide-react';
 import { TextRotate } from '@/components/ui/text-rotate';
 import { LayoutGroup, motion } from 'motion/react';
 import { Pricing } from '@/components/ui/pricing';
