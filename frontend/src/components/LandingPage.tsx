@@ -141,20 +141,22 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
         </div>
       </section>
 
-      <section className="py-24 bg-gradient-to-br from-blue-50 to-cyan-50 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+      <section className="py-24 bg-gradient-to-br from-blue-50 via-white to-cyan-50 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-100/30 via-transparent to-cyan-100/30"></div>
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in">
             Ürün Pazarlamanızı Dönüştürmeye Hazır mısınız?
           </h2>
-          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.1s' }}>
             AI ile yüksek dönüşümlü video reklamları oluşturan binlerce pazarlamacıya katılın
           </p>
           <GradientButton
             onClick={onGetStarted}
-            className="px-10 py-5 text-lg transform hover:scale-105 inline-flex items-center space-x-2"
+            className="px-10 py-5 text-lg transform hover:scale-110 inline-flex items-center space-x-2 shadow-2xl hover:shadow-3xl transition-all duration-300 animate-fade-in group"
+            style={{ animationDelay: '0.2s' }}
           >
             <span>İlk Reklamınızı Oluşturun</span>
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
           </GradientButton>
         </div>
       </section>
