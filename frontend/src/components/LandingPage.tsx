@@ -132,8 +132,8 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
             </div>
             
             {/* Video Slider */}
-            <div className="mt-16 max-w-6xl mx-auto">
-              <div className="relative h-[400px]">
+            <div className="mt-16 max-w-6xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+              <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-2xl">
                 <VideoSlider />
               </div>
             </div>
