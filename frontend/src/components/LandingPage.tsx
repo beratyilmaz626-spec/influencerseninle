@@ -48,16 +48,19 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
             <div className="hidden md:flex items-center space-x-4">
               <button
                 onClick={() => setShowAuthModal(true)}
-                className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 px-6 py-2 rounded-lg font-medium border border-transparent hover:border-gray-200 hover:shadow-md hover:scale-[1.02]"
+                className="text-gray-600 hover:text-gray-900 px-6 py-3 rounded-2xl font-bold transition-all duration-300 hover:bg-purple-50 border-2 border-transparent hover:border-purple-200"
               >
-                Giriş Yap
+                Sign In
               </button>
-              <GradientButton
-               onClick={() => setShowAuthModal(true)}
-                className="px-6 py-2 shadow-lg hover:shadow-xl transform hover:scale-105"
+              <button
+                onClick={() => setShowAuthModal(true)}
+                className="relative group"
               >
-                Ücretsiz Dene
-              </GradientButton>
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
+                <div className="relative bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-3 rounded-2xl font-black transition-all duration-300 shadow-xl">
+                  Get Started Free
+                </div>
+              </button>
             </div>
 
             <button
