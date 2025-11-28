@@ -258,22 +258,32 @@ function HomeContent({
         ))}
       </div>
 
-      {/* Quick Actions */}
-      <div className="bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-400 rounded-2xl p-8 text-white shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-[1.01] relative overflow-hidden group animate-fade-in">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
-        <div className="flex flex-col md:flex-row items-center justify-between relative z-10">
-          <div className="mb-6 md:mb-0">
-            <h3 className="text-2xl font-bold mb-2 animate-fade-in-up">Yeni Video Oluştur</h3>
-            <p className="text-blue-50 text-lg animate-fade-in-up" style={{ animationDelay: '0.1s' }}>AI ile profesyonel video reklamları oluşturun</p>
+      {/* Hero CTA Card */}
+      <div className="relative group">
+        <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-3xl blur-xl opacity-25 group-hover:opacity-75 transition duration-1000"></div>
+        <div className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 rounded-3xl p-10 text-white shadow-2xl transform hover:scale-[1.01] transition-all duration-500 overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex-1">
+              <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-4">
+                <Sparkles className="w-4 h-4" />
+                <span className="text-sm font-semibold">AI-Powered</span>
+              </div>
+              <h3 className="text-4xl font-black mb-3 leading-tight">Create Amazing Videos</h3>
+              <p className="text-white/90 text-lg leading-relaxed">Transform your ideas into stunning video content with AI in seconds</p>
+            </div>
+            <button
+              onClick={onCreateVideo}
+              className="relative group/btn"
+            >
+              <div className="absolute -inset-1 bg-white rounded-2xl blur opacity-25 group-hover/btn:opacity-75 transition duration-300"></div>
+              <div className="relative bg-white text-purple-600 px-10 py-5 rounded-2xl font-black text-lg inline-flex items-center space-x-3 shadow-2xl transform hover:scale-110 transition-all duration-300">
+                <Sparkles className="w-6 h-6 group-hover/btn:rotate-180 transition-transform duration-500" />
+                <span>Start Creating</span>
+              </div>
+            </button>
           </div>
-          <button
-            onClick={onCreateVideo}
-            className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-all duration-300 inline-flex items-center space-x-2 shadow-2xl hover:shadow-3xl transform hover:scale-110 animate-fade-in-up group"
-            style={{ animationDelay: '0.2s' }}
-          >
-            <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
-            <span>Hemen Başla</span>
-          </button>
         </div>
       </div>
 
