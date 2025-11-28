@@ -253,8 +253,8 @@ function HomeContent({
                 </div>
               </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</p>
-              <p className="text-gray-600 text-sm">{stat.title}</p>
+              <p className="text-4xl font-black bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent mb-2">{stat.value}</p>
+              <p className="text-gray-600 text-sm font-semibold uppercase tracking-wide">{stat.title}</p>
             </div>
           </div>
         ))}
