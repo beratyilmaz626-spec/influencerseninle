@@ -113,35 +113,79 @@ export default function Dashboard({ onLogout }: DashboardProps) {
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
-              {/* Credit Display */}
-              <CreditDisplay onBuyCredits={() => setCurrentView('subscription')} />
+            {/* Orta - Navigation */}
+            <nav className="hidden lg:flex items-center space-x-2">
+              {sidebarItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setCurrentView(item.id as ViewType)}
+                  className={`relative px-6 py-2.5 rounded-2xl font-semibold text-sm transition-all duration-300 group ${
+                    currentView === item.id
+                      ? 'text-white'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  {currentView === item.id && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-2xl shadow-lg"></div>
+                  )}
+                  <div className="relative flex items-center space-x-2">
+                    <item.icon className={`w-4 h-4 transition-transform duration-300 ${currentView === item.id ? 'scale-110' : 'group-hover:scale-110'}`} />
+                    <span>{item.label}</span>
+                  </div>
+                </button>
+              ))}
+            </nav>
 
-              {/* Quick Action Button */}
+            {/* Sağ taraf - Actions */}
+            <div className="flex items-center space-x-3">
+              <CreditDisplay onBuyCredits={() => setCurrentView('subscription')} />
+              
               {currentView === 'home' && (
                 <button
                   onClick={() => setCurrentView('create')}
-                  className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-4 py-2 rounded-xl font-medium transition-all duration-300 inline-flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105 group"
+                  className="relative group"
                 >
-                  <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
-                  <span className="hidden sm:inline">Yeni Video</span>
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
+                  <div className="relative bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-2.5 rounded-2xl font-bold transition-all duration-300 inline-flex items-center space-x-2 shadow-xl">
+                    <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-500" />
+                    <span className="hidden sm:inline">Create Video</span>
+                  </div>
                 </button>
               )}
 
-              {/* Logout Button */}
-              <button
-                onClick={onLogout}
-                className="text-red-600 hover:bg-red-50 p-2 rounded-xl transition-all duration-300 hover:shadow-md transform hover:scale-110"
-                title="Çıkış Yap"
-              >
-                <LogOut className="w-5 h-5" />
-              </button>
+              {/* Settings Dropdown */}
+              <div className="flex items-center space-x-2">
+                {bottomItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setCurrentView(item.id as ViewType)}
+                    className={`p-2.5 rounded-xl transition-all duration-300 ${
+                      currentView === item.id
+                        ? 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-600 shadow-md'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                    }`}
+                    title={item.label}
+                  >
+                    <item.icon className="w-5 h-5" />
+                  </button>
+                ))}
+                
+                <button
+                  onClick={onLogout}
+                  className="p-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-300 hover:shadow-md transform hover:scale-110"
+                  title="Çıkış Yap"
+                >
+                  <LogOut className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
+        </div>
+      </header>
 
-          {/* Navigation Menu */}
-          <nav className="py-4">
-            <div className="flex items-center space-x-1 overflow-x-auto">
+      {/* Main Content - Full Width */}
+      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+        <div className="animate-fade-in">
               {/* Main Navigation Items */}
               {sidebarItems.map((item) => (
                 <button
