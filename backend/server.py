@@ -69,6 +69,11 @@ async def get_status_checks():
 # Include the router in the main app
 app.include_router(api_router)
 
+# Import and include Stripe payment routes
+from stripe_routes import stripe_router, set_database
+set_database(db)
+app.include_router(stripe_router)
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
@@ -87,3 +92,9 @@ logger = logging.getLogger(__name__)
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
+
+
+# Explicit port configuration for deployment
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8001)
