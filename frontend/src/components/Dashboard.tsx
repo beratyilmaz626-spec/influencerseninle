@@ -309,13 +309,16 @@ function HomeContent({
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <Video className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h4 className="text-lg font-semibold text-gray-900 mb-2">Henüz video yok</h4>
-              <p className="text-gray-600 mb-6">İlk videonuzu oluşturmak için başlayın</p>
+            <div className="text-center py-12 animate-fade-in">
+              <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-pulse">
+                <Video className="w-12 h-12 text-blue-500" />
+              </div>
+              <h4 className="text-lg font-semibold text-gray-900 mb-2 animate-fade-in-up">Henüz video yok</h4>
+              <p className="text-gray-600 mb-6 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>İlk videonuzu oluşturmak için başlayın</p>
               <button
                 onClick={onCreateVideo}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 animate-fade-in-up"
+                style={{ animationDelay: '0.2s' }}
               >
                 İlk Videonuzu Oluşturun
               </button>
