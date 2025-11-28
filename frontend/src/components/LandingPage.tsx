@@ -114,19 +114,19 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
               AI destekli video üretim platformumuz ile saniyeler içinde profesyonel kalitede video reklamlar oluşturun.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               <GradientButton
                 onClick={() => setShowAuthModal(true)}
-                className="px-8 py-4 text-lg"
+                className="px-8 py-4 text-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
               >
                 <span>Hemen Başla</span>
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </GradientButton>
               <button
                 onClick={() => setShowAuthModal(true)}
-                className="px-8 py-4 text-lg border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-xl font-medium transition-colors inline-flex items-center space-x-2"
+                className="px-8 py-4 text-lg border-2 border-gray-300 hover:border-blue-400 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 text-gray-700 hover:text-blue-600 rounded-xl font-medium transition-all duration-300 inline-flex items-center space-x-2 shadow-md hover:shadow-xl transform hover:scale-105 group"
               >
-                <Video className="w-5 h-5" />
+                <Video className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 <span>Demo İzle</span>
               </button>
             </div>
