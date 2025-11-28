@@ -119,9 +119,9 @@ export default function Dashboard({ onLogout }: DashboardProps) {
               {currentView === 'home' && (
                 <button
                   onClick={() => setCurrentView('create')}
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-xl font-medium transition-colors inline-flex items-center space-x-2 shadow-sm"
+                  className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-4 py-2 rounded-xl font-medium transition-all duration-300 inline-flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105 group"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
                   <span className="hidden sm:inline">Yeni Video</span>
                 </button>
               )}
@@ -129,7 +129,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
               {/* Logout Button */}
               <button
                 onClick={onLogout}
-                className="text-red-600 hover:bg-red-50 p-2 rounded-xl transition-all duration-200"
+                className="text-red-600 hover:bg-red-50 p-2 rounded-xl transition-all duration-300 hover:shadow-md transform hover:scale-110"
                 title="Çıkış Yap"
               >
                 <LogOut className="w-5 h-5" />
