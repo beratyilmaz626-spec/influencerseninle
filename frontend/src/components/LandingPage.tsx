@@ -45,13 +45,13 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
             <div className="hidden md:flex items-center space-x-4">
               <button
                 onClick={() => setShowAuthModal(true)}
-                className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 px-6 py-2 rounded-lg font-medium border border-transparent hover:border-gray-200"
+                className="text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all duration-200 px-6 py-2 rounded-lg font-medium border border-transparent hover:border-gray-200 hover:shadow-md hover:scale-[1.02]"
               >
                 Giriş Yap
               </button>
               <GradientButton
                onClick={() => setShowAuthModal(true)}
-                className="px-6 py-2"
+                className="px-6 py-2 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 Ücretsiz Dene
               </GradientButton>
