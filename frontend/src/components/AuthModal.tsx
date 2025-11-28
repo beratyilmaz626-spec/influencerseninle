@@ -48,13 +48,13 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl max-w-md w-full p-6 relative">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+      <div className="bg-white/95 backdrop-blur-xl rounded-3xl max-w-md w-full p-8 relative shadow-2xl border border-gray-200/50 animate-fade-in-up">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="absolute top-4 right-4 p-2 hover:bg-red-50 rounded-xl transition-all duration-300 group hover:scale-110"
         >
-          <X className="w-5 h-5 text-gray-500" />
+          <X className="w-5 h-5 text-gray-500 group-hover:text-red-500 transition-colors" />
         </button>
 
 
