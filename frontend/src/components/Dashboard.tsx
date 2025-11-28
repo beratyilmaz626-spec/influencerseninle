@@ -145,32 +145,32 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                 <button
                   key={item.id}
                   onClick={() => setCurrentView(item.id as ViewType)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 whitespace-nowrap group ${
                     currentView === item.id
-                      ? 'bg-blue-50 text-blue-600 shadow-sm border border-blue-200'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-600 shadow-md border border-blue-200 scale-105'
+                      : 'text-gray-600 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:text-gray-900 hover:shadow-sm hover:scale-105'
                   }`}
                 >
-                  <item.icon className="w-4 h-4" />
+                  <item.icon className={`w-4 h-4 transition-transform duration-300 ${currentView === item.id ? 'scale-110' : 'group-hover:scale-110'}`} />
                   <span className="hidden sm:inline">{item.label}</span>
                 </button>
               ))}
 
               {/* Divider */}
-              <div className="w-px h-6 bg-gray-300 mx-2"></div>
+              <div className="w-px h-6 bg-gradient-to-b from-transparent via-gray-300 to-transparent mx-2"></div>
 
               {/* Bottom Items */}
               {bottomItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => setCurrentView(item.id as ViewType)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 whitespace-nowrap group ${
                     currentView === item.id
-                      ? 'bg-blue-50 text-blue-600 shadow-sm border border-blue-200'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                      ? 'bg-gradient-to-r from-blue-50 to-cyan-50 text-blue-600 shadow-md border border-blue-200 scale-105'
+                      : 'text-gray-600 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 hover:text-gray-900 hover:shadow-sm hover:scale-105'
                   }`}
                 >
-                  <item.icon className="w-4 h-4" />
+                  <item.icon className={`w-4 h-4 transition-transform duration-300 ${currentView === item.id ? 'scale-110' : 'group-hover:scale-110'}`} />
                   <span className="hidden sm:inline">{item.label}</span>
                 </button>
               ))}
