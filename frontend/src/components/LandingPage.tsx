@@ -28,13 +28,13 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-200/50 shadow-sm transition-all duration-300">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
+            <div className="flex items-center space-x-2 group cursor-pointer">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
                 <Play className="w-5 h-5 text-white" fill="white" />
               </div>
               <div className="text-xl text-gray-900">
-                <span className="font-bold text-orange-500">Influencer</span>
-                <span className="font-bold text-black">Seninle</span>
+                <span className="font-bold text-orange-500 transition-colors duration-200 group-hover:text-orange-600">Influencer</span>
+                <span className="font-bold text-black transition-colors duration-200 group-hover:text-gray-700">Seninle</span>
               </div>
             </div>
 
