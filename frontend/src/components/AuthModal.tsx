@@ -110,20 +110,17 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
           <div className="p-12 flex flex-col justify-center bg-gray-50">
 
 
-        <div className="text-center mb-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl animate-pulse-glow">
-            <User className="w-8 h-8 text-white" />
-          </div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent mb-2">
-            {mode === 'signin' ? 'Tekrar Hoş Geldiniz' : 'Hesap Oluştur'}
-          </h2>
-          <p className="text-gray-600 text-base">
-            {mode === 'signin' 
-              ? 'Video kütüphanenize erişmek için giriş yapın' 
-              : 'Video oluşturmaya başlamak için ReklamDeha\'ya katılın'
-            }
-          </p>
-        </div>
+            <div className="mb-8">
+              <h3 className="text-3xl font-black text-gray-900 mb-2">
+                {mode === 'signin' ? 'Sign In' : 'Create Account'}
+              </h3>
+              <p className="text-gray-600">
+                {mode === 'signin' 
+                  ? 'Enter your credentials to access your account' 
+                  : 'Fill in your details to get started'
+                }
+              </p>
+            </div>
 
         {/* Free Trial Benefits */}
         {mode === 'signup' && (
