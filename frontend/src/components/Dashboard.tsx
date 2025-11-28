@@ -274,13 +274,13 @@ function HomeContent({
       </div>
 
       {/* Recent Videos */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
-        <div className="p-6 border-b border-gray-100">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-300 animate-fade-in">
+        <div className="p-6 border-b border-gray-100/50 bg-gradient-to-r from-gray-50 to-white">
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-bold text-gray-900">Son Videolar</h3>
             <button 
               onClick={() => {}}
-              className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+              className="text-blue-600 hover:text-blue-700 font-medium text-sm hover:bg-blue-50 px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105"
             >
               Tümünü Görüntüle
             </button>
