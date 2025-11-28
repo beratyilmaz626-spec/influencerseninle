@@ -181,7 +181,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
 
       {/* Main Content Area */}
       <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
-        <div>
+        <div className="animate-fade-in">
           {currentView === 'home' && <HomeContent videos={videos} onCreateVideo={() => setCurrentView('create')} />}
           {currentView === 'videos' && <VideoLibrary />}
           {currentView === 'create' && <VideoCreateContent styleOptions={styleOptions} />}
