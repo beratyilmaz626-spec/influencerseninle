@@ -102,15 +102,15 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
               <span>AI Destekli Video Üretimi</span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight animate-fade-in-up">
               Video Reklam Üretimi
               <br />
-              <span className="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
                 Artık Kolay
               </span>
             </h1>
             
-            <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
               AI destekli video üretim platformumuz ile saniyeler içinde profesyonel kalitede video reklamlar oluşturun.
             </p>
             
