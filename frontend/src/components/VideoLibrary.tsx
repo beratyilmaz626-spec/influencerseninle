@@ -24,10 +24,10 @@ export default function VideoLibrary() {
   });
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Video Kütüphanesi</h1>
-        <p className="text-gray-600">Oluşturduğunuz videoları yönetin ve indirin</p>
+    <div className="space-y-6 animate-fade-in">
+      <div className="bg-gradient-to-r from-blue-50 via-white to-cyan-50 rounded-2xl p-6 border border-blue-100 shadow-sm">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent mb-2">Video Kütüphanesi</h1>
+        <p className="text-gray-600 text-lg">Oluşturduğunuz videoları yönetin ve indirin</p>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
