@@ -94,20 +94,20 @@ export default function Dashboard({ onLogout }: DashboardProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 flex flex-col">
       {/* Top Header with Logo and Navigation */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
+      <header className="bg-white/90 backdrop-blur-xl border-b border-gray-200/50 shadow-sm sticky top-0 z-50">
         <div className="px-4 sm:px-6 lg:px-8">
           {/* Top bar with logo and credits */}
-          <div className="flex items-center justify-between py-4 border-b border-gray-200">
+          <div className="flex items-center justify-between py-4 border-b border-gray-200/50">
             {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center">
+            <div className="flex items-center space-x-3 group cursor-pointer">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300 animate-pulse-glow">
                 <Play className="w-6 h-6 text-white" fill="white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">InfluencerSeninle</h1>
-                <p className="text-xs text-gray-600">AI Video Platform</p>
+                <h1 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">InfluencerSeninle</h1>
+                <p className="text-xs text-gray-600 group-hover:text-blue-500 transition-colors duration-200">AI Video Platform</p>
               </div>
             </div>
 
