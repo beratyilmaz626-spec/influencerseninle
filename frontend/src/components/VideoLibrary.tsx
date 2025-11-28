@@ -84,11 +84,11 @@ export default function VideoLibrary() {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-600">Hata: {error}</p>
+        <div className="bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 rounded-2xl p-5 shadow-lg animate-fade-in">
+          <p className="text-red-600 font-semibold">Hata: {error}</p>
           <button 
             onClick={handleRefresh}
-            className="mt-2 text-red-700 hover:text-red-800 font-medium"
+            className="mt-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
           >
             Tekrar Dene
           </button>
@@ -96,8 +96,12 @@ export default function VideoLibrary() {
       )}
 
       {loading ? (
-        <div className="text-center py-16">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <div className="text-center py-16 animate-fade-in">
+          <div className="relative w-20 h-20 mx-auto mb-6">
+            <div className="absolute inset-0 border-4 border-blue-200 rounded-full animate-pulse"></div>
+            <div className="absolute inset-0 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <div className="absolute inset-2 border-4 border-cyan-400 border-b-transparent rounded-full animate-spin" style={{ animationDuration: '0.8s', animationDirection: 'reverse' }}></div>
+          </div>
           <p className="text-gray-600">Videolar yükleniyor...</p>
         </div>
       ) : filteredVideos.length === 0 ? (
