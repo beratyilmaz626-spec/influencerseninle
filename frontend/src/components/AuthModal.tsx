@@ -75,30 +75,30 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
         {/* Free Trial Benefits */}
         {mode === 'signup' && (
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 mb-6">
+          <div className="bg-gradient-to-r from-green-50 via-emerald-50 to-green-50 border-2 border-green-200 rounded-2xl p-5 mb-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.01]">
             <div className="flex items-center space-x-2 mb-3">
-              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-md">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
               </div>
-              <span className="font-semibold text-green-800">🎉 Ücretsiz Deneme Avantajları</span>
+              <span className="font-bold text-green-800 text-base">🎉 Ücretsiz Deneme Avantajları</span>
             </div>
-            <ul className="space-y-2 text-sm text-green-700">
-              <li className="flex items-center space-x-2">
-                <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+            <ul className="space-y-2.5 text-sm text-green-700">
+              <li className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full shadow-sm"></div>
                 <span><strong>3 adet ücretsiz video</strong> oluşturma hakkı</span>
               </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+              <li className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full shadow-sm"></div>
                 <span><strong>HD kalitede</strong> video indirme</span>
               </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+              <li className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full shadow-sm"></div>
                 <span><strong>50+ AI avatar</strong> seçeneği</span>
               </li>
-              <li className="flex items-center space-x-2">
-                <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+              <li className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full shadow-sm"></div>
                 <span><strong>Kredi kartı gerekmez</strong> - Hemen başla!</span>
               </li>
             </ul>
