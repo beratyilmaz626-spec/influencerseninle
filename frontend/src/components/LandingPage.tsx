@@ -91,11 +91,12 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
       </header>
 
       {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-br from-blue-50 to-cyan-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-24 bg-gradient-to-br from-blue-50 via-white to-cyan-50 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-100/20 via-transparent to-cyan-100/20"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <div className="mb-8">
-            <div className="inline-flex items-center space-x-2 bg-blue-600/10 backdrop-blur-sm text-blue-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <div className="w-6 h-6 bg-blue-600/20 rounded flex items-center justify-center">
+            <div className="inline-flex items-center space-x-2 bg-blue-600/10 backdrop-blur-sm text-blue-600 px-4 py-2 rounded-full text-sm font-medium mb-6 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 animate-fade-in">
+              <div className="w-6 h-6 bg-blue-600/20 rounded flex items-center justify-center animate-pulse">
                 <Sparkles className="w-4 h-4" />
               </div>
               <span>AI Destekli Video Üretimi</span>
