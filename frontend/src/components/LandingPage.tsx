@@ -498,15 +498,15 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
 
 function FeatureCard({ icon, title, description, color }: { icon: React.ReactNode; title: string; description: string; color: string }) {
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-shadow">
-      <div className={`w-12 h-12 ${color} rounded-xl flex items-center justify-center mb-4`}>
+    <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200 hover:shadow-2xl hover:border-blue-200 transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-1 group">
+      <div className={`w-12 h-12 ${color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300`}>
         {icon}
       </div>
-      <h3 className="text-xl font-semibold text-gray-900 mb-3">{title}</h3>
-      <p className="text-gray-600 leading-relaxed">{description}</p>
+      <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-200">{title}</h3>
+      <p className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-200">{description}</p>
       <button className="mt-4 text-blue-600 hover:text-blue-700 font-medium flex items-center space-x-1 group">
         <span>Daha Fazla Bilgi</span>
-        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-200" />
       </button>
     </div>
   );
