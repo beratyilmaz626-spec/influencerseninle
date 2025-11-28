@@ -235,21 +235,23 @@ function HomeContent({
 
   return (
     <div className="space-y-8">
-      {/* Stats Grid */}
+      {/* Stats Bento Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <div key={index} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-md hover:shadow-2xl hover:border-blue-200 transition-all duration-300 transform hover:scale-[1.03] hover:-translate-y-1 group animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
-            <div className="flex items-center justify-between mb-4">
-              <div className={`w-12 h-12 ${stat.color} rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300`}>
-                <stat.icon className="w-6 h-6" />
+          <div key={index} className="relative group" style={{ animationDelay: `${index * 0.1}s` }}>
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl blur opacity-0 group-hover:opacity-25 transition duration-500"></div>
+            <div className="relative bg-white rounded-3xl p-8 border-2 border-gray-100 hover:border-purple-200 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-[1.05] hover:-translate-y-2">
+              <div className="flex items-start justify-between mb-6">
+                <div className={`w-16 h-16 ${stat.color} rounded-2xl flex items-center justify-center shadow-xl transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
+                  <stat.icon className="w-8 h-8" />
+                </div>
+                <div className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full font-bold text-sm ${
+                  stat.trend === 'up' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                }`}>
+                  <TrendingUp className={`w-4 h-4 ${stat.trend === 'down' ? 'rotate-180' : ''} transition-transform duration-200`} />
+                  <span>{stat.change}</span>
+                </div>
               </div>
-              <div className={`flex items-center space-x-1 text-sm font-semibold ${
-                stat.trend === 'up' ? 'text-green-600' : 'text-red-600'
-              }`}>
-                <TrendingUp className={`w-4 h-4 ${stat.trend === 'down' ? 'rotate-180' : ''} transition-transform duration-200`} />
-                <span>{stat.change}</span>
-              </div>
-            </div>
             <div>
               <p className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</p>
               <p className="text-gray-600 text-sm">{stat.title}</p>
