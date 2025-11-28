@@ -94,20 +94,22 @@ export default function Dashboard({ onLogout }: DashboardProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 flex flex-col">
-      {/* Top Header with Logo and Navigation */}
-      <header className="bg-white/90 backdrop-blur-xl border-b border-gray-200/50 shadow-sm sticky top-0 z-50">
-        <div className="px-4 sm:px-6 lg:px-8">
-          {/* Top bar with logo and credits */}
-          <div className="flex items-center justify-between py-4 border-b border-gray-200/50">
-            {/* Logo */}
-            <div className="flex items-center space-x-3 group cursor-pointer">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300 animate-pulse-glow">
-                <Play className="w-6 h-6 text-white" fill="white" />
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+      {/* Modern Top Navigation */}
+      <header className="bg-white/80 backdrop-blur-2xl border-b border-purple-100/50 shadow-xl sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo - Sol taraf */}
+            <div className="flex items-center space-x-4">
+              <div className="relative group cursor-pointer">
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+                <div className="relative w-12 h-12 bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 rounded-xl flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-all duration-300">
+                  <Play className="w-7 h-7 text-white" fill="white" />
+                </div>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">InfluencerSeninle</h1>
-                <p className="text-xs text-gray-600 group-hover:text-blue-500 transition-colors duration-200">AI Video Platform</p>
+                <h1 className="text-2xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">InfluencerSeninle</h1>
+                <p className="text-xs font-semibold text-gray-500">AI-Powered Video Platform</p>
               </div>
             </div>
 
