@@ -123,19 +123,22 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
               AI destekli video üretim platformumuz ile saniyeler içinde profesyonel kalitede video reklamlar oluşturun.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              <GradientButton
-                onClick={() => setShowAuthModal(true)}
-                className="px-8 py-4 text-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300"
-              >
-                <span>Hemen Başla</span>
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </GradientButton>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               <button
                 onClick={() => setShowAuthModal(true)}
-                className="px-8 py-4 text-lg border-2 border-gray-300 hover:border-blue-400 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 text-gray-700 hover:text-blue-600 rounded-xl font-medium transition-all duration-300 inline-flex items-center space-x-2 shadow-md hover:shadow-xl transform hover:scale-105 group"
+                className="relative group"
               >
-                <Video className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl blur-lg opacity-50 group-hover:opacity-100 transition duration-500"></div>
+                <div className="relative bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 hover:from-purple-600 hover:via-pink-600 hover:to-blue-600 text-white px-12 py-5 rounded-2xl font-black text-xl transition-all duration-300 shadow-2xl inline-flex items-center space-x-3">
+                  <span>Hemen Başla</span>
+                  <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
+                </div>
+              </button>
+              <button
+                onClick={() => setShowAuthModal(true)}
+                className="px-12 py-5 text-xl border-2 border-purple-300 hover:border-purple-500 bg-white hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 text-gray-700 hover:text-purple-600 rounded-2xl font-black transition-all duration-300 inline-flex items-center space-x-3 shadow-xl hover:shadow-2xl transform hover:scale-105 group"
+              >
+                <Video className="w-6 h-6 group-hover:scale-110 transition-transform" />
                 <span>Demo İzle</span>
               </button>
             </div>
