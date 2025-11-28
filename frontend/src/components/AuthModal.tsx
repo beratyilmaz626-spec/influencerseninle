@@ -48,14 +48,66 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
-      <div className="bg-white/95 backdrop-blur-xl rounded-3xl max-w-md w-full p-8 relative shadow-2xl border border-gray-200/50 animate-fade-in-up">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fade-in">
+      <div className="relative bg-white rounded-3xl max-w-5xl w-full overflow-hidden shadow-2xl animate-fade-in-up">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 hover:bg-red-50 rounded-xl transition-all duration-300 group hover:scale-110"
+          className="absolute top-6 right-6 z-10 p-2.5 hover:bg-red-50 rounded-xl transition-all duration-300 group hover:scale-110 hover:rotate-90"
         >
-          <X className="w-5 h-5 text-gray-500 group-hover:text-red-500 transition-colors" />
+          <X className="w-6 h-6 text-gray-500 group-hover:text-red-500 transition-colors" />
         </button>
+        
+        <div className="grid md:grid-cols-2 min-h-[600px]">
+          {/* Left Side - Branding */}
+          <div className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 p-12 flex flex-col justify-center text-white overflow-hidden">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+            
+            <div className="relative z-10">
+              <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center mb-8 transform hover:scale-110 transition-transform duration-300">
+                <User className="w-10 h-10" />
+              </div>
+              <h2 className="text-5xl font-black mb-4 leading-tight">
+                {mode === 'signin' ? 'Welcome Back!' : 'Join Us Today'}
+              </h2>
+              <p className="text-xl text-white/90 mb-8 leading-relaxed">
+                {mode === 'signin' 
+                  ? 'Access your video library and continue creating amazing content' 
+                  : 'Start your journey with AI-powered video creation platform'
+                }
+              </p>
+              
+              <div className="space-y-4 text-white/80">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <span className="font-semibold">AI-Powered Video Creation</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <span className="font-semibold">HD Quality Export</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <span className="font-semibold">50+ AI Avatars</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Side - Form */}
+          <div className="p-12 flex flex-col justify-center bg-gray-50">
 
 
         <div className="text-center mb-6">
