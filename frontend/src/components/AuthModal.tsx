@@ -106,16 +106,16 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
         )}
 
         {mode === 'signin' && (
-          <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-xl p-4 mb-6">
+          <div className="bg-gradient-to-r from-blue-50 via-cyan-50 to-blue-50 border-2 border-blue-200 rounded-2xl p-5 mb-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.01]">
             <div className="flex items-center space-x-2 mb-2">
-              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-md">
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <span className="font-semibold text-blue-800">🚀 Hoş Geldin!</span>
+              <span className="font-bold text-blue-800 text-base">🚀 Hoş Geldin!</span>
             </div>
-            <p className="text-sm text-blue-700">
+            <p className="text-sm text-blue-700 leading-relaxed">
               Video kütüphanene erişim sağla ve <strong>AI ile profesyonel reklamlar</strong> oluşturmaya devam et!
             </p>
           </div>
