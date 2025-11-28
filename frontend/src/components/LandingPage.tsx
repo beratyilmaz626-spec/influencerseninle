@@ -96,27 +96,30 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
         </nav>
       </header>
 
-      {/* Hero Section */}
-      <section className="py-24 bg-gradient-to-br from-blue-50 via-white to-cyan-50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-100/20 via-transparent to-cyan-100/20"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <div className="mb-8">
-            <div className="inline-flex items-center space-x-2 bg-blue-600/10 backdrop-blur-sm text-blue-600 px-4 py-2 rounded-full text-sm font-medium mb-6 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 animate-fade-in">
-              <div className="w-6 h-6 bg-blue-600/20 rounded flex items-center justify-center animate-pulse">
-                <Sparkles className="w-4 h-4" />
+      {/* Hero Section - Modern Split Design */}
+      <section className="relative py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-100/50 via-pink-100/30 to-blue-100/50"></div>
+        <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-purple-300/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-0 w-[500px] h-[500px] bg-pink-300/20 rounded-full blur-3xl"></div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center space-x-3 bg-white/80 backdrop-blur-xl px-6 py-3 rounded-full text-purple-600 font-bold shadow-2xl mb-8 border-2 border-purple-100 animate-fade-in">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center animate-pulse">
+                <Sparkles className="w-5 h-5 text-white" />
               </div>
-              <span>AI Destekli Video Üretimi</span>
+              <span className="text-base">AI-Powered Video Creation</span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight animate-fade-in-up">
-              Video Reklam Üretimi
+            <h1 className="text-6xl md:text-8xl font-black mb-8 leading-tight animate-fade-in-up">
+              <span className="text-gray-900">Video Reklam Üretimi</span>
               <br />
-              <span className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
+              <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
                 Artık Kolay
               </span>
             </h1>
             
-            <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+            <p className="text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed font-medium animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
               AI destekli video üretim platformumuz ile saniyeler içinde profesyonel kalitede video reklamlar oluşturun.
             </p>
             
