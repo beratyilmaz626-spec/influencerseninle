@@ -31,51 +31,51 @@ export default function VideoLibrary() {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+        <div className="relative flex-1 group">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Video ara..."
-            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-300 bg-white shadow-sm hover:shadow-md"
           />
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <button
             onClick={handleRefresh}
             disabled={loading}
-            className="px-4 py-2.5 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-400 text-white rounded-lg font-medium transition-colors"
+            className="px-5 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 disabled:from-blue-300 disabled:to-cyan-300 text-white rounded-xl font-medium transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 disabled:transform-none"
           >
             {loading ? 'Yükleniyor...' : 'Yenile'}
           </button>
           <button
             onClick={() => setFilterStatus('all')}
-            className={`px-4 py-2.5 rounded-lg font-medium transition-colors ${
+            className={`px-5 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
               filterStatus === 'all'
-                ? 'bg-blue-500 text-white'
-                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
+                : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:border-blue-300 shadow-sm hover:shadow-md'
             }`}
           >
             Tümü
           </button>
           <button
             onClick={() => setFilterStatus('completed')}
-            className={`px-4 py-2.5 rounded-lg font-medium transition-colors ${
+            className={`px-5 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
               filterStatus === 'completed'
-                ? 'bg-blue-500 text-white'
-                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg'
+                : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:border-green-300 shadow-sm hover:shadow-md'
             }`}
           >
             Tamamlandı
           </button>
           <button
             onClick={() => setFilterStatus('processing')}
-            className={`px-4 py-2.5 rounded-lg font-medium transition-colors ${
+            className={`px-5 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
               filterStatus === 'processing'
-                ? 'bg-blue-500 text-white'
-                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+                ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white shadow-lg'
+                : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 hover:border-orange-300 shadow-sm hover:shadow-md'
             }`}
           >
             İşleniyor
