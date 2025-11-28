@@ -144,9 +144,12 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
             </div>
             
             {/* Video Slider */}
-            <div className="mt-16 max-w-6xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-              <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-2xl">
-                <VideoSlider />
+            <div className="mt-20 max-w-6xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl blur-2xl opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+                <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                  <VideoSlider />
+                </div>
               </div>
             </div>
           </div>
