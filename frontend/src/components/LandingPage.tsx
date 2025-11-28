@@ -514,12 +514,12 @@ function FeatureCard({ icon, title, description, color }: { icon: React.ReactNod
 
 function UseCaseCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-shadow text-center">
-      <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+    <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200 hover:shadow-2xl hover:border-blue-200 transition-all duration-300 text-center transform hover:scale-[1.03] hover:-translate-y-2 group">
+      <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-cyan-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-md group-hover:shadow-xl group-hover:scale-110 transition-all duration-300 group-hover:rotate-3">
         {icon}
       </div>
-      <h3 className="text-xl font-semibold text-gray-900 mb-3">{title}</h3>
-      <p className="text-gray-600 leading-relaxed">{description}</p>
+      <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-200">{title}</h3>
+      <p className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-200">{description}</p>
     </div>
   );
 }
