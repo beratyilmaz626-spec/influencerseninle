@@ -289,16 +289,18 @@ function HomeContent({
         <div className="p-6">
           {recentVideos.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {recentVideos.map((video) => (
-                <div key={video.id} className="group cursor-pointer">
-                  <VideoThumbnail video={video} />
-                  <h4 className="font-semibold text-gray-900 mb-1 line-clamp-1">{video.name}</h4>
+              {recentVideos.map((video, index) => (
+                <div key={video.id} className="group cursor-pointer transform hover:scale-[1.03] transition-all duration-300 animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="rounded-xl overflow-hidden shadow-md group-hover:shadow-xl transition-all duration-300">
+                    <VideoThumbnail video={video} />
+                  </div>
+                  <h4 className="font-semibold text-gray-900 mb-1 line-clamp-1 mt-3 group-hover:text-blue-600 transition-colors duration-200">{video.name}</h4>
                   <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>{video.views} görüntüleme</span>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
+                    <span className="group-hover:text-gray-700 transition-colors duration-200">{video.views} görüntüleme</span>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium shadow-sm ${
                       video.status === 'completed' 
-                        ? 'bg-green-50 text-green-600' 
-                        : 'bg-yellow-50 text-yellow-600'
+                        ? 'bg-green-50 text-green-600 border border-green-200' 
+                        : 'bg-yellow-50 text-yellow-600 border border-yellow-200'
                     }`}>
                       {video.status === 'completed' ? 'Hazır' : 'İşleniyor'}
                     </span>
