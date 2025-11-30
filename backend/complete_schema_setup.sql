@@ -363,7 +363,14 @@ END;
 $$;
 
 -- ========================================
--- 9. SAMPLE DATA - SLIDER VIDEOS
+-- 9. UPDATE EXISTING ADMIN USER
+-- ========================================
+UPDATE users 
+SET is_admin = true, user_credits_points = 2
+WHERE email = 'beratyilmaz626@gmail.com';
+
+-- ========================================
+-- 10. SAMPLE DATA - SLIDER VIDEOS
 -- ========================================
 INSERT INTO slider_videos (title, video_url, thumbnail_url, order_index, is_active)
 VALUES 
