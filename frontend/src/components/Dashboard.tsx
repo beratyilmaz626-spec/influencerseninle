@@ -529,7 +529,14 @@ function StyleCard({
   isSelected: boolean; 
   onSelect: () => void; 
 }) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const isVideo = style.image.endsWith('.mp4') || style.image.endsWith('.webm');
+  
+  // Optimize Unsplash image URLs with proper size parameters
+  const optimizedImageUrl = style.image.includes('unsplash.com') 
+    ? `${style.image}?w=400&h=700&fit=crop&q=80&auto=format`
+    : style.image;
   
   return (
     <div className="flex items-center justify-center">
@@ -540,6 +547,11 @@ function StyleCard({
         }`}
         style={{ width: '100%' }}
       >
+        {/* Loading skeleton */}
+        {!imageLoaded && !hasError && (
+          <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+        )}
+        
         {isVideo ? (
           <video
             src={style.image}
@@ -548,15 +560,30 @@ function StyleCard({
             muted
             playsInline
             className="w-full h-full object-cover"
+            onLoadedData={() => setImageLoaded(true)}
+            onError={() => setHasError(true)}
           />
         ) : (
           <img
-            src={style.image}
+            src={optimizedImageUrl}
             alt={style.name}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover transition-opacity duration-300 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
             loading="lazy"
+            decoding="async"
+            onLoad={() => setImageLoaded(true)}
+            onError={() => setHasError(true)}
           />
         )}
+        
+        {/* Error fallback */}
+        {hasError && (
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
+            <span className="text-white text-xs text-center px-2">Görsel yüklenemedi</span>
+          </div>
+        )}
+        
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-3">
           <h4 className="text-white font-semibold text-sm">{style.name}</h4>
