@@ -1141,7 +1141,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
             <p className="text-sm text-gray-600">Videonuz için uygun bir stil kategorisi seçin</p>
           </div>
           
-          <div className="grid grid-cols-5 max-h-[calc(100vh-200px)] overflow-y-auto" style={{ gap: '0.8cm' }}>
+          <div className="grid grid-cols-4 gap-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
             {styleOptions.map((style) => (
               <StyleCard
                 key={style.id}
