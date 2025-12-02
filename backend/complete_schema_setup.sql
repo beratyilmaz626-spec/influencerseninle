@@ -363,14 +363,84 @@ END;
 $$;
 
 -- ========================================
--- 9. UPDATE EXISTING ADMIN USER
+-- 9. CREATE VIDEO_STYLES TABLE
+-- ========================================
+CREATE TABLE IF NOT EXISTS video_styles (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  style_id text NOT NULL UNIQUE,
+  name text NOT NULL,
+  image text,
+  prompt text NOT NULL,
+  order_index integer DEFAULT 0,
+  is_active boolean DEFAULT true,
+  category jsonb,
+  description text,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+ALTER TABLE video_styles ENABLE ROW LEVEL SECURITY;
+
+-- Video Styles RLS Policies
+CREATE POLICY "Public can view active video styles"
+  ON video_styles FOR SELECT TO public USING (is_active = true);
+
+CREATE POLICY "Authenticated users can view all video styles"
+  ON video_styles FOR SELECT TO authenticated USING (true);
+
+CREATE POLICY "Service role can manage video styles"
+  ON video_styles FOR ALL TO service_role USING (true) WITH CHECK (true);
+
+-- Video Styles Indexes
+CREATE INDEX IF NOT EXISTS video_styles_order_idx ON video_styles (order_index ASC);
+CREATE INDEX IF NOT EXISTS video_styles_style_id_idx ON video_styles (style_id);
+CREATE INDEX IF NOT EXISTS video_styles_is_active_idx ON video_styles (is_active);
+
+-- Video Styles Update Trigger
+CREATE OR REPLACE FUNCTION update_video_styles_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = now();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_video_styles_updated_at_trigger
+  BEFORE UPDATE ON video_styles
+  FOR EACH ROW EXECUTE FUNCTION update_video_styles_updated_at();
+
+-- ========================================
+-- 10. UPDATE EXISTING ADMIN USER
 -- ========================================
 UPDATE users 
 SET is_admin = true, user_credits_points = 2
 WHERE email = 'beratyilmaz626@gmail.com';
 
 -- ========================================
--- 10. SAMPLE DATA - SLIDER VIDEOS
+-- 11. SAMPLE DATA - VIDEO STYLES
+-- ========================================
+INSERT INTO video_styles (id, style_id, name, image, prompt, order_index, is_active, category, description)
+VALUES 
+  ('003f93d2-a6dd-4398-a243-551a112c422e', 'Jib UP', 'Jib UP', '/jib-up.mp4', 'Kamera aşağıdan yukarıya doğru yükselir, kişiyi veya ürünü dramatik biçimde ortaya çıkarır. Sinematik ışık ve yumuşak geçiş.', 15, true, '["Giyim","Yemek"]', 'Tavsiye Edilen Ürünler: Gözlük, Üst giyim, çanta'),
+  ('4494f010-e798-447f-92a5-a9c741af7e06', 'Sunglasses', 'Sunglasses', '/sunglasses.mp4', 'Güneş gözlüğü takan kişi, parlak gün ışığında poz veriyor. Lenslerde yansıyan manzara, stil ve özgüven vurgusu.', 13, true, '["Ürün"]', NULL),
+  ('485387ce-104e-416a-a518-975dab05f16d', 'Luxury', 'Luxury', '/yacht.mp4', 'Lüks atmosfer: altın tonlar, zarif detaylar, pahalı aksesuarlar. Şık giyim, yavaş kamera hareketi, elit his.', 14, true, '["Ürün"]', NULL),
+  ('558d317b-ee20-4340-bd15-e82aa575a225', 'business', 'Explosion', '/explosion.mp4', 'Bir patlama anı — arka planda alev ve duman, önde sakin duran kişi veya araç. Dramatik, sinematik ışıklandırma.', 6, true, '["Ürün"]', NULL),
+  ('69ec1ccf-65cd-429e-af43-88180e08c9b4', 'beauty', 'Giant Grab', '/giant-crab.mp4', 'Gerçeküstü bir animasyon: dev bir el, minik bir ürünü nazikçe yakalar. Kamera aşağıdan bakar, büyüklük farkı vurgulanır. Elin hareketi zarif, ışık sıcak tonlarda.', 5, true, '["Ürün"]', NULL),
+  ('72b9aa55-4e6c-48c0-9f06-c4fd42a98647', 'lifestyle', '3D Rotation', '/3d-rotation.mp4', 'Bir kişi veya nesne 360 derece dönerek gösterilir. Gölge ve ışık detaylarıyla hacim vurgulanır.', 10, true, '["Ürün"]', NULL),
+  ('7b56ed08-691e-4a03-b5ee-ccac23665c08', 'travel', 'Dance', '/dance.mp4', 'Işıklı stüdyoda dans eden kişi, enerjik hareketler, ritmik tempo. Kıyafet ve saçların hareketi vurgulanır.', 7, true, '["Ürün","Sağlık"]', 'Tavsiye Edilen Ürünler: Saç ürünleri, giyim'),
+  ('859676b7-1e3e-47a2-b14a-ee0003d35187', 'nature', 'Timelapse', '/timelapse.mp4', 'Gün batımında insanların hareket ettiği hızlı çekim sahnesi, enerjik atmosfer.', 3, true, '["Ürün"]', NULL),
+  ('85c4e125-a7d1-4538-9140-19fd051dde22', 'sports', 'Selfie', '/selfie.mp4', 'Rahat bir ortamda doğal bir selfie, samimi ifade, güneş gözlüğüyle dış mekanda.', 1, true, '["Ürün"]', NULL),
+  ('87395192-c860-44ad-bc1e-0335a5583399', 'Group', 'Group', '/group.mp4', 'Bir grup insan birlikte poz verir, gülümser veya eğlenceli bir an paylaşır. Doğal, samimi atmosfer.', 12, true, '["Ürün"]', NULL),
+  ('a48ee7c8-b68f-45ea-ae71-4f1184a2032e', 'fashion', 'Close Up', '/close-up-2.mp4', 'Close Up', 2, true, '["Giyim"]', 'Moda ürünü yakın plan çekim, kumaş detayları ve doku odaklı kadraj.'),
+  ('cb2cbef9-0bc4-496d-b2b9-3f4b5f9bf2fc', 'fitness', 'Fish Eye', '/fisheye.mp4', 'Balıkgözü lens efektiyle çekim, abartılı perspektif, renkli arka plan, eğlenceli pozlar.', 9, true, '["Ürün"]', NULL),
+  ('cf11c642-fe14-4d64-aac4-58b9f90d6348', 'street-style', 'Fit Check', '/fit-check.mp4', 'Sokak tarzı kıyafet tanıtımı, tam boy çekim, kullanıcı ürün kutusunu açıyor ve giyiyor.', 1, true, '["Giyim","Aksesuar"]', 'Tavsiye Edilen Ürünler: Her türlü giyim ve aksesuar ürünleri'),
+  ('de8ae7a1-dfb1-45d0-914d-3d81d3435d2b', 'food', '360°', '/360.mp4', '360°', 4, true, '["Giyim","Aksesuar","Güzellik"]', 'Yüz ve aksesuarları öne çıkaran 360 derece dönen çekim, doğal ışıkla güzellik odaklı.'),
+  ('f6a381fd-b329-4681-93ea-e4c68598f79c', 'home', 'Plate Check', '/plate-check.mp4', 'Bir masa başında tabaktaki yemeği inceleyen kişi. Gün ışığı, sıcak tonlar, iştah açıcı detaylar.', 11, true, '["Yemek"]', 'Tavsiye Edilen Ürünler: Her türlü yiyecek ve içecek'),
+  ('fac8bb44-50b1-4ea5-9067-1a75aa40bdaf', 'technology', 'Eating', '/eating.mp4', 'Şık bir kişi yemek yerken kameraya bakar. Komik ama stil sahibi bir atmosfer, yakın plan çekim.', 8, true, '["Ürün"]', NULL)
+ON CONFLICT (id) DO NOTHING;
+
+-- ========================================
+-- 12. SAMPLE DATA - SLIDER VIDEOS
 -- ========================================
 INSERT INTO slider_videos (title, video_url, thumbnail_url, order_index, is_active)
 VALUES 
