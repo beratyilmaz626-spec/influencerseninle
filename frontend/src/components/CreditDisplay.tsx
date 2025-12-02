@@ -64,9 +64,11 @@ export default function CreditDisplay({ onBuyCredits }: CreditDisplayProps) {
                 <h3 className="text-xl font-bold text-gray-900">Kredi Geçmişi</h3>
                 <button
                   onClick={() => setShowHistory(false)}
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  className="p-2 hover:bg-red-100 rounded-lg transition-colors group"
+                  title="Kapat"
+                  aria-label="Kapat"
                 >
-                  <X className="w-5 h-5 text-gray-500" />
+                  <X className="w-6 h-6 text-gray-500 group-hover:text-red-600" />
                 </button>
               </div>
 
