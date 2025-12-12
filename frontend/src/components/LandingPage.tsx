@@ -18,18 +18,18 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
   const features = [
     {
       icon: Sparkles,
-      title: 'AI-Powered Creation',
-      description: 'Create professional videos in seconds with advanced AI technology'
+      title: 'AI Destekli Oluşturma',
+      description: 'Gelişmiş AI teknolojisi ile saniyeler içinde profesyonel videolar oluşturun'
     },
     {
       icon: Zap,
-      title: 'Lightning Fast',
-      description: 'Generate high-quality video content 10x faster than traditional methods'
+      title: 'Yıldırım Hızı',
+      description: 'Geleneksel yöntemlere göre 10 kat daha hızlı yüksek kaliteli video içeriği üretin'
     },
     {
       icon: Video,
-      title: 'HD Quality Output',
-      description: 'Export stunning videos in 4K resolution ready for any platform'
+      title: 'HD Kalite Çıktı',
+      description: 'Her platform için hazır 4K çözünürlükte muhteşem videolar dışa aktarın'
     }
   ];
 
