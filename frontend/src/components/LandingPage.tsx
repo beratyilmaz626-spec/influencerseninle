@@ -93,10 +93,10 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-5xl md:text-7xl font-black mb-6 leading-tight"
             >
-              <span className="text-text-primary">Create Stunning Videos</span>
+              <span className="text-text-primary">Muhteşem Videolar</span>
               <br />
               <span className="bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">
-                With AI Technology
+                AI Teknolojisi ile Oluşturun
               </span>
             </motion.h1>
             
