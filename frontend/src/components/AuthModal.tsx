@@ -1,6 +1,9 @@
 import { useState } from 'react';
-import { X, Mail, Lock, User } from 'lucide-react';
+import { X, Mail, Lock, User, Sparkles, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -47,215 +50,199 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
     }
   };
 
+  const features = [
+    'AI-Powered Video Creation',
+    'HD Quality Export',
+    'Unlimited Projects',
+    'Premium Support'
+  ];
+
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fade-in">
-      <div className="relative bg-white rounded-3xl max-w-5xl w-full overflow-hidden shadow-2xl animate-fade-in-up">
-        <button
-          onClick={onClose}
-          className="absolute top-6 right-6 z-10 p-2.5 hover:bg-red-50 rounded-xl transition-all duration-300 group hover:scale-110 hover:rotate-90"
+    <AnimatePresence>
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.2 }}
+          className="relative w-full max-w-5xl"
         >
-          <X className="w-6 h-6 text-gray-500 group-hover:text-red-500 transition-colors" />
-        </button>
-        
-        <div className="grid md:grid-cols-2 min-h-[600px]">
-          {/* Left Side - Branding */}
-          <div className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 p-12 flex flex-col justify-center text-white overflow-hidden">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-            
-            <div className="relative z-10">
-              <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-3xl flex items-center justify-center mb-8 transform hover:scale-110 transition-transform duration-300">
-                <User className="w-10 h-10" />
-              </div>
-              <h2 className="text-5xl font-black mb-4 leading-tight">
-                {mode === 'signin' ? 'Welcome Back!' : 'Join Us Today'}
-              </h2>
-              <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                {mode === 'signin' 
-                  ? 'Access your video library and continue creating amazing content' 
-                  : 'Start your journey with AI-powered video creation platform'
-                }
-              </p>
-              
-              <div className="space-y-4 text-white/80">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <span className="font-semibold">AI-Powered Video Creation</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <span className="font-semibold">HD Quality Export</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <span className="font-semibold">50+ AI Avatars</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Side - Form */}
-          <div className="p-12 flex flex-col justify-center bg-gray-50">
-
-
-            <div className="mb-8">
-              <h3 className="text-3xl font-black text-gray-900 mb-2">
-                {mode === 'signin' ? 'Sign In' : 'Create Account'}
-              </h3>
-              <p className="text-gray-600">
-                {mode === 'signin' 
-                  ? 'Enter your credentials to access your account' 
-                  : 'Fill in your details to get started'
-                }
-              </p>
-            </div>
-
-        {/* Free Trial Benefits */}
-        {mode === 'signup' && (
-          <div className="bg-gradient-to-r from-green-50 via-emerald-50 to-green-50 border-2 border-green-200 rounded-2xl p-5 mb-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.01]">
-            <div className="flex items-center space-x-2 mb-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-md">
-                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <span className="font-bold text-green-800 text-base">🎉 Ücretsiz Deneme Avantajları</span>
-            </div>
-            <ul className="space-y-2.5 text-sm text-green-700">
-              <li className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full shadow-sm"></div>
-                <span><strong>3 adet ücretsiz video</strong> oluşturma hakkı</span>
-              </li>
-              <li className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full shadow-sm"></div>
-                <span><strong>HD kalitede</strong> video indirme</span>
-              </li>
-              <li className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full shadow-sm"></div>
-                <span><strong>50+ AI avatar</strong> seçeneği</span>
-              </li>
-              <li className="flex items-center space-x-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full shadow-sm"></div>
-                <span><strong>Kredi kartı gerekmez</strong> - Hemen başla!</span>
-              </li>
-            </ul>
-          </div>
-        )}
-
-        {mode === 'signin' && (
-          <div className="bg-gradient-to-r from-blue-50 via-cyan-50 to-blue-50 border-2 border-blue-200 rounded-2xl p-5 mb-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.01]">
-            <div className="flex items-center space-x-2 mb-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-md">
-                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <span className="font-bold text-blue-800 text-base">🚀 Hoş Geldin!</span>
-            </div>
-            <p className="text-sm text-blue-700 leading-relaxed">
-              Video kütüphanene erişim sağla ve <strong>AI ile profesyonel reklamlar</strong> oluşturmaya devam et!
-            </p>
-          </div>
-        )}
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {mode === 'signup' && (
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Ad Soyad
-              </label>
-              <div className="relative group">
-                <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Adınızı ve soyadınızı girin"
-                  className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-300 bg-gray-50/50 focus:bg-white"
-                  required
-                />
-              </div>
-            </div>
-          )}
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              E-posta Adresi
-            </label>
-            <div className="relative group">
-              <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="E-posta adresinizi girin"
-                className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-300 bg-gray-50/50 focus:bg-white"
-                required
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Şifre
-            </label>
-            <div className="relative group">
-              <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Şifrenizi girin"
-                className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-300 bg-gray-50/50 focus:bg-white"
-                required
-                minLength={6}
-              />
-            </div>
-          </div>
-
-          {error && (
-            <div className="bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 rounded-xl p-4 shadow-md animate-fade-in">
-              <p className="text-red-600 text-sm font-medium">{error}</p>
-            </div>
-          )}
-
+          {/* Close Button */}
           <button
-            type="submit"
-            disabled={loading}
-            className="relative w-full group/submit"
+            onClick={onClose}
+            className="absolute -top-12 right-0 z-10 p-2 hover:bg-surface rounded-xl transition-all duration-300 group"
+            aria-label="Close"
           >
-            <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl blur opacity-50 group-hover/submit:opacity-100 transition duration-300"></div>
-            <div className="relative w-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 hover:from-purple-600 hover:via-pink-600 hover:to-blue-600 disabled:from-gray-300 disabled:via-gray-400 disabled:to-gray-300 text-white py-4 rounded-2xl font-black text-lg transition-all duration-300 shadow-2xl transform hover:scale-[1.02] disabled:transform-none disabled:cursor-not-allowed">
-              {loading ? 'Please wait...' : mode === 'signin' ? 'Sign In' : 'Create Account'}
-            </div>
+            <X className="w-6 h-6 text-text-secondary group-hover:text-neon-cyan transition-colors" />
           </button>
-        </form>
+          
+          <div className="glass-card overflow-hidden grid md:grid-cols-2 min-h-[600px]">
+            {/* Left Side - Branding */}
+            <div className="relative bg-gradient-to-br from-neon-cyan/20 via-neon-purple/20 to-neon-pink/20 p-12 flex flex-col justify-center overflow-hidden">
+              {/* Animated Background Orbs */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-neon-cyan/20 rounded-full blur-3xl animate-float"></div>
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+              
+              <div className="relative z-10">
+                {/* Icon */}
+                <div className="w-16 h-16 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-2xl flex items-center justify-center mb-8 shadow-glow-cyan">
+                  <Sparkles className="w-8 h-8 text-white" />
+                </div>
+                
+                {/* Title */}
+                <h2 className="text-4xl font-bold mb-4 text-text-primary">
+                  {mode === 'signin' ? 'Welcome Back!' : 'Join Us Today'}
+                </h2>
+                
+                {/* Description */}
+                <p className="text-lg text-text-secondary mb-8 leading-relaxed">
+                  {mode === 'signin' 
+                    ? 'Access your video library and continue creating amazing content' 
+                    : 'Start your journey with AI-powered video creation platform'
+                  }
+                </p>
+                
+                {/* Features List */}
+                <div className="space-y-3">
+                  {features.map((feature, index) => (
+                    <div key={index} className="flex items-center space-x-3">
+                      <div className="w-6 h-6 bg-neon-green/20 rounded-lg flex items-center justify-center">
+                        <CheckCircle2 className="w-4 h-4 text-neon-green" />
+                      </div>
+                      <span className="text-text-secondary font-medium">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
 
-        <div className="mt-8 text-center">
-          <p className="text-gray-600">
-            {mode === 'signin' ? "Don't have an account? " : "Already have an account? "}
-            <button
-              onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
-              className="text-purple-600 hover:text-pink-600 font-bold hover:underline transition-all duration-200"
-            >
-              {mode === 'signin' ? 'Sign Up' : 'Sign In'}
-            </button>
-          </p>
-        </div>
+            {/* Right Side - Form */}
+            <div className="p-12 bg-surface-elevated">
+              <div className="h-full flex flex-col justify-center">
+                {/* Mode Toggle */}
+                <div className="flex space-x-2 mb-8 glass-card p-1">
+                  <button
+                    onClick={() => setMode('signin')}
+                    className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-300 ${
+                      mode === 'signin'
+                        ? 'bg-gradient-to-r from-neon-cyan to-neon-purple text-white shadow-glow-cyan'
+                        : 'text-text-secondary hover:text-text-primary'
+                    }`}
+                  >
+                    Sign In
+                  </button>
+                  <button
+                    onClick={() => setMode('signup')}
+                    className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-300 ${
+                      mode === 'signup'
+                        ? 'bg-gradient-to-r from-neon-cyan to-neon-purple text-white shadow-glow-cyan'
+                        : 'text-text-secondary hover:text-text-primary'
+                    }`}
+                  >
+                    Sign Up
+                  </button>
+                </div>
+
+                {/* Form */}
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {mode === 'signup' && (
+                    <div>
+                      <label className="block text-sm font-semibold text-text-primary mb-2">
+                        Full Name
+                      </label>
+                      <div className="relative">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+                        <Input
+                          type="text"
+                          value={fullName}
+                          onChange={(e) => setFullName(e.target.value)}
+                          placeholder="John Doe"
+                          required
+                          className="pl-12"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div>
+                    <label className="block text-sm font-semibold text-text-primary mb-2">
+                      Email
+                    </label>
+                    <div className="relative">
+                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+                      <Input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="your@email.com"
+                        required
+                        className="pl-12"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-text-primary mb-2">
+                      Password
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+                      <Input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        required
+                        className="pl-12"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Error Message */}
+                  {error && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-4 rounded-xl bg-neon-pink/10 border border-neon-pink/30 text-neon-pink text-sm"
+                    >
+                      {error}
+                    </motion.div>
+                  )}
+
+                  {/* Submit Button */}
+                  <Button
+                    type="submit"
+                    variant="premium"
+                    size="lg"
+                    disabled={loading}
+                    className="w-full"
+                  >
+                    {loading ? (
+                      <span className="flex items-center justify-center space-x-2">
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <span>Processing...</span>
+                      </span>
+                    ) : (
+                      mode === 'signin' ? 'Sign In' : 'Create Account'
+                    )}
+                  </Button>
+                </form>
+
+                {/* Footer Text */}
+                <p className="mt-6 text-center text-sm text-text-muted">
+                  {mode === 'signin' ? "Don't have an account? " : "Already have an account? "}
+                  <button
+                    onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
+                    className="text-neon-cyan hover:text-accent-hover font-semibold transition-colors"
+                  >
+                    {mode === 'signin' ? 'Sign up' : 'Sign in'}
+                  </button>
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </AnimatePresence>
   );
 }
