@@ -56,10 +56,10 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-4">
               <Button variant="ghost" onClick={() => setShowAuthModal(true)}>
-                Sign In
+                Giriş Yap
               </Button>
               <Button onClick={() => setShowAuthModal(true)}>
-                Get Started
+                Başlayın
               </Button>
             </div>
           </div>
