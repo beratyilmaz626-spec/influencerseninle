@@ -220,10 +220,10 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                     {loading ? (
                       <span className="flex items-center justify-center space-x-2">
                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span>Processing...</span>
+                        <span>İşleniyor...</span>
                       </span>
                     ) : (
-                      mode === 'signin' ? 'Sign In' : 'Create Account'
+                      mode === 'signin' ? 'Giriş Yap' : 'Hesap Oluştur'
                     )}
                   </Button>
                 </form>
