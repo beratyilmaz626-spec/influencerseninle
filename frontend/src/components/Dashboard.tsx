@@ -199,55 +199,35 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                   <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
                   <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-6 py-2.5 rounded-xl font-bold transition-all duration-300 inline-flex items-center space-x-2 shadow-glow-cyan">
                     <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-500" />
-                    <span className="hidden sm:inline">Create Video</span>
+                    <span className="hidden sm:inline">Video Oluştur</span>
                   </div>
                 </button>
               )}
-
-              {/* Settings Dropdown */}
-              <div className="flex items-center space-x-2">
-                {bottomItems.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => setCurrentView(item.id as ViewType)}
-                    className={`p-2.5 rounded-xl transition-all duration-300 ${
-                      currentView === item.id
-                        ? 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-600 shadow-md'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                    }`}
-                    title={item.label}
-                  >
-                    <item.icon className="w-5 h-5" />
-                  </button>
-                ))}
-                
-                <button
-                  onClick={onLogout}
-                  className="p-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-300 hover:shadow-md transform hover:scale-110"
-                  title="Çıkış Yap"
-                >
-                  <LogOut className="w-5 h-5" />
-                </button>
-              </div>
             </div>
-          </div>
-        </div>
-      </header>
+          </header>
 
-      {/* Main Content - Full Width */}
-      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        <div className="animate-fade-in">
-          {currentView === 'home' && <HomeContent videos={videos} onCreateVideo={() => setCurrentView('create')} />}
-          {currentView === 'videos' && <VideoLibrary />}
-          {currentView === 'create' && <VideoCreateContent styleOptions={styleOptions} />}
-          {currentView === 'create2' && <VideoCreate2Content />}
-          {currentView === 'subscription' && <SubscriptionPanel />}
-          {currentView === 'settings' && <ProfileSettings />}
-          {currentView === 'users' && <UserManagement />}
-          {currentView === 'slider' && <SliderVideoManager />}
-          {currentView === 'styles' && <VideoStyleManager />}
+          {/* PREMIUM MAIN CONTENT AREA */}
+          <main className="flex-1 overflow-auto p-8">
+            <motion.div
+              key={currentView}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              {currentView === 'home' && <HomeContent videos={videos} onCreateVideo={() => setCurrentView('create')} />}
+              {currentView === 'videos' && <VideoLibrary />}
+              {currentView === 'create' && <VideoCreateContent styleOptions={styleOptions} />}
+              {currentView === 'create2' && <VideoCreate2Content />}
+              {currentView === 'subscription' && <SubscriptionPanel />}
+              {currentView === 'settings' && <ProfileSettings />}
+              {currentView === 'users' && <UserManagement />}
+              {currentView === 'slider' && <SliderVideoManager />}
+              {currentView === 'styles' && <VideoStyleManager />}
+            </motion.div>
+          </main>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
