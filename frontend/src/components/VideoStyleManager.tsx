@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Plus, Edit2, Trash2, Save, X, Eye, EyeOff } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, X, Eye, EyeOff, RefreshCw } from 'lucide-react';
+import { Card, CardContent } from './ui/card';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Badge } from './ui/badge';
+import { Skeleton } from './ui/skeleton';
+import { EmptyState } from './ui/empty-state';
 
 interface VideoStyle {
   id: string;
@@ -33,6 +39,7 @@ export default function VideoStyleManager() {
 
   const fetchStyles = async () => {
     try {
+      setLoading(true);
       const { data, error } = await supabase
         .from('video_styles')
         .select('*')
@@ -128,259 +135,296 @@ export default function VideoStyleManager() {
     }
   };
 
-  const handleInputChange = (id: string, field: keyof VideoStyle, value: any) => {
-    setStyles(styles.map(s => s.id === id ? { ...s, [field]: value } : s));
-  };
-
   const resetForm = () => {
     setFormData({
       style_id: '',
       name: '',
       image: '',
       prompt: '',
-      order_index: styles.length || 0,
+      order_index: 0,
       is_active: true
     });
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
+  const updateStyle = (id: string, field: keyof VideoStyle, value: any) => {
+    setStyles(prev => prev.map(s => 
+      s.id === id ? { ...s, [field]: value } : s
+    ));
+  };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Video Stil Yönetimi</h2>
-        <button
-          onClick={() => setShowAddForm(!showAddForm)}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          <Plus className="w-5 h-5" />
-          Yeni Stil Ekle
-        </button>
+    <div className="space-y-6">
+      {/* Premium Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-text-primary mb-2">Video Stilleri</h1>
+          <p className="text-text-secondary">Video stillerini görüntüleyin ve yönetin</p>
+        </div>
+        <div className="flex items-center space-x-3">
+          <Button
+            onClick={fetchStyles}
+            disabled={loading}
+            variant="outline"
+          >
+            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+            <span>Yenile</span>
+          </Button>
+          <Button
+            onClick={() => setShowAddForm(!showAddForm)}
+            variant="premium"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            <span>Yeni Stil Ekle</span>
+          </Button>
+        </div>
       </div>
 
       {/* Add Form */}
       {showAddForm && (
-        <div className="mb-6 p-6 bg-blue-50 rounded-lg border-2 border-blue-200">
-          <h3 className="text-lg font-semibold mb-4">Yeni Stil Ekle</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Stil ID (Benzersiz, İngilizce)
-              </label>
-              <input
-                type="text"
-                value={formData.style_id}
-                onChange={(e) => setFormData({ ...formData, style_id: e.target.value })}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                placeholder="ornek: 'new-style'"
-              />
+        <Card className="border-neon-cyan/30">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-semibold text-text-primary">Yeni Stil Ekle</h3>
+              <Button variant="ghost" size="icon" onClick={() => setShowAddForm(false)}>
+                <X className="w-5 h-5" />
+              </Button>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Stil Adı
-              </label>
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                placeholder="Türkçe isim"
-              />
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-text-primary mb-2">Stil ID</label>
+                <Input
+                  value={formData.style_id}
+                  onChange={(e) => setFormData({ ...formData, style_id: e.target.value })}
+                  placeholder="selfie, 360, vb."
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-text-primary mb-2">İsim</label>
+                <Input
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="Selfie"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-semibold text-text-primary mb-2">Görsel URL</label>
+                <Input
+                  value={formData.image}
+                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                  placeholder="https://..."
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-semibold text-text-primary mb-2">Prompt</label>
+                <textarea
+                  value={formData.prompt}
+                  onChange={(e) => setFormData({ ...formData, prompt: e.target.value })}
+                  rows={3}
+                  className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-text-primary focus:outline-none focus:border-neon-cyan focus:shadow-glow-cyan transition-all duration-300"
+                  placeholder="Stil açıklaması..."
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-text-primary mb-2">Sıra</label>
+                <Input
+                  type="number"
+                  value={formData.order_index}
+                  onChange={(e) => setFormData({ ...formData, order_index: parseInt(e.target.value) })}
+                />
+              </div>
             </div>
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Video/GIF URL veya Yol
-              </label>
-              <input
-                type="text"
-                value={formData.image}
-                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                placeholder="/video.mp4 veya https://..."
-              />
+            <div className="mt-6 flex justify-end space-x-3">
+              <Button variant="outline" onClick={() => setShowAddForm(false)}>
+                İptal
+              </Button>
+              <Button variant="premium" onClick={handleAdd}>
+                <Save className="w-4 h-4 mr-2" />
+                Kaydet
+              </Button>
             </div>
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Prompt (AI açıklaması)
-              </label>
-              <textarea
-                value={formData.prompt}
-                onChange={(e) => setFormData({ ...formData, prompt: e.target.value })}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                rows={3}
-                placeholder="Bu stil için açıklama..."
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Sıra
-              </label>
-              <input
-                type="number"
-                value={formData.order_index || 0}
-                onChange={(e) => setFormData({ ...formData, order_index: parseInt(e.target.value) || 0 })}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-          <div className="flex gap-3 mt-4">
-            <button
-              onClick={handleAdd}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              Ekle
-            </button>
-            <button
-              onClick={() => {
-                setShowAddForm(false);
-                resetForm();
-              }}
-              className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
-            >
-              İptal
-            </button>
-          </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Loading State */}
+      {loading ? (
+        <div className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <Card key={i}>
+              <CardContent className="p-6">
+                <div className="flex items-center space-x-4">
+                  <Skeleton className="h-20 w-20 rounded-xl" />
+                  <div className="space-y-2 flex-1">
+                    <Skeleton className="h-4 w-[200px]" />
+                    <Skeleton className="h-4 w-[300px]" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : styles.length === 0 ? (
+        /* Empty State */
+        <EmptyState
+          icon={Plus}
+          title="Henüz stil yok"
+          description="Yeni bir video stili ekleyerek başlayın"
+          action={
+            <Button variant="premium" onClick={() => setShowAddForm(true)}>
+              <Plus className="w-4 h-4 mr-2" />
+              İlk Stili Ekle
+            </Button>
+          }
+        />
+      ) : (
+        /* Premium Style List */
+        <div className="space-y-4">
+          {styles.map((style) => (
+            <Card key={style.id} className="holographic-hover hover:shadow-glow-cyan transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-6">
+                  {/* Thumbnail */}
+                  <div className="flex-shrink-0">
+                    <img
+                      src={style.image}
+                      alt={style.name}
+                      className="w-20 h-20 object-cover rounded-xl ring-2 ring-border"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=200&h=200&fit=crop';
+                      }}
+                    />
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 space-y-3">
+                    {editingId === style.id ? (
+                      /* Edit Mode */
+                      <div className="space-y-3">
+                        <Input
+                          value={style.name}
+                          onChange={(e) => updateStyle(style.id, 'name', e.target.value)}
+                          placeholder="Stil adı"
+                        />
+                        <Input
+                          value={style.image}
+                          onChange={(e) => updateStyle(style.id, 'image', e.target.value)}
+                          placeholder="Görsel URL"
+                        />
+                        <textarea
+                          value={style.prompt}
+                          onChange={(e) => updateStyle(style.id, 'prompt', e.target.value)}
+                          rows={2}
+                          className="w-full px-4 py-3 bg-surface border border-border rounded-xl text-text-primary focus:outline-none focus:border-neon-cyan focus:shadow-glow-cyan transition-all duration-300"
+                        />
+                        <div className="flex items-center space-x-3">
+                          <Input
+                            type="number"
+                            value={style.order_index}
+                            onChange={(e) => updateStyle(style.id, 'order_index', parseInt(e.target.value))}
+                            className="w-24"
+                          />
+                          <Badge variant={style.is_active ? 'success' : 'error'}>
+                            {style.is_active ? 'Aktif' : 'Pasif'}
+                          </Badge>
+                        </div>
+                      </div>
+                    ) : (
+                      /* View Mode */
+                      <>
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h3 className="text-lg font-semibold text-text-primary mb-1">{style.name}</h3>
+                            <p className="text-sm text-text-secondary line-clamp-2">{style.prompt}</p>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Badge variant="outline" className="font-mono text-xs">
+                              #{style.order_index}
+                            </Badge>
+                            <Badge variant={style.is_active ? 'success' : 'error'}>
+                              {style.is_active ? 'Aktif' : 'Pasif'}
+                            </Badge>
+                          </div>
+                        </div>
+                        <p className="text-xs text-text-muted font-mono">
+                          ID: {style.style_id}
+                        </p>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex-shrink-0 flex items-center space-x-2">
+                    {editingId === style.id ? (
+                      <>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleUpdate(style.id)}
+                          className="text-neon-green hover:bg-neon-green/10"
+                        >
+                          <Save className="w-5 h-5" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setEditingId(null)}
+                          className="text-text-muted hover:bg-surface-elevated"
+                        >
+                          <X className="w-5 h-5" />
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setEditingId(style.id)}
+                          className="text-neon-cyan hover:bg-neon-cyan/10"
+                        >
+                          <Edit2 className="w-5 h-5" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => toggleActive(style.id, style.is_active)}
+                          className="text-text-secondary hover:bg-surface-elevated"
+                        >
+                          {style.is_active ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleDelete(style.id)}
+                          className="text-neon-pink hover:bg-neon-pink/10"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       )}
 
-      {/* Styles List */}
-      <div className="space-y-4">
-        {styles.map((style) => (
-          <div
-            key={style.id}
-            className={`p-4 border-2 rounded-lg transition-colors ${
-              style.is_active ? 'border-gray-200 bg-white' : 'border-gray-300 bg-gray-50'
-            }`}
-          >
-            <div className="flex items-start gap-4">
-              {/* Preview */}
-              <div className="w-32 h-32 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                {style.image.endsWith('.mp4') || style.image.endsWith('.webm') ? (
-                  <video
-                    src={style.image}
-                    className="w-full h-full object-cover"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                  />
-                ) : (
-                  <img
-                    src={style.image}
-                    alt={style.name}
-                    className="w-full h-full object-cover"
-                  />
-                )}
-              </div>
-
-              {/* Details */}
-              <div className="flex-1 min-w-0">
-                {editingId === style.id ? (
-                  <div className="space-y-3">
-                    <input
-                      type="text"
-                      value={style.name}
-                      onChange={(e) => handleInputChange(style.id, 'name', e.target.value)}
-                      className="w-full px-3 py-2 border rounded-lg"
-                      placeholder="Stil adı"
-                    />
-                    <input
-                      type="text"
-                      value={style.image}
-                      onChange={(e) => handleInputChange(style.id, 'image', e.target.value)}
-                      className="w-full px-3 py-2 border rounded-lg"
-                      placeholder="Video URL"
-                    />
-                    <textarea
-                      value={style.prompt}
-                      onChange={(e) => handleInputChange(style.id, 'prompt', e.target.value)}
-                      className="w-full px-3 py-2 border rounded-lg"
-                      rows={2}
-                      placeholder="Prompt"
-                    />
-                    <input
-                      type="number"
-                      value={style.order_index || 0}
-                      onChange={(e) => handleInputChange(style.id, 'order_index', parseInt(e.target.value) || 0)}
-                      className="w-24 px-3 py-2 border rounded-lg"
-                      placeholder="Sıra"
-                    />
-                  </div>
-                ) : (
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">{style.name}</h3>
-                    <p className="text-sm text-gray-500 mt-1">ID: {style.style_id}</p>
-                    <p className="text-sm text-gray-600 mt-2 line-clamp-2">{style.prompt}</p>
-                    <p className="text-xs text-gray-400 mt-1">Sıra: {style.order_index}</p>
-                    <p className="text-xs text-blue-600 mt-1 break-all">{style.image}</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Actions */}
-              <div className="flex flex-col gap-2">
-                {editingId === style.id ? (
-                  <>
-                    <button
-                      onClick={() => handleUpdate(style.id)}
-                      className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                      title="Kaydet"
-                    >
-                      <Save className="w-5 h-5" />
-                    </button>
-                    <button
-                      onClick={() => setEditingId(null)}
-                      className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                      title="İptal"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      onClick={() => setEditingId(style.id)}
-                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                      title="Düzenle"
-                    >
-                      <Edit2 className="w-5 h-5" />
-                    </button>
-                    <button
-                      onClick={() => toggleActive(style.id, style.is_active)}
-                      className={`p-2 rounded-lg transition-colors ${
-                        style.is_active
-                          ? 'text-green-600 hover:bg-green-50'
-                          : 'text-gray-400 hover:bg-gray-100'
-                      }`}
-                      title={style.is_active ? 'Aktif' : 'Pasif'}
-                    >
-                      {style.is_active ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
-                    </button>
-                    <button
-                      onClick={() => handleDelete(style.id)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                      title="Sil"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
-                  </>
-                )}
+      {/* Stats Footer */}
+      {!loading && styles.length > 0 && (
+        <Card className="bg-surface-elevated/50">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-text-secondary">Toplam Stil</span>
+              <div className="flex items-center space-x-4">
+                <Badge variant="info">{styles.length}</Badge>
+                <span className="text-text-muted">•</span>
+                <span className="text-neon-green">{styles.filter(s => s.is_active).length} Aktif</span>
+                <span className="text-text-muted">•</span>
+                <span className="text-text-muted">{styles.filter(s => !s.is_active).length} Pasif</span>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-
-      {styles.length === 0 && (
-        <div className="text-center py-12 text-gray-500">
-          Henüz stil eklenmemiş. "Yeni Stil Ekle" butonuna tıklayarak başlayın.
-        </div>
+          </CardContent>
+        </Card>
       )}
     </div>
   );
