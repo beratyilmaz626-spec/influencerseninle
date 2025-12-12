@@ -148,7 +148,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                   {mode === 'signup' && (
                     <div>
                       <label className="block text-sm font-semibold text-text-primary mb-2">
-                        Full Name
+                        Ad Soyad
                       </label>
                       <div className="relative">
                         <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
@@ -156,7 +156,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                           type="text"
                           value={fullName}
                           onChange={(e) => setFullName(e.target.value)}
-                          placeholder="John Doe"
+                          placeholder="Adınız Soyadınız"
                           required
                           className="pl-12"
                         />
@@ -166,7 +166,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
                   <div>
                     <label className="block text-sm font-semibold text-text-primary mb-2">
-                      Email
+                      E-posta
                     </label>
                     <div className="relative">
                       <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
@@ -174,7 +174,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="your@email.com"
+                        placeholder="eposta@ornek.com"
                         required
                         className="pl-12"
                       />
@@ -183,7 +183,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
                   <div>
                     <label className="block text-sm font-semibold text-text-primary mb-2">
-                      Password
+                      Şifre
                     </label>
                     <div className="relative">
                       <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
