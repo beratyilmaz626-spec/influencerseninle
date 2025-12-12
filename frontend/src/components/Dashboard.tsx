@@ -94,59 +94,110 @@ export default function Dashboard({ onLogout }: DashboardProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
-      {/* Modern Top Navigation */}
-      <header className="bg-white/80 backdrop-blur-2xl border-b border-purple-100/50 shadow-xl sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo - Sol taraf */}
-            <div className="flex items-center space-x-4">
-              <div className="relative group cursor-pointer">
-                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-                <div className="relative w-12 h-12 bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 rounded-xl flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-all duration-300">
-                  <Play className="w-7 h-7 text-white" fill="white" />
+    <div className="min-h-screen bg-background">
+      {/* PremiumAppShell Wrapper - Sidebar ve Topbar burada */}
+      <div className="flex">
+        {/* PREMIUM SIDEBAR - Manuel inline olarak eklendi çünkü PremiumAppShell'i import etmeden kullanmak için */}
+        <aside className="w-64 bg-surface border-r border-border flex flex-col min-h-screen">
+          {/* Logo */}
+          <div className="p-6 border-b border-border">
+            <div className="flex items-center space-x-3">
+              <div className="relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50"></div>
+                <div className="relative w-10 h-10 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center shadow-glow-cyan">
+                  <Sparkles className="w-5 h-5 text-white" />
                 </div>
               </div>
-              <div>
-                <h1 className="text-2xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">InfluencerSeninle</h1>
-                <p className="text-xs font-semibold text-gray-500">AI-Powered Video Platform</p>
+              <div className="text-lg font-bold">
+                <span className="text-text-primary">Influencer</span>
+                <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">Seninle</span>
               </div>
             </div>
+          </div>
 
-            {/* Orta - Navigation */}
-            <nav className="hidden lg:flex items-center space-x-2">
-              {sidebarItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setCurrentView(item.id as ViewType)}
-                  className={`relative px-6 py-2.5 rounded-2xl font-semibold text-sm transition-all duration-300 group ${
-                    currentView === item.id
-                      ? 'text-white'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  {currentView === item.id && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-2xl shadow-lg"></div>
-                  )}
-                  <div className="relative flex items-center space-x-2">
-                    <item.icon className={`w-4 h-4 transition-transform duration-300 ${currentView === item.id ? 'scale-110' : 'group-hover:scale-110'}`} />
-                    <span>{item.label}</span>
-                  </div>
-                </button>
-              ))}
-            </nav>
+          {/* Navigation */}
+          <nav className="flex-1 p-4 space-y-1">
+            <div className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 px-3">Menü</div>
+            {sidebarItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setCurrentView(item.id as ViewType)}
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                  currentView === item.id
+                    ? 'bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 text-text-primary shadow-glow-cyan'
+                    : 'text-text-secondary hover:bg-surface-elevated hover:text-text-primary'
+                }`}
+              >
+                <item.icon className={`w-5 h-5 ${currentView === item.id ? 'text-neon-cyan' : ''}`} />
+                <span className="font-medium">{item.label}</span>
+              </button>
+            ))}
 
-            {/* Sağ taraf - Actions */}
-            <div className="flex items-center space-x-3">
+            {isAdmin && (
+              <>
+                <div className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 px-3 pt-6">Yönetim</div>
+                {bottomItems.filter(i => ['users', 'slider', 'styles'].includes(i.id)).map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setCurrentView(item.id as ViewType)}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                      currentView === item.id
+                        ? 'bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 text-text-primary shadow-glow-cyan'
+                        : 'text-text-secondary hover:bg-surface-elevated hover:text-text-primary'
+                    }`}
+                  >
+                    <item.icon className={`w-5 h-5 ${currentView === item.id ? 'text-neon-cyan' : ''}`} />
+                    <span className="font-medium">{item.label}</span>
+                  </button>
+                ))}
+              </>
+            )}
+          </nav>
+
+          {/* Bottom Items */}
+          <div className="p-4 border-t border-border space-y-1">
+            {bottomItems.filter(i => ['subscription', 'settings'].includes(i.id)).map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setCurrentView(item.id as ViewType)}
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                  currentView === item.id
+                    ? 'bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 text-text-primary'
+                    : 'text-text-secondary hover:bg-surface-elevated hover:text-text-primary'
+                }`}
+              >
+                <item.icon className="w-5 h-5" />
+                <span className="font-medium">{item.label}</span>
+              </button>
+            ))}
+            <button
+              onClick={onLogout}
+              className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-text-secondary hover:bg-surface-elevated hover:text-text-primary transition-all duration-300"
+            >
+              <LogOut className="w-5 h-5" />
+              <span className="font-medium">Çıkış Yap</span>
+            </button>
+          </div>
+        </aside>
+
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col min-h-screen">
+          {/* PREMIUM TOPBAR */}
+          <header className="h-16 bg-surface-elevated border-b border-border px-8 flex items-center justify-between sticky top-0 z-40">
+            <h2 className="text-lg font-semibold text-text-primary">
+              {sidebarItems.find(i => i.id === currentView)?.label || 
+               bottomItems.find(i => i.id === currentView)?.label || 
+               'Dashboard'}
+            </h2>
+            <div className="flex items-center space-x-4">
               <CreditDisplay onBuyCredits={() => setCurrentView('subscription')} />
-              
               {currentView === 'home' && (
                 <button
                   onClick={() => setCurrentView('create')}
                   className="relative group"
                 >
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
-                  <div className="relative bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-2.5 rounded-2xl font-bold transition-all duration-300 inline-flex items-center space-x-2 shadow-xl">
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
+                  <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-6 py-2.5 rounded-xl font-bold transition-all duration-300 inline-flex items-center space-x-2 shadow-glow-cyan">
                     <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-500" />
                     <span className="hidden sm:inline">Create Video</span>
                   </div>
