@@ -91,14 +91,14 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                 
                 {/* Title */}
                 <h2 className="text-4xl font-bold mb-4 text-text-primary">
-                  {mode === 'signin' ? 'Welcome Back!' : 'Join Us Today'}
+                  {mode === 'signin' ? 'Tekrar Hoş Geldiniz!' : 'Bize Katılın'}
                 </h2>
                 
                 {/* Description */}
                 <p className="text-lg text-text-secondary mb-8 leading-relaxed">
                   {mode === 'signin' 
-                    ? 'Access your video library and continue creating amazing content' 
-                    : 'Start your journey with AI-powered video creation platform'
+                    ? 'Video kütüphanenize erişin ve muhteşem içerikler oluşturmaya devam edin' 
+                    : 'AI destekli video oluşturma platformu ile yolculuğunuza başlayın'
                   }
                 </p>
                 
