@@ -160,10 +160,10 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
-              Why Choose Our Platform?
+              Neden Platformumuzu Seçmelisiniz?
             </h2>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Powerful features that make video creation effortless
+              Video oluşturmayı zahmetsiz hale getiren güçlü özellikler
             </p>
           </div>
           
