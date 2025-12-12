@@ -107,8 +107,8 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-xl text-text-secondary mb-10 max-w-3xl mx-auto leading-relaxed"
             >
-              Transform your ideas into professional-quality videos in seconds. 
-              No editing skills required.
+              Fikirlerinizi saniyeler içinde profesyonel kalitede videolara dönüştürün. 
+              Düzenleme becerisi gerektirmez.
             </motion.p>
             
             {/* CTAs */}
