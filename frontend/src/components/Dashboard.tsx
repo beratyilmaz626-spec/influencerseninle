@@ -300,29 +300,33 @@ function HomeContent({
         ))}
       </div>
 
-      {/* Hero CTA Card */}
-      <div className="relative group">
-        <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-3xl blur-xl opacity-25 group-hover:opacity-75 transition duration-1000"></div>
-        <div className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-blue-600 rounded-3xl p-10 text-white shadow-2xl transform hover:scale-[1.01] transition-all duration-500 overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+      {/* Premium Hero CTA Card */}
+      <div className="relative group overflow-hidden">
+        <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition duration-1000"></div>
+        <div className="relative glass-card p-10 overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-neon-cyan/5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-neon-purple/5 rounded-full blur-3xl"></div>
           <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="flex-1">
-              <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-4">
-                <Sparkles className="w-4 h-4" />
-                <span className="text-sm font-semibold">AI-Powered</span>
+              <div className="inline-flex items-center space-x-2 glass-card px-4 py-2 rounded-full mb-4">
+                <Sparkles className="w-4 h-4 text-neon-cyan" />
+                <span className="text-sm font-semibold text-text-secondary">AI Destekli</span>
               </div>
-              <h3 className="text-4xl font-black mb-3 leading-tight">Create Amazing Videos</h3>
-              <p className="text-white/90 text-lg leading-relaxed">Transform your ideas into stunning video content with AI in seconds</p>
+              <h3 className="text-4xl font-bold text-text-primary mb-3 leading-tight">
+                Etkileyici Videolar Oluşturun
+              </h3>
+              <p className="text-text-secondary text-lg leading-relaxed">
+                AI teknolojisi ile fikirlerinizi saniyeler içinde profesyonel videolara dönüştürün
+              </p>
             </div>
             <button
               onClick={onCreateVideo}
               className="relative group/btn"
             >
-              <div className="absolute -inset-1 bg-white rounded-2xl blur opacity-25 group-hover/btn:opacity-75 transition duration-300"></div>
-              <div className="relative bg-white text-purple-600 px-10 py-5 rounded-2xl font-black text-lg inline-flex items-center space-x-3 shadow-2xl transform hover:scale-110 transition-all duration-300">
-                <Sparkles className="w-6 h-6 group-hover/btn:rotate-180 transition-transform duration-500" />
-                <span>Start Creating</span>
+              <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 group-hover/btn:opacity-100 transition duration-300"></div>
+              <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-10 py-5 rounded-xl font-bold text-lg inline-flex items-center space-x-3 shadow-glow-cyan transform hover:scale-105 transition-all duration-300">
+                <Plus className="w-6 h-6 group-hover/btn:rotate-90 transition-transform duration-500" />
+                <span>Video Oluştur</span>
               </div>
             </button>
           </div>
