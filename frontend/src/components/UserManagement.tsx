@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Users, Mail, Calendar, Building2, Globe, Trash2, RefreshCw } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Skeleton } from './ui/skeleton';
+import { EmptyState } from './ui/empty-state';
 
 interface User {
   id: string;
@@ -47,7 +52,6 @@ export default function UserManagement() {
 
       if (error) throw error;
       
-      // Remove from local state
       setUsers(prev => prev.filter(user => user.id !== userId));
     } catch (err) {
       alert('Kullanıcı silinirken hata oluştu: ' + (err instanceof Error ? err.message : 'Bilinmeyen hata'));
@@ -60,129 +64,134 @@ export default function UserManagement() {
 
   return (
     <div className="space-y-6">
+      {/* Premium Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Kullanıcı Yönetimi</h1>
-          <p className="text-gray-600">Kayıtlı kullanıcıları görüntüleyin ve yönetin</p>
+          <h1 className="text-3xl font-bold text-text-primary mb-2">Kullanıcı Yönetimi</h1>
+          <p className="text-text-secondary">Kayıtlı kullanıcıları görüntüleyin ve yönetin</p>
         </div>
-        <button
+        <Button
           onClick={fetchUsers}
           disabled={loading}
-          className="bg-blue-500 hover:bg-blue-600 disabled:bg-blue-400 text-white px-4 py-2 rounded-lg font-medium transition-colors inline-flex items-center space-x-2"
+          variant="outline"
         >
-          <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
           <span>Yenile</span>
-        </button>
+        </Button>
       </div>
 
+      {/* Error State */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-600">{error}</p>
+        <Card className="border-neon-pink/30 bg-neon-pink/10">
+          <CardContent className="pt-6">
+            <p className="text-neon-pink">{error}</p>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Loading State */}
+      {loading ? (
+        <div className="space-y-4">
+          {[1, 2, 3].map((i) => (
+            <Card key={i}>
+              <CardContent className="p-6">
+                <div className="flex items-center space-x-4">
+                  <Skeleton className="h-12 w-12 rounded-full" />
+                  <div className="space-y-2 flex-1">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : users.length === 0 ? (
+        /* Empty State */
+        <EmptyState
+          icon={Users}
+          title="Henüz kullanıcı yok"
+          description="Sistemde kayıtlı kullanıcı bulunmuyor"
+        />
+      ) : (
+        /* Premium User List */
+        <div className="grid gap-4">
+          {users.map((user) => (
+            <Card key={user.id} className="holographic-hover hover:shadow-glow-cyan transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start space-x-4 flex-1">
+                    {/* Avatar */}
+                    <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-full flex items-center justify-center shadow-glow-cyan">
+                      <Users className="w-6 h-6 text-white" />
+                    </div>
+                    
+                    {/* User Info */}
+                    <div className="flex-1 space-y-3">
+                      <div>
+                        <h3 className="text-lg font-semibold text-text-primary mb-1">
+                          {user.full_name || 'İsimsiz Kullanıcı'}
+                        </h3>
+                        <div className="flex items-center space-x-2 text-sm text-text-secondary">
+                          <Mail className="w-4 h-4" />
+                          <span>{user.email}</span>
+                        </div>
+                      </div>
+                      
+                      {/* Meta Info */}
+                      <div className="flex flex-wrap gap-4 text-sm">
+                        {user.company_name && (
+                          <div className="flex items-center space-x-2 text-text-muted">
+                            <Building2 className="w-4 h-4" />
+                            <span>{user.company_name}</span>
+                          </div>
+                        )}
+                        <div className="flex items-center space-x-2 text-text-muted">
+                          <Globe className="w-4 h-4" />
+                          <span>{user.country}</span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-text-muted">
+                          <Calendar className="w-4 h-4" />
+                          <span>{new Date(user.created_at).toLocaleDateString('tr-TR')}</span>
+                        </div>
+                      </div>
+                      
+                      {/* ID Badge */}
+                      <div>
+                        <Badge variant="outline" className="font-mono text-xs">
+                          ID: {user.id.slice(0, 8)}...
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Actions */}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => deleteUser(user.id)}
+                    className="text-neon-pink hover:bg-neon-pink/10"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       )}
 
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm">
-        <div className="p-6 border-b border-gray-100">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
-              <Users className="w-5 h-5" />
+      {/* Stats Footer */}
+      {!loading && users.length > 0 && (
+        <Card className="bg-surface-elevated/50">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-text-secondary">Toplam Kullanıcı</span>
+              <Badge variant="info">{users.length}</Badge>
             </div>
-            <div>
-              <h2 className="text-xl font-bold text-gray-900">Kayıtlı Kullanıcılar</h2>
-              <p className="text-gray-600">Toplam {users.length} kullanıcı</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-6">
-          {loading ? (
-            <div className="text-center py-12">
-              <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-gray-600">Kullanıcılar yükleniyor...</p>
-            </div>
-          ) : users.length === 0 ? (
-            <div className="text-center py-12">
-              <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Henüz kullanıcı yok</h3>
-              <p className="text-gray-600">İlk kullanıcı kaydı bekleniyor</p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {users.map((user) => (
-                <UserCard 
-                  key={user.id} 
-                  user={user} 
-                  onDelete={() => deleteUser(user.id)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function UserCard({ user, onDelete }: { user: User; onDelete: () => void }) {
-  return (
-    <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 hover:shadow-sm transition-shadow">
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold text-lg">
-                {user.full_name ? user.full_name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase()}
-              </span>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                {user.full_name || 'İsimsiz Kullanıcı'}
-              </h3>
-              <p className="text-gray-600 text-sm">ID: {user.id}</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex items-center space-x-2">
-              <Mail className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-700">{user.email}</span>
-            </div>
-            
-            {user.company_name && (
-              <div className="flex items-center space-x-2">
-                <Building2 className="w-4 h-4 text-gray-400" />
-                <span className="text-gray-700">{user.company_name}</span>
-              </div>
-            )}
-            
-            <div className="flex items-center space-x-2">
-              <Globe className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-700">{user.country}</span>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Calendar className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-700">
-                {new Date(user.created_at).toLocaleDateString('tr-TR', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <button
-          onClick={onDelete}
-          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-          title="Kullanıcıyı sil"
-        >
-          <Trash2 className="w-5 h-5" />
-        </button>
-      </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
