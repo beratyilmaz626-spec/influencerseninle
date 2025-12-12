@@ -274,29 +274,29 @@ function HomeContent({
 
   return (
     <div className="space-y-8">
-      {/* Stats Bento Grid */}
+      {/* Premium KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <div key={index} className="relative group" style={{ animationDelay: `${index * 0.1}s` }}>
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl blur opacity-0 group-hover:opacity-25 transition duration-500"></div>
-            <div className="relative bg-white rounded-3xl p-8 border-2 border-gray-100 hover:border-purple-200 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-[1.05] hover:-translate-y-2">
-              <div className="flex items-start justify-between mb-6">
-                <div className={`w-16 h-16 ${stat.color} rounded-2xl flex items-center justify-center shadow-xl transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
-                  <stat.icon className="w-8 h-8" />
-                </div>
-                <div className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-full font-bold text-sm ${
-                  stat.trend === 'up' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                }`}>
-                  <TrendingUp className={`w-4 h-4 ${stat.trend === 'down' ? 'rotate-180' : ''} transition-transform duration-200`} />
-                  <span>{stat.change}</span>
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="relative group"
+          >
+            <div className={`absolute -inset-0.5 bg-gradient-to-r ${stat.gradient} rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500`}></div>
+            <div className="relative glass-card p-6 hover:shadow-glow-cyan transition-all duration-300">
+              <div className="flex items-start justify-between mb-4">
+                <div className={`w-14 h-14 bg-gradient-to-br ${stat.gradient} rounded-xl flex items-center justify-center shadow-glow-cyan`}>
+                  <stat.icon className="w-7 h-7 text-white" />
                 </div>
               </div>
               <div>
-                <p className="text-4xl font-black bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent mb-2">{stat.value}</p>
-                <p className="text-gray-600 text-sm font-semibold uppercase tracking-wide">{stat.title}</p>
+                <p className="text-4xl font-bold text-text-primary mb-2">{stat.value}</p>
+                <p className="text-text-secondary text-sm font-medium">{stat.title}</p>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
