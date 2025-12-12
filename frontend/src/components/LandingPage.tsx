@@ -209,10 +209,10 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
             viewport={{ once: true }}
           >
             <h2 className="text-4xl md:text-6xl font-bold text-text-primary mb-6">
-              Ready to Transform Your Content?
+              İçeriğinizi Dönüştürmeye Hazır mısınız?
             </h2>
             <p className="text-xl text-text-secondary mb-10 max-w-2xl mx-auto">
-              Join thousands of creators who are already using AI to create stunning videos
+              AI kullanarak muhteşem videolar oluşturan binlerce içerik üreticisine katılın
             </p>
             <Button 
               size="lg" 
@@ -220,7 +220,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
               onClick={() => setShowAuthModal(true)}
               className="group"
             >
-              <span>Start Creating Now</span>
+              <span>Hemen Başlayın</span>
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </motion.div>
