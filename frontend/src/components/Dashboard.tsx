@@ -1184,12 +1184,12 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
             </div>
       </div>
 
-      {/* Center Area - Video Style Selection */}
-      <div className="flex-1 p-6 bg-gray-50">
+      {/* Premium Right Panel - Style Selection */}
+      <div className="flex-1 glass-card p-6">
         <div className="h-full">
           <div className="mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Video Stili Seçin</h3>
-            <p className="text-sm text-gray-600">Videonuz için uygun bir stil kategorisi seçin</p>
+            <h3 className="text-lg font-semibold text-text-primary mb-2">Video Stili Seçin</h3>
+            <p className="text-sm text-text-secondary">Videonuz için uygun bir stil kategorisi seçin</p>
           </div>
           
           <div className="grid grid-cols-4 gap-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
