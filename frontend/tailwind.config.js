@@ -8,6 +8,56 @@ export default {
   darkMode: "class",
   theme: {
     extend: {
+      colors: {
+        // Holographic Matte Black Theme
+        background: {
+          DEFAULT: '#0a0a0f',
+          elevated: '#121218',
+          hover: '#1a1a24',
+        },
+        surface: {
+          DEFAULT: '#16161f',
+          elevated: '#1e1e2a',
+          glass: 'rgba(20, 20, 30, 0.7)',
+        },
+        border: {
+          DEFAULT: 'rgba(255, 255, 255, 0.08)',
+          hover: 'rgba(255, 255, 255, 0.12)',
+        },
+        neon: {
+          cyan: '#00f0ff',
+          purple: '#b066ff',
+          pink: '#ff0080',
+          blue: '#0066ff',
+          green: '#00ff88',
+        },
+        accent: {
+          DEFAULT: '#00f0ff',
+          hover: '#00d4ff',
+        },
+        text: {
+          primary: '#ffffff',
+          secondary: 'rgba(255, 255, 255, 0.7)',
+          tertiary: 'rgba(255, 255, 255, 0.5)',
+          muted: 'rgba(255, 255, 255, 0.3)',
+        },
+      },
+      borderRadius: {
+        '2xl': '1rem',
+        '3xl': '1.5rem',
+        '4xl': '2rem',
+      },
+      boxShadow: {
+        'glow-cyan': '0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(0, 240, 255, 0.15)',
+        'glow-purple': '0 0 20px rgba(176, 102, 255, 0.3), 0 0 40px rgba(176, 102, 255, 0.15)',
+        'glow-pink': '0 0 20px rgba(255, 0, 128, 0.3), 0 0 40px rgba(255, 0, 128, 0.15)',
+        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+        'card': '0 4px 24px rgba(0, 0, 0, 0.3)',
+        'elevated': '0 8px 40px rgba(0, 0, 0, 0.4)',
+      },
+      backdropBlur: {
+        'glass': '12px',
+      },
       animation: {
         first: "moveVertical 30s ease infinite",
         second: "moveInCircle 20s reverse infinite",
@@ -18,6 +68,8 @@ export default {
         "shimmer-slide":
           "shimmer-slide var(--speed) ease-in-out infinite alternate",
         "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
+        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+        'float': 'float 3s ease-in-out infinite',
       },
       keyframes: {
         blink: {
