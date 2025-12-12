@@ -24,21 +24,23 @@ export default function VideoLibrary() {
   });
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="bg-gradient-to-r from-blue-50 via-white to-cyan-50 rounded-2xl p-6 border border-blue-100 shadow-sm">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent mb-2">Video Kütüphanesi</h1>
-        <p className="text-gray-600 text-lg">Oluşturduğunuz videoları yönetin ve indirin</p>
+    <div className="space-y-6">
+      {/* Premium Header */}
+      <div className="glass-card p-6 bg-surface/70">
+        <h1 className="text-3xl font-bold text-text-primary mb-2">Video Kütüphanesi</h1>
+        <p className="text-text-secondary text-lg">Oluşturduğunuz videoları yönetin ve indirin</p>
       </div>
 
+      {/* Premium Search & Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1 group">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-text-muted group-hover:text-neon-cyan transition-colors" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Video ara..."
-            className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 hover:border-gray-300 bg-white shadow-sm hover:shadow-md"
+            className="w-full pl-12 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder:text-text-muted focus:outline-none focus:border-neon-cyan focus:shadow-glow-cyan transition-all duration-300"
           />
         </div>
 
@@ -46,36 +48,36 @@ export default function VideoLibrary() {
           <button
             onClick={handleRefresh}
             disabled={loading}
-            className="px-5 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 disabled:from-blue-300 disabled:to-cyan-300 text-white rounded-xl font-medium transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 disabled:transform-none"
+            className="px-5 py-3 bg-gradient-to-r from-neon-cyan to-neon-purple hover:shadow-glow-cyan disabled:opacity-50 text-white rounded-xl font-semibold transition-all duration-300"
           >
             {loading ? 'Yükleniyor...' : 'Yenile'}
           </button>
           <button
             onClick={() => setFilterStatus('all')}
-            className={`px-5 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
+            className={`px-5 py-3 rounded-xl font-semibold transition-all duration-300 ${
               filterStatus === 'all'
-                ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
-                : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:border-blue-300 shadow-sm hover:shadow-md'
+                ? 'bg-gradient-to-r from-neon-cyan to-neon-purple text-white shadow-glow-cyan'
+                : 'bg-surface-elevated border border-border text-text-secondary hover:text-text-primary hover:border-neon-cyan'
             }`}
           >
             Tümü
           </button>
           <button
             onClick={() => setFilterStatus('completed')}
-            className={`px-5 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
+            className={`px-5 py-3 rounded-xl font-semibold transition-all duration-300 ${
               filterStatus === 'completed'
-                ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg'
-                : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:border-green-300 shadow-sm hover:shadow-md'
+                ? 'bg-gradient-to-r from-neon-green to-emerald-500 text-white shadow-lg'
+                : 'bg-surface-elevated border border-border text-text-secondary hover:text-text-primary hover:border-neon-green'
             }`}
           >
             Tamamlandı
           </button>
           <button
             onClick={() => setFilterStatus('processing')}
-            className={`px-5 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
+            className={`px-5 py-3 rounded-xl font-semibold transition-all duration-300 ${
               filterStatus === 'processing'
-                ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white shadow-lg'
-                : 'bg-white border-2 border-gray-200 text-gray-700 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50 hover:border-orange-300 shadow-sm hover:shadow-md'
+                ? 'bg-gradient-to-r from-orange-400 to-neon-pink text-white shadow-lg'
+                : 'bg-surface-elevated border border-border text-text-secondary hover:text-text-primary hover:border-orange-400'
             }`}
           >
             İşleniyor
