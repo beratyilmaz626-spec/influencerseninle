@@ -1,7 +1,10 @@
-import { CheckCircle2, Crown, Zap, Building2 } from 'lucide-react';
+import { CheckCircle2, Crown, Zap, Building2, Download } from 'lucide-react';
 import { useSubscription } from '../hooks/useSubscription';
 import { useStripe } from '../hooks/useStripe';
 import { stripeProducts } from '../stripe-config';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
 
 export default function SubscriptionPanel() {
   const { subscription, loading, getActiveProduct, isActive } = useSubscription();
@@ -9,54 +12,64 @@ export default function SubscriptionPanel() {
   
   const activeProduct = getActiveProduct();
   const currentPlan = activeProduct?.name.toLowerCase().includes('başlangıç') ? 'starter' :
-                     activeProduct?.name.toLowerCase().includes('profesyonel') ? 'professional' :
-                     activeProduct?.name.toLowerCase().includes('kurumsal') ? 'enterprise' : null;
+                    activeProduct?.name.toLowerCase().includes('profesyonel') ? 'professional' :
+                    activeProduct?.name.toLowerCase().includes('kurumsal') ? 'enterprise' : null;
 
   return (
     <div className="space-y-8">
+      {/* Premium Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Planlar ve Faturalandırma</h1>
-        <p className="text-gray-600">Aboneliğinizi ve faturalandırma detaylarınızı yönetin</p>
+        <h1 className="text-3xl font-bold text-text-primary mb-2">Planlar ve Faturalandırma</h1>
+        <p className="text-text-secondary">Aboneliğinizi ve faturalandırma detaylarınızı yönetin</p>
       </div>
 
-      <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border border-blue-100">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-          <div>
-            <div className="flex items-center space-x-2 mb-2">
-              <Crown className="w-6 h-6 text-blue-600" />
-              <h2 className="text-xl font-bold text-gray-900">
-                {loading ? 'Yükleniyor...' : activeProduct?.name || 'Plan Bulunamadı'}
-              </h2>
-            </div>
-            <p className="text-gray-600 mb-4">
-              {isActive() ? 'Aktif aboneliğiniz' : 'Abonelik durumu'}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 text-sm">
-              <div className="bg-white rounded-lg px-4 py-2">
-                <p className="text-gray-600">Kalan Krediler</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {loading ? '...' : subscription ? '-- / --' : '0 / 0'}
-                </p>
+      {/* Premium Current Plan Card */}
+      <Card className="relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-neon-cyan/5 rounded-full blur-3xl"></div>
+        <CardContent className="p-6 relative">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div className="flex-1">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center shadow-glow-cyan">
+                  <Crown className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-text-primary">
+                    {loading ? 'Yükleniyor...' : activeProduct?.name || 'Plan Bulunamadı'}
+                  </h2>
+                  <p className="text-text-secondary text-sm">
+                    {isActive() ? 'Aktif aboneliğiniz' : 'Abonelik durumu'}
+                  </p>
+                </div>
               </div>
-              <div className="bg-white rounded-lg px-4 py-2">
-                <p className="text-gray-600">Yenileme Tarihi</p>
-                <p className="text-lg font-semibold text-gray-900">
-                  {loading ? '...' : subscription?.current_period_end 
-                    ? new Date(subscription.current_period_end * 1000).toLocaleDateString('tr-TR')
-                    : '--'
-                  }
-                </p>
+              <div className="flex flex-col sm:flex-row gap-4 mt-4">
+                <div className="glass-card px-5 py-3 rounded-xl">
+                  <p className="text-text-muted text-sm mb-1">Kalan Krediler</p>
+                  <p className="text-2xl font-bold text-neon-cyan">
+                    {loading ? '...' : subscription ? '-- / --' : '0 / 0'}
+                  </p>
+                </div>
+                <div className="glass-card px-5 py-3 rounded-xl">
+                  <p className="text-text-muted text-sm mb-1">Yenileme Tarihi</p>
+                  <p className="text-lg font-semibold text-text-primary">
+                    {loading ? '...' : subscription?.current_period_end 
+                      ? new Date(subscription.current_period_end * 1000).toLocaleDateString('tr-TR')
+                      : '--'
+                    }
+                  </p>
+                </div>
               </div>
             </div>
+            <Button variant="outline">
+              Aboneliği Yönet
+            </Button>
           </div>
-          <button className="mt-4 md:mt-0 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-6 py-3 rounded-lg font-medium transition-colors">
-            Aboneliği Yönet
-          </button>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
+      {/* Premium Plans Grid */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Mevcut Planlar</h2>
+        <h2 className="text-2xl font-bold text-text-primary mb-6">Mevcut Planlar</h2>
 
         <div className="grid md:grid-cols-3 gap-6">
           {stripeProducts.map((product, index) => {
@@ -93,24 +106,32 @@ export default function SubscriptionPanel() {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-gray-200 p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-4">Faturalandırma Geçmişi</h3>
-        <div className="space-y-3">
-          <BillingRow date="12 Eki 2025" amount="$99.00" status="Ödendi" plan="Profesyonel Plan" />
-          <BillingRow date="12 Eyl 2025" amount="$99.00" status="Ödendi" plan="Profesyonel Plan" />
-          <BillingRow date="12 Ağu 2025" amount="$29.00" status="Ödendi" plan="Başlangıç Planı" />
-        </div>
-      </div>
+      {/* Premium Billing History */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Faturalandırma Geçmişi</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <BillingRow date="12 Eki 2025" amount="$99.00" status="Ödendi" plan="Profesyonel Plan" />
+            <BillingRow date="12 Eyl 2025" amount="$99.00" status="Ödendi" plan="Profesyonel Plan" />
+            <BillingRow date="12 Ağu 2025" amount="$29.00" status="Ödendi" plan="Başlangıç Planı" />
+          </div>
+        </CardContent>
+      </Card>
 
-      <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">Seçim Yapmakta Yardıma İhtiyacınız Var mı?</h3>
-        <p className="text-gray-600 mb-4">
-          Ekibimiz ihtiyaçlarınız için mükemmel planı bulmanızda size yardımcı olmak için burada
-        </p>
-        <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2.5 rounded-lg font-medium transition-colors">
-          Görüşme Planla
-        </button>
-      </div>
+      {/* Premium Help Card */}
+      <Card className="bg-gradient-to-br from-neon-cyan/10 to-neon-purple/10 border-neon-cyan/30">
+        <CardContent className="p-6">
+          <h3 className="text-lg font-semibold text-text-primary mb-2">Seçim Yapmakta Yardıma İhtiyacınız Var mı?</h3>
+          <p className="text-text-secondary mb-4">
+            Ekibimiz ihtiyaçlarınız için mükemmel planı bulmanızda size yardımcı olmak için burada
+          </p>
+          <Button variant="premium">
+            Görüşme Planla
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -171,57 +192,54 @@ function PlanCard({
 }) {
   return (
     <div
-      className={`bg-white rounded-2xl p-6 ${
-        highlighted ? 'ring-2 ring-blue-500 shadow-xl' : 'border border-gray-200 shadow-sm'
-      } relative`}
+      className={`relative glass-card p-6 ${
+        highlighted ? 'ring-2 ring-neon-cyan shadow-glow-cyan' : ''
+      } hover:shadow-glow-cyan transition-all duration-300`}
     >
       {highlighted && (
         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-          <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+          <Badge variant="info" className="text-xs font-semibold">
             En Popüler
-          </span>
+          </Badge>
         </div>
       )}
 
       <div className="text-center mb-6">
         <div
           className={`w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center ${
-            highlighted ? 'bg-blue-50 text-blue-600' : 'bg-gray-50 text-gray-600'
+            highlighted 
+              ? 'bg-gradient-to-br from-neon-cyan to-neon-purple text-white shadow-glow-cyan' 
+              : 'bg-surface-elevated text-neon-cyan'
           }`}
         >
           {icon}
         </div>
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">{name}</h3>
+        <h3 className="text-2xl font-bold text-text-primary mb-2">{name}</h3>
         <div className="flex items-baseline justify-center mb-2">
-          {price !== 'Özel' && <span className="text-4xl font-bold text-gray-900">${price}</span>}
-          {price === 'Özel' && <span className="text-4xl font-bold text-gray-900">{price}</span>}
-          {price !== 'Özel' && <span className="text-gray-600 ml-2">/ay</span>}
+          {price !== 'Özel' && <span className="text-4xl font-bold bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">${price}</span>}
+          {price === 'Özel' && <span className="text-4xl font-bold bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">{price}</span>}
+          {price !== 'Özel' && <span className="text-text-muted ml-2">/ay</span>}
         </div>
-        <p className="text-gray-600 text-sm">{description}</p>
+        <p className="text-text-secondary text-sm">{description}</p>
       </div>
 
       <ul className="space-y-3 mb-6">
         {features.map((feature, index) => (
           <li key={index} className="flex items-start space-x-3">
-            <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-            <span className="text-gray-700 text-sm">{feature}</span>
+            <CheckCircle2 className="w-5 h-5 text-neon-green flex-shrink-0 mt-0.5" />
+            <span className="text-text-secondary text-sm">{feature}</span>
           </li>
         ))}
       </ul>
 
-      <button
+      <Button
         disabled={isActive || loading}
         onClick={onButtonClick}
-        className={`w-full py-3 rounded-lg font-medium transition-colors ${
-          isActive || loading
-            ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
-            : highlighted
-            ? 'bg-blue-500 hover:bg-blue-600 text-white'
-            : 'bg-gray-900 hover:bg-gray-800 text-white'
-        }`}
+        variant={isActive ? 'outline' : highlighted ? 'premium' : 'default'}
+        className="w-full"
       >
         {loading ? 'Yükleniyor...' : buttonText}
-      </button>
+      </Button>
     </div>
   );
 }
@@ -238,19 +256,18 @@ function BillingRow({
   plan: string;
 }) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between py-3 border-b border-gray-100 last:border-0">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between py-4 border-b border-border last:border-0">
       <div className="mb-2 sm:mb-0">
-        <p className="font-medium text-gray-900">{plan}</p>
-        <p className="text-sm text-gray-500">{date}</p>
+        <p className="font-medium text-text-primary">{plan}</p>
+        <p className="text-sm text-text-muted">{date}</p>
       </div>
       <div className="flex items-center space-x-4">
-        <span className="font-semibold text-gray-900">{amount}</span>
-        <span className="px-3 py-1 bg-green-50 text-green-600 rounded-full text-sm font-medium">
-          {status}
-        </span>
-        <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+        <span className="font-semibold text-text-primary">{amount}</span>
+        <Badge variant="success">{status}</Badge>
+        <Button variant="ghost" size="sm">
+          <Download className="w-4 h-4 mr-2" />
           İndir
-        </button>
+        </Button>
       </div>
     </div>
   );
