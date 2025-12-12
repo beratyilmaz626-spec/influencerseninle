@@ -82,8 +82,8 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
               className="inline-flex items-center space-x-2 glass-card px-4 py-2 mb-8"
             >
               <div className="w-2 h-2 bg-neon-green rounded-full animate-pulse"></div>
-              <span className="text-sm font-semibold text-text-secondary">AI-Powered Video Platform</span>
-              <Badge variant="success">NEW</Badge>
+              <span className="text-sm font-semibold text-text-secondary">AI Destekli Video Platformu</span>
+              <Badge variant="success">YENİ</Badge>
             </motion.div>
             
             {/* Main Headline */}
