@@ -230,12 +230,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
                 {/* Footer Text */}
                 <p className="mt-6 text-center text-sm text-text-muted">
-                  {mode === 'signin' ? "Don't have an account? " : "Already have an account? "}
+                  {mode === 'signin' ? "Hesabınız yok mu? " : "Zaten hesabınız var mı? "}
                   <button
                     onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
                     className="text-neon-cyan hover:text-accent-hover font-semibold transition-colors"
                   >
-                    {mode === 'signin' ? 'Sign up' : 'Sign in'}
+                    {mode === 'signin' ? 'Kayıt olun' : 'Giriş yapın'}
                   </button>
                 </p>
               </div>
