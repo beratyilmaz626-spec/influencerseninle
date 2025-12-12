@@ -805,15 +805,15 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
     <div className="flex h-full bg-transparent rounded-2xl overflow-hidden">
       {/* Premium Left Panel - Controls */}
       <div className="w-80 glass-card border-r border-border p-6 space-y-4 overflow-y-auto">
-        {/* Header */}
-        <div className="text-center pb-3 border-b border-gray-200">
-          <h2 className="text-xl font-bold text-gray-900 mb-1">🎬 Video Oluştur</h2>
-          <p className="text-gray-600 text-xs">✨ AI ile profesyonel video reklamları</p>
+        {/* Premium Header */}
+        <div className="text-center pb-3 border-b border-border">
+          <h2 className="text-xl font-bold text-text-primary mb-1">🎬 Video Oluştur</h2>
+          <p className="text-text-secondary text-xs">✨ AI ile profesyonel video reklamları</p>
         </div>
-            {/* Photo Upload */}
+            {/* Premium Photo Upload */}
             <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-gray-900">📸 Fotoğraf Yükle</h3>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center hover:border-blue-400 transition-colors">
+              <h3 className="text-sm font-semibold text-text-primary">📸 Fotoğraf Yükle</h3>
+              <div className="border-2 border-dashed border-neon-cyan/30 rounded-lg p-3 text-center hover:border-neon-cyan hover:shadow-glow-cyan transition-all duration-300 bg-surface-elevated">
                 <input
                   type="file"
                   accept="image/png,image/jpg,image/jpeg"
