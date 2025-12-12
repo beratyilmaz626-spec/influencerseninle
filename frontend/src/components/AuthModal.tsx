@@ -129,7 +129,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                         : 'text-text-secondary hover:text-text-primary'
                     }`}
                   >
-                    Sign In
+                    Giriş Yap
                   </button>
                   <button
                     onClick={() => setMode('signup')}
@@ -139,7 +139,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                         : 'text-text-secondary hover:text-text-primary'
                     }`}
                   >
-                    Sign Up
+                    Kayıt Ol
                   </button>
                 </div>
 
