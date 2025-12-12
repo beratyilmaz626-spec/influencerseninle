@@ -86,11 +86,11 @@ export default function VideoLibrary() {
       </div>
 
       {error && (
-        <div className="bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 rounded-2xl p-5 shadow-lg animate-fade-in">
-          <p className="text-red-600 font-semibold">Hata: {error}</p>
+        <div className="glass-card p-5 border-neon-pink/30 bg-neon-pink/10">
+          <p className="text-neon-pink font-semibold">Hata: {error}</p>
           <button 
             onClick={handleRefresh}
-            className="mt-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+            className="mt-3 px-4 py-2 bg-gradient-to-r from-neon-pink to-red-500 text-white rounded-xl font-semibold transition-all duration-300 hover:shadow-glow-pink"
           >
             Tekrar Dene
           </button>
@@ -98,19 +98,21 @@ export default function VideoLibrary() {
       )}
 
       {loading ? (
-        <div className="text-center py-16 animate-fade-in">
+        <div className="text-center py-16">
           <div className="relative w-20 h-20 mx-auto mb-6">
-            <div className="absolute inset-0 border-4 border-blue-200 rounded-full animate-pulse"></div>
-            <div className="absolute inset-0 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            <div className="absolute inset-2 border-4 border-cyan-400 border-b-transparent rounded-full animate-spin" style={{ animationDuration: '0.8s', animationDirection: 'reverse' }}></div>
+            <div className="absolute inset-0 border-4 border-neon-cyan/30 rounded-full animate-pulse"></div>
+            <div className="absolute inset-0 border-4 border-neon-cyan border-t-transparent rounded-full animate-spin"></div>
+            <div className="absolute inset-2 border-4 border-neon-purple border-b-transparent rounded-full animate-spin" style={{ animationDuration: '0.8s', animationDirection: 'reverse' }}></div>
           </div>
-          <p className="text-gray-600">Videolar yükleniyor...</p>
+          <p className="text-text-primary font-medium">Videolar yükleniyor...</p>
         </div>
       ) : filteredVideos.length === 0 ? (
         <div className="text-center py-16">
-          <Filter className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Video bulunamadı</h3>
-          <p className="text-gray-600">Arama veya filtre kriterlerinizi ayarlamayı deneyin</p>
+          <div className="w-20 h-20 bg-gradient-to-br from-neon-cyan/20 to-neon-purple/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Filter className="w-10 h-10 text-neon-cyan" />
+          </div>
+          <h3 className="text-xl font-semibold text-text-primary mb-2">Video bulunamadı</h3>
+          <p className="text-text-secondary">Arama veya filtre kriterlerinizi ayarlamayı deneyin</p>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
