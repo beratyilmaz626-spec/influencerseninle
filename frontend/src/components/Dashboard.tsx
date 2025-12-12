@@ -247,18 +247,26 @@ function HomeContent({
     {
       title: 'Toplam Video',
       value: videos.length.toString(),
-      change: '+12%',
       icon: Video,
-      color: 'bg-blue-50 text-blue-600',
-      trend: 'up'
+      gradient: 'from-neon-cyan to-neon-blue',
+    },
+    {
+      title: 'Tamamlandı',
+      value: completedVideos.toString(),
+      icon: CheckCircle2,
+      gradient: 'from-neon-green to-emerald-500',
     },
     {
       title: 'İşleniyor',
       value: processingVideos.toString(),
-      change: '-5%',
       icon: Clock,
-      color: 'bg-orange-50 text-orange-600',
-      trend: 'down'
+      gradient: 'from-orange-400 to-neon-pink',
+    },
+    {
+      title: 'Toplam Görüntülenme',
+      value: totalViews.toString(),
+      icon: Eye,
+      gradient: 'from-neon-purple to-neon-pink',
     }
   ];
 
