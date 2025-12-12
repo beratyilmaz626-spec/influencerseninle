@@ -124,7 +124,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
                 onClick={() => setShowAuthModal(true)}
                 className="group"
               >
-                <span>Create Video</span>
+                <span>Video Oluştur</span>
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button 
@@ -133,7 +133,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
                 onClick={() => setShowAuthModal(true)}
               >
                 <Video className="w-5 h-5 mr-2" />
-                <span>Watch Demo</span>
+                <span>Demo İzle</span>
               </Button>
             </motion.div>
             
