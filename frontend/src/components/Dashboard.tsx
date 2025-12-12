@@ -228,26 +228,9 @@ export default function Dashboard({ onLogout }: DashboardProps) {
           </main>
         </div>
       </div>
-
-      {/* Modals - Portal'd to body */}
-      {showImageUploadModal && createPortal(
-        <div 
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-          onClick={() => setShowImageUploadModal(false)}
-        >
-          <div 
-            className="bg-white rounded-3xl max-w-4xl w-full shadow-2xl transform transition-all animate-bounce-in"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <ImageUploadSection
-              images={uploadedImages}
-              setImages={setUploadedImages}
-              onClose={() => setShowImageUploadModal(false)}
-            />
-          </div>
-        </div>,
-        document.body
-      )}
+    </div>
+  );
+}
 
 function HomeContent({ 
   videos, 
