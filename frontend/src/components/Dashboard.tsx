@@ -333,58 +333,66 @@ function HomeContent({
         </div>
       </div>
 
-      {/* Recent Videos */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-300 animate-fade-in">
-        <div className="p-6 border-b border-gray-100/50 bg-gradient-to-r from-gray-50 to-white">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-bold text-gray-900">Son Videolar</h3>
-            <button 
-              onClick={() => {}}
-              className="text-blue-600 hover:text-blue-700 font-medium text-sm hover:bg-blue-50 px-4 py-2 rounded-lg transition-all duration-200 transform hover:scale-105"
-            >
-              Tümünü Görüntüle
-            </button>
-          </div>
+      {/* Premium Recent Videos Section */}
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h3 className="text-2xl font-bold text-text-primary">Son Videolar</h3>
+          <button 
+            onClick={() => {}}
+            className="text-neon-cyan hover:text-accent-hover font-medium text-sm transition-colors"
+          >
+            Tümünü Görüntüle →
+          </button>
         </div>
-        <div className="p-6">
-          {recentVideos.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {recentVideos.map((video, index) => (
-                <div key={video.id} className="group cursor-pointer transform hover:scale-[1.03] transition-all duration-300 animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="rounded-xl overflow-hidden shadow-md group-hover:shadow-xl transition-all duration-300">
+        
+        {recentVideos.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {recentVideos.map((video, index) => (
+              <motion.div
+                key={video.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group cursor-pointer"
+              >
+                <div className="glass-card rounded-xl overflow-hidden hover:shadow-glow-cyan transition-all duration-300">
+                  <div className="aspect-video relative">
                     <VideoThumbnail video={video} />
                   </div>
-                  <h4 className="font-semibold text-gray-900 mb-1 line-clamp-1 mt-3 group-hover:text-blue-600 transition-colors duration-200">{video.name}</h4>
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span className="group-hover:text-gray-700 transition-colors duration-200">{video.views} görüntüleme</span>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium shadow-sm ${
-                      video.status === 'completed' 
-                        ? 'bg-green-50 text-green-600 border border-green-200' 
-                        : 'bg-yellow-50 text-yellow-600 border border-yellow-200'
-                    }`}>
-                      {video.status === 'completed' ? 'Hazır' : 'İşleniyor'}
-                    </span>
+                  <div className="p-4">
+                    <h4 className="font-semibold text-text-primary mb-2 line-clamp-1 group-hover:text-neon-cyan transition-colors">
+                      {video.name}
+                    </h4>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-text-secondary">{video.views} görüntüleme</span>
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        video.status === 'completed' 
+                          ? 'bg-neon-green/10 text-neon-green border border-neon-green/30' 
+                          : 'bg-orange-400/10 text-orange-400 border border-orange-400/30'
+                      }`}>
+                        {video.status === 'completed' ? 'Hazır' : 'İşleniyor'}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              ))}
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <div className="w-24 h-24 bg-gradient-to-br from-neon-cyan/20 to-neon-purple/20 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Video className="w-12 h-12 text-neon-cyan" />
             </div>
-          ) : (
-            <div className="text-center py-12 animate-fade-in">
-              <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-pulse">
-                <Video className="w-12 h-12 text-blue-500" />
-              </div>
-              <h4 className="text-lg font-semibold text-gray-900 mb-2 animate-fade-in-up">Henüz video yok</h4>
-              <p className="text-gray-600 mb-6 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>İlk videonuzu oluşturmak için başlayın</p>
-              <button
-                onClick={onCreateVideo}
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-110 animate-fade-in-up"
-                style={{ animationDelay: '0.2s' }}
-              >
-                İlk Videonuzu Oluşturun
-              </button>
-            </div>
-          )}
-        </div>
+            <h4 className="text-xl font-semibold text-text-primary mb-2">Henüz video yok</h4>
+            <p className="text-text-secondary mb-6">İlk videonuzu oluşturmak için başlayın</p>
+            <button
+              onClick={onCreateVideo}
+              className="bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-glow-cyan hover:shadow-glow-purple transform hover:scale-105"
+            >
+              İlk Videonuzu Oluşturun
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
