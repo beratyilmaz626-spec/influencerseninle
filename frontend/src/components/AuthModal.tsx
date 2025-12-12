@@ -51,10 +51,10 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
   };
 
   const features = [
-    'AI-Powered Video Creation',
-    'HD Quality Export',
-    'Unlimited Projects',
-    'Premium Support'
+    'AI Destekli Video Oluşturma',
+    'HD Kalite Dışa Aktarma',
+    'Sınırsız Proje',
+    'Premium Destek'
   ];
 
   return (
