@@ -802,9 +802,9 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   };
 
   return (
-    <div className="flex h-full bg-gray-50 rounded-2xl overflow-hidden shadow-lg">
-      {/* Left Sidebar - Controls */}
-      <div className="w-80 bg-white border-r border-gray-200 p-6 space-y-4 overflow-y-auto">
+    <div className="flex h-full bg-transparent rounded-2xl overflow-hidden">
+      {/* Premium Left Panel - Controls */}
+      <div className="w-80 glass-card border-r border-border p-6 space-y-4 overflow-y-auto">
         {/* Header */}
         <div className="text-center pb-3 border-b border-gray-200">
           <h2 className="text-xl font-bold text-gray-900 mb-1">🎬 Video Oluştur</h2>
