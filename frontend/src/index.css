@@ -379,4 +379,152 @@
   .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
   }
+
+  /* Premium Glass Card */
+  .glass-card {
+    @apply bg-surface-glass backdrop-blur-glass border border-border rounded-2xl;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  /* Neon Border Effect */
+  .neon-border {
+    position: relative;
+    border: 1px solid transparent;
+    background: linear-gradient(var(--background), var(--background)) padding-box,
+                linear-gradient(135deg, var(--neon-cyan), var(--neon-purple)) border-box;
+  }
+
+  /* Holographic Hover Effect */
+  .holographic-hover {
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .holographic-hover::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, transparent, var(--neon-cyan), var(--neon-purple), transparent);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .holographic-hover:hover::before {
+    opacity: 0.6;
+  }
+
+  /* Premium Button Styles */
+  .btn-primary {
+    @apply px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300;
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300;
+    background: var(--surface-elevated);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+  }
+
+  .btn-secondary:hover {
+    background: var(--background-hover);
+    border-color: var(--neon-cyan);
+  }
+
+  .btn-ghost {
+    @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300;
+    color: var(--text-secondary);
+  }
+
+  .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+  }
+
+  /* Premium Input Styles */
+  .input-premium {
+    @apply w-full px-4 py-3 rounded-xl transition-all duration-300;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+  }
+
+  .input-premium:focus {
+    outline: none;
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+  }
+
+  .input-premium::placeholder {
+    color: var(--text-muted);
+  }
+
+  /* Badge Styles */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply badge;
+    background: rgba(0, 255, 136, 0.1);
+    color: #00ff88;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+  }
+
+  .badge-warning {
+    @apply badge;
+    background: rgba(255, 191, 0, 0.1);
+    color: #ffbf00;
+    border: 1px solid rgba(255, 191, 0, 0.3);
+  }
+
+  .badge-error {
+    @apply badge;
+    background: rgba(255, 0, 128, 0.1);
+    color: #ff0080;
+    border: 1px solid rgba(255, 0, 128, 0.3);
+  }
+
+  .badge-info {
+    @apply badge;
+    background: rgba(0, 240, 255, 0.1);
+    color: #00f0ff;
+    border: 1px solid rgba(0, 240, 255, 0.3);
+  }
+
+  /* Skeleton Loading */
+  .skeleton {
+    @apply animate-pulse bg-surface-elevated rounded;
+  }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--surface-elevated);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 240, 255, 0.3);
+  }
 }
+
