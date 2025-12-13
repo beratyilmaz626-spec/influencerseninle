@@ -174,9 +174,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Verify admin user can see 'Video Stilleri' menu item"
-    - "Test clicking 'Video Stilleri' switches to VideoStyleManager view"
-    - "Confirm VideoStyleManager can fetch and display styles from database"
+    - "Verify Video Üret page form elements have dark/glass theme with neon accents"
+    - "Verify Ana Sayfa Slider page empty state has glass-card styling (not white)"
+    - "Verify global text contrast is readable (text-white/80 minimum)"
+    - "Test all dropdowns open with dark theme styling"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -184,19 +185,27 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: |
-      BUG IDENTIFIED AND FIXED:
+      UI REDESIGN COMPLETED - P0 Issues Fixed:
       
-      Problem: Video Üret page showed black screen when clicked
-      Root Cause: VideoCreateContent component tried to access styleOptions variable at lines 652 and 992,
-                  but styleOptions was defined in Dashboard component state and not passed as prop.
+      1. Video Üret Page Form (Dashboard.tsx VideoCreateContent):
+         - All dropdowns now use glass-card styling with dark bg (bg-surface)
+         - Text is white and readable (text-text-primary)
+         - Placeholder text is visible (text-text-secondary)  
+         - Focus rings are neon cyan (focus:border-neon-cyan focus:shadow-glow-cyan)
+         - Textarea fields have dark backgrounds
+         - All gray-* classes replaced with theme colors
       
-      Fix Applied:
-      1. Updated line 186 in Dashboard.tsx: <VideoCreateContent styleOptions={styleOptions} />
-      2. Updated line 548 function signature: function VideoCreateContent({ styleOptions }: { styleOptions: any[] })
+      2. Ana Sayfa Slider (SliderVideoManager.tsx):
+         - Empty state now uses glass-card instead of bg-white
+         - All text is readable with text-text-primary and text-text-secondary
+         - Forms and modals use dark theme
+         - Buttons have neon gradient styling
       
-      Result:
-      - No TypeScript errors
-      - Frontend still running and hot-reload will apply changes
-      - Component should now render with proper style options
+      3. Global Contrast Fix (tailwind.config.js & index.css):
+         - text-secondary increased from rgba(255,255,255,0.7) to rgba(255,255,255,0.80)
+         - text-tertiary increased from rgba(255,255,255,0.5) to rgba(255,255,255,0.65)
+         - text-muted increased from rgba(255,255,255,0.3) to rgba(255,255,255,0.50)
       
-      Ready for user testing.
+      4. New select.tsx component created in /app/frontend/src/components/ui/
+      
+      Ready for frontend testing agent verification.
