@@ -38,10 +38,10 @@ export function useAuth() {
           const newProfile = {
             id: userId,
             email: userData.user.email || '',
-            full_name: userData.user.user_metadata?.full_name || null,
+            full_name: userData.user.user_metadata?.full_name || userData.user.email?.split('@')[0] || 'Kullanıcı',
             company_name: null,
             country: 'Türkiye',
-            is_admin: userData.user.email === 'ogun.karabulut@hotmail.com'
+            is_admin: userData.user.email === 'ogun.karabulut@hotmail.com' || userData.user.email === 'beratyilmaz626@gmail.com'
           };
 
           const { data: createdProfile, error: createError } = await supabase
