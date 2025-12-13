@@ -182,11 +182,7 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Verify Video Üret page form elements have dark/glass theme with neon accents"
-    - "Verify Ana Sayfa Slider page empty state has glass-card styling (not white)"
-    - "Verify global text contrast is readable (text-white/80 minimum)"
-    - "Test all dropdowns open with dark theme styling"
+  current_focus: []
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
