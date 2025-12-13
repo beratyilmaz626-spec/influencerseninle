@@ -139,7 +139,7 @@ frontend:
     file: "/app/frontend/src/components/Dashboard.tsx"
     stuck_count: 0
     priority: "critical"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "user"
@@ -147,6 +147,9 @@ frontend:
       - working: true
         agent: "main"
         comment: "FIXED: VideoCreateContent was missing styleOptions prop. Updated line 186 to pass styleOptions prop and line 548 to accept it. Component should now render correctly with video style options."
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: Video Üret page loads correctly with proper dark theme. Left panel has glass-card styling, all dropdowns functional with dark backgrounds, no white elements found."
 
   - task: "Video Creation Form Enhancement - Single Page with New Fields"
     implemented: true
