@@ -900,16 +900,16 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
 
             {/* Yaş */}
             <div className="space-y-2 relative">
-              <h3 className="text-sm font-semibold text-gray-900">🎂 Yaş</h3>
+              <h3 className="text-sm font-semibold text-text-primary">🎂 Yaş</h3>
               <button
                 onClick={() => setOpenDropdown(openDropdown === 'age' ? null : 'age')}
-                className="w-full p-3 rounded-md border-2 border-gray-200 hover:border-gray-300 bg-white text-gray-700 transition-all text-left flex items-center justify-between"
+                className={`w-full p-3 rounded-xl border border-border bg-surface text-text-primary transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/50 ${openDropdown === 'age' ? 'border-neon-cyan shadow-glow-cyan' : ''}`}
               >
-                <span className="text-xs font-medium">{age ? `${age} yaş` : 'Yaş Seçin'}</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === 'age' ? 'rotate-180' : ''}`} />
+                <span className="text-sm font-medium">{age ? `${age} yaş` : 'Yaş Seçin'}</span>
+                <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${openDropdown === 'age' ? 'rotate-180' : ''}`} />
               </button>
               {openDropdown === 'age' && (
-                <div className="absolute z-10 w-full bg-white border-2 border-gray-200 rounded-md shadow-lg mt-1">
+                <div className="absolute z-50 w-full bg-surface border border-border rounded-xl shadow-elevated mt-2 overflow-hidden">
                   {['18-25', '25-35', '35-50'].map((a) => (
                     <button
                       key={a}
@@ -917,8 +917,8 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                         setAge(a);
                         setOpenDropdown(null);
                       }}
-                      className={`w-full p-3 text-xs text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0 ${
-                        age === a ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700'
+                      className={`w-full p-3 text-sm text-left transition-all duration-200 border-b border-border last:border-0 hover:bg-surface-elevated ${
+                        age === a ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-text-primary'
                       }`}
                     >
                       {a} yaş
@@ -930,16 +930,16 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
 
             {/* Mekan */}
             <div className="space-y-2 relative">
-              <h3 className="text-sm font-semibold text-gray-900">🏠 Mekan</h3>
+              <h3 className="text-sm font-semibold text-text-primary">🏠 Mekan</h3>
               <button
                 onClick={() => setOpenDropdown(openDropdown === 'location' ? null : 'location')}
-                className="w-full p-3 rounded-md border-2 border-gray-200 hover:border-gray-300 bg-white text-gray-700 transition-all text-left flex items-center justify-between"
+                className={`w-full p-3 rounded-xl border border-border bg-surface text-text-primary transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/50 ${openDropdown === 'location' ? 'border-neon-cyan shadow-glow-cyan' : ''}`}
               >
-                <span className="text-xs font-medium">{location || 'Mekan Seçin'}</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === 'location' ? 'rotate-180' : ''}`} />
+                <span className="text-sm font-medium">{location || 'Mekan Seçin'}</span>
+                <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${openDropdown === 'location' ? 'rotate-180' : ''}`} />
               </button>
               {openDropdown === 'location' && (
-                <div className="absolute z-10 w-full bg-white border-2 border-gray-200 rounded-md shadow-lg mt-1">
+                <div className="absolute z-50 w-full bg-surface border border-border rounded-xl shadow-elevated mt-2 overflow-hidden">
                   {['İç Mekan', 'Dış Mekan'].map((l) => (
                     <button
                       key={l}
@@ -947,8 +947,8 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                         setLocation(l);
                         setOpenDropdown(null);
                       }}
-                      className={`w-full p-3 text-xs text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0 ${
-                        location === l ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700'
+                      className={`w-full p-3 text-sm text-left transition-all duration-200 border-b border-border last:border-0 hover:bg-surface-elevated ${
+                        location === l ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-text-primary'
                       }`}
                     >
                       {l}
@@ -960,20 +960,20 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
 
             {/* Sektör */}
             <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-gray-900">💼 Sektör</h3>
+              <h3 className="text-sm font-semibold text-text-primary">💼 Sektör</h3>
               <button
                 onClick={() => setShowSectorModal(true)}
-                className={`w-full p-3 rounded-md border-2 transition-all text-left ${
+                className={`w-full p-3 rounded-xl border transition-all duration-300 text-left ${
                   sector
-                    ? 'border-blue-500 bg-blue-50 text-blue-700'
-                    : 'border-gray-200 hover:border-gray-300 bg-white text-gray-700'
+                    ? 'border-neon-cyan bg-neon-cyan/10 text-neon-cyan'
+                    : 'border-border hover:border-neon-cyan/50 bg-surface text-text-primary'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium">
+                  <span className="text-sm font-medium">
                     {sector ? sectorOptions.find(s => s.id === sector)?.name : 'Sektör Seçin'}
                   </span>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
