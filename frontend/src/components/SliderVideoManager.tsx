@@ -202,34 +202,37 @@ export default function SliderVideoManager() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Ana Sayfa Video Slider</h2>
-          <p className="text-gray-600">Ana sayfada görünecek videoları yönetin</p>
+          <h2 className="text-2xl font-bold text-text-primary">Ana Sayfa Video Slider</h2>
+          <p className="text-text-secondary">Ana sayfada görünecek videoları yönetin</p>
         </div>
         <button
           onClick={() => setShowAddForm(true)}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors inline-flex items-center space-x-2"
+          className="relative group"
         >
-          <Plus className="w-4 h-4" />
-          <span>Video Ekle</span>
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
+          <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-4 py-2 rounded-xl font-medium transition-all inline-flex items-center space-x-2 shadow-glow-cyan">
+            <Plus className="w-4 h-4" />
+            <span>Video Ekle</span>
+          </div>
         </button>
       </div>
 
       {/* Add Video Form */}
       {showAddForm && (
-        <div className="bg-white rounded-2xl border border-gray-200 p-6">
+        <div className="glass-card p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Yeni Video Ekle</h3>
+            <h3 className="text-lg font-semibold text-text-primary">Yeni Video Ekle</h3>
             <button
               onClick={() => setShowAddForm(false)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-surface-elevated rounded-lg transition-colors"
             >
-              <X className="w-5 h-5 text-gray-500" />
+              <X className="w-5 h-5 text-text-secondary" />
             </button>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-text-primary mb-2">
                 Video Başlığı
               </label>
               <input
@@ -237,12 +240,12 @@ export default function SliderVideoManager() {
                 value={newVideo.title}
                 onChange={(e) => setNewVideo({ ...newVideo, title: e.target.value })}
                 placeholder="Video başlığını girin"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-border bg-surface rounded-xl text-text-primary placeholder-text-secondary focus:border-neon-cyan focus:shadow-glow-cyan focus:outline-none transition-all duration-300"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-text-primary mb-2">
                 Video URL
               </label>
               <input
@@ -250,12 +253,12 @@ export default function SliderVideoManager() {
                 value={newVideo.video_url}
                 onChange={(e) => setNewVideo({ ...newVideo, video_url: e.target.value })}
                 placeholder="https://example.com/video.mp4"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-border bg-surface rounded-xl text-text-primary placeholder-text-secondary focus:border-neon-cyan focus:shadow-glow-cyan focus:outline-none transition-all duration-300"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-text-primary mb-2">
                 Thumbnail URL (İsteğe Bağlı)
               </label>
               <input
@@ -263,9 +266,9 @@ export default function SliderVideoManager() {
                 value={newVideo.thumbnail_url}
                 onChange={(e) => setNewVideo({ ...newVideo, thumbnail_url: e.target.value })}
                 placeholder="https://example.com/thumbnail.jpg"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-border bg-surface rounded-xl text-text-primary placeholder-text-secondary focus:border-neon-cyan focus:shadow-glow-cyan focus:outline-none transition-all duration-300"
               />
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-text-secondary mt-1">
                 Ana sayfada görünecek ön izleme görseli URL'si
               </p>
             </div>
@@ -273,17 +276,20 @@ export default function SliderVideoManager() {
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setShowAddForm(false)}
-                className="px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg transition-colors"
+                className="px-4 py-2 border border-border hover:bg-surface-elevated text-text-primary rounded-xl transition-colors"
               >
                 İptal
               </button>
               <button
                 onClick={addVideo}
                 disabled={!newVideo.title || !newVideo.video_url}
-                className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors inline-flex items-center space-x-2"
+                className="relative group disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Save className="w-4 h-4" />
-                <span>Kaydet</span>
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 group-hover:opacity-100 transition duration-300 group-disabled:opacity-0"></div>
+                <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-4 py-2 rounded-xl transition-all inline-flex items-center space-x-2">
+                  <Save className="w-4 h-4" />
+                  <span>Kaydet</span>
+                </div>
               </button>
             </div>
           </div>
