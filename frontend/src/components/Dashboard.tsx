@@ -1211,7 +1211,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       {/* Sektör Modal */}
       {showSectorModal && createPortal(
         <div 
-          className="fixed inset-0 bg-black/50 flex items-center justify-center p-4" 
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" 
           style={{ zIndex: 9999 }}
           onClick={(e) => {
             if (e.target === e.currentTarget) {
@@ -1220,15 +1220,15 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
           }}
         >
           <div 
-            className="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-2xl"
+            className="glass-card max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-elevated"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-6 border-b border-gray-200">
+            <div className="p-6 border-b border-border">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold text-gray-900">Sektör Seçin</h3>
+                <h3 className="text-xl font-bold text-text-primary">Sektör Seçin</h3>
                 <button
                   onClick={() => setShowSectorModal(false)}
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                  className="text-text-secondary hover:text-text-primary transition-colors"
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -1240,16 +1240,16 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                   <button
                     key={sectorOption.id}
                     onClick={() => handleSectorSelect(sectorOption.id)}
-                    className={`p-4 rounded-xl border-2 transition-all hover:scale-105 ${
+                    className={`p-4 rounded-xl border transition-all hover:scale-105 ${
                       sector === sectorOption.id
-                        ? 'border-blue-500 bg-blue-50 shadow-md'
-                        : 'border-gray-200 hover:border-blue-300 bg-white'
+                        ? 'border-neon-cyan bg-neon-cyan/10 shadow-glow-cyan'
+                        : 'border-border hover:border-neon-cyan/50 bg-surface'
                     }`}
                   >
                     <div className="text-center">
                       <div className="text-3xl mb-2">{sectorOption.emoji}</div>
                       <div className={`text-sm font-medium ${
-                        sector === sectorOption.id ? 'text-blue-700' : 'text-gray-700'
+                        sector === sectorOption.id ? 'text-neon-cyan' : 'text-text-primary'
                       }`}>
                         {sectorOption.name.replace(sectorOption.emoji + ' ', '')}
                       </div>
@@ -1266,29 +1266,32 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       {/* Warning Modal */}
       {showWarningModal && createPortal(
         <div 
-          className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 backdrop-blur-sm" 
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" 
           style={{ zIndex: 10000 }}
           onClick={() => setShowWarningModal(false)}
         >
           <div 
-            className="bg-white rounded-3xl max-w-md w-full shadow-2xl transform transition-all animate-bounce-in"
+            className="glass-card max-w-md w-full shadow-elevated transform transition-all animate-bounce-in"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-8 text-center">
               <div className="mb-6 text-7xl animate-wiggle">
                 🎨✨
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              <h3 className="text-2xl font-bold text-text-primary mb-4">
                 Hoop! Bir dakika! 🙌
               </h3>
-              <p className="text-gray-600 text-base leading-relaxed mb-6">
-                Manuel video stili seçmek için önce <span className="font-semibold text-blue-600">"Stilini Seç"</span> seçeneğine geçmelisin! 😊
+              <p className="text-text-secondary text-base leading-relaxed mb-6">
+                Manuel video stili seçmek için önce <span className="font-semibold text-neon-cyan">"Stilini Seç"</span> seçeneğine geçmelisin! 😊
               </p>
               <button
                 onClick={() => setShowWarningModal(false)}
-                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-lg"
+                className="relative group"
               >
-                Anladım! 👍
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-full blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
+                <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-glow-cyan">
+                  Anladım! 👍
+                </div>
               </button>
             </div>
           </div>
