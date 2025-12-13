@@ -1063,25 +1063,25 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
 
             {/* Video Stilini Seçin */}
             <div className="space-y-2 relative">
-              <h3 className="text-sm font-semibold text-gray-900">🎨 Video Stilini Seçin</h3>
+              <h3 className="text-sm font-semibold text-text-primary">🎨 Video Stilini Seçin</h3>
               <button
                 onClick={() => setOpenDropdown(openDropdown === 'styleType' ? null : 'styleType')}
-                className="w-full p-3 rounded-md border-2 border-gray-200 hover:border-gray-300 bg-white text-gray-700 transition-all text-left flex items-center justify-between"
+                className={`w-full p-3 rounded-xl border border-border bg-surface text-text-primary transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/50 ${openDropdown === 'styleType' ? 'border-neon-cyan shadow-glow-cyan' : ''}`}
               >
-                <span className="text-xs font-medium">
+                <span className="text-sm font-medium">
                   {styleType === 'auto' ? 'Otomatik Stil' : 'Stilini Seç'}
                 </span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === 'styleType' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${openDropdown === 'styleType' ? 'rotate-180' : ''}`} />
               </button>
               {openDropdown === 'styleType' && (
-                <div className="absolute z-10 w-full bg-white border-2 border-gray-200 rounded-md shadow-lg mt-1">
+                <div className="absolute z-50 w-full bg-surface border border-border rounded-xl shadow-elevated mt-2 overflow-hidden">
                   <button
                     onClick={() => {
                       setStyleType('auto');
                       setOpenDropdown(null);
                     }}
-                    className={`w-full p-3 text-xs text-left hover:bg-gray-50 transition-colors border-b border-gray-100 ${
-                      styleType === 'auto' ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700'
+                    className={`w-full p-3 text-sm text-left transition-all duration-200 border-b border-border hover:bg-surface-elevated ${
+                      styleType === 'auto' ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-text-primary'
                     }`}
                   >
                     Otomatik Stil
@@ -1091,8 +1091,8 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                       setStyleType('manual');
                       setOpenDropdown(null);
                     }}
-                    className={`w-full p-3 text-xs text-left hover:bg-gray-50 transition-colors ${
-                      styleType === 'manual' ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700'
+                    className={`w-full p-3 text-sm text-left transition-all duration-200 hover:bg-surface-elevated ${
+                      styleType === 'manual' ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-text-primary'
                     }`}
                   >
                     Stilini Seç
@@ -1105,7 +1105,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                     placeholder="Video stilini açıklayın..."
-                    className="w-full h-12 bg-gray-50 border border-gray-300 rounded-md px-2 py-1 text-xs text-gray-700 placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+                    className="w-full h-16 bg-surface border border-border rounded-xl px-3 py-2 text-sm text-text-primary placeholder-text-secondary focus:border-neon-cyan focus:shadow-glow-cyan focus:outline-none resize-none transition-all duration-300"
                   />
                 </div>
               )}
@@ -1113,25 +1113,25 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
 
             {/* Prompt */}
             <div className="space-y-2 relative">
-              <h3 className="text-sm font-semibold text-gray-900">✍️ Prompt</h3>
+              <h3 className="text-sm font-semibold text-text-primary">✍️ Prompt</h3>
               <button
                 onClick={() => setOpenDropdown(openDropdown === 'promptType' ? null : 'promptType')}
-                className="w-full p-3 rounded-md border-2 border-gray-200 hover:border-gray-300 bg-white text-gray-700 transition-all text-left flex items-center justify-between"
+                className={`w-full p-3 rounded-xl border border-border bg-surface text-text-primary transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/50 ${openDropdown === 'promptType' ? 'border-neon-cyan shadow-glow-cyan' : ''}`}
               >
-                <span className="text-xs font-medium">
+                <span className="text-sm font-medium">
                   {promptType === 'auto' ? 'Otomatik Prompt' : 'Manuel Prompt'}
                 </span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === 'promptType' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${openDropdown === 'promptType' ? 'rotate-180' : ''}`} />
               </button>
               {openDropdown === 'promptType' && (
-                <div className="absolute z-10 w-full bg-white border-2 border-gray-200 rounded-md shadow-lg mt-1">
+                <div className="absolute z-50 w-full bg-surface border border-border rounded-xl shadow-elevated mt-2 overflow-hidden">
                   <button
                     onClick={() => {
                       setPromptType('auto');
                       setOpenDropdown(null);
                     }}
-                    className={`w-full p-3 text-xs text-left hover:bg-gray-50 transition-colors border-b border-gray-100 ${
-                      promptType === 'auto' ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700'
+                    className={`w-full p-3 text-sm text-left transition-all duration-200 border-b border-border hover:bg-surface-elevated ${
+                      promptType === 'auto' ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-text-primary'
                     }`}
                   >
                     Otomatik Prompt
@@ -1141,8 +1141,8 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                       setPromptType('manual');
                       setOpenDropdown(null);
                     }}
-                    className={`w-full p-3 text-xs text-left hover:bg-gray-50 transition-colors ${
-                      promptType === 'manual' ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700'
+                    className={`w-full p-3 text-sm text-left transition-all duration-200 hover:bg-surface-elevated ${
+                      promptType === 'manual' ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-text-primary'
                     }`}
                   >
                     Manuel Prompt
@@ -1155,31 +1155,34 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                     value={manualPrompt}
                     onChange={(e) => setManualPrompt(e.target.value)}
                     placeholder="Prompt metnini yazın..."
-                    className="w-full h-12 bg-gray-50 border border-gray-300 rounded-md px-2 py-1 text-xs text-gray-700 placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+                    className="w-full h-16 bg-surface border border-border rounded-xl px-3 py-2 text-sm text-text-primary placeholder-text-secondary focus:border-neon-cyan focus:shadow-glow-cyan focus:outline-none resize-none transition-all duration-300"
                   />
                 </div>
               )}
             </div>
 
             {/* Video Oluştur Button */}
-            <div className="space-y-2 pt-3 border-t border-gray-200">
-              <h3 className="text-sm font-semibold text-gray-900">🚀 Video Oluşturmaya Hazır mısınız?</h3>
+            <div className="space-y-2 pt-4 border-t border-border">
+              <h3 className="text-sm font-semibold text-text-primary">🚀 Video Oluşturmaya Hazır mısınız?</h3>
               <button
                 onClick={handleVideoGeneration}
                 disabled={isGenerating || !isFormValid()}
-                className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-2 px-3 rounded-md transition-colors flex items-center justify-center space-x-1 text-xs"
+                className="w-full relative group disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isGenerating ? (
-                  <>
-                    <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>✨ Oluşturuluyor...</span>
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-3 h-3" />
-                    <span>🎬 Video Oluştur</span>
-                  </>
-                )}
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 group-hover:opacity-100 transition duration-300 group-disabled:opacity-0"></div>
+                <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 shadow-glow-cyan">
+                  {isGenerating ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span>✨ Oluşturuluyor...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-4 h-4" />
+                      <span>🎬 Video Oluştur</span>
+                    </>
+                  )}
+                </div>
               </button>
             </div>
       </div>
