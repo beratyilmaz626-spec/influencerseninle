@@ -829,15 +829,15 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                         alt="Uploaded photo"
                         className="w-full h-16 object-cover rounded-md"
                       />
-                      <p className="text-green-600 text-xs font-medium truncate">{uploadedImage.name}</p>
-                      <p className="text-gray-500 text-xs">Değiştir</p>
+                      <p className="text-neon-green text-xs font-medium truncate">{uploadedImage.name}</p>
+                      <p className="text-text-secondary text-xs">Değiştir</p>
                     </div>
                   ) : (
                     <div className="space-y-1">
-                      <Upload className="w-6 h-6 text-gray-400 mx-auto" />
+                      <Upload className="w-6 h-6 text-text-secondary mx-auto" />
                       <div>
-                        <p className="text-gray-700 font-medium text-xs">Fotoğraf yükle</p>
-                        <p className="text-gray-500 text-xs">PNG, JPG (maks. 10MB)</p>
+                        <p className="text-text-primary font-medium text-xs">Fotoğraf yükle</p>
+                        <p className="text-text-secondary text-xs">PNG, JPG (maks. 10MB)</p>
                       </div>
                     </div>
                   )}
@@ -847,39 +847,39 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
 
             {/* Content Count */}
             <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-gray-900">🎯 Kaç Adet UGC İçerik Üretilsin</h3>
+              <h3 className="text-sm font-semibold text-text-primary">🎯 Kaç Adet UGC İçerik Üretilsin</h3>
               <div className="flex items-center justify-center space-x-2">
                 <button
                   onClick={() => setContentCount(Math.max(1, contentCount - 1))}
-                  className="w-6 h-6 bg-gray-200 hover:bg-gray-300 rounded-md flex items-center justify-center transition-colors"
+                  className="w-8 h-8 bg-surface-elevated hover:bg-neon-cyan/20 border border-border hover:border-neon-cyan rounded-lg flex items-center justify-center transition-all duration-300"
                 >
-                  <span className="text-sm font-bold text-gray-700">-</span>
+                  <span className="text-sm font-bold text-text-primary">-</span>
                 </button>
-                <div className="text-center">
-                  <div className="text-lg font-bold text-gray-900">{contentCount}</div>
-                  <div className="text-gray-600 text-xs">Video</div>
+                <div className="text-center px-4">
+                  <div className="text-xl font-bold text-neon-cyan">{contentCount}</div>
+                  <div className="text-text-secondary text-xs">Video</div>
                 </div>
                 <button
                   onClick={() => setContentCount(Math.min(10, contentCount + 1))}
-                  className="w-6 h-6 bg-gray-200 hover:bg-gray-300 rounded-md flex items-center justify-center transition-colors"
+                  className="w-8 h-8 bg-surface-elevated hover:bg-neon-cyan/20 border border-border hover:border-neon-cyan rounded-lg flex items-center justify-center transition-all duration-300"
                 >
-                  <span className="text-sm font-bold text-gray-700">+</span>
+                  <span className="text-sm font-bold text-text-primary">+</span>
                 </button>
               </div>
             </div>
 
             {/* Cinsiyet */}
             <div className="space-y-2 relative">
-              <h3 className="text-sm font-semibold text-gray-900">👤 Cinsiyet</h3>
+              <h3 className="text-sm font-semibold text-text-primary">👤 Cinsiyet</h3>
               <button
                 onClick={() => setOpenDropdown(openDropdown === 'gender' ? null : 'gender')}
-                className="w-full p-3 rounded-md border-2 border-gray-200 hover:border-gray-300 bg-white text-gray-700 transition-all text-left flex items-center justify-between"
+                className={`w-full p-3 rounded-xl border border-border bg-surface text-text-primary transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/50 ${openDropdown === 'gender' ? 'border-neon-cyan shadow-glow-cyan' : ''}`}
               >
-                <span className="text-xs font-medium">{gender || 'Cinsiyet Seçin'}</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === 'gender' ? 'rotate-180' : ''}`} />
+                <span className="text-sm font-medium">{gender || 'Cinsiyet Seçin'}</span>
+                <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${openDropdown === 'gender' ? 'rotate-180' : ''}`} />
               </button>
               {openDropdown === 'gender' && (
-                <div className="absolute z-10 w-full bg-white border-2 border-gray-200 rounded-md shadow-lg mt-1">
+                <div className="absolute z-50 w-full bg-surface border border-border rounded-xl shadow-elevated mt-2 overflow-hidden">
                   {['Kadın', 'Erkek'].map((g) => (
                     <button
                       key={g}
@@ -887,8 +887,8 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                         setGender(g);
                         setOpenDropdown(null);
                       }}
-                      className={`w-full p-3 text-xs text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0 ${
-                        gender === g ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700'
+                      className={`w-full p-3 text-sm text-left transition-all duration-200 border-b border-border last:border-0 hover:bg-surface-elevated ${
+                        gender === g ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-text-primary'
                       }`}
                     >
                       {g}
