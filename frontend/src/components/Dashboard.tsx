@@ -982,18 +982,18 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
 
             {/* Format Selection */}
             <div className="space-y-2 relative">
-              <h3 className="text-sm font-semibold text-gray-900">📐 Format</h3>
+              <h3 className="text-sm font-semibold text-text-primary">📐 Format</h3>
               <button
                 onClick={() => setOpenDropdown(openDropdown === 'format' ? null : 'format')}
-                className="w-full p-3 rounded-md border-2 border-gray-200 hover:border-gray-300 bg-white text-gray-700 transition-all text-left flex items-center justify-between"
+                className={`w-full p-3 rounded-xl border border-border bg-surface text-text-primary transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/50 ${openDropdown === 'format' ? 'border-neon-cyan shadow-glow-cyan' : ''}`}
               >
-                <span className="text-xs font-medium">
+                <span className="text-sm font-medium">
                   {selectedFormat ? formats.find(f => f.id === selectedFormat)?.name : 'Video Formatını Seçin'}
                 </span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === 'format' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${openDropdown === 'format' ? 'rotate-180' : ''}`} />
               </button>
               {openDropdown === 'format' && (
-                <div className="absolute z-10 w-full bg-white border-2 border-gray-200 rounded-md shadow-lg mt-1">
+                <div className="absolute z-50 w-full bg-surface border border-border rounded-xl shadow-elevated mt-2 overflow-hidden">
                   {formats.map((format) => (
                     <button
                       key={format.id}
@@ -1001,15 +1001,15 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                         setSelectedFormat(format.id);
                         setOpenDropdown(null);
                       }}
-                      className={`w-full p-4 text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0 flex items-center space-x-2 ${
-                        selectedFormat === format.id ? 'bg-blue-50' : ''
+                      className={`w-full p-4 text-left transition-all duration-200 border-b border-border last:border-0 flex items-center space-x-2 hover:bg-surface-elevated ${
+                        selectedFormat === format.id ? 'bg-neon-cyan/10 text-neon-cyan' : 'text-text-primary'
                       }`}
                     >
-                      <div className="font-medium text-sm text-gray-900">{format.name}</div>
+                      <div className="font-medium text-sm">{format.name}</div>
                       {format.id === '16:9' ? (
-                        <div className="w-8 h-5 border-2 border-gray-700 rounded"></div>
+                        <div className="w-8 h-5 border-2 border-current rounded"></div>
                       ) : (
-                        <div className="w-5 h-8 border-2 border-gray-700 rounded"></div>
+                        <div className="w-5 h-8 border-2 border-current rounded"></div>
                       )}
                     </button>
                   ))}
@@ -1019,18 +1019,18 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
 
             {/* Dialog Type */}
             <div className="space-y-2 relative">
-              <h3 className="text-sm font-semibold text-gray-900">💬 Konuşma Metni</h3>
+              <h3 className="text-sm font-semibold text-text-primary">💬 Konuşma Metni</h3>
               <button
                 onClick={() => setOpenDropdown(openDropdown === 'dialog' ? null : 'dialog')}
-                className="w-full p-3 rounded-md border-2 border-gray-200 hover:border-gray-300 bg-white text-gray-700 transition-all text-left flex items-center justify-between"
+                className={`w-full p-3 rounded-xl border border-border bg-surface text-text-primary transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/50 ${openDropdown === 'dialog' ? 'border-neon-cyan shadow-glow-cyan' : ''}`}
               >
-                <span className="text-xs font-medium">
+                <span className="text-sm font-medium">
                   {dialogOptions.find(d => d.id === dialogType)?.name || 'Seçin'}
                 </span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === 'dialog' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${openDropdown === 'dialog' ? 'rotate-180' : ''}`} />
               </button>
               {openDropdown === 'dialog' && (
-                <div className="absolute z-10 w-full bg-white border-2 border-gray-200 rounded-md shadow-lg mt-1">
+                <div className="absolute z-50 w-full bg-surface border border-border rounded-xl shadow-elevated mt-2 overflow-hidden">
                   {dialogOptions.map((option) => (
                     <button
                       key={option.id}
@@ -1038,12 +1038,12 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                         setDialogType(option.id);
                         setOpenDropdown(null);
                       }}
-                      className={`w-full p-3 text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0 ${
-                        dialogType === option.id ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
+                      className={`w-full p-3 text-left transition-all duration-200 border-b border-border last:border-0 hover:bg-surface-elevated ${
+                        dialogType === option.id ? 'bg-neon-cyan/10 text-neon-cyan' : 'text-text-primary'
                       }`}
                     >
-                      <div className="font-medium text-xs">{option.name}</div>
-                      <div className="text-xs opacity-75">{option.desc}</div>
+                      <div className="font-medium text-sm">{option.name}</div>
+                      <div className="text-xs text-text-secondary mt-0.5">{option.desc}</div>
                     </button>
                   ))}
                 </div>
@@ -1055,7 +1055,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                     value={customDialog}
                     onChange={(e) => setCustomDialog(e.target.value)}
                     placeholder="Özel diyalog metnini yazın..."
-                    className="w-full h-12 bg-gray-50 border border-gray-300 rounded-md px-2 py-1 text-xs text-gray-700 placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+                    className="w-full h-16 bg-surface border border-border rounded-xl px-3 py-2 text-sm text-text-primary placeholder-text-secondary focus:border-neon-cyan focus:shadow-glow-cyan focus:outline-none resize-none transition-all duration-300"
                   />
                 </div>
               )}
