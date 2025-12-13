@@ -3,110 +3,28 @@
 @tailwind utilities;
 
 @layer base {
-  @property --pos-x {
-    syntax: '<percentage>';
-    initial-value: 11.14%;
-    inherits: false;
-  }
-
-  @property --pos-y {
-    syntax: '<percentage>';
-    initial-value: 140%;
-    inherits: false;
-  }
-
-  @property --spread-x {
-    syntax: '<percentage>';
-    initial-value: 150%;
-    inherits: false;
-  }
-
-  @property --spread-y {
-    syntax: '<percentage>';
-    initial-value: 180.06%;
-    inherits: false;
-  }
-
-  @property --color-1 {
-    syntax: '<color>';
-    initial-value: #000;
-    inherits: false;
-  }
-
-  @property --color-2 {
-    syntax: '<color>';
-    initial-value: #08012c;
-    inherits: false;
-  }
-
-  @property --color-3 {
-    syntax: '<color>';
-    initial-value: #4e1e40;
-    inherits: false;
-  }
-
-  @property --color-4 {
-    syntax: '<color>';
-    initial-value: #70464e;
-    inherits: false;
-  }
-
-  @property --color-5 {
-    syntax: '<color>';
-    initial-value: #88394c;
-    inherits: false;
-  }
-
-  @property --border-angle {
-    syntax: '<angle>';
-    initial-value: 20deg;
-    inherits: true;
-  }
-
-  @property --border-color-1 {
-    syntax: '<color>';
-    initial-value: hsla(340, 75%, 60%, 0.2);
-    inherits: true;
-  }
-
-  @property --border-color-2 {
-    syntax: '<color>';
-    initial-value: hsla(340, 75%, 40%, 0.75);
-    inherits: true;
-  }
-
-  @property --stop-1 {
-    syntax: '<percentage>';
-    initial-value: 37.35%;
-    inherits: false;
-  }
-
-  @property --stop-2 {
-    syntax: '<percentage>';
-    initial-value: 61.36%;
-    inherits: false;
-  }
-
-  @property --stop-3 {
-    syntax: '<percentage>';
-    initial-value: 78.42%;
-    inherits: false;
-  }
-
-  @property --stop-4 {
-    syntax: '<percentage>';
-    initial-value: 89.52%;
-    inherits: false;
-  }
-
-  @property --stop-5 {
-    syntax: '<percentage>';
-    initial-value: 100%;
-    inherits: false;
-  }
-
-  /* Premium Dark Theme Base */
+  /* Premium Dark Theme Base - Browser Compatible */
   :root {
+    /* Gradient button variables - fallback values */
+    --pos-x: 11.14%;
+    --pos-y: 140%;
+    --spread-x: 150%;
+    --spread-y: 180.06%;
+    --color-1: #000;
+    --color-2: #08012c;
+    --color-3: #4e1e40;
+    --color-4: #70464e;
+    --color-5: #88394c;
+    --border-angle: 20deg;
+    --border-color-1: hsla(340, 75%, 60%, 0.2);
+    --border-color-2: hsla(340, 75%, 40%, 0.75);
+    --stop-1: 37.35%;
+    --stop-2: 61.36%;
+    --stop-3: 78.42%;
+    --stop-4: 89.52%;
+    --stop-5: 100%;
+    
+    /* Theme colors */
     --background: #0a0a0f;
     --background-elevated: #121218;
     --surface: #16161f;
