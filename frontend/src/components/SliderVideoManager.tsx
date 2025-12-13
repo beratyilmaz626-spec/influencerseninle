@@ -298,21 +298,21 @@ export default function SliderVideoManager() {
 
       {/* Edit Video Modal */}
       {editingVideo && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="glass-card max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Video Düzenle</h3>
+              <h3 className="text-lg font-semibold text-text-primary">Video Düzenle</h3>
               <button
                 onClick={() => setEditingVideo(null)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-surface-elevated rounded-lg transition-colors"
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-text-secondary" />
               </button>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-primary mb-2">
                   Video Başlığı
                 </label>
                 <input
@@ -320,12 +320,12 @@ export default function SliderVideoManager() {
                   value={editingVideo.title}
                   onChange={(e) => setEditingVideo({ ...editingVideo, title: e.target.value })}
                   placeholder="Video başlığını girin"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-border bg-surface rounded-xl text-text-primary placeholder-text-secondary focus:border-neon-cyan focus:shadow-glow-cyan focus:outline-none transition-all duration-300"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-primary mb-2">
                   Video URL
                 </label>
                 <input
@@ -333,12 +333,12 @@ export default function SliderVideoManager() {
                   value={editingVideo.video_url}
                   onChange={(e) => setEditingVideo({ ...editingVideo, video_url: e.target.value })}
                   placeholder="https://example.com/video.mp4"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-border bg-surface rounded-xl text-text-primary placeholder-text-secondary focus:border-neon-cyan focus:shadow-glow-cyan focus:outline-none transition-all duration-300"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-text-primary mb-2">
                   Thumbnail URL (İsteğe Bağlı)
                 </label>
                 <input
@@ -346,24 +346,27 @@ export default function SliderVideoManager() {
                   value={editingVideo.thumbnail_url || ''}
                   onChange={(e) => setEditingVideo({ ...editingVideo, thumbnail_url: e.target.value })}
                   placeholder="https://example.com/thumbnail.jpg"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-border bg-surface rounded-xl text-text-primary placeholder-text-secondary focus:border-neon-cyan focus:shadow-glow-cyan focus:outline-none transition-all duration-300"
                 />
               </div>
 
               <div className="flex justify-end space-x-3 pt-4">
                 <button
                   onClick={() => setEditingVideo(null)}
-                  className="px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg transition-colors"
+                  className="px-4 py-2 border border-border hover:bg-surface-elevated text-text-primary rounded-xl transition-colors"
                 >
                   İptal
                 </button>
                 <button
                   onClick={handleEditSave}
                   disabled={!editingVideo.title || !editingVideo.video_url}
-                  className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors inline-flex items-center space-x-2"
+                  className="relative group disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Save className="w-4 h-4" />
-                  <span>Güncelle</span>
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 group-hover:opacity-100 transition duration-300 group-disabled:opacity-0"></div>
+                  <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-4 py-2 rounded-xl transition-all inline-flex items-center space-x-2">
+                    <Save className="w-4 h-4" />
+                    <span>Güncelle</span>
+                  </div>
                 </button>
               </div>
             </div>
