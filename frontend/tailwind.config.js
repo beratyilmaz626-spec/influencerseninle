@@ -37,9 +37,9 @@ export default {
         },
         text: {
           primary: '#ffffff',
-          secondary: 'rgba(255, 255, 255, 0.7)',
-          tertiary: 'rgba(255, 255, 255, 0.5)',
-          muted: 'rgba(255, 255, 255, 0.3)',
+          secondary: 'rgba(255, 255, 255, 0.80)',
+          tertiary: 'rgba(255, 255, 255, 0.65)',
+          muted: 'rgba(255, 255, 255, 0.50)',
         },
       },
       borderRadius: {

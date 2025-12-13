@@ -116,7 +116,7 @@
     --neon-purple: #b066ff;
     --neon-pink: #ff0080;
     --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-secondary: rgba(255, 255, 255, 0.80);
   }
 
   html {
