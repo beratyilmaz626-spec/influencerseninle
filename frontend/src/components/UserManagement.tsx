@@ -130,7 +130,7 @@ export default function UserManagement() {
                     <div className="flex-1 space-y-3">
                       <div>
                         <h3 className="text-lg font-semibold text-text-primary mb-1">
-                          {user.full_name || 'İsimsiz Kullanıcı'}
+                          {user.full_name || user.email?.split('@')[0] || 'Kullanıcı'}
                         </h3>
                         <div className="flex items-center space-x-2 text-sm text-text-secondary">
                           <Mail className="w-4 h-4" />
