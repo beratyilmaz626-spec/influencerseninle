@@ -375,9 +375,9 @@ export default function SliderVideoManager() {
       )}
 
       {/* Video List */}
-      <div className="bg-white rounded-2xl border border-gray-200">
-        <div className="p-6 border-b border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-900">
+      <div className="glass-card">
+        <div className="p-6 border-b border-border">
+          <h3 className="text-lg font-semibold text-text-primary">
             Slider Videoları ({videos.length})
           </h3>
         </div>
@@ -385,31 +385,35 @@ export default function SliderVideoManager() {
         <div className="p-6">
           {loading ? (
             <div className="text-center py-8">
-              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-gray-600">Videolar yükleniyor...</p>
+              <div className="w-8 h-8 border-4 border-neon-cyan border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-text-secondary">Videolar yükleniyor...</p>
             </div>
           ) : videos.length === 0 ? (
-            <div className="text-center py-8">
-              <Upload className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h4 className="text-lg font-semibold text-gray-900 mb-2">Henüz video yok</h4>
-              <p className="text-gray-600 mb-4">İlk videonuzu eklemek için yukarıdaki butonu kullanın</p>
+            <div className="text-center py-16">
+              <div className="w-24 h-24 bg-gradient-to-br from-neon-cyan/20 to-neon-purple/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Upload className="w-12 h-12 text-neon-cyan" />
+              </div>
+              <h4 className="text-xl font-semibold text-text-primary mb-2">Henüz video yok</h4>
+              <p className="text-text-secondary mb-6">İlk videonuzu eklemek için yukarıdaki butonu kullanın</p>
             </div>
           ) : (
             <div className="space-y-4">
               {videos.map((video, index) => (
                 <div
                   key={video.id}
-                  className={`flex items-center space-x-4 p-4 rounded-lg border ${
-                    video.is_active ? 'border-gray-200 bg-white' : 'border-gray-100 bg-gray-50'
+                  className={`flex items-center space-x-4 p-4 rounded-xl border transition-all duration-300 ${
+                    video.is_active 
+                      ? 'border-border bg-surface hover:border-neon-cyan/30' 
+                      : 'border-border/50 bg-surface/50 opacity-60'
                   }`}
                 >
                   {/* Drag Handle */}
-                  <div className="cursor-move text-gray-400">
+                  <div className="cursor-move text-text-secondary hover:text-neon-cyan transition-colors">
                     <GripVertical className="w-5 h-5" />
                   </div>
 
                   {/* Video Preview */}
-                  <div className="w-20 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                  <div className="w-20 h-12 bg-surface-elevated rounded-lg overflow-hidden flex-shrink-0 border border-border">
                     {video.thumbnail_url ? (
                       <img
                         src={video.thumbnail_url}
@@ -421,28 +425,28 @@ export default function SliderVideoManager() {
                         }}
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                        <Upload className="w-6 h-6 text-gray-400" />
+                      <div className="w-full h-full flex items-center justify-center bg-surface-elevated">
+                        <Upload className="w-6 h-6 text-text-secondary" />
                       </div>
                     )}
                     {video.thumbnail_url && (
-                      <div className="w-full h-full flex items-center justify-center bg-gray-200 hidden">
-                        <Upload className="w-6 h-6 text-gray-400" />
+                      <div className="w-full h-full flex items-center justify-center bg-surface-elevated hidden">
+                        <Upload className="w-6 h-6 text-text-secondary" />
                       </div>
                     )}
                   </div>
 
                   {/* Video Info */}
                   <div className="flex-1">
-                    <h4 className={`font-medium ${video.is_active ? 'text-gray-900' : 'text-gray-500'}`}>
+                    <h4 className={`font-medium ${video.is_active ? 'text-text-primary' : 'text-text-secondary'}`}>
                       {video.title}
                     </h4>
                     <div className="space-y-1">
-                      <p className="text-xs text-gray-400 truncate">
+                      <p className="text-xs text-text-secondary truncate">
                         Video: {video.video_url}
                       </p>
                       {video.thumbnail_url && (
-                        <p className="text-xs text-green-600 truncate">
+                        <p className="text-xs text-neon-green truncate">
                           Thumbnail: {video.thumbnail_url}
                         </p>
                       )}
@@ -450,7 +454,7 @@ export default function SliderVideoManager() {
                   </div>
 
                   {/* Order */}
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm text-text-secondary px-3 py-1 bg-surface-elevated rounded-lg border border-border">
                     #{index + 1}
                   </div>
 
@@ -458,7 +462,7 @@ export default function SliderVideoManager() {
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => setEditingVideo(video)}
-                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                      className="p-2 text-neon-cyan hover:bg-neon-cyan/10 rounded-lg transition-colors"
                       title="Düzenle"
                     >
                       <Edit className="w-4 h-4" />
@@ -468,8 +472,8 @@ export default function SliderVideoManager() {
                       onClick={() => toggleActive(video.id, video.is_active)}
                       className={`p-2 rounded-lg transition-colors ${
                         video.is_active
-                          ? 'text-green-600 hover:bg-green-50'
-                          : 'text-gray-400 hover:bg-gray-100'
+                          ? 'text-neon-green hover:bg-neon-green/10'
+                          : 'text-text-secondary hover:bg-surface-elevated'
                       }`}
                       title={video.is_active ? 'Gizle' : 'Göster'}
                     >
@@ -481,7 +485,7 @@ export default function SliderVideoManager() {
                         console.log('🖱️ Silme butonuna tıklandı');
                         deleteVideo(video.id);
                       }}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      className="p-2 text-neon-pink hover:bg-neon-pink/10 rounded-lg transition-colors"
                       title="Sil"
                     >
                       <Trash2 className="w-4 h-4" />
