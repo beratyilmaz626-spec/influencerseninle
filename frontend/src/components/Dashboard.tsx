@@ -27,7 +27,7 @@ type ViewType = 'home' | 'videos' | 'create' | 'create2' | 'subscription' | 'set
 
 export default function Dashboard({ onLogout }: DashboardProps) {
   const [currentView, setCurrentView] = useState<ViewType>('home');
-  const { videos } = useVideos();
+  const { videos, createVideo } = useVideos();
   const { isAdmin, userProfile } = useAuth();
   
   // Video styles from database
