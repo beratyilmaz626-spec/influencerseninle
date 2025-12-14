@@ -552,10 +552,10 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
             <div>
               <h3 className="font-semibold text-text-primary mb-4">Ürün</h3>
               <ul className="space-y-2 text-text-secondary">
-                <li><a href="#" className="hover:text-neon-cyan transition-colors">Özellikler</a></li>
-                <li><a href="#" className="hover:text-neon-cyan transition-colors">Fiyatlandırma</a></li>
-                <li><a href="#" className="hover:text-neon-cyan transition-colors">API</a></li>
-                <li><a href="#" className="hover:text-neon-cyan transition-colors">Entegrasyonlar</a></li>
+                <li><a href="#features" className="hover:text-neon-cyan transition-colors">Özellikler</a></li>
+                <li><a href="#pricing" className="hover:text-neon-cyan transition-colors">Fiyatlandırma</a></li>
+                <li><a href="#sectors" className="hover:text-neon-cyan transition-colors">Sektörler</a></li>
+                <li><a href="#comparison" className="hover:text-neon-cyan transition-colors">Karşılaştırma</a></li>
               </ul>
             </div>
 
