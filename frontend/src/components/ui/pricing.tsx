@@ -162,11 +162,11 @@ export function Pricing({
             )}
             
             <div className="flex-1 flex flex-col">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
+              <h3 className="text-2xl font-bold text-text-primary mb-2">{plan.name}</h3>
               
               <div className="mb-6">
                 <div className="flex items-baseline justify-center">
-                  <span className="text-5xl font-bold text-gray-900">
+                  <span className="text-5xl font-bold text-text-primary">
                     <NumberFlow
                       value={
                         isMonthly ? Number(plan.price) : Number(plan.yearlyPrice)
@@ -187,17 +187,17 @@ export function Pricing({
                     />
                   </span>
                   {plan.price !== "Özel" && (
-                    <span className="text-gray-600 ml-2">{plan.period && `/${plan.period}`}</span>
+                    <span className="text-text-secondary ml-2">{plan.period && `/${plan.period}`}</span>
                   )}
                 </div>
-                <p className="text-gray-600 mt-2">{plan.description}</p>
+                <p className="text-text-secondary mt-2">{plan.description}</p>
               </div>
 
               <ul className="space-y-3 mb-8 flex-1">
                 {plan.features.map((feature, idx) => (
                   <li key={idx} className="flex items-start space-x-3">
-                    <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700 text-left">{feature}</span>
+                    <Check className="w-5 h-5 text-neon-green flex-shrink-0 mt-0.5" />
+                    <span className="text-text-secondary text-left">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -211,8 +211,8 @@ export function Pricing({
                   }),
                   "w-full font-semibold transition-all duration-300 disabled:opacity-50",
                   plan.isPopular
-                    ? "bg-blue-500 hover:bg-blue-600 text-white"
-                    : "border-gray-300 hover:bg-gray-50 text-gray-900"
+                    ? "bg-gradient-to-r from-neon-cyan to-neon-purple hover:shadow-glow-cyan text-white border-0"
+                    : "border-white/20 hover:bg-white/10 text-text-primary"
                 )}
                 disabled={stripeLoading}
               >
