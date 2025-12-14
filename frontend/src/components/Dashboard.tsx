@@ -821,7 +821,35 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       if (response.ok) {
         const result = await response.json();
         console.log('Webhook response:', result);
-        alert('Video oluşturma isteği başarıyla gönderildi! Video hazır olduğunda "Videolarım" bölümünde görünecek.');
+        
+        // N8N'den dönen video URL'sini veritabanına kaydet
+        // N8N response formatına göre video URL'yi al
+        const videoUrl = result.video_url || result.videoUrl || result.url || result.output?.video_url;
+        
+        if (videoUrl) {
+          try {
+            // Video kaydını oluştur
+            const sectorName = sectorOptions.find(s => s.id === sector)?.name || sector;
+            await createVideo({
+              name: `${sectorName} - ${new Date().toLocaleDateString('tr-TR')}`,
+              description: `${gender}, ${age}, ${location} - ${dialogType === 'custom' ? customDialog : 'Otomatik'}`,
+              video_url: videoUrl,
+              thumbnail_url: videoUrl.replace('.mp4', '_thumb.jpg'), // Thumbnail varsa
+              status: 'completed',
+              views: 0,
+              format: selectedFormat,
+            });
+            console.log('✅ Video veritabanına kaydedildi:', videoUrl);
+            alert('🎬 Video başarıyla oluşturuldu ve kaydedildi!\n\n"Videolarım" bölümünde görüntüleyebilirsiniz.');
+          } catch (saveError) {
+            console.error('Video kaydetme hatası:', saveError);
+            alert(`Video oluşturuldu ancak kaydedilemedi.\n\nVideo URL: ${videoUrl}\n\nHata: ${saveError}`);
+          }
+        } else {
+          // Video URL dönmediyse sadece bilgi ver
+          console.log('Video URL bulunamadı, response:', result);
+          alert('Video oluşturma isteği başarıyla gönderildi! Video hazır olduğunda "Videolarım" bölümünde görünecek.');
+        }
       } else {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
