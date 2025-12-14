@@ -430,6 +430,75 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 relative">
+        <div className="max-w-7xl mx-auto">
+          <div className="glass-card p-8">
+            <Pricing
+              plans={[
+                {
+                  name: "Başlangıç",
+                  price: "9.90",
+                  yearlyPrice: "9.90",
+                  period: "",
+                  features: [
+                    "20 adet HD kalite video",
+                    "HD 1080p dışa aktarma",
+                    "Filigransız videolar",
+                    "Temel şablonlar",
+                    "E-posta desteği",
+                  ],
+                  description: "Tek seferlik ödeme ile 20 adet HD kalite video",
+                  buttonText: "Planı Seç",
+                  priceId: "price_1SI8r5IXoILZ7benDrZEtPLb",
+                  isPopular: false,
+                },
+                {
+                  name: "Profesyonel",
+                  price: "19.90",
+                  yearlyPrice: "19.90",
+                  period: "",
+                  features: [
+                    "45 adet HD kalite video",
+                    "HD 1080p dışa aktarma",
+                    "Filigransız videolar",
+                    "Premium şablonlar",
+                    "Öncelikli destek",
+                    "API erişimi",
+                  ],
+                  description: "Tek seferlik ödeme ile 45 adet HD kalite video",
+                  buttonText: "Planı Seç",
+                  priceId: "price_1SI93eIXoILZ7benaTtahoH7",
+                  isPopular: true,
+                },
+                {
+                  name: "Kurumsal",
+                  price: "39.90",
+                  yearlyPrice: "39.90",
+                  period: "",
+                  features: [
+                    "100 adet HD kalite video",
+                    "HD 1080p dışa aktarma",
+                    "Filigransız videolar",
+                    "Premium şablonlar",
+                    "Özel destek",
+                    "Gelişmiş API",
+                    "Beyaz etiket seçeneği",
+                  ],
+                  description: "Tek seferlik ödeme ile 100 adet HD kalite video",
+                  buttonText: "Planı Seç",
+                  priceId: "price_1SI995IXoILZ7benbXtYoVJb",
+                  isPopular: false,
+                },
+              ]}
+              title="Uygun, Şeffaf Fiyatlandırma"
+              description="İhtiyaçlarınıza uygun planı seçin&#10;Tüm planlar platformumuza erişim, video oluşturma araçları ve özel destek içerir."
+              setShowAuthModal={setShowAuthModal}
+            />
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section - Farkı Kendiniz Görün */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/10 via-neon-purple/10 to-neon-pink/10"></div>
