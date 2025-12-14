@@ -11,10 +11,22 @@ export default function ProfileSettings() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [formData, setFormData] = useState({
-    full_name: userProfile?.full_name || '',
-    email: userProfile?.email || '',
-    company_name: userProfile?.company_name || '',
-    country: userProfile?.country || 'Türkiye',
+    full_name: '',
+    email: '',
+    company_name: '',
+    country: 'Türkiye',
+  });
+
+  // userProfile değiştiğinde formu güncelle
+  useState(() => {
+    if (userProfile) {
+      setFormData({
+        full_name: userProfile.full_name || '',
+        email: userProfile.email || '',
+        company_name: userProfile.company_name || '',
+        country: userProfile.country || 'Türkiye',
+      });
+    }
   });
 
   const handleSave = async () => {
