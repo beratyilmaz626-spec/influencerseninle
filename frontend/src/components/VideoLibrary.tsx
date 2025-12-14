@@ -386,7 +386,7 @@ function VideoCard({
           </div>
         </div>
 
-        <div className="text-xs text-gray-400 mb-4">
+        <div className="text-xs text-text-muted mb-4">
           {new Date(video.created_at).toLocaleDateString('tr-TR', {
             day: 'numeric',
             month: 'long',
@@ -402,29 +402,29 @@ function VideoCard({
               <a
                 href={video.video_url}
                 download
-                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center space-x-1"
+                className="flex-1 bg-gradient-to-r from-neon-cyan to-neon-purple hover:shadow-glow-cyan text-white py-2 rounded-xl text-sm font-medium transition-all flex items-center justify-center space-x-1"
               >
                 <Download className="w-4 h-4" />
                 <span>İndir</span>
               </a>
             ) : (
-              <button className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center space-x-1">
+              <button className="flex-1 bg-gradient-to-r from-neon-cyan to-neon-purple hover:shadow-glow-cyan text-white py-2 rounded-xl text-sm font-medium transition-all flex items-center justify-center space-x-1">
                 <Download className="w-4 h-4" />
                 <span>İndir</span>
               </button>
             )}
             <button 
               onClick={() => video.video_url && onPreview(video.video_url, video.name)}
-              className="p-2 border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors"
+              className="p-2 border border-border hover:bg-surface-elevated hover:border-neon-cyan rounded-xl transition-all"
               title="Paylaş"
             >
-              <Share2 className="w-4 h-4 text-gray-600" />
+              <Share2 className="w-4 h-4 text-text-secondary" />
             </button>
             <button 
-              className="p-2 border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors"
+              className="p-2 border border-border hover:bg-surface-elevated hover:border-neon-cyan rounded-xl transition-all"
               title="Düzenle"
             >
-              <Edit className="w-4 h-4 text-gray-600" />
+              <Edit className="w-4 h-4 text-text-secondary" />
             </button>
             <button 
               onClick={onDelete}
