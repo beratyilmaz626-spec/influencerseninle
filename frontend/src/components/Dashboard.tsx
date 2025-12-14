@@ -670,6 +670,7 @@ function StyleCard({
 }
 
 function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
+  const { createVideo } = useVideos(); // Video oluşturma fonksiyonu
   const [selectedFormat, setSelectedFormat] = useState('');
   const [contentCount, setContentCount] = useState(1);
   const [dialogType, setDialogType] = useState('auto');
