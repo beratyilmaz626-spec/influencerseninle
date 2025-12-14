@@ -428,10 +428,10 @@ function VideoCard({
             </button>
             <button 
               onClick={onDelete}
-              className="p-2 border border-red-200 hover:bg-red-50 rounded-lg transition-colors"
+              className="p-2 border border-neon-pink/30 hover:bg-neon-pink/10 hover:border-neon-pink rounded-xl transition-all"
               title="Sil"
             >
-              <Trash2 className="w-4 h-4 text-red-600" />
+              <Trash2 className="w-4 h-4 text-neon-pink" />
             </button>
           </div>
         )}
