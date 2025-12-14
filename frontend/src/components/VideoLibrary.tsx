@@ -219,12 +219,31 @@ function VideoCard({
 
   return (
     <div 
-      className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]"
+      className="glass-card overflow-hidden hover:shadow-glow-cyan transition-all duration-300 transform hover:scale-[1.02]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center relative group overflow-hidden">
-        {video.video_url && video.status === 'completed' ? (
+      <div className="aspect-video bg-gradient-to-br from-surface to-surface-elevated flex items-center justify-center relative group overflow-hidden">
+        {video.status === 'processing' ? (
+          // İşleniyor durumu
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-neon-cyan/10 to-neon-purple/10">
+            <div className="relative w-16 h-16 mb-4">
+              <div className="absolute inset-0 border-4 border-neon-cyan/30 rounded-full animate-pulse"></div>
+              <div className="absolute inset-0 border-4 border-neon-cyan border-t-transparent rounded-full animate-spin"></div>
+            </div>
+            <span className="text-neon-cyan font-semibold text-lg">İşleniyor...</span>
+            <span className="text-text-secondary text-sm mt-1">Video hazırlanıyor</span>
+          </div>
+        ) : video.status === 'failed' ? (
+          // Hata durumu
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-neon-pink/10 to-red-500/10">
+            <div className="w-16 h-16 rounded-full bg-neon-pink/20 flex items-center justify-center mb-4">
+              <span className="text-3xl">❌</span>
+            </div>
+            <span className="text-neon-pink font-semibold text-lg">Hata Oluştu</span>
+            <span className="text-text-secondary text-sm mt-1">Video oluşturulamadı</span>
+          </div>
+        ) : video.video_url && video.status === 'completed' ? (
           <>
             <video 
               ref={videoRef}
