@@ -213,7 +213,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
       </section>
 
       {/* Biz vs Onlar - Karşılaştırma Bölümü */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative">
+      <section id="comparison" className="py-20 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <motion.h2
@@ -304,7 +304,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
       </section>
 
       {/* Sektörler / Kullanım Alanları */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative">
+      <section id="sectors" className="py-20 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <motion.h2
@@ -391,7 +391,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative">
+      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
