@@ -325,7 +325,7 @@ function VideoCard({
         {/* Play button overlay */}
         {video.status === 'completed' && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className={`bg-white/90 backdrop-blur-sm text-blue-600 px-4 py-2 rounded-full font-medium shadow-lg transition-all duration-300 ${
+            <div className={`bg-white/10 backdrop-blur-md text-neon-cyan px-4 py-2 rounded-full font-medium shadow-lg border border-neon-cyan/30 transition-all duration-300 ${
               isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}>
               <div className="flex items-center space-x-2">
@@ -346,15 +346,6 @@ function VideoCard({
           </button>
         )}
         
-        {/* Processing overlay */}
-        {video.status === 'processing' && (
-          <div className="absolute inset-0 bg-gradient-to-br from-yellow-50/95 to-orange-50/95 backdrop-blur-sm flex flex-col items-center justify-center">
-            <div className="w-10 h-10 border-3 border-yellow-500 border-t-transparent rounded-full animate-spin mb-3" />
-            <p className="text-sm text-yellow-700 font-semibold">Video İşleniyor</p>
-            <p className="text-xs text-yellow-600 mt-1">Lütfen bekleyin...</p>
-          </div>
-        )}
-        
         {/* Duration badge */}
         {video.duration && video.duration !== '0:00' && (
           <div className="absolute bottom-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs font-medium">
@@ -367,21 +358,23 @@ function VideoCard({
           <span
             className={`px-3 py-1 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm ${
               video.status === 'completed'
-                ? 'bg-green-500/90 text-white border border-green-400/50'
-                : 'bg-yellow-500/90 text-white border border-yellow-400/50'
+                ? 'bg-neon-green/90 text-white border border-neon-green/50'
+                : video.status === 'failed'
+                ? 'bg-neon-pink/90 text-white border border-neon-pink/50'
+                : 'bg-neon-cyan/90 text-white border border-neon-cyan/50'
             }`}
           >
-            {video.status === 'completed' ? '✓ Hazır' : '⏳ İşleniyor'}
+            {video.status === 'completed' ? '✓ Hazır' : video.status === 'failed' ? '✗ Hata' : '⏳ İşleniyor'}
           </span>
         </div>
       </div>
 
       <div className="p-4">
         <div className="flex items-start justify-between mb-3">
-          <h3 className="font-semibold text-gray-900 line-clamp-2 flex-1 pr-2">{video.name}</h3>
+          <h3 className="font-semibold text-text-primary line-clamp-2 flex-1 pr-2">{video.name}</h3>
         </div>
 
-        <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
+        <div className="flex items-center justify-between text-sm text-text-secondary mb-3">
           <div className="flex items-center space-x-3">
             <span className="flex items-center space-x-1">
               <Play className="w-3 h-3" />
