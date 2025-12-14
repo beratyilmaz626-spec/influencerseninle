@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import AuthModal from './AuthModal';
 import { VideoSlider } from '@/components/ui/video-slider';
+import { Pricing } from '@/components/ui/pricing';
 
 interface LandingPageProps {
   onGetStarted: () => void;
