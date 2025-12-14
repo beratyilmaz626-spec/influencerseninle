@@ -783,12 +783,36 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       // Add timestamp
       formData.append('timestamp', new Date().toISOString());
       
+      // Check if webhook URL is configured
+      const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL;
+      
+      if (!webhookUrl) {
+        // Demo mode - show success message without actual webhook
+        console.log('📹 Video oluşturma isteği (Demo Modu):', {
+          format: selectedFormat,
+          contentCount,
+          dialogType,
+          styleType,
+          gender,
+          age,
+          location,
+          sector,
+          selectedStyle
+        });
+        
+        // Simulate processing time
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        alert('🎬 Video oluşturma isteği alındı!\n\nNot: N8N webhook henüz yapılandırılmamış. Video işleme entegrasyonu aktif edildiğinde videolarınız "Videolarım" bölümünde görünecek.');
+        setIsGenerating(false);
+        return;
+      }
+      
       // Add webhook callback URL for n8n to send results back
       const callbackUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/video-webhook`;
       formData.append('callbackUrl', callbackUrl);
       
       // Send to n8n webhook
-      const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL;
       const response = await fetch(webhookUrl, {
         method: 'POST',
         body: formData,
