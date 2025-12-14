@@ -144,10 +144,18 @@ export function useAuth() {
   };
 
   const updateProfile = async (updates: Partial<UserProfile>) => {
-    if (!user) return { error: { message: 'Kullanıcı oturumu bulunamadı' } };
-    if (!supabase) return { error: { message: 'Supabase connection not available' } };
+    if (!user) {
+      console.error('❌ updateProfile: Kullanıcı oturumu bulunamadı');
+      return { error: { message: 'Kullanıcı oturumu bulunamadı' } };
+    }
+    if (!supabase) {
+      console.error('❌ updateProfile: Supabase connection not available');
+      return { error: { message: 'Supabase connection not available' } };
+    }
 
     try {
+      console.log('📝 updateProfile: Güncelleniyor...', { userId: user.id, updates });
+      
       const { data, error } = await supabase
         .from('users')
         .update(updates)
@@ -155,10 +163,16 @@ export function useAuth() {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ updateProfile Hata:', error);
+        throw error;
+      }
+      
+      console.log('✅ updateProfile Başarılı:', data);
       setUserProfile(data);
       return { data, error: null };
     } catch (error) {
+      console.error('❌ updateProfile Catch:', error);
       return { data: null, error };
     }
   };
