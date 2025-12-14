@@ -96,18 +96,18 @@ export function Pricing({
   };
 
   return (
-    <div className="container py-20">
+    <div className="container py-12">
       <div className="text-center space-y-4 mb-12">
-        <h2 className="text-4xl font-bold tracking-tight sm:text-5xl text-gray-900">
+        <h2 className="text-4xl font-bold tracking-tight sm:text-5xl text-text-primary">
           {title}
         </h2>
-        <p className="text-gray-600 text-lg whitespace-pre-line">
+        <p className="text-text-secondary text-lg whitespace-pre-line">
           {description}
         </p>
       </div>
 
       <div className="flex justify-center items-center mb-10 space-x-4">
-        <span className="font-semibold text-gray-900">Tek Seferlik</span>
+        <span className="font-semibold text-text-primary">Tek Seferlik</span>
         <Label>
           <Switch
             ref={switchRef as any}
@@ -117,7 +117,7 @@ export function Pricing({
             className="relative"
           />
         </Label>
-        <span className="font-semibold text-gray-500 opacity-50">
+        <span className="font-semibold text-text-muted opacity-50">
           Abonelik (Yakında)
         </span>
       </div>
@@ -146,15 +146,15 @@ export function Pricing({
               delay: index * 0.1,
             }}
             className={cn(
-              `rounded-2xl border p-8 bg-white text-center relative shadow-sm hover:shadow-lg transition-shadow`,
-              plan.isPopular ? "border-blue-500 border-2 shadow-xl" : "border-gray-200",
+              `rounded-2xl border p-8 bg-white/5 backdrop-blur-xl text-center relative shadow-sm hover:shadow-glow-cyan transition-all duration-300`,
+              plan.isPopular ? "border-neon-cyan border-2 shadow-glow-cyan" : "border-white/10",
               "flex flex-col h-full",
               plan.isPopular && "relative"
             )}
           >
             {plan.isPopular && (
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium flex items-center space-x-1">
+                <span className="bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-4 py-1 rounded-full text-sm font-medium flex items-center space-x-1 shadow-glow-cyan">
                   <Star className="w-4 h-4 fill-current" />
                   <span>En Popüler</span>
                 </span>
