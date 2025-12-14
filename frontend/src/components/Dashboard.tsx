@@ -808,22 +808,30 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
         const result = await response.json();
         console.log('📥 N8N Response:', result);
         
-        // Parse response - support both formats
+        // Parse response - support multiple formats
         // Format 1: { success, status, video: { id, url } }
         // Format 2: { success, videoId, videoUrl }
-        const videoStatus = result.status || (result.success ? 'completed' : 'failed');
+        // Format 3: { success, message: "Workflow was started" } - Processing state
+        
+        // "Workflow was started" means N8N accepted the request - this is SUCCESS
+        const isWorkflowStarted = result.message?.toLowerCase().includes('workflow') || 
+                                   result.message?.toLowerCase().includes('started') ||
+                                   result.message?.toLowerCase().includes('processing');
+        
+        const videoStatus = result.status || (isWorkflowStarted ? 'processing' : (result.success ? 'completed' : 'failed'));
         const videoId = result.video?.id || result.videoId;
         const videoUrl = result.video?.url || result.videoUrl || result.url;
         
-        if (result.success) {
+        // N8N isteği kabul ettiyse (success: true veya workflow started)
+        if (result.success || isWorkflowStarted) {
           try {
             // Video kaydını oluştur
             const videoData = {
               name: videoName,
               description: videoDescription,
-              video_url: videoUrl || '', // URL yoksa boş string
+              video_url: videoUrl || '', // URL yoksa boş string (processing durumunda)
               thumbnail_url: videoUrl ? videoUrl.replace('.mp4', '_thumb.jpg') : '',
-              status: videoStatus === 'processing' ? 'processing' : videoUrl ? 'completed' : 'processing',
+              status: videoUrl ? 'completed' : 'processing', // URL varsa completed, yoksa processing
               views: 0,
               format: selectedFormat,
             };
@@ -831,9 +839,11 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
             await createVideo(videoData);
             console.log('✅ Video veritabanına kaydedildi:', videoData);
             
-            if (videoStatus === 'processing' || !videoUrl) {
-              alert('🎬 Video işleniyor!\n\nVideo hazır olduğunda "Videolarım" bölümünde görünecek.');
+            if (!videoUrl) {
+              // Video henüz hazır değil - processing durumu
+              alert('🎬 Video işleme başladı!\n\nVideo hazır olduğunda "Videolarım" bölümünde görünecek.\n\nNot: Video işleme birkaç dakika sürebilir.');
             } else {
+              // Video hazır
               alert('🎬 Video başarıyla oluşturuldu!\n\n"Videolarım" bölümünde görüntüleyebilirsiniz.');
             }
             
@@ -855,7 +865,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
             
           } catch (saveError) {
             console.error('❌ Video kaydetme hatası:', saveError);
-            alert(`Video oluşturuldu ancak veritabanına kaydedilemedi.\n\n${videoUrl ? `Video URL: ${videoUrl}` : ''}\n\nHata: ${saveError}`);
+            alert(`Video işleme başladı ancak veritabanına kaydedilemedi.\n\nHata: ${saveError}`);
           }
         } else {
           // Failed status
