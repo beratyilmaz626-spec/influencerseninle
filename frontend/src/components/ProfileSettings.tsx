@@ -1,6 +1,6 @@
 import { User, Mail, Building2, Globe } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -17,8 +17,8 @@ export default function ProfileSettings() {
     country: 'Türkiye',
   });
 
-  // userProfile değiştiğinde formu güncelle
-  useState(() => {
+  // userProfile yüklendiğinde formu güncelle
+  useEffect(() => {
     if (userProfile) {
       setFormData({
         full_name: userProfile.full_name || '',
@@ -27,7 +27,7 @@ export default function ProfileSettings() {
         country: userProfile.country || 'Türkiye',
       });
     }
-  });
+  }, [userProfile]);
 
   const handleSave = async () => {
     setLoading(true);
