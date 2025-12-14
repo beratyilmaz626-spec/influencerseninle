@@ -113,6 +113,24 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                 <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">Seninle</span>
               </div>
             </div>
+            {/* Kullanıcı Bilgisi */}
+            <div className="mt-4 p-3 bg-white/5 rounded-xl border border-white/10">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-neon-cyan/30 to-neon-purple/30 rounded-full flex items-center justify-center border border-white/20">
+                  <span className="text-text-primary font-bold text-sm">
+                    {userProfile?.full_name?.charAt(0)?.toUpperCase() || userProfile?.email?.charAt(0)?.toUpperCase() || 'U'}
+                  </span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-text-primary truncate">
+                    {userProfile?.full_name || userProfile?.email?.split('@')[0] || 'Kullanıcı'}
+                  </p>
+                  <p className="text-xs text-text-secondary truncate">
+                    {isAdmin ? '👑 Admin' : '👤 Kullanıcı'}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Navigation */}
