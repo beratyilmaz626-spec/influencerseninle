@@ -787,32 +787,18 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL;
       
       if (!webhookUrl) {
-        // Demo mode - show success message without actual webhook
-        console.log('📹 Video oluşturma isteği (Demo Modu):', {
-          format: selectedFormat,
-          contentCount,
-          dialogType,
-          styleType,
-          gender,
-          age,
-          location,
-          sector,
-          selectedStyle
-        });
-        
-        // Simulate processing time
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        alert('🎬 Video oluşturma isteği alındı!\n\nNot: N8N webhook henüz yapılandırılmamış. Video işleme entegrasyonu aktif edildiğinde videolarınız "Videolarım" bölümünde görünecek.');
+        alert('🎬 N8N webhook URL yapılandırılmamış. Lütfen .env dosyasına VITE_N8N_WEBHOOK_URL ekleyin.');
         setIsGenerating(false);
         return;
       }
       
-      // Add webhook callback URL for n8n to send results back
-      const callbackUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/video-webhook`;
-      formData.append('callbackUrl', callbackUrl);
+      // Video ismini hazırla
+      const sectorName = sectorOptions.find(s => s.id === sector)?.name || sector;
+      const videoName = `${sectorName} - ${new Date().toLocaleDateString('tr-TR')}`;
+      const videoDescription = `${gender}, ${age}, ${location} - ${dialogType === 'custom' ? customDialog : 'Otomatik diyalog'}`;
       
       // Send to n8n webhook
+      console.log('📤 N8N webhook\'a istek gönderiliyor...');
       const response = await fetch(webhookUrl, {
         method: 'POST',
         body: formData,
@@ -820,42 +806,69 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       
       if (response.ok) {
         const result = await response.json();
-        console.log('Webhook response:', result);
+        console.log('📥 N8N Response:', result);
         
-        // N8N'den dönen video URL'sini veritabanına kaydet
-        // N8N response formatına göre video URL'yi al
-        const videoUrl = result.video_url || result.videoUrl || result.url || result.output?.video_url;
+        // Parse response - support both formats
+        // Format 1: { success, status, video: { id, url } }
+        // Format 2: { success, videoId, videoUrl }
+        const videoStatus = result.status || (result.success ? 'completed' : 'failed');
+        const videoId = result.video?.id || result.videoId;
+        const videoUrl = result.video?.url || result.videoUrl || result.url;
         
-        if (videoUrl) {
+        if (result.success) {
           try {
             // Video kaydını oluştur
-            const sectorName = sectorOptions.find(s => s.id === sector)?.name || sector;
-            await createVideo({
-              name: `${sectorName} - ${new Date().toLocaleDateString('tr-TR')}`,
-              description: `${gender}, ${age}, ${location} - ${dialogType === 'custom' ? customDialog : 'Otomatik'}`,
-              video_url: videoUrl,
-              thumbnail_url: videoUrl.replace('.mp4', '_thumb.jpg'), // Thumbnail varsa
-              status: 'completed',
+            const videoData = {
+              name: videoName,
+              description: videoDescription,
+              video_url: videoUrl || '', // URL yoksa boş string
+              thumbnail_url: videoUrl ? videoUrl.replace('.mp4', '_thumb.jpg') : '',
+              status: videoStatus === 'processing' ? 'processing' : videoUrl ? 'completed' : 'processing',
               views: 0,
               format: selectedFormat,
-            });
-            console.log('✅ Video veritabanına kaydedildi:', videoUrl);
-            alert('🎬 Video başarıyla oluşturuldu ve kaydedildi!\n\n"Videolarım" bölümünde görüntüleyebilirsiniz.');
+            };
+            
+            await createVideo(videoData);
+            console.log('✅ Video veritabanına kaydedildi:', videoData);
+            
+            if (videoStatus === 'processing' || !videoUrl) {
+              alert('🎬 Video işleniyor!\n\nVideo hazır olduğunda "Videolarım" bölümünde görünecek.');
+            } else {
+              alert('🎬 Video başarıyla oluşturuldu!\n\n"Videolarım" bölümünde görüntüleyebilirsiniz.');
+            }
+            
+            // Formu temizle
+            setUploadedImage(null);
+            setGender('');
+            setAge('');
+            setLocation('');
+            setSector('');
+            setSelectedFormat('');
+            setContentCount(1);
+            setDialogType('auto');
+            setCustomDialog('');
+            setStyleType('auto');
+            setPrompt('');
+            setPromptType('auto');
+            setManualPrompt('');
+            setSelectedStyle(null);
+            
           } catch (saveError) {
-            console.error('Video kaydetme hatası:', saveError);
-            alert(`Video oluşturuldu ancak kaydedilemedi.\n\nVideo URL: ${videoUrl}\n\nHata: ${saveError}`);
+            console.error('❌ Video kaydetme hatası:', saveError);
+            alert(`Video oluşturuldu ancak veritabanına kaydedilemedi.\n\n${videoUrl ? `Video URL: ${videoUrl}` : ''}\n\nHata: ${saveError}`);
           }
         } else {
-          // Video URL dönmediyse sadece bilgi ver
-          console.log('Video URL bulunamadı, response:', result);
-          alert('Video oluşturma isteği başarıyla gönderildi! Video hazır olduğunda "Videolarım" bölümünde görünecek.');
+          // Failed status
+          const errorMessage = result.message || result.error || 'Bilinmeyen hata';
+          console.error('❌ Video oluşturma başarısız:', errorMessage);
+          alert(`Video oluşturma başarısız!\n\nHata: ${errorMessage}`);
         }
       } else {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
     } catch (error) {
-      console.error('Webhook error:', error);
-      alert('Video oluşturma isteği gönderilirken bir hata oluştu.');
+      console.error('❌ Webhook error:', error);
+      alert(`Video oluşturma isteği gönderilirken bir hata oluştu.\n\nHata: ${error}`);
     } finally {
       setIsGenerating(false);
     }
