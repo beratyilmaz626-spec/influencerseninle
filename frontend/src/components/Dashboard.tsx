@@ -707,8 +707,36 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   ];
 
   const sectorOptions = [
-    { id: 'fashion', name: '👗 Giyim', emoji: '👗' },
-    { id: 'beauty', name: '💄 Güzellik', emoji: '💄' }
+    { id: 'ai', name: '🤖 AI', emoji: '🤖' },
+    { id: 'fitness', name: '💪 Fitness', emoji: '💪' },
+    { id: 'tech', name: '💻 Teknoloji', emoji: '💻' },
+    { id: 'nutrition', name: '🍎 Beslenme', emoji: '🍎' },
+    { id: 'marketing', name: '📈 Pazarlama', emoji: '📈' },
+    { id: 'crypto', name: '₿ Kripto', emoji: '₿' },
+    { id: 'relationships', name: '💕 İlişkiler', emoji: '💕' },
+    { id: 'legal', name: '⚖️ Hukuk', emoji: '⚖️' },
+    { id: 'finance', name: '💰 Finans', emoji: '💰' },
+    { id: 'ecommerce', name: '🛒 E-ticaret', emoji: '🛒' },
+    { id: 'travel', name: '✈️ Seyahat', emoji: '✈️' },
+    { id: 'developer', name: '👨‍💻 Geliştirici', emoji: '👨‍💻' },
+    { id: 'corporate', name: '🏢 Kurumsal', emoji: '🏢' },
+    { id: 'career', name: '👔 Kariyer', emoji: '👔' },
+    { id: 'business', name: '💼 İş', emoji: '💼' },
+    { id: 'trading', name: '📊 Ticaret', emoji: '📊' },
+    { id: 'gaming', name: '🎮 Oyun', emoji: '🎮' },
+    { id: 'kids', name: '👶 Çocuk', emoji: '👶' },
+    { id: 'astrology', name: '🔮 Astroloji', emoji: '🔮' },
+    { id: 'language', name: '🗣️ Dil', emoji: '🗣️' },
+    { id: 'books', name: '📚 Kitaplar', emoji: '📚' },
+    { id: 'beauty', name: '💄 Güzellik', emoji: '💄' },
+    { id: 'medical', name: '🏥 Medikal', emoji: '🏥' },
+    { id: 'cosmetics', name: '💋 Kozmetik', emoji: '💋' },
+    { id: 'design', name: '🎨 Tasarım', emoji: '🎨' },
+    { id: 'realestate', name: '🏘️ Emlak', emoji: '🏘️' },
+    { id: 'fashion', name: '👗 Moda', emoji: '👗' },
+    { id: 'music', name: '🎵 Müzik', emoji: '🎵' },
+    { id: 'food', name: '🍕 Yemek', emoji: '🍕' },
+    { id: 'sports', name: '⚽ Spor', emoji: '⚽' },
   ];
 
   const handlePhotoUpload = (file: File) => {
