@@ -294,20 +294,20 @@ function VideoCard({
             
             {/* Loading state */}
             {!thumbnailLoaded && !thumbnailError && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-50 to-cyan-50">
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-surface to-surface-elevated">
                 <div className="text-center">
-                  <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-2"></div>
-                  <p className="text-sm text-blue-600 font-medium">Önizleme yükleniyor...</p>
+                  <div className="w-8 h-8 border-2 border-neon-cyan border-t-transparent rounded-full animate-spin mb-2"></div>
+                  <p className="text-sm text-neon-cyan font-medium">Önizleme yükleniyor...</p>
                 </div>
               </div>
             )}
             
             {/* Error state */}
             {thumbnailError && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-surface to-surface-elevated">
                 <div className="text-center">
-                  <Play className="w-12 h-12 text-gray-400 mb-2 mx-auto" />
-                  <p className="text-sm text-gray-500 font-medium">Video Önizlemesi</p>
+                  <Play className="w-12 h-12 text-text-secondary mb-2 mx-auto" />
+                  <p className="text-sm text-text-secondary font-medium">Video Önizlemesi</p>
                 </div>
               </div>
             )}
@@ -316,18 +316,9 @@ function VideoCard({
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center text-gray-400 bg-gradient-to-br from-gray-50 to-gray-100 w-full h-full">
-            {video.status === 'processing' ? (
-              <>
-                <div className="w-12 h-12 border-3 border-blue-500 border-t-transparent rounded-full animate-spin mb-3"></div>
-                <p className="text-sm font-medium text-blue-600">Video İşleniyor...</p>
-              </>
-            ) : (
-              <>
-                <Play className="w-12 h-12 mb-2" />
-                <p className="text-sm font-medium">Video Hazırlanıyor</p>
-              </>
-            )}
+          <div className="flex flex-col items-center justify-center text-text-secondary bg-gradient-to-br from-surface to-surface-elevated w-full h-full">
+            <Play className="w-12 h-12 mb-2" />
+            <p className="text-sm font-medium">Video Hazırlanıyor</p>
           </div>
         )}
         
