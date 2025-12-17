@@ -17,6 +17,20 @@ export default function VideoLibrary() {
     refetch();
   };
 
+  // Polling: İşleniyor durumundaki videolar varsa otomatik yenile
+  useEffect(() => {
+    const hasProcessingVideos = videos.some(v => v.status === 'processing');
+    
+    if (hasProcessingVideos) {
+      const pollInterval = setInterval(() => {
+        console.log('🔄 Polling: İşleniyor durumundaki videolar için yenileme...');
+        refetch();
+      }, 5000); // 5 saniyede bir kontrol et
+      
+      return () => clearInterval(pollInterval);
+    }
+  }, [videos, refetch]);
+
   const filteredVideos = videos.filter((video) => {
     const matchesSearch = video.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesFilter = filterStatus === 'all' || video.status === filterStatus;
