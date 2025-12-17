@@ -996,37 +996,37 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
 
   // Form validation reason for UI feedback
   const getFormValidationError = (): string | null => {
-    // 1. Abonelik kontrolü
+    // 1. Abonelik kontrolü (status + period)
     if (!isSubscriptionActive()) {
-      return 'Aktif bir aboneliğiniz bulunmuyor. Lütfen bir plan seçin.';
+      return 'Aktif bir aboneliğin bulunmuyor. Lütfen bir plan seç.';
     }
     
-    // 2. Limit kontrolü
+    // 2. Limit kontrolü (sadece completed videolar sayılır)
     const videoCheck = canCreateVideo();
     if (!videoCheck.allowed) {
-      return videoCheck.reason || 'Video oluşturma limitiniz doldu.';
+      return videoCheck.reason || 'Bu dönemlik video hakkın bitti. Dönem yenilenince devam edebilirsin.';
     }
     
-    // 3. Fotoğraf kontrolü (ZORUNLU)
+    // 3. Fotoğraf kontrolü (ZORUNLU - kesinlikle)
     if (!uploadedImage) {
-      return 'Video oluşturmak için en az 1 fotoğraf yüklemelisiniz.';
+      return 'Video oluşturmak için en az 1 fotoğraf yüklemelisin.';
     }
     
     // 4. Diğer alan kontrolleri
-    if (!gender) return 'Lütfen cinsiyet seçin.';
-    if (!age) return 'Lütfen yaş aralığı seçin.';
-    if (!location) return 'Lütfen mekan seçin.';
-    if (!sector) return 'Lütfen sektör seçin.';
-    if (!selectedFormat) return 'Lütfen video formatı seçin.';
+    if (!gender) return 'Lütfen cinsiyet seç.';
+    if (!age) return 'Lütfen yaş aralığı seç.';
+    if (!location) return 'Lütfen mekan seç.';
+    if (!sector) return 'Lütfen sektör seç.';
+    if (!selectedFormat) return 'Lütfen video formatı seç.';
     
     // Stil kontrolü
     if (styleType === 'manual' && !prompt.trim()) {
-      return 'Manuel stil seçtiniz, lütfen stil açıklaması yazın.';
+      return 'Manuel stil seçtin, lütfen stil açıklaması yaz.';
     }
     
     // Prompt kontrolü
     if (promptType === 'manual' && !manualPrompt.trim()) {
-      return 'Manuel prompt seçtiniz, lütfen prompt yazın.';
+      return 'Manuel prompt seçtin, lütfen prompt yaz.';
     }
     
     return null;
