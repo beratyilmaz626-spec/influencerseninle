@@ -348,17 +348,21 @@ async def can_create_video(
     """
     Check if user can create a video.
     
-    Performs ALL required checks:
+    Performs ALL required checks IN ORDER:
     1. User authentication
-    2. Active subscription status
+    2. Active subscription status + Period validity (30 gün)
     3. Photo uploaded (ZORUNLU)
-    4. Monthly video limit not exceeded
+    4. Monthly video limit not exceeded (SADECE completed videolar)
+    5. Race condition protection
     
     Error codes:
     - UNAUTHORIZED: User not authenticated
     - NO_ACTIVE_SUBSCRIPTION: No active subscription
+    - SUBSCRIPTION_EXPIRED: Period ended (30 gün doldu)
     - PHOTO_REQUIRED: Photo not uploaded
     - MONTHLY_LIMIT_REACHED: Video limit exceeded
+    
+    NOT: Failed videolar hak düşürmez, sadece completed videolar sayılır.
     """
     
     # 1. CHECK: User authenticated?
@@ -396,7 +400,18 @@ async def can_create_video(
             }
         )
     
-    # 3. CHECK: Photo uploaded? (ZORUNLU)
+    # 2b. CHECK: Period validity (30 gün kuralı)
+    period_end_ts = subscription.get("current_period_end")
+    if not is_period_valid(period_end_ts):
+        raise HTTPException(
+            status_code=402,
+            detail={
+                "code": "SUBSCRIPTION_EXPIRED",
+                "message": "Abonelik süreniz dolmuş. Devam etmek için aboneliğinizi yenileyin."
+            }
+        )
+    
+    # 3. CHECK: Photo uploaded? (ZORUNLU - kesinlikle)
     if not request.has_photo:
         raise HTTPException(
             status_code=400,
@@ -406,8 +421,8 @@ async def can_create_video(
             }
         )
     
-    # 4. CHECK: Monthly limit
-    price_id = subscription.get("price_id")
+    # 4. CHECK: Monthly limit (SADECE completed videolar sayılır)
+    price_id = subscription.get("price_id") or subscription.get("plan_id")
     plan = get_plan_from_price_id(price_id)
     
     if not plan:
@@ -419,7 +434,7 @@ async def can_create_video(
             }
         )
     
-    # Calculate period
+    # Calculate period (30 gün)
     period_start_ts = subscription.get("current_period_start")
     if period_start_ts:
         period_start = datetime.fromtimestamp(period_start_ts, tz=timezone.utc)
@@ -429,7 +444,7 @@ async def can_create_video(
     
     period_end = datetime.now(timezone.utc)
     
-    # Get usage
+    # Get usage - SADECE completed videolar sayılır!
     videos_used = await get_videos_count_in_period(user_id, period_start, period_end)
     monthly_limit = plan["monthly_video_limit"]
     remaining = max(0, monthly_limit - videos_used)
@@ -440,8 +455,20 @@ async def can_create_video(
             status_code=403,
             detail={
                 "code": "MONTHLY_LIMIT_REACHED",
-                "message": f"Aylık video limitiniz ({monthly_limit} video) doldu. Yeni dönem başladığında tekrar video oluşturabilirsiniz veya planınızı yükseltin.",
+                "message": f"Bu dönemlik video hakkın bitti ({monthly_limit} video). Dönem yenilenince devam edebilirsin veya planını yükseltebilirsin.",
                 "remaining_videos": remaining,
+                "plan_limit": monthly_limit
+            }
+        )
+    
+    # 5. RACE CONDITION CHECK - Paralel isteklerde sadece 1'i başarılı olmalı
+    if not await check_race_condition(user_id, period_start, monthly_limit):
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "code": "MONTHLY_LIMIT_REACHED",
+                "message": "Bu dönemlik video hakkın bitti. Dönem yenilenince devam edebilirsin.",
+                "remaining_videos": 0,
                 "plan_limit": monthly_limit
             }
         )
