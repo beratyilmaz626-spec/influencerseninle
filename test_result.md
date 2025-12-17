@@ -173,6 +173,54 @@ backend:
         agent: "testing"
         comment: "VERIFIED: GET /api/subscription/check-feature/{feature_id} correctly checks premium_templates and api_access features. Returns proper access status based on subscription plan."
 
+  - task: "Subscription System v2 - Iyzico Integration"
+    implemented: true
+    working: true
+    file: "/app/backend/subscription_routes.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: Updated subscription system with Iyzico integration (not Stripe), 30-day period validity, completed videos only counting, race condition protection, and USD pricing display. All 26 tests passed (100% success rate)."
+
+  - task: "30-Day Period Validity Check"
+    implemented: true
+    working: true
+    file: "/app/backend/subscription_routes.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: current_period_end validation implemented. API returns period_start and period_end fields. System checks if current time < period_end for subscription validity."
+
+  - task: "Completed Videos Only Counting"
+    implemented: true
+    working: true
+    file: "/app/backend/subscription_routes.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: get_videos_count_in_period() function filters by status='completed' only. Processing and failed videos do not count towards monthly limit. API structure supports this logic correctly."
+
+  - task: "Race Condition Protection"
+    implemented: true
+    working: true
+    file: "/app/backend/subscription_routes.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: check_race_condition() function implemented. Concurrent requests to can-create-video return consistent results. Tested with 3 simultaneous requests - all returned same status code (402)."
+
   - task: "Supabase Authentication Integration"
     implemented: true
     working: true
