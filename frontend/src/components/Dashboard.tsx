@@ -1607,7 +1607,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
         document.body
       )}
 
-      {/* Upgrade Plan Modal */}
+      {/* Upgrade/Select Plan Modal - Kullanıcı durumuna göre dinamik içerik */}
       {showUpgradeModal && createPortal(
         <div 
           className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" 
@@ -1620,7 +1620,17 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
           >
             <div className="p-6 border-b border-border">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold text-text-primary">🚀 Planını Yükselt</h3>
+                <div>
+                  <h3 className="text-xl font-bold text-text-primary">
+                    {isSubscriptionActive() ? '🚀 Planını Yükselt' : '📋 Plan Seç'}
+                  </h3>
+                  {/* Mevcut Plan gösterimi */}
+                  {currentPlan && isSubscriptionActive() && (
+                    <p className="text-xs text-text-secondary mt-1">
+                      Mevcut Plan: <span className="text-neon-cyan font-semibold">{currentPlan.name}</span>
+                    </p>
+                  )}
+                </div>
                 <button
                   onClick={() => setShowUpgradeModal(false)}
                   className="text-text-secondary hover:text-text-primary transition-colors"
@@ -1631,34 +1641,92 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
             </div>
             <div className="p-6 space-y-4">
               <p className="text-text-secondary text-sm">
-                Daha fazla video oluşturmak ve premium özelliklere erişmek için planınızı yükseltin.
+                {isSubscriptionActive() 
+                  ? 'Daha fazla video oluşturmak ve premium özelliklere erişmek için planınızı yükseltin.'
+                  : 'Video oluşturmaya başlamak için bir plan seçin.'}
               </p>
               
-              {/* Plan Cards */}
+              {/* USD Bilgilendirme */}
+              <div className="p-2 rounded-lg bg-neon-cyan/5 border border-neon-cyan/20">
+                <p className="text-xs text-text-secondary">
+                  💱 Ödeme USD ($) olarak alınır. Bankanız TL karşılığını yansıtabilir.
+                </p>
+              </div>
+              
+              {/* Plan Cards - Dinamik filtreleme */}
               <div className="grid gap-3">
-                {/* Profesyonel */}
-                <div className="p-4 rounded-xl border border-neon-cyan/30 bg-neon-cyan/5 hover:bg-neon-cyan/10 transition-colors">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-bold text-text-primary">Profesyonel</span>
-                    <span className="text-neon-cyan font-bold">$20/ay</span>
+                {/* Başlangıç - Sadece abonelik yoksa veya inactive ise göster */}
+                {(!isSubscriptionActive() || currentPlanId === null) && (
+                  <div className="p-4 rounded-xl border border-neon-green/30 bg-neon-green/5 hover:bg-neon-green/10 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-bold text-text-primary">Başlangıç</span>
+                      <span className="text-neon-green font-bold">$10/ay</span>
+                    </div>
+                    <p className="text-xs text-text-secondary mb-2">20 video/ay • HD 1080p • Filigransız • E-posta desteği</p>
+                    <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-green to-emerald-500 text-white text-sm font-semibold hover:shadow-lg transition-all">
+                      Başlangıç'a Geç
+                    </button>
                   </div>
-                  <p className="text-xs text-text-secondary mb-2">45 video/ay • Premium şablonlar • API erişimi</p>
-                  <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-cyan to-neon-purple text-white text-sm font-semibold">
-                    Profesyonel'e Geç
-                  </button>
-                </div>
+                )}
                 
-                {/* Kurumsal */}
-                <div className="p-4 rounded-xl border border-neon-purple/30 bg-neon-purple/5 hover:bg-neon-purple/10 transition-colors">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-bold text-text-primary">Kurumsal</span>
-                    <span className="text-neon-purple font-bold">$40/ay</span>
+                {/* Profesyonel - Starter veya abonelik yoksa göster */}
+                {(!isSubscriptionActive() || currentPlanId === 'starter') && (
+                  <div className="p-4 rounded-xl border border-neon-cyan/30 bg-neon-cyan/5 hover:bg-neon-cyan/10 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center space-x-2">
+                        <span className="font-bold text-text-primary">Profesyonel</span>
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-neon-cyan/20 text-neon-cyan">Popüler</span>
+                      </div>
+                      <span className="text-neon-cyan font-bold">$20/ay</span>
+                    </div>
+                    <p className="text-xs text-text-secondary mb-2">45 video/ay • Premium şablonlar • Öncelikli destek • API erişimi</p>
+                    <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-cyan to-neon-purple text-white text-sm font-semibold hover:shadow-glow-cyan transition-all">
+                      Profesyonel'e Geç
+                    </button>
                   </div>
-                  <p className="text-xs text-text-secondary mb-2">100 video/ay • Tüm özellikler • Beyaz etiket</p>
-                  <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-purple to-neon-pink text-white text-sm font-semibold">
-                    Kurumsal'a Geç
-                  </button>
-                </div>
+                )}
+                
+                {/* Professional plan - disabled gösterim */}
+                {isSubscriptionActive() && currentPlanId === 'professional' && (
+                  <div className="p-4 rounded-xl border border-neon-cyan/50 bg-neon-cyan/10 opacity-70">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center space-x-2">
+                        <span className="font-bold text-text-primary">Profesyonel</span>
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-neon-cyan/30 text-neon-cyan">Mevcut Plan</span>
+                      </div>
+                      <span className="text-neon-cyan font-bold">$20/ay</span>
+                    </div>
+                    <p className="text-xs text-text-secondary mb-2">45 video/ay • Premium şablonlar • Öncelikli destek • API erişimi</p>
+                    <button disabled className="w-full py-2 rounded-lg bg-surface-elevated text-text-muted text-sm font-semibold cursor-not-allowed">
+                      ✓ Mevcut Planın
+                    </button>
+                  </div>
+                )}
+                
+                {/* Kurumsal - Starter, Professional veya abonelik yoksa göster */}
+                {(!isSubscriptionActive() || currentPlanId === 'starter' || currentPlanId === 'professional') && (
+                  <div className="p-4 rounded-xl border border-neon-purple/30 bg-neon-purple/5 hover:bg-neon-purple/10 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-bold text-text-primary">Kurumsal</span>
+                      <span className="text-neon-purple font-bold">$40/ay</span>
+                    </div>
+                    <p className="text-xs text-text-secondary mb-2">100 video/ay • Tüm özellikler • Özel destek • Beyaz etiket</p>
+                    <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-purple to-neon-pink text-white text-sm font-semibold hover:shadow-lg transition-all">
+                      Kurumsal'a Geç
+                    </button>
+                  </div>
+                )}
+                
+                {/* Enterprise plan - disabled gösterim veya en yüksek plan mesajı */}
+                {isSubscriptionActive() && currentPlanId === 'enterprise' && (
+                  <div className="p-6 rounded-xl border border-neon-purple/50 bg-neon-purple/10 text-center">
+                    <div className="text-4xl mb-3">🎉</div>
+                    <h4 className="text-lg font-bold text-text-primary mb-2">Zaten en yüksek plandasın!</h4>
+                    <p className="text-sm text-text-secondary">
+                      Kurumsal plan ile tüm özelliklere ve en yüksek video limitine sahipsin.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
