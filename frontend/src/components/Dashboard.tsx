@@ -722,6 +722,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
     videoLimit, 
     videosUsed,
     currentPlan,
+    currentPlanId,
     loading: subscriptionLoading,
     dismissLimitBanner,
     isLimitBannerDismissed,
