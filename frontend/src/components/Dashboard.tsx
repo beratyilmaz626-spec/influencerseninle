@@ -614,13 +614,22 @@ function StyleCard({
     ? `${style.image}?w=400&h=700&fit=crop&q=80&auto=format`
     : style.image;
   
+  const handleClick = () => {
+    if (isLocked) {
+      setShowLockedTooltip(true);
+      setTimeout(() => setShowLockedTooltip(false), 2000);
+      return;
+    }
+    onSelect();
+  };
+
   return (
     <div className="flex items-center justify-center">
       <div
-        onClick={onSelect}
+        onClick={handleClick}
         className={`relative aspect-[9/16] rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.05] hover:shadow-lg ${
           isSelected ? 'ring-4 ring-blue-500 shadow-xl' : 'hover:ring-2 hover:ring-white'
-        }`}
+        } ${isLocked ? 'opacity-70' : ''}`}
         style={{ width: '100%' }}
       >
         {/* Loading skeleton */}
