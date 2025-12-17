@@ -188,6 +188,46 @@ export function useSubscriptionAccess() {
     return SUBSCRIPTION_PLANS[planId];
   }, [getCurrentPlanId]);
 
+  // Banner dismiss işlevi
+  const dismissLimitBanner = useCallback(() => {
+    limitBannerDismissed = true;
+  }, []);
+
+  const isLimitBannerDismissed = useCallback(() => {
+    return limitBannerDismissed;
+  }, []);
+
+  // Abonelik durum kontrolü için helper
+  const getSubscriptionStatusMessage = useCallback((): { type: 'error' | 'warning' | 'info' | 'success'; message: string } | null => {
+    if (loading) return null;
+    
+    if (!isSubscriptionActive()) {
+      return {
+        type: 'error',
+        message: 'Aktif bir aboneliğiniz bulunmuyor. Video oluşturmak için bir plan seçin.',
+      };
+    }
+    
+    const remaining = getRemainingVideos();
+    const limit = getVideoLimit();
+    
+    if (remaining <= 0) {
+      return {
+        type: 'warning',
+        message: `Aylık video limitiniz (${limit} video) doldu. Yeni dönem başladığında tekrar video oluşturabilirsiniz veya planınızı yükseltin.`,
+      };
+    }
+    
+    if (remaining <= 3) {
+      return {
+        type: 'info',
+        message: `Dikkat: Bu ay sadece ${remaining} video hakkınız kaldı.`,
+      };
+    }
+    
+    return null;
+  }, [loading, isSubscriptionActive, getRemainingVideos, getVideoLimit]);
+
   return {
     // State
     subscription,
@@ -212,5 +252,10 @@ export function useSubscriptionAccess() {
     // Aksiyonlar
     incrementVideoUsage,
     refetch: fetchSubscription,
+    
+    // Banner
+    dismissLimitBanner,
+    isLimitBannerDismissed,
+    getSubscriptionStatusMessage,
   };
 }
