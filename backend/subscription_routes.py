@@ -65,8 +65,16 @@ PLAN_CONFIGS = {
     }
 }
 
-# Stripe Price ID to Plan ID mapping
-STRIPE_PRICE_TO_PLAN = {
+# Plan ID mapping - Iyzico entegrasyonu için (Stripe yerine)
+PLAN_ID_MAPPING = {
+    "starter": "starter",
+    "professional": "professional",
+    "enterprise": "enterprise",
+    # Iyzico product ID'leri (ödeme entegrasyonu için)
+    "iyzico_starter": "starter",
+    "iyzico_professional": "professional",
+    "iyzico_enterprise": "enterprise",
+    # Legacy Stripe price IDs (geriye dönük uyumluluk)
     "price_1SI8r5IXoILZ7benDrZEtPLb": "starter",
     "price_starter_monthly": "starter",
     "price_1SI93eIXoILZ7benaTtahoH7": "professional",
