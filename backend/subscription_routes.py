@@ -4,10 +4,22 @@ Bu modül aylık abonelik bazlı yetkilendirme ve video oluşturma
 limit kontrollerini içerir.
 
 ABONELİK KURALLARI:
-- SADECE aylık abonelik modeli
+- SADECE aylık abonelik modeli (30 gün erişim)
+- Ödeme sağlayıcı: IYZICO (Stripe kullanılmıyor)
+- Fiyatlar USD
 - Başlangıç: 20 video/ay, $10
 - Profesyonel: 45 video/ay, $20 (premium templates, api_access)
 - Kurumsal: 100 video/ay, $40 (tüm özellikler)
+
+PERIOD KURALLARI:
+- Ödeme başarılı -> current_period_start = now, current_period_end = now + 30 gün
+- Aktif erişim varken yenileme -> current_period_end += 30 gün
+- current_period_end < now -> status='inactive', video oluşturma kapalı
+
+VIDEO LIMIT KURALLARI:
+- SADECE completed videolar sayılır
+- processing ve failed sayılmaz
+- Failed video = hak iadesi (hak düşmez)
 """
 
 from fastapi import APIRouter, HTTPException, Depends, Header
