@@ -125,6 +125,69 @@ backend:
         agent: "main"
         comment: "Table created with proper schema and RLS policies for authenticated users"
 
+  - task: "Subscription Plans API"
+    implemented: true
+    working: true
+    file: "/app/backend/subscription_routes.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: GET /api/subscription/plans returns 3 plans (starter: 20 videos, professional: 45 videos, enterprise: 100 videos) with correct structure and limits."
+
+  - task: "Subscription Status API"
+    implemented: true
+    working: true
+    file: "/app/backend/subscription_routes.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: GET /api/subscription/status requires authentication and returns proper subscription status, video usage, and remaining videos. Test user correctly shows no active subscription."
+
+  - task: "Video Creation Authorization API"
+    implemented: true
+    working: true
+    file: "/app/backend/subscription_routes.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: POST /api/subscription/can-create-video properly validates authentication, subscription status, and photo requirement. Returns correct error codes: NO_ACTIVE_SUBSCRIPTION when no subscription, PHOTO_REQUIRED when no photo uploaded."
+
+  - task: "Feature Access Control API"
+    implemented: true
+    working: true
+    file: "/app/backend/subscription_routes.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "VERIFIED: GET /api/subscription/check-feature/{feature_id} correctly checks premium_templates and api_access features. Returns proper access status based on subscription plan."
+
+  - task: "Supabase Authentication Integration"
+    implemented: true
+    working: true
+    file: "/app/backend/subscription_routes.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "Environment variable mismatch: Code was looking for SUPABASE_SERVICE_KEY but .env file has SUPABASE_SERVICE_ROLE_KEY"
+      - working: true
+        agent: "testing"
+        comment: "FIXED: Updated environment variable name in subscription_routes.py line 32. Supabase JWT authentication now working correctly for all protected endpoints."
+
 frontend:
   - task: "VideoStyleManager Component"
     implemented: true
