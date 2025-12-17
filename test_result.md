@@ -103,9 +103,14 @@
 #====================================================================================================
 
 user_problem_statement: |
-  User reports that "Video Üret" (Video Create) page shows black screen when clicked. Investigation revealed 
-  that VideoCreateContent component was trying to access styleOptions variable which was not passed as props,
-  causing JavaScript runtime error and component render failure.
+  Implement monthly subscription-based authorization and usage limits for the SaaS application.
+  Key requirements:
+  - Only monthly subscriptions (no annual or one-time payments)
+  - 3 tiers: Başlangıç ($10/20 videos), Profesyonel ($20/45 videos), Kurumsal ($40/100 videos)
+  - Photo upload is MANDATORY for video creation
+  - Frontend + Backend security for all subscription checks
+  - Video status flow: Processing -> Completed with easy download
+  - Premium template locking for lower-tier users
 
 backend:
   - task: "Video styles database table"
