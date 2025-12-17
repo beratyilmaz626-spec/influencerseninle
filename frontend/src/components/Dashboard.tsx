@@ -1351,9 +1351,82 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
               )}
             </div>
 
-            {/* Video Oluştur Button */}
+            {/* Kalan Video Hakkı UI */}
             <div className="space-y-2 pt-4 border-t border-border">
+              {!subscriptionLoading && (
+                <div className="glass-card p-3 bg-surface-elevated/50">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-medium text-text-secondary">Aylık Video Hakkı</span>
+                    {currentPlan && (
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-neon-cyan/10 text-neon-cyan border border-neon-cyan/30">
+                        {currentPlan.name}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-bold text-text-primary">
+                      {remainingVideos} <span className="text-sm font-normal text-text-secondary">/ {videoLimit}</span>
+                    </span>
+                    <span className="text-xs text-text-muted">Kullanılan: {videosUsed}</span>
+                  </div>
+                  {/* Progress bar */}
+                  <div className="mt-2 h-1.5 bg-surface rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full transition-all duration-500 ${
+                        remainingVideos <= 3 ? 'bg-orange-400' : 
+                        remainingVideos <= 0 ? 'bg-neon-pink' : 'bg-gradient-to-r from-neon-cyan to-neon-purple'
+                      }`}
+                      style={{ width: `${videoLimit > 0 ? ((videoLimit - remainingVideos) / videoLimit) * 100 : 0}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+              
+              {/* Abonelik/Limit Uyarı Banner'ı */}
+              {subscriptionStatus && showLimitBanner && !isLimitBannerDismissed() && (
+                <div className={`p-3 rounded-xl border ${
+                  subscriptionStatus.type === 'error' ? 'bg-neon-pink/10 border-neon-pink/30 text-neon-pink' :
+                  subscriptionStatus.type === 'warning' ? 'bg-orange-400/10 border-orange-400/30 text-orange-400' :
+                  'bg-neon-cyan/10 border-neon-cyan/30 text-neon-cyan'
+                }`}>
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start space-x-2">
+                      <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                      <p className="text-xs">{subscriptionStatus.message}</p>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        setShowLimitBanner(false);
+                        dismissLimitBanner();
+                      }}
+                      className="text-text-secondary hover:text-text-primary ml-2"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                  {(subscriptionStatus.type === 'error' || subscriptionStatus.type === 'warning') && (
+                    <button 
+                      onClick={() => setShowUpgradeModal(true)}
+                      className="mt-2 w-full text-xs py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors font-medium"
+                    >
+                      Paketi Yükselt →
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Video Oluştur Button */}
+            <div className="space-y-2 pt-2">
               <h3 className="text-sm font-semibold text-text-primary">🚀 Video Oluşturmaya Hazır mısınız?</h3>
+              
+              {/* Form validation hatası gösterimi */}
+              {!isFormValid() && !isGenerating && (
+                <p className="text-xs text-orange-400 bg-orange-400/10 p-2 rounded-lg border border-orange-400/20">
+                  ⚠️ {getFormValidationError()}
+                </p>
+              )}
+              
               <button
                 onClick={handleVideoGeneration}
                 disabled={isGenerating || !isFormValid()}
