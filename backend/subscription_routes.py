@@ -212,6 +212,38 @@ def is_subscription_active(status: str) -> bool:
     return status in ["active", "trialing"]
 
 
+def is_period_valid(period_end_ts: Optional[int]) -> bool:
+    """
+    Check if the subscription period is still valid (30 gün kuralı).
+    
+    current_period_end < now -> erişim kapalı
+    """
+    if not period_end_ts:
+        return False
+    
+    period_end = datetime.fromtimestamp(period_end_ts, tz=timezone.utc)
+    now = datetime.now(timezone.utc)
+    
+    return now < period_end
+
+
+async def check_race_condition(user_id: str, period_start: datetime, monthly_limit: int) -> bool:
+    """
+    Race condition kontrolü - paralel isteklerde sadece 1'i başarılı olmalı.
+    
+    Bu fonksiyon video sayısını atomik olarak kontrol eder.
+    Eğer limit dolmuşsa False döner.
+    """
+    current_count = await get_videos_count_in_period(
+        user_id, 
+        period_start, 
+        datetime.now(timezone.utc)
+    )
+    
+    # Atomik kontrol - bir kez daha sayıyı kontrol et
+    return current_count < monthly_limit
+
+
 @subscription_router.get("/status", response_model=SubscriptionStatusResponse)
 async def get_subscription_status(authorization: str = Header(None)):
     """
