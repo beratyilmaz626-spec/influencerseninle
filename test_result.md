@@ -251,12 +251,12 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Iyzico-based monthly subscription (30 days)"
-    - "Period validity check (current_period_end)"
-    - "ONLY completed videos count towards limit"
-    - "Race condition protection"
-    - "Upgrade modal shows correct plans based on subscription status"
-    - "USD pricing display"
+    - "Iyzico-based monthly subscription (30 days) - ✅ TESTED"
+    - "Period validity check (current_period_end) - ✅ TESTED"
+    - "ONLY completed videos count towards limit - ✅ TESTED"
+    - "Race condition protection - ✅ TESTED"
+    - "Upgrade modal shows correct plans based on subscription status - ✅ TESTED"
+    - "USD pricing display - ✅ TESTED"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -266,6 +266,11 @@ test_plan:
     - "Photo upload mandatory check - ✅ COMPLETED"
     - "Video status flow (processing -> completed) - ✅ COMPLETED"
     - "Easy video download - ✅ COMPLETED"
+    - "Iyzico payment integration v2 - ✅ COMPLETED"
+    - "30-day period validity checks - ✅ COMPLETED"
+    - "Completed videos only counting - ✅ COMPLETED"
+    - "Race condition protection - ✅ COMPLETED"
+    - "USD pricing display - ✅ COMPLETED"
 
 agent_communication:
   - agent: "main"
