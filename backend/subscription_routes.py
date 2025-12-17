@@ -163,13 +163,20 @@ async def get_user_subscription(user_id: str) -> Optional[dict]:
 
 
 async def get_videos_count_in_period(user_id: str, period_start: datetime, period_end: datetime) -> int:
-    """Count videos created by user in the given period"""
+    """
+    Count COMPLETED videos created by user in the given period.
+    
+    ÖNEMLI: SADECE status='completed' olan videolar sayılır!
+    - processing videolar sayılmaz (henüz tamamlanmadı)
+    - failed videolar sayılmaz (hak iadesi - kullanıcı hakkı yanmaz)
+    """
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(
                 f"{SUPABASE_URL}/rest/v1/videos",
                 params={
                     "user_id": f"eq.{user_id}",
+                    "status": "eq.completed",  # SADECE completed videolar!
                     "created_at": f"gte.{period_start.isoformat()}",
                     "select": "count"
                 },
