@@ -251,6 +251,7 @@ export function useSubscriptionAccess() {
     
     // Erişim kontrolleri
     isSubscriptionActive,
+    isPeriodValid,
     hasFeature,
     canCreateVideo,
     
