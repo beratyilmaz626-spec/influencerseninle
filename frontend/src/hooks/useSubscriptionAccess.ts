@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from './useAuth';
 import {
@@ -25,6 +25,9 @@ interface MonthlyUsage {
   periodStart: Date | null;
   periodEnd: Date | null;
 }
+
+// Banner dismiss state - persists until page refresh
+let limitBannerDismissed = false;
 
 export function useSubscriptionAccess() {
   const { user } = useAuth();
