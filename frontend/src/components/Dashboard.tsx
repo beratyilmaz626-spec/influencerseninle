@@ -882,6 +882,9 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
             await createVideo(videoData);
             console.log('✅ Video veritabanına kaydedildi:', videoData);
             
+            // Aylık kullanımı güncelle
+            await incrementVideoUsage();
+            
             if (!videoUrl) {
               // Video henüz hazır değil - processing durumu
               alert('🎬 Video işleme başladı!\n\nVideo hazır olduğunda "Videolarım" bölümünde görünecek.\n\nNot: Video işleme birkaç dakika sürebilir.');
