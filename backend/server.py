@@ -74,6 +74,11 @@ from stripe_routes import stripe_router, set_database
 set_database(db)
 app.include_router(stripe_router)
 
+# Import and include Subscription authorization routes
+from subscription_routes import subscription_router, set_subscription_db
+set_subscription_db(db)
+app.include_router(subscription_router)
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
