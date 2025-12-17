@@ -1564,6 +1564,65 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
         </div>,
         document.body
       )}
+
+      {/* Upgrade Plan Modal */}
+      {showUpgradeModal && createPortal(
+        <div 
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" 
+          style={{ zIndex: 10001 }}
+          onClick={() => setShowUpgradeModal(false)}
+        >
+          <div 
+            className="glass-card max-w-lg w-full shadow-elevated"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6 border-b border-border">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold text-text-primary">🚀 Planını Yükselt</h3>
+                <button
+                  onClick={() => setShowUpgradeModal(false)}
+                  className="text-text-secondary hover:text-text-primary transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+            <div className="p-6 space-y-4">
+              <p className="text-text-secondary text-sm">
+                Daha fazla video oluşturmak ve premium özelliklere erişmek için planınızı yükseltin.
+              </p>
+              
+              {/* Plan Cards */}
+              <div className="grid gap-3">
+                {/* Profesyonel */}
+                <div className="p-4 rounded-xl border border-neon-cyan/30 bg-neon-cyan/5 hover:bg-neon-cyan/10 transition-colors">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-bold text-text-primary">Profesyonel</span>
+                    <span className="text-neon-cyan font-bold">$20/ay</span>
+                  </div>
+                  <p className="text-xs text-text-secondary mb-2">45 video/ay • Premium şablonlar • API erişimi</p>
+                  <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-cyan to-neon-purple text-white text-sm font-semibold">
+                    Profesyonel'e Geç
+                  </button>
+                </div>
+                
+                {/* Kurumsal */}
+                <div className="p-4 rounded-xl border border-neon-purple/30 bg-neon-purple/5 hover:bg-neon-purple/10 transition-colors">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-bold text-text-primary">Kurumsal</span>
+                    <span className="text-neon-purple font-bold">$40/ay</span>
+                  </div>
+                  <p className="text-xs text-text-secondary mb-2">100 video/ay • Tüm özellikler • Beyaz etiket</p>
+                  <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-purple to-neon-pink text-white text-sm font-semibold">
+                    Kurumsal'a Geç
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }
