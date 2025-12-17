@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Home, Video, Plus, Settings, LogOut, CreditCard, Play, BarChart3, Clock, Eye, TrendingUp, Users, Sparkles, Grid3x3 as Grid3X3, UserCheck, Wand2, Upload, X, ChevronDown, CheckCircle2 } from 'lucide-react';
+import { Home, Video, Plus, Settings, LogOut, CreditCard, Play, BarChart3, Clock, Eye, TrendingUp, Users, Sparkles, Grid3x3 as Grid3X3, UserCheck, Wand2, Upload, X, ChevronDown, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useVideos } from '../hooks/useVideos';
 import VideoLibrary from './VideoLibrary';
@@ -18,6 +18,7 @@ import PromptSection from './video-creation/PromptSection';
 import CreditDisplay from './CreditDisplay';
 import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
+import { useSubscriptionAccess } from '../hooks/useSubscriptionAccess';
 
 interface DashboardProps {
   onLogout: () => void;
