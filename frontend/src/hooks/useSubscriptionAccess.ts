@@ -121,12 +121,22 @@ export function useSubscriptionAccess() {
     return plan?.id ?? null;
   }, [subscription]);
 
-  // Abonelik aktif mi kontrol et
+  // Period geçerli mi kontrol et (30 gün kuralı)
+  const isPeriodValid = useCallback((): boolean => {
+    if (!subscription?.current_period_end) return false;
+    const periodEnd = new Date(subscription.current_period_end * 1000);
+    const now = new Date();
+    return now < periodEnd;
+  }, [subscription]);
+
+  // Abonelik aktif mi kontrol et (status + period)
   const isSubscriptionActive = useCallback((): boolean => {
     if (!subscription) return false;
-    return subscription.subscription_status === 'active' || 
-           subscription.subscription_status === 'trialing';
-  }, [subscription]);
+    const statusActive = subscription.subscription_status === 'active' || 
+                         subscription.subscription_status === 'trialing';
+    // Status aktif VE period geçerli olmalı
+    return statusActive && isPeriodValid();
+  }, [subscription, isPeriodValid]);
 
   // Belirli bir özelliğe erişim var mı kontrol et
   const hasFeature = useCallback((featureId: FeatureId): boolean => {
