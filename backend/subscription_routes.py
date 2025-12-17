@@ -29,7 +29,7 @@ def set_subscription_db(database):
 
 # Supabase configuration
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://yxoynfnyrietkisnbqwf.supabase.co")
-SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_KEY", "")
+SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
 
 # Plan configurations - MUST MATCH frontend/src/config/subscription-plans.ts
 PLAN_CONFIGS = {
