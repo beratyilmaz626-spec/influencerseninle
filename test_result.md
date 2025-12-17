@@ -200,6 +200,43 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: |
+      SUBSCRIPTION-BASED AUTHORIZATION IMPLEMENTED:
+      
+      1. Backend API Security (/app/backend/subscription_routes.py):
+         - POST /api/subscription/can-create-video - Validates: auth, subscription status, photo, monthly limit
+         - GET /api/subscription/status - Returns subscription info and usage
+         - GET /api/subscription/check-feature/{feature_id} - Feature access control
+         - Error codes: UNAUTHORIZED, NO_ACTIVE_SUBSCRIPTION, PHOTO_REQUIRED, MONTHLY_LIMIT_REACHED
+      
+      2. Frontend Dashboard.tsx Updates:
+         - useSubscriptionAccess hook integrated into VideoCreateContent
+         - "Aylık Video Hakkı" UI shows remaining/total videos with progress bar
+         - Subscription/limit warning banner with dismiss option
+         - Form validation error messages displayed above submit button
+         - handleVideoGeneration includes pre-flight subscription checks
+         - incrementVideoUsage called on successful video creation
+         - Upgrade modal for easy plan upgrade
+      
+      3. VideoLibrary.tsx Updates:
+         - Polling enabled for processing videos (5 second interval)
+         - Improved download button with direct download functionality
+         - Processing state shows disabled download with spinner
+         - Failed state shows "Tekrar Dene" button
+      
+      4. StyleCard Premium Template Lock:
+         - isPremium and hasPremiumAccess props added
+         - Lock icon overlay for locked premium templates
+         - Tooltip explaining upgrade requirement
+      
+      Test scenarios to verify:
+      1) No photo -> disabled button + "Video oluşturmak için en az 1 fotoğraf yüklemelisiniz"
+      2) No subscription -> disabled button + subscription warning banner
+      3) Limit reached -> disabled button + limit warning + upgrade CTA
+      4) Processing video -> spinner + "Hazırlanıyor..." + polling
+      5) Completed video -> "İndir" button active + single-click download
+      
+  - agent: "main"
+    message: |
       UI REDESIGN COMPLETED - P0 Issues Fixed:
       
       1. Video Üret Page Form (Dashboard.tsx VideoCreateContent):
