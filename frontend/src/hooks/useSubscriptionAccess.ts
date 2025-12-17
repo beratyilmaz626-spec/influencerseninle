@@ -214,7 +214,7 @@ export function useSubscriptionAccess() {
     if (!isSubscriptionActive()) {
       return {
         type: 'error',
-        message: 'Aktif bir aboneliğiniz bulunmuyor. Video oluşturmak için bir plan seçin.',
+        message: 'Aktif bir aboneliğin bulunmuyor. Video oluşturmak için bir plan seç.',
       };
     }
     
@@ -224,14 +224,14 @@ export function useSubscriptionAccess() {
     if (remaining <= 0) {
       return {
         type: 'warning',
-        message: `Aylık video limitiniz (${limit} video) doldu. Yeni dönem başladığında tekrar video oluşturabilirsiniz veya planınızı yükseltin.`,
+        message: `Bu dönemlik video hakkın bitti (${limit} video). Dönem yenilenince devam edebilirsin.`,
       };
     }
     
     if (remaining <= 3) {
       return {
         type: 'info',
-        message: `Dikkat: Bu ay sadece ${remaining} video hakkınız kaldı.`,
+        message: `Dikkat: Bu dönem sadece ${remaining} video hakkın kaldı.`,
       };
     }
     
