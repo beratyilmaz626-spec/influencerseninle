@@ -928,20 +928,46 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
     setShowSectorModal(false);
   };
 
-  const isFormValid = () => {
-    const baseValid = uploadedImage && gender && age && location && sector && selectedFormat;
+  // Form validation reason for UI feedback
+  const getFormValidationError = (): string | null => {
+    // 1. Abonelik kontrolü
+    if (!isSubscriptionActive()) {
+      return 'Aktif bir aboneliğiniz bulunmuyor. Lütfen bir plan seçin.';
+    }
+    
+    // 2. Limit kontrolü
+    const videoCheck = canCreateVideo();
+    if (!videoCheck.allowed) {
+      return videoCheck.reason || 'Video oluşturma limitiniz doldu.';
+    }
+    
+    // 3. Fotoğraf kontrolü (ZORUNLU)
+    if (!uploadedImage) {
+      return 'Video oluşturmak için en az 1 fotoğraf yüklemelisiniz.';
+    }
+    
+    // 4. Diğer alan kontrolleri
+    if (!gender) return 'Lütfen cinsiyet seçin.';
+    if (!age) return 'Lütfen yaş aralığı seçin.';
+    if (!location) return 'Lütfen mekan seçin.';
+    if (!sector) return 'Lütfen sektör seçin.';
+    if (!selectedFormat) return 'Lütfen video formatı seçin.';
     
     // Stil kontrolü
     if (styleType === 'manual' && !prompt.trim()) {
-      return false;
+      return 'Manuel stil seçtiniz, lütfen stil açıklaması yazın.';
     }
     
     // Prompt kontrolü
     if (promptType === 'manual' && !manualPrompt.trim()) {
-      return false;
+      return 'Manuel prompt seçtiniz, lütfen prompt yazın.';
     }
     
-    return baseValid;
+    return null;
+  };
+  
+  const isFormValid = () => {
+    return getFormValidationError() === null;
   };
 
   return (
