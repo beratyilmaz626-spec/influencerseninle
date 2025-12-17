@@ -187,7 +187,12 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Subscription-based video creation authorization"
+    - "Monthly video limit enforcement"
+    - "Photo upload mandatory check"
+    - "Video status flow (processing -> completed)"
+    - "Easy video download"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
