@@ -694,35 +694,54 @@ class SubscriptionTester:
             return False
     
     async def run_all_tests(self):
-        """Run all subscription system tests"""
-        print("🚀 Starting InfluencerSeninle Subscription System Tests")
+        """Run all subscription system tests - Updated for v2"""
+        print("🚀 Starting InfluencerSeninle Subscription System Tests v2")
         print(f"Backend URL: {self.backend_url}")
         print(f"Test User: {TEST_EMAIL}")
-        print("=" * 60)
+        print("=" * 70)
+        print("🔍 TESTING v2 FEATURES:")
+        print("  1. Iyzico payment integration (not Stripe)")
+        print("  2. 30-day period validity (current_period_end check)")
+        print("  3. ONLY completed videos count (processing/failed don't count)")
+        print("  4. Race condition protection")
+        print("  5. USD pricing display")
+        print("=" * 70)
         
-        # Test 1: Subscription Plans (no auth required)
+        # Test 1: Subscription Plans v2 (no auth required)
         await self.test_subscription_plans()
         
-        # Test 2: Authentication
+        # Test 2: Iyzico Integration Check
+        await self.test_iyzico_integration()
+        
+        # Test 3: USD Pricing Display
+        await self.test_usd_pricing_display()
+        
+        # Test 4: Authentication
         auth_success = await self.authenticate_user()
         
         if auth_success:
-            # Test 3: Subscription Status (requires auth)
+            # Test 5: Subscription Status v2 (requires auth)
             await self.test_subscription_status()
             
-            # Test 4: Video Creation Authorization (requires auth)
-            await self.test_can_create_video()
+            # Test 6: Video Creation Authorization v2 (requires auth)
+            await self.test_can_create_video_v2()
             
-            # Test 5: Feature Access (requires auth)
+            # Test 7: Completed Videos Only Counting
+            await self.test_completed_videos_only_counting()
+            
+            # Test 8: Race Condition Protection
+            await self.test_race_condition_protection()
+            
+            # Test 9: Feature Access (requires auth)
             await self.test_feature_access()
         
-        # Test 6: Unauthorized Access
+        # Test 10: Unauthorized Access
         await self.test_unauthorized_access()
         
         # Summary
-        print("=" * 60)
-        print("📊 TEST SUMMARY")
-        print("=" * 60)
+        print("=" * 70)
+        print("📊 TEST SUMMARY v2")
+        print("=" * 70)
         
         total_tests = len(self.test_results)
         passed_tests = sum(1 for result in self.test_results if result["success"])
@@ -732,6 +751,13 @@ class SubscriptionTester:
         print(f"✅ Passed: {passed_tests}")
         print(f"❌ Failed: {failed_tests}")
         print(f"Success Rate: {(passed_tests/total_tests)*100:.1f}%")
+        
+        # Categorize results
+        v2_tests = [r for r in self.test_results if 'v2' in r['test'].lower() or 'iyzico' in r['test'].lower() or 'usd' in r['test'].lower() or 'race' in r['test'].lower() or 'completed' in r['test'].lower()]
+        legacy_tests = [r for r in self.test_results if r not in v2_tests]
+        
+        print(f"\n🆕 v2 Features: {sum(1 for r in v2_tests if r['success'])}/{len(v2_tests)} passed")
+        print(f"🔄 Legacy Features: {sum(1 for r in legacy_tests if r['success'])}/{len(legacy_tests)} passed")
         
         if failed_tests > 0:
             print("\n❌ FAILED TESTS:")
