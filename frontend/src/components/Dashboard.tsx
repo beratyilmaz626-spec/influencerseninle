@@ -593,15 +593,21 @@ function VideoThumbnail({ video }: { video: any }) {
 function StyleCard({ 
   style, 
   isSelected, 
-  onSelect 
+  onSelect,
+  isPremium = false,
+  hasPremiumAccess = true
 }: { 
-  style: { id: string; name: string; image: string }; 
+  style: { id: string; name: string; image: string; isPremium?: boolean }; 
   isSelected: boolean; 
-  onSelect: () => void; 
+  onSelect: () => void;
+  isPremium?: boolean;
+  hasPremiumAccess?: boolean;
 }) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [showLockedTooltip, setShowLockedTooltip] = useState(false);
   const isVideo = style.image.endsWith('.mp4') || style.image.endsWith('.webm');
+  const isLocked = isPremium && !hasPremiumAccess;
   
   // Optimize Unsplash image URLs with proper size parameters
   const optimizedImageUrl = style.image.includes('unsplash.com') 
