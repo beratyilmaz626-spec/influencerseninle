@@ -193,11 +193,11 @@ async def get_videos_count_in_period(user_id: str, period_start: datetime, perio
 
 
 def get_plan_from_price_id(price_id: str) -> Optional[dict]:
-    """Get plan config from Stripe price ID"""
-    plan_id = STRIPE_PRICE_TO_PLAN.get(price_id)
-    if plan_id:
-        return PLAN_CONFIGS.get(plan_id)
-    return None
+    """Get plan config from price/plan ID (Iyzico veya legacy Stripe)"""
+    if not price_id:
+        return None
+    plan_id = PLAN_ID_MAPPING.get(price_id, price_id)
+    return PLAN_CONFIGS.get(plan_id)
 
 
 def is_subscription_active(status: str) -> bool:
