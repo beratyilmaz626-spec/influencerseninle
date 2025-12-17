@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
 """
-Backend API Tests for InfluencerSeninle Subscription System
-Tests the subscription-based authorization system with real API calls.
+Backend API Tests for InfluencerSeninle Subscription System v2
+Tests the updated subscription system with Iyzico integration, 30-day periods, 
+and completed video counting.
+
+KEY CHANGES TESTED:
+1. Iyzico payment integration (not Stripe)
+2. 30-day period validity (current_period_end check)
+3. ONLY completed videos count (processing/failed don't count)
+4. Race condition protection
+5. Upgrade modal dynamic content
+6. USD pricing display
 """
 
 import asyncio
@@ -9,7 +18,7 @@ import httpx
 import json
 from typing import Dict, Any, Optional
 import os
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 # Configuration
 BACKEND_URL = "https://abone-video-tr.preview.emergentagent.com"
