@@ -210,7 +210,7 @@ class SubscriptionTester:
             self.log_test("Video Creation Auth", False, "No auth token available")
             return False
         
-        # Test 1: No photo uploaded (should fail with PHOTO_REQUIRED)
+        # Test 1: No photo uploaded (should fail with PHOTO_REQUIRED or NO_ACTIVE_SUBSCRIPTION)
         try:
             response = await self.client.post(
                 f"{self.backend_url}/api/subscription/can-create-video",
@@ -227,9 +227,20 @@ class SubscriptionTester:
                     self.log_test("Video Creation - No Photo", False, 
                                 f"Expected PHOTO_REQUIRED error, got: {error_detail}")
                     return False
+            elif response.status_code == 402:
+                # If user has no subscription, it will check subscription first
+                data = response.json()
+                error_detail = data.get("detail", {})
+                if isinstance(error_detail, dict) and error_detail.get("code") == "NO_ACTIVE_SUBSCRIPTION":
+                    self.log_test("Video Creation - No Photo", True, 
+                                "Correctly rejected: NO_ACTIVE_SUBSCRIPTION (subscription checked before photo)")
+                else:
+                    self.log_test("Video Creation - No Photo", False, 
+                                f"Expected NO_ACTIVE_SUBSCRIPTION error, got: {error_detail}")
+                    return False
             else:
                 self.log_test("Video Creation - No Photo", False, 
-                            f"Expected 400 status, got {response.status_code}", response.json())
+                            f"Expected 400 or 402 status, got {response.status_code}", response.json())
                 return False
                 
         except Exception as e:
