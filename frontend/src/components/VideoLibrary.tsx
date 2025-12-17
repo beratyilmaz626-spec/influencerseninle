@@ -415,30 +415,90 @@ function VideoCard({
             {video.video_url ? (
               <a
                 href={video.video_url}
-                download
-                className="flex-1 bg-gradient-to-r from-neon-cyan to-neon-purple hover:shadow-glow-cyan text-white py-2 rounded-xl text-sm font-medium transition-all flex items-center justify-center space-x-1"
+                download={`${video.name.replace(/[^a-zA-Z0-9-_]/g, '_')}.mp4`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 bg-gradient-to-r from-neon-cyan to-neon-purple hover:shadow-glow-cyan text-white py-2 rounded-xl text-sm font-medium transition-all flex items-center justify-center space-x-1 hover:scale-[1.02]"
+                onClick={(e) => {
+                  // Direct download attempt
+                  e.preventDefault();
+                  const link = document.createElement('a');
+                  link.href = video.video_url!;
+                  link.download = `${video.name.replace(/[^a-zA-Z0-9-_]/g, '_')}.mp4`;
+                  link.target = '_blank';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
               >
                 <Download className="w-4 h-4" />
                 <span>İndir</span>
               </a>
             ) : (
-              <button className="flex-1 bg-gradient-to-r from-neon-cyan to-neon-purple hover:shadow-glow-cyan text-white py-2 rounded-xl text-sm font-medium transition-all flex items-center justify-center space-x-1">
+              <button 
+                disabled
+                className="flex-1 bg-surface-elevated text-text-muted py-2 rounded-xl text-sm font-medium transition-all flex items-center justify-center space-x-1 cursor-not-allowed"
+              >
                 <Download className="w-4 h-4" />
-                <span>İndir</span>
+                <span>URL Yok</span>
               </button>
             )}
             <button 
               onClick={() => video.video_url && onPreview(video.video_url, video.name)}
               className="p-2 border border-border hover:bg-surface-elevated hover:border-neon-cyan rounded-xl transition-all"
-              title="Paylaş"
+              title="İzle"
+            >
+              <Play className="w-4 h-4 text-text-secondary" />
+            </button>
+            <button 
+              onClick={() => {
+                if (video.video_url) {
+                  navigator.clipboard.writeText(video.video_url);
+                  alert('Video linki kopyalandı!');
+                }
+              }}
+              className="p-2 border border-border hover:bg-surface-elevated hover:border-neon-cyan rounded-xl transition-all"
+              title="Linki Kopyala"
             >
               <Share2 className="w-4 h-4 text-text-secondary" />
             </button>
             <button 
-              className="p-2 border border-border hover:bg-surface-elevated hover:border-neon-cyan rounded-xl transition-all"
-              title="Düzenle"
+              onClick={onDelete}
+              className="p-2 border border-neon-pink/30 hover:bg-neon-pink/10 hover:border-neon-pink rounded-xl transition-all"
+              title="Sil"
             >
-              <Edit className="w-4 h-4 text-text-secondary" />
+              <Trash2 className="w-4 h-4 text-neon-pink" />
+            </button>
+          </div>
+        )}
+        
+        {/* Processing durumunda disabled indirme butonu */}
+        {video.status === 'processing' && (
+          <div className="flex gap-2">
+            <button 
+              disabled
+              className="flex-1 bg-surface-elevated text-text-muted py-2 rounded-xl text-sm font-medium transition-all flex items-center justify-center space-x-1 cursor-not-allowed"
+            >
+              <div className="w-4 h-4 border-2 border-text-muted border-t-transparent rounded-full animate-spin" />
+              <span>Hazırlanıyor...</span>
+            </button>
+            <button 
+              onClick={onDelete}
+              className="p-2 border border-neon-pink/30 hover:bg-neon-pink/10 hover:border-neon-pink rounded-xl transition-all"
+              title="Sil"
+            >
+              <Trash2 className="w-4 h-4 text-neon-pink" />
+            </button>
+          </div>
+        )}
+        
+        {/* Failed durumunda tekrar dene butonu */}
+        {video.status === 'failed' && (
+          <div className="flex gap-2">
+            <button 
+              className="flex-1 bg-gradient-to-r from-orange-400 to-neon-pink hover:shadow-lg text-white py-2 rounded-xl text-sm font-medium transition-all flex items-center justify-center space-x-1"
+            >
+              <span>Tekrar Dene</span>
             </button>
             <button 
               onClick={onDelete}
