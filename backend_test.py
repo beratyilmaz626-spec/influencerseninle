@@ -94,8 +94,8 @@ class SubscriptionTester:
             return False
     
     async def test_subscription_plans(self):
-        """Test GET /api/subscription/plans endpoint"""
-        print("📋 Testing subscription plans endpoint...")
+        """Test GET /api/subscription/plans endpoint - Updated for v2"""
+        print("📋 Testing subscription plans endpoint (v2)...")
         
         try:
             response = await self.client.get(f"{self.backend_url}/api/subscription/plans")
@@ -109,11 +109,11 @@ class SubscriptionTester:
                     self.log_test("Subscription Plans Count", False, f"Expected 3 plans, got {len(plans)}", data)
                     return False
                 
-                # Check plan details
+                # Check plan details with USD pricing
                 expected_plans = {
-                    "starter": {"monthly_video_limit": 20},
-                    "professional": {"monthly_video_limit": 45},
-                    "enterprise": {"monthly_video_limit": 100}
+                    "starter": {"monthly_video_limit": 20, "name": "Başlangıç"},
+                    "professional": {"monthly_video_limit": 45, "name": "Profesyonel"},
+                    "enterprise": {"monthly_video_limit": 100, "name": "Kurumsal"}
                 }
                 
                 found_plans = {}
@@ -130,6 +130,8 @@ class SubscriptionTester:
                         continue
                     
                     plan = found_plans[plan_id]
+                    
+                    # Check video limit
                     if plan.get("monthly_video_limit") != expected["monthly_video_limit"]:
                         self.log_test(f"Plan {plan_id} video limit", False, 
                                     f"Expected {expected['monthly_video_limit']}, got {plan.get('monthly_video_limit')}")
@@ -137,19 +139,36 @@ class SubscriptionTester:
                     else:
                         self.log_test(f"Plan {plan_id} video limit", True, 
                                     f"Correct limit: {plan.get('monthly_video_limit')} videos")
+                    
+                    # Check Turkish name
+                    if plan.get("name") != expected["name"]:
+                        self.log_test(f"Plan {plan_id} name", False, 
+                                    f"Expected '{expected['name']}', got '{plan.get('name')}'")
+                        all_correct = False
+                    else:
+                        self.log_test(f"Plan {plan_id} name", True, 
+                                    f"Correct Turkish name: {plan.get('name')}")
+                    
+                    # Check features array exists
+                    if "features" not in plan or not isinstance(plan["features"], list):
+                        self.log_test(f"Plan {plan_id} features", False, "Features array missing or invalid")
+                        all_correct = False
+                    else:
+                        self.log_test(f"Plan {plan_id} features", True, 
+                                    f"Features array present with {len(plan['features'])} features")
                 
                 if all_correct:
-                    self.log_test("Subscription Plans Endpoint", True, "All 3 plans with correct video limits")
+                    self.log_test("Subscription Plans Endpoint v2", True, "All 3 plans with correct limits, names, and features")
                     return True
                 else:
                     return False
                     
             else:
-                self.log_test("Subscription Plans Endpoint", False, f"HTTP {response.status_code}", response.json())
+                self.log_test("Subscription Plans Endpoint v2", False, f"HTTP {response.status_code}", response.json())
                 return False
                 
         except Exception as e:
-            self.log_test("Subscription Plans Endpoint", False, f"Exception: {str(e)}")
+            self.log_test("Subscription Plans Endpoint v2", False, f"Exception: {str(e)}")
             return False
     
     async def test_subscription_status(self):
