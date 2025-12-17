@@ -172,11 +172,11 @@ class SubscriptionTester:
             return False
     
     async def test_subscription_status(self):
-        """Test GET /api/subscription/status endpoint (requires auth)"""
-        print("📊 Testing subscription status endpoint...")
+        """Test GET /api/subscription/status endpoint (requires auth) - Updated for v2"""
+        print("📊 Testing subscription status endpoint (v2)...")
         
         if not self.auth_token:
-            self.log_test("Subscription Status", False, "No auth token available")
+            self.log_test("Subscription Status v2", False, "No auth token available")
             return False
         
         try:
@@ -188,11 +188,14 @@ class SubscriptionTester:
             if response.status_code == 200:
                 data = response.json()
                 
-                # Check required fields
+                # Check required fields for v2
                 required_fields = [
                     "has_active_subscription", "monthly_video_limit", 
                     "videos_used_this_month", "remaining_videos", "features"
                 ]
+                
+                # v2 specific fields
+                v2_fields = ["period_start", "period_end"]
                 
                 missing_fields = []
                 for field in required_fields:
@@ -200,9 +203,19 @@ class SubscriptionTester:
                         missing_fields.append(field)
                 
                 if missing_fields:
-                    self.log_test("Subscription Status Fields", False, 
-                                f"Missing fields: {missing_fields}", data)
+                    self.log_test("Subscription Status v2 Fields", False, 
+                                f"Missing required fields: {missing_fields}", data)
                     return False
+                
+                # Check v2 specific fields (period tracking)
+                missing_v2_fields = []
+                for field in v2_fields:
+                    if field not in data:
+                        missing_v2_fields.append(field)
+                
+                if missing_v2_fields:
+                    self.log_test("Subscription Status v2 Period Fields", False, 
+                                f"Missing v2 period fields: {missing_v2_fields}", data)
                 
                 # Log subscription details
                 has_subscription = data.get("has_active_subscription", False)
@@ -211,23 +224,36 @@ class SubscriptionTester:
                     monthly_limit = data.get("monthly_video_limit", 0)
                     used_videos = data.get("videos_used_this_month", 0)
                     remaining = data.get("remaining_videos", 0)
+                    period_start = data.get("period_start")
+                    period_end = data.get("period_end")
                     
-                    self.log_test("Subscription Status", True, 
-                                f"Active subscription: {plan_name}, {used_videos}/{monthly_limit} videos used, {remaining} remaining")
+                    self.log_test("Subscription Status v2", True, 
+                                f"Active subscription: {plan_name}, {used_videos}/{monthly_limit} videos used, {remaining} remaining. Period: {period_start} to {period_end}")
+                    
+                    # Test 30-day period validity
+                    if period_end:
+                        try:
+                            end_date = datetime.fromisoformat(period_end.replace('Z', '+00:00'))
+                            now = datetime.now(timezone.utc)
+                            is_valid = now < end_date
+                            self.log_test("30-Day Period Validity", True, 
+                                        f"Period valid: {is_valid}, ends: {period_end}")
+                        except Exception as e:
+                            self.log_test("30-Day Period Validity", False, f"Period parsing error: {e}")
                 else:
-                    self.log_test("Subscription Status", True, "No active subscription (expected for test user)")
+                    self.log_test("Subscription Status v2", True, "No active subscription (expected for test user)")
                 
                 return True
                 
             elif response.status_code == 401:
-                self.log_test("Subscription Status", False, "Authentication failed - token may be invalid")
+                self.log_test("Subscription Status v2", False, "Authentication failed - token may be invalid")
                 return False
             else:
-                self.log_test("Subscription Status", False, f"HTTP {response.status_code}", response.json())
+                self.log_test("Subscription Status v2", False, f"HTTP {response.status_code}", response.json())
                 return False
                 
         except Exception as e:
-            self.log_test("Subscription Status", False, f"Exception: {str(e)}")
+            self.log_test("Subscription Status v2", False, f"Exception: {str(e)}")
             return False
     
     async def test_can_create_video(self):
