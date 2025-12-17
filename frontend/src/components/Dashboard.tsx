@@ -672,6 +672,21 @@ function StyleCard({
 
 function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   const { createVideo } = useVideos(); // Video oluşturma fonksiyonu
+  const { 
+    isSubscriptionActive, 
+    canCreateVideo, 
+    hasFeature,
+    remainingVideos, 
+    videoLimit, 
+    videosUsed,
+    currentPlan,
+    loading: subscriptionLoading,
+    dismissLimitBanner,
+    isLimitBannerDismissed,
+    getSubscriptionStatusMessage,
+    incrementVideoUsage
+  } = useSubscriptionAccess();
+  
   const [selectedFormat, setSelectedFormat] = useState('');
   const [contentCount, setContentCount] = useState(1);
   const [dialogType, setDialogType] = useState('auto');
@@ -693,9 +708,14 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   // Modal state
   const [showSectorModal, setShowSectorModal] = useState(false);
   const [showWarningModal, setShowWarningModal] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [showLimitBanner, setShowLimitBanner] = useState(true);
   
   // Dropdown states
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  
+  // Abonelik durumu mesajı
+  const subscriptionStatus = getSubscriptionStatusMessage();
 
   const formats = [
     { id: '16:9', name: 'Yatay' },
