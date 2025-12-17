@@ -250,7 +250,13 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Iyzico-based monthly subscription (30 days)"
+    - "Period validity check (current_period_end)"
+    - "ONLY completed videos count towards limit"
+    - "Race condition protection"
+    - "Upgrade modal shows correct plans based on subscription status"
+    - "USD pricing display"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
