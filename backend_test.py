@@ -256,15 +256,38 @@ class SubscriptionTester:
             self.log_test("Subscription Status v2", False, f"Exception: {str(e)}")
             return False
     
-    async def test_can_create_video(self):
-        """Test POST /api/subscription/can-create-video endpoint"""
-        print("🎥 Testing video creation authorization...")
+    async def test_can_create_video_v2(self):
+        """Test POST /api/subscription/can-create-video endpoint - Updated for v2"""
+        print("🎥 Testing video creation authorization (v2)...")
         
         if not self.auth_token:
-            self.log_test("Video Creation Auth", False, "No auth token available")
+            self.log_test("Video Creation Auth v2", False, "No auth token available")
             return False
         
-        # Test 1: No photo uploaded (should fail with PHOTO_REQUIRED or NO_ACTIVE_SUBSCRIPTION)
+        # Test 1: No auth token (should fail with UNAUTHORIZED)
+        try:
+            response = await self.client.post(
+                f"{self.backend_url}/api/subscription/can-create-video",
+                json={"has_photo": True, "video_count": 1}
+            )
+            
+            if response.status_code == 401:
+                data = response.json()
+                error_detail = data.get("detail", {})
+                if isinstance(error_detail, dict) and error_detail.get("code") == "UNAUTHORIZED":
+                    self.log_test("Video Creation - No Auth", True, "Correctly rejected: UNAUTHORIZED")
+                else:
+                    self.log_test("Video Creation - No Auth", True, "Correctly rejected with 401 status")
+            else:
+                self.log_test("Video Creation - No Auth", False, 
+                            f"Expected 401 status, got {response.status_code}")
+                return False
+                
+        except Exception as e:
+            self.log_test("Video Creation - No Auth", False, f"Exception: {str(e)}")
+            return False
+        
+        # Test 2: No photo uploaded (should check subscription first, then photo)
         try:
             response = await self.client.post(
                 f"{self.backend_url}/api/subscription/can-create-video",
@@ -276,32 +299,32 @@ class SubscriptionTester:
                 data = response.json()
                 error_detail = data.get("detail", {})
                 if isinstance(error_detail, dict) and error_detail.get("code") == "PHOTO_REQUIRED":
-                    self.log_test("Video Creation - No Photo", True, "Correctly rejected: PHOTO_REQUIRED")
+                    self.log_test("Video Creation v2 - No Photo", True, "Correctly rejected: PHOTO_REQUIRED")
                 else:
-                    self.log_test("Video Creation - No Photo", False, 
+                    self.log_test("Video Creation v2 - No Photo", False, 
                                 f"Expected PHOTO_REQUIRED error, got: {error_detail}")
                     return False
             elif response.status_code == 402:
                 # If user has no subscription, it will check subscription first
                 data = response.json()
                 error_detail = data.get("detail", {})
-                if isinstance(error_detail, dict) and error_detail.get("code") == "NO_ACTIVE_SUBSCRIPTION":
-                    self.log_test("Video Creation - No Photo", True, 
-                                "Correctly rejected: NO_ACTIVE_SUBSCRIPTION (subscription checked before photo)")
+                if isinstance(error_detail, dict) and error_detail.get("code") in ["NO_ACTIVE_SUBSCRIPTION", "SUBSCRIPTION_EXPIRED"]:
+                    self.log_test("Video Creation v2 - No Photo", True, 
+                                f"Correctly rejected: {error_detail.get('code')} (subscription checked before photo)")
                 else:
-                    self.log_test("Video Creation - No Photo", False, 
-                                f"Expected NO_ACTIVE_SUBSCRIPTION error, got: {error_detail}")
+                    self.log_test("Video Creation v2 - No Photo", False, 
+                                f"Expected subscription error, got: {error_detail}")
                     return False
             else:
-                self.log_test("Video Creation - No Photo", False, 
+                self.log_test("Video Creation v2 - No Photo", False, 
                             f"Expected 400 or 402 status, got {response.status_code}", response.json())
                 return False
                 
         except Exception as e:
-            self.log_test("Video Creation - No Photo", False, f"Exception: {str(e)}")
+            self.log_test("Video Creation v2 - No Photo", False, f"Exception: {str(e)}")
             return False
         
-        # Test 2: With photo uploaded (should check subscription and limits)
+        # Test 3: With photo uploaded (should check subscription and limits)
         try:
             response = await self.client.post(
                 f"{self.backend_url}/api/subscription/can-create-video",
@@ -312,23 +335,23 @@ class SubscriptionTester:
             if response.status_code == 200:
                 data = response.json()
                 if data.get("allowed") == True:
-                    self.log_test("Video Creation - With Photo", True, 
+                    self.log_test("Video Creation v2 - With Photo", True, 
                                 f"Video creation allowed, {data.get('remaining_videos', 0)} videos remaining")
                 else:
-                    self.log_test("Video Creation - With Photo", False, 
+                    self.log_test("Video Creation v2 - With Photo", False, 
                                 f"Video creation not allowed: {data.get('reason', 'Unknown reason')}")
                 return True
                 
             elif response.status_code == 402:
-                # No active subscription - this is expected for test user
+                # No active subscription or expired - this is expected for test user
                 data = response.json()
                 error_detail = data.get("detail", {})
-                if isinstance(error_detail, dict) and error_detail.get("code") == "NO_ACTIVE_SUBSCRIPTION":
-                    self.log_test("Video Creation - With Photo", True, 
-                                "Correctly rejected: NO_ACTIVE_SUBSCRIPTION (expected for test user)")
+                if isinstance(error_detail, dict) and error_detail.get("code") in ["NO_ACTIVE_SUBSCRIPTION", "SUBSCRIPTION_EXPIRED"]:
+                    self.log_test("Video Creation v2 - With Photo", True, 
+                                f"Correctly rejected: {error_detail.get('code')} (expected for test user)")
                     return True
                 else:
-                    self.log_test("Video Creation - With Photo", False, 
+                    self.log_test("Video Creation v2 - With Photo", False, 
                                 f"Unexpected 402 error: {error_detail}")
                     return False
                     
@@ -337,20 +360,20 @@ class SubscriptionTester:
                 data = response.json()
                 error_detail = data.get("detail", {})
                 if isinstance(error_detail, dict) and error_detail.get("code") == "MONTHLY_LIMIT_REACHED":
-                    self.log_test("Video Creation - With Photo", True, 
+                    self.log_test("Video Creation v2 - With Photo", True, 
                                 "Correctly rejected: MONTHLY_LIMIT_REACHED")
                     return True
                 else:
-                    self.log_test("Video Creation - With Photo", False, 
+                    self.log_test("Video Creation v2 - With Photo", False, 
                                 f"Unexpected 403 error: {error_detail}")
                     return False
             else:
-                self.log_test("Video Creation - With Photo", False, 
+                self.log_test("Video Creation v2 - With Photo", False, 
                             f"HTTP {response.status_code}", response.json())
                 return False
                 
         except Exception as e:
-            self.log_test("Video Creation - With Photo", False, f"Exception: {str(e)}")
+            self.log_test("Video Creation v2 - With Photo", False, f"Exception: {str(e)}")
             return False
     
     async def test_feature_access(self):
