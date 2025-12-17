@@ -816,24 +816,24 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   };
 
   const handleVideoGeneration = async () => {
-    // ÖN KONTROLLER (Frontend güvenliği)
+    // ÖN KONTROLLER (Frontend güvenliği - Backend'de de yapılacak)
     
-    // 1. Abonelik kontrolü
+    // 1. Abonelik kontrolü (status + period 30 gün)
     if (!isSubscriptionActive()) {
-      alert('❌ Aktif bir aboneliğiniz bulunmuyor. Lütfen bir plan seçin.');
+      alert('❌ Aktif bir aboneliğin bulunmuyor. Lütfen bir plan seç.');
       return;
     }
     
-    // 2. Limit kontrolü
+    // 2. Limit kontrolü (SADECE completed videolar sayılır)
     const videoCheck = canCreateVideo();
     if (!videoCheck.allowed) {
       alert(`❌ ${videoCheck.reason}`);
       return;
     }
     
-    // 3. Fotoğraf kontrolü (ZORUNLU)
+    // 3. Fotoğraf kontrolü (ZORUNLU - kesinlikle)
     if (!uploadedImage) {
-      alert('❌ Video oluşturmak için en az 1 fotoğraf yüklemelisiniz.');
+      alert('❌ Video oluşturmak için en az 1 fotoğraf yüklemelisin.');
       return;
     }
     
