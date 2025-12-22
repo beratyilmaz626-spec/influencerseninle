@@ -1570,10 +1570,10 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       <div className="lg:hidden mt-4 glass-card p-4">
         <div className="mb-3">
           <h3 className="text-base font-semibold text-text-primary mb-1">Video Stili Seçin</h3>
-          <p className="text-xs text-text-secondary">Videonuz için uygun bir stil seçin</p>
+          <p className="text-xs text-text-secondary">Videonuz için uygun bir stil seçin (kaydırarak tümünü görebilirsin)</p>
         </div>
-        <div className="grid grid-cols-3 gap-2 max-h-[200px] overflow-y-auto">
-          {styleOptions.slice(0, 6).map((style) => (
+        <div className="grid grid-cols-3 gap-2 max-h-[300px] overflow-y-auto pb-2">
+          {styleOptions.map((style) => (
             <StyleCard
               key={style.id}
               style={style}
@@ -1582,8 +1582,12 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
             />
           ))}
         </div>
-        {styleOptions.length > 6 && (
-          <p className="text-xs text-text-muted text-center mt-2">+ {styleOptions.length - 6} stil daha</p>
+        {selectedStyle && (
+          <div className="mt-3 p-2 bg-neon-cyan/10 rounded-lg border border-neon-cyan/30">
+            <p className="text-xs text-neon-cyan text-center font-medium">
+              ✓ Seçilen: {styleOptions.find(s => s.id === selectedStyle)?.name || 'Stil'}
+            </p>
+          </div>
         )}
       </div>
 
