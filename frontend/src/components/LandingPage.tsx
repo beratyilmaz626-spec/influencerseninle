@@ -81,7 +81,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
   // Karşılaştırma verileri
   const comparisonData = [
     { feature: 'İçerik Üretim Hızı', us: 'Tek tıkla, gerçek zamanlı', them: 'Günler, hatta haftalar' },
-    { feature: 'Maliyet', us: 'Aylık düşük abonelik', them: 'Yüksek prodüksiyon + influencer ücretleri' },
+    { feature: 'Maliyet', us: '$10-40/ay ile sınırsız', them: 'Yüksek prodüksiyon + influencer ücretleri' },
     { feature: 'Lojistik & Set Yönetimi', us: true, them: false },
     { feature: 'Kargo & Ürün Gönderimi', us: true, them: false },
     { feature: 'Risk Faktörleri', us: 'Sıfır risk - Her zaman hazır', them: 'İptal, influencer bulunamama' },
