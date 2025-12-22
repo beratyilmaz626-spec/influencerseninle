@@ -117,10 +117,20 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
             </div>
 
             {/* Right Side - Form */}
-            <div className="p-12 bg-surface-elevated">
+            <div className="p-6 sm:p-8 lg:p-12 bg-surface-elevated">
               <div className="h-full flex flex-col justify-center">
+                {/* Mobile Header */}
+                <div className="md:hidden text-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center mx-auto mb-4 shadow-glow-cyan">
+                    <Sparkles className="w-6 h-6 text-white" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-text-primary">
+                    {mode === 'signin' ? 'Hoş Geldiniz!' : 'Kayıt Olun'}
+                  </h2>
+                </div>
+                
                 {/* Mode Toggle */}
-                <div className="flex space-x-2 mb-8 glass-card p-1">
+                <div className="flex space-x-2 mb-6 sm:mb-8 glass-card p-1">
                   <button
                     onClick={() => setMode('signin')}
                     className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-all duration-300 ${
