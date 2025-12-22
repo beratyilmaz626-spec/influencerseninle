@@ -457,46 +457,46 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
               plans={[
                 {
                   name: "Başlangıç",
-                  price: "9.90",
-                  yearlyPrice: "9.90",
-                  period: "",
+                  price: "10",
+                  yearlyPrice: "10",
+                  period: "/ay",
                   features: [
-                    "20 adet HD kalite video",
+                    "20 video/ay",
                     "HD 1080p dışa aktarma",
                     "Filigransız videolar",
                     "Temel şablonlar",
                     "E-posta desteği",
                   ],
-                  description: "Tek seferlik ödeme ile 20 adet HD kalite video",
+                  description: "Aylık abonelik ile 20 adet HD kalite video",
                   buttonText: "Planı Seç",
                   priceId: "price_1SI8r5IXoILZ7benDrZEtPLb",
                   isPopular: false,
                 },
                 {
                   name: "Profesyonel",
-                  price: "19.90",
-                  yearlyPrice: "19.90",
-                  period: "",
+                  price: "20",
+                  yearlyPrice: "20",
+                  period: "/ay",
                   features: [
-                    "45 adet HD kalite video",
+                    "45 video/ay",
                     "HD 1080p dışa aktarma",
                     "Filigransız videolar",
                     "Premium şablonlar",
                     "Öncelikli destek",
                     "API erişimi",
                   ],
-                  description: "Tek seferlik ödeme ile 45 adet HD kalite video",
+                  description: "Aylık abonelik ile 45 adet HD kalite video",
                   buttonText: "Planı Seç",
                   priceId: "price_1SI93eIXoILZ7benaTtahoH7",
                   isPopular: true,
                 },
                 {
                   name: "Kurumsal",
-                  price: "39.90",
-                  yearlyPrice: "39.90",
-                  period: "",
+                  price: "40",
+                  yearlyPrice: "40",
+                  period: "/ay",
                   features: [
-                    "100 adet HD kalite video",
+                    "100 video/ay",
                     "HD 1080p dışa aktarma",
                     "Filigransız videolar",
                     "Premium şablonlar",
@@ -504,14 +504,14 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
                     "Gelişmiş API",
                     "Beyaz etiket seçeneği",
                   ],
-                  description: "Tek seferlik ödeme ile 100 adet HD kalite video",
+                  description: "Aylık abonelik ile 100 adet HD kalite video",
                   buttonText: "Planı Seç",
                   priceId: "price_1SI995IXoILZ7benbXtYoVJb",
                   isPopular: false,
                 },
               ]}
               title="Uygun, Şeffaf Fiyatlandırma"
-              description="İhtiyaçlarınıza uygun planı seçin&#10;Tüm planlar platformumuza erişim, video oluşturma araçları ve özel destek içerir."
+              description="İhtiyaçlarınıza uygun planı seçin. Tüm fiyatlar USD olarak gösterilmektedir."
               setShowAuthModal={setShowAuthModal}
             />
           </div>
