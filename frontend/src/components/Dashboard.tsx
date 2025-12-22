@@ -1540,15 +1540,15 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
             </div>
       </div>
 
-      {/* Premium Right Panel - Style Selection */}
-      <div className="flex-1 glass-card p-6">
+      {/* Premium Right Panel - Style Selection - Hidden on mobile, shown on lg+ */}
+      <div className="hidden lg:block flex-1 glass-card p-4 sm:p-6">
         <div className="h-full">
           <div className="mb-4">
             <h3 className="text-lg font-semibold text-text-primary mb-2">Video Stili Seçin</h3>
             <p className="text-sm text-text-secondary">Videonuz için uygun bir stil kategorisi seçin</p>
           </div>
           
-          <div className="grid grid-cols-4 gap-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
             {styleOptions.map((style) => (
               <StyleCard
                 key={style.id}
@@ -1559,6 +1559,27 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
             ))}
           </div>
         </div>
+      </div>
+      
+      {/* Mobile Style Selection - Shown only on mobile */}
+      <div className="lg:hidden mt-4 glass-card p-4">
+        <div className="mb-3">
+          <h3 className="text-base font-semibold text-text-primary mb-1">Video Stili Seçin</h3>
+          <p className="text-xs text-text-secondary">Videonuz için uygun bir stil seçin</p>
+        </div>
+        <div className="grid grid-cols-3 gap-2 max-h-[200px] overflow-y-auto">
+          {styleOptions.slice(0, 6).map((style) => (
+            <StyleCard
+              key={style.id}
+              style={style}
+              isSelected={selectedStyle === style.id}
+              onSelect={() => handleStyleSelection(style.id)}
+            />
+          ))}
+        </div>
+        {styleOptions.length > 6 && (
+          <p className="text-xs text-text-muted text-center mt-2">+ {styleOptions.length - 6} stil daha</p>
+        )}
       </div>
 
       {/* Sektör Modal */}
