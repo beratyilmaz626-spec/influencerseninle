@@ -641,11 +641,6 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
             <p className="text-text-secondary text-sm">
               © 2025 InfluencerSeninle. Tüm hakları saklıdır.
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-text-secondary hover:text-neon-cyan transition-colors">Twitter</a>
-              <a href="#" className="text-text-secondary hover:text-neon-cyan transition-colors">LinkedIn</a>
-              <a href="#" className="text-text-secondary hover:text-neon-cyan transition-colors">YouTube</a>
-            </div>
           </div>
         </div>
       </footer>
