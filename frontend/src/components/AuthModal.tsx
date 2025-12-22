@@ -59,26 +59,26 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-2 sm:p-4 overflow-y-auto">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.2 }}
-          className="relative w-full max-w-5xl"
+          className="relative w-full max-w-5xl my-4"
         >
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute -top-12 right-0 z-10 p-2 hover:bg-surface rounded-xl transition-all duration-300 group"
+            className="absolute -top-10 sm:-top-12 right-0 z-10 p-2 hover:bg-surface rounded-xl transition-all duration-300 group"
             aria-label="Close"
           >
             <X className="w-6 h-6 text-text-secondary group-hover:text-neon-cyan transition-colors" />
           </button>
           
-          <div className="glass-card overflow-hidden grid md:grid-cols-2 min-h-[600px]">
-            {/* Left Side - Branding */}
-            <div className="relative bg-gradient-to-br from-neon-cyan/20 via-neon-purple/20 to-neon-pink/20 p-12 flex flex-col justify-center overflow-hidden">
+          <div className="glass-card overflow-hidden grid md:grid-cols-2 min-h-[auto] md:min-h-[600px]">
+            {/* Left Side - Branding - Hidden on mobile */}
+            <div className="hidden md:flex relative bg-gradient-to-br from-neon-cyan/20 via-neon-purple/20 to-neon-pink/20 p-8 lg:p-12 flex-col justify-center overflow-hidden">
               {/* Animated Background Orbs */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-neon-cyan/20 rounded-full blur-3xl animate-float"></div>
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
