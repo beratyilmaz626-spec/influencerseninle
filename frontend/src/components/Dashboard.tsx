@@ -222,7 +222,10 @@ export default function Dashboard({ onLogout }: DashboardProps) {
             {bottomItems.filter(i => ['subscription', 'settings'].includes(i.id)).map((item) => (
               <button
                 key={item.id}
-                onClick={() => setCurrentView(item.id as ViewType)}
+                onClick={() => {
+                  setCurrentView(item.id as ViewType);
+                  setMobileMenuOpen(false);
+                }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                   currentView === item.id
                     ? 'bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 text-text-primary'
