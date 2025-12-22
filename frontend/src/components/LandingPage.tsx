@@ -143,10 +143,10 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        {/* Animated Background Orbs */}
-        <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-neon-cyan/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-20 left-0 w-[600px] h-[600px] bg-neon-purple/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+      <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        {/* Animated Background Orbs - Smaller on mobile */}
+        <div className="absolute top-20 right-0 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-neon-cyan/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-20 left-0 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-neon-purple/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
         
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16">
