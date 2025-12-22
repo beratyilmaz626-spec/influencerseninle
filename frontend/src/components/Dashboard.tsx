@@ -28,6 +28,7 @@ type ViewType = 'home' | 'videos' | 'create' | 'create2' | 'subscription' | 'set
 
 export default function Dashboard({ onLogout }: DashboardProps) {
   const [currentView, setCurrentView] = useState<ViewType>('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { videos, createVideo } = useVideos();
   const { isAdmin, userProfile } = useAuth();
   
