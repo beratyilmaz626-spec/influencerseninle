@@ -232,30 +232,68 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
       </section>
 
       {/* Biz vs Onlar - Karşılaştırma Bölümü */}
-      <section id="comparison" className="py-20 px-4 sm:px-6 lg:px-8 relative">
+      <section id="comparison" className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 sm:mb-16">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              className="text-4xl md:text-5xl font-bold text-text-primary mb-4"
+              className="text-2xl sm:text-4xl md:text-5xl font-bold text-text-primary mb-4"
             >
               🎯 Biz vs Onlar
             </motion.h2>
-            <p className="text-xl text-text-secondary max-w-3xl mx-auto">
+            <p className="text-sm sm:text-xl text-text-secondary max-w-3xl mx-auto px-2">
               AI tabanlı UGC ile geleneksel yöntemler arasındaki <span className="font-bold text-neon-cyan">devasa fark</span>
             </p>
           </div>
 
-          {/* Karşılaştırma Tablosu */}
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-3">
+            {comparisonData.map((row, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                viewport={{ once: true }}
+                className="glass-card p-4"
+              >
+                <h4 className="text-sm font-bold text-text-primary mb-3">{row.feature}</h4>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="bg-neon-green/10 rounded-lg p-3 border border-neon-green/20">
+                    <div className="text-xs text-neon-green font-semibold mb-1 flex items-center">
+                      <CheckCircle2 className="w-3 h-3 mr-1" /> Biz
+                    </div>
+                    {typeof row.us === 'boolean' ? (
+                      <span className="text-xs text-neon-green">✓ Sıfır</span>
+                    ) : (
+                      <span className="text-xs text-text-primary">{row.us}</span>
+                    )}
+                  </div>
+                  <div className="bg-neon-pink/10 rounded-lg p-3 border border-neon-pink/20">
+                    <div className="text-xs text-neon-pink font-semibold mb-1 flex items-center">
+                      <X className="w-3 h-3 mr-1" /> Onlar
+                    </div>
+                    {typeof row.them === 'boolean' ? (
+                      <span className="text-xs text-neon-pink">✗ Gerekli</span>
+                    ) : (
+                      <span className="text-xs text-text-primary">{row.them}</span>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Desktop Table View */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="glass-card overflow-hidden"
+            className="glass-card overflow-hidden hidden md:block"
           >
             <div className="overflow-x-auto">
               <table className="w-full">
