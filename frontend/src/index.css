@@ -304,10 +304,34 @@
     animation: pulse-glow 2s ease-in-out infinite;
   }
 
-  /* Premium Glass Card */
+  /* Premium Glass Card - Safari Compatible */
   .glass-card {
-    @apply bg-surface-glass backdrop-blur-glass border border-border rounded-2xl;
+    @apply bg-surface-glass border border-border rounded-2xl;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    /* Safari fallback - darker background if backdrop-filter not supported */
+    background: rgba(20, 20, 30, 0.9);
+  }
+  
+  /* Apply backdrop-filter only if supported */
+  @supports (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px)) {
+    .glass-card {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(20, 20, 30, 0.7);
+    }
+  }
+  
+  /* Safari-safe backdrop blur class */
+  .backdrop-blur-glass {
+    background: rgba(10, 10, 15, 0.9);
+  }
+  
+  @supports (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px)) {
+    .backdrop-blur-glass {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      background: rgba(10, 10, 15, 0.8);
+    }
   }
 
   /* Neon Border Effect */
