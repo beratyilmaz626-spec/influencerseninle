@@ -134,9 +134,11 @@ export default function Dashboard({ onLogout }: DashboardProps) {
           fixed lg:static
           z-50
           w-64 
-          bg-surface border-r border-border flex flex-col min-h-screen
+          bg-surface border-r border-border flex flex-col
+          h-[calc(100vh-56px)] lg:h-screen lg:min-h-screen
           transition-transform duration-300 ease-in-out
-          pt-14 lg:pt-0
+          top-14 lg:top-0
+          overflow-y-auto
         `}>
           {/* Logo */}
           <div className="p-6 border-b border-border">
