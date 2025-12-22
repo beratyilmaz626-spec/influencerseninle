@@ -95,11 +95,48 @@ export default function Dashboard({ onLogout }: DashboardProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
+      {/* Mobile Header - Only visible on mobile */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-surface border-b border-border flex items-center justify-between px-4">
+        <div className="flex items-center space-x-2">
+          <div className="w-8 h-8 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-white" />
+          </div>
+          <span className="font-bold text-text-primary">InfluencerSeninle</span>
+        </div>
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="p-2 rounded-lg hover:bg-surface-elevated transition-colors"
+        >
+          {mobileMenuOpen ? (
+            <X className="w-6 h-6 text-text-primary" />
+          ) : (
+            <Menu className="w-6 h-6 text-text-primary" />
+          )}
+        </button>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
       {/* PremiumAppShell Wrapper - Sidebar ve Topbar burada */}
       <div className="flex">
-        {/* PREMIUM SIDEBAR - Manuel inline olarak eklendi çünkü PremiumAppShell'i import etmeden kullanmak için */}
-        <aside className="w-64 bg-surface border-r border-border flex flex-col min-h-screen">
+        {/* PREMIUM SIDEBAR - Responsive */}
+        <aside className={`
+          ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+          lg:translate-x-0
+          fixed lg:static
+          z-50
+          w-64 
+          bg-surface border-r border-border flex flex-col min-h-screen
+          transition-transform duration-300 ease-in-out
+          pt-14 lg:pt-0
+        `}>
           {/* Logo */}
           <div className="p-6 border-b border-border">
             <div className="flex items-center space-x-3">
