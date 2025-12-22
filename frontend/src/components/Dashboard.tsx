@@ -1566,13 +1566,13 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
         </div>
       </div>
       
-      {/* Mobile Style Selection - Shown only on mobile */}
-      <div className="lg:hidden mt-4 glass-card p-4">
+      {/* Mobile Style Selection - Shown only on mobile/tablet (below lg) */}
+      <div className="lg:hidden mt-4 glass-card p-3 sm:p-4">
         <div className="mb-3">
           <h3 className="text-base font-semibold text-text-primary mb-1">Video Stili Seçin</h3>
           <p className="text-xs text-text-secondary">Videonuz için uygun bir stil seçin (kaydırarak tümünü görebilirsin)</p>
         </div>
-        <div className="grid grid-cols-3 gap-2 max-h-[300px] overflow-y-auto pb-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-[350px] overflow-y-auto pb-2 pr-1">
           {styleOptions.map((style) => (
             <StyleCard
               key={style.id}
