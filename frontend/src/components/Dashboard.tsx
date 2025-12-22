@@ -244,9 +244,9 @@ export default function Dashboard({ onLogout }: DashboardProps) {
         </aside>
 
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-h-screen">
-          {/* PREMIUM TOPBAR */}
-          <header className="h-16 bg-surface-elevated border-b border-border px-8 flex items-center justify-between sticky top-0 z-40">
+        <div className="flex-1 flex flex-col min-h-screen lg:ml-0 pt-14 lg:pt-0">
+          {/* PREMIUM TOPBAR - Hidden on mobile (using mobile header instead) */}
+          <header className="hidden lg:flex h-16 bg-surface-elevated border-b border-border px-4 sm:px-6 lg:px-8 items-center justify-between sticky top-0 z-40">
             <h2 className="text-lg font-semibold text-text-primary">
               {sidebarItems.find(i => i.id === currentView)?.label || 
                bottomItems.find(i => i.id === currentView)?.label || 
@@ -270,7 +270,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
           </header>
 
           {/* PREMIUM MAIN CONTENT AREA */}
-          <main className="flex-1 overflow-auto p-8">
+          <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">
             <motion.div
               key={currentView}
               initial={{ opacity: 0, y: 20 }}
