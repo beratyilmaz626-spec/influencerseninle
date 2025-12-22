@@ -140,14 +140,16 @@ function getFeaturesByPlan(planType: string): string[] {
   switch (planType) {
     case 'starter':
       return [
-        '20 adet HD kalite video',
+        '20 video/ay',
+        'HD 1080p dışa aktarma',
         'Filigransız videolar',
         'Temel şablonlar',
         'E-posta desteği'
       ];
     case 'professional':
       return [
-        '45 adet HD kalite video',
+        '45 video/ay',
+        'HD 1080p dışa aktarma',
         'Filigransız videolar',
         'Premium şablonlar',
         'Öncelikli destek',
@@ -155,9 +157,10 @@ function getFeaturesByPlan(planType: string): string[] {
       ];
     case 'enterprise':
       return [
-        '100 adet HD kalite video',
+        '100 video/ay',
+        'HD 1080p dışa aktarma',
         'Filigransız videolar',
-        'Özel şablonlar',
+        'Premium şablonlar',
         'Özel destek',
         'Gelişmiş API',
         'Beyaz etiket seçeneği'
