@@ -86,7 +86,7 @@ export default function SubscriptionPanel() {
                 icon={planType === 'starter' ? <Zap className="w-8 h-8" /> :
                       planType === 'professional' ? <Crown className="w-8 h-8" /> :
                       <Building2 className="w-8 h-8" />}
-                price={product.price.toFixed(2)}
+                price={String(Math.round(product.price))}
                 description={product.description}
                 features={getFeaturesByPlan(planType)}
                 isActive={isCurrentPlan}
