@@ -1082,9 +1082,9 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   };
 
   return (
-    <div className="flex h-full bg-transparent rounded-2xl overflow-hidden">
+    <div className="flex flex-col lg:flex-row h-full bg-transparent rounded-2xl overflow-hidden">
       {/* Premium Left Panel - Controls */}
-      <div className="w-80 glass-card border-r border-border p-6 space-y-4 overflow-y-auto">
+      <div className="w-full lg:w-80 glass-card lg:border-r border-border p-4 sm:p-6 space-y-4 overflow-y-auto flex-shrink-0">
         {/* Premium Header */}
         <div className="text-center pb-3 border-b border-border">
           <h2 className="text-xl font-bold text-text-primary mb-1">🎬 Video Oluştur</h2>
