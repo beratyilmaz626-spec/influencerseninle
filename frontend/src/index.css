@@ -39,6 +39,8 @@
 
   html {
     scroll-behavior: smooth;
+    /* Prevent horizontal scroll globally */
+    overflow-x: hidden;
   }
 
   body {
@@ -49,6 +51,10 @@
     -moz-osx-font-smoothing: grayscale;
     background: var(--background);
     color: var(--text-primary);
+    /* Prevent horizontal scroll */
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
   }
 
   /* Holographic background with subtle grid */
