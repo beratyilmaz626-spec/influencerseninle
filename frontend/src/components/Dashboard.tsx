@@ -173,12 +173,15 @@ export default function Dashboard({ onLogout }: DashboardProps) {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-1">
+          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
             <div className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 px-3">Menü</div>
             {sidebarItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => setCurrentView(item.id as ViewType)}
+                onClick={() => {
+                  setCurrentView(item.id as ViewType);
+                  setMobileMenuOpen(false);
+                }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                   currentView === item.id
                     ? 'bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 text-text-primary shadow-glow-cyan'
@@ -196,7 +199,10 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                 {bottomItems.filter(i => ['users', 'slider', 'styles'].includes(i.id)).map((item) => (
                   <button
                     key={item.id}
-                    onClick={() => setCurrentView(item.id as ViewType)}
+                    onClick={() => {
+                      setCurrentView(item.id as ViewType);
+                      setMobileMenuOpen(false);
+                    }}
                     className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                       currentView === item.id
                         ? 'bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 text-text-primary shadow-glow-cyan'
