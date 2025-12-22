@@ -91,20 +91,20 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-border backdrop-blur-glass bg-background/80">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <div className="flex items-center space-x-3 group cursor-pointer">
+            <div className="flex items-center space-x-2 sm:space-x-3 group cursor-pointer">
               <div className="relative">
                 <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink rounded-2xl blur opacity-50 group-hover:opacity-100 transition duration-500"></div>
-                <div className="relative w-10 h-10 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center shadow-glow-cyan">
-                  <Play className="w-5 h-5 text-white" fill="white" />
+                <div className="relative w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center shadow-glow-cyan">
+                  <Play className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="white" />
                 </div>
               </div>
-              <div className="text-xl font-bold">
+              <div className="text-lg sm:text-xl font-bold">
                 <span className="text-text-primary">Influencer</span>
                 <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">Seninle</span>
               </div>
@@ -117,6 +117,25 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
               </Button>
               <Button onClick={() => setShowAuthModal(true)}>
                 Başlayın
+              </Button>
+            </div>
+            
+            {/* Mobile Navigation */}
+            <div className="flex md:hidden items-center space-x-2">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setShowAuthModal(true)}
+                className="text-sm px-3 py-2"
+              >
+                Giriş Yap
+              </Button>
+              <Button 
+                size="sm"
+                onClick={() => setShowAuthModal(true)}
+                className="text-sm px-3 py-2"
+              >
+                Başla
               </Button>
             </div>
           </div>
