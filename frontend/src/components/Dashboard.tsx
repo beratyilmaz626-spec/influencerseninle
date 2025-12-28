@@ -860,10 +860,6 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   ];
 
   const handlePhotoUpload = (file: File) => {
-    if (file.size > 10 * 1024 * 1024) {
-      alert('Dosya boyutu 10MB\'dan küçük olmalıdır');
-      return;
-    }
     if (!file.type.startsWith('image/')) {
       alert('Lütfen geçerli bir resim dosyası seçin');
       return;
