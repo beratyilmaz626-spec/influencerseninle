@@ -119,7 +119,7 @@ export default function ImageUploadSection({ uploadedImage, setUploadedImage }: 
                   {isDragOver ? 'Dosyayı buraya bırakın' : 'Fotoğraf yüklemek için tıklayın'}
                 </p>
                 <p className="text-gray-500">veya dosyayı sürükleyip bırakın</p>
-                <p className="text-sm text-gray-400">PNG, JPG, WebP (maks. 10MB)</p>
+                <p className="text-sm text-gray-400">PNG, JPG, WebP</p>
               </div>
             </label>
 
