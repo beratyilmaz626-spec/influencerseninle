@@ -263,10 +263,18 @@ export function useSubscriptionAccess() {
   const getSubscriptionStatusMessage = useCallback((): { type: 'error' | 'warning' | 'info' | 'success'; message: string } | null => {
     if (loading) return null;
     
+    // Hediye kredisi varsa, pozitif mesaj göster
+    if (giftCredits > 0) {
+      return {
+        type: 'success',
+        message: `🎁 ${giftCredits} hediye video hakkın var!`,
+      };
+    }
+    
     if (!isSubscriptionActive()) {
       return {
         type: 'error',
-        message: 'Aktif bir aboneliğin bulunmuyor. Video oluşturmak için bir plan seç.',
+        message: 'Aktif bir aboneliğin veya hediye kredin bulunmuyor. Video oluşturmak için bir plan seç.',
       };
     }
     
@@ -288,7 +296,7 @@ export function useSubscriptionAccess() {
     }
     
     return null;
-  }, [loading, isSubscriptionActive, getRemainingVideos, getVideoLimit]);
+  }, [loading, isSubscriptionActive, getRemainingVideos, getVideoLimit, giftCredits]);
 
   return {
     // State
