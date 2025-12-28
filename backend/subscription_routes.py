@@ -570,7 +570,6 @@ async def get_all_plans():
 class GiftTokenRequest(BaseModel):
     user_email: str = Field(..., description="Kullanıcı email adresi")
     video_count: int = Field(default=1, description="Hediye edilecek video sayısı")
-    admin_email: str = Field(..., description="Admin email (yetkilendirme için)")
 
 class GiftTokenResponse(BaseModel):
     success: bool
@@ -579,36 +578,41 @@ class GiftTokenResponse(BaseModel):
     gift_videos: int = 0
     total_videos: int = 0
 
+class UserListItem(BaseModel):
+    id: str
+    email: str
+    credits: int = 0
+
 
 @subscription_router.post("/admin/gift-token", response_model=GiftTokenResponse)
-async def gift_token_to_user(request: GiftTokenRequest):
+async def gift_token_to_user(request: GiftTokenRequest, authorization: str = Header(None)):
     """
     Admin endpoint: Kullanıcıya hediye video hakkı ver.
     
     Bu endpoint:
-    1. Kullanıcıyı email ile bulur
-    2. gift_videos tablosuna hediye kaydı ekler
-    3. Kullanıcı video oluşturabilir
-    
-    NOT: Sadece admin kullanabilir (beratyilmaz626@gmail.com)
+    1. Admin yetkisini kontrol eder
+    2. Kullanıcıyı email ile bulur
+    3. users tablosundaki user_credits_points'i artırır
     """
-    # Admin yetkilendirme kontrolü
+    # 1. Admin yetkisi kontrolü
+    admin_user = await get_supabase_user_from_token(authorization)
+    if not admin_user:
+        raise HTTPException(status_code=401, detail="Oturum açmanız gerekiyor.")
+    
+    admin_email = admin_user.get("email", "")
     ADMIN_EMAILS = ["beratyilmaz626@gmail.com"]
-    if request.admin_email not in ADMIN_EMAILS:
-        raise HTTPException(
-            status_code=403,
-            detail="Bu işlem için admin yetkisi gerekiyor."
-        )
+    
+    if admin_email not in ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Bu işlem için admin yetkisi gerekiyor.")
     
     try:
-        # 1. Kullanıcıyı Supabase auth.users tablosunda bul
         async with httpx.AsyncClient() as client:
-            # Önce users tablosunda email ile ara
-            response = await client.get(
+            # 2. Kullanıcıyı users tablosunda bul
+            user_response = await client.get(
                 f"{SUPABASE_URL}/rest/v1/users",
                 params={
                     "email": f"eq.{request.user_email}",
-                    "select": "id,email,full_name"
+                    "select": "id,email,user_credits_points"
                 },
                 headers={
                     "apikey": SUPABASE_SERVICE_KEY,
@@ -616,11 +620,10 @@ async def gift_token_to_user(request: GiftTokenRequest):
                 }
             )
             
-            users_data = response.json() if response.status_code == 200 else []
+            users_data = user_response.json() if user_response.status_code == 200 else []
             
-            # Eğer users tablosunda bulunamazsa, auth.users'dan ara
+            # Eğer users tablosunda bulunamazsa, auth.users'dan ara ve oluştur
             if not users_data:
-                # Auth admin API ile kullanıcı ara
                 auth_response = await client.get(
                     f"{SUPABASE_URL}/auth/v1/admin/users",
                     headers={
@@ -629,75 +632,146 @@ async def gift_token_to_user(request: GiftTokenRequest):
                     }
                 )
                 
+                auth_user = None
                 if auth_response.status_code == 200:
                     all_users = auth_response.json().get("users", [])
-                    # Email ile eşleşen kullanıcıyı bul (büyük/küçük harf duyarsız)
                     for u in all_users:
                         if u.get("email", "").lower() == request.user_email.lower():
-                            users_data = [{"id": u["id"], "email": u["email"], "full_name": u.get("user_metadata", {}).get("full_name", "")}]
+                            auth_user = u
                             break
-            
-            if not users_data:
-                raise HTTPException(
-                    status_code=404,
-                    detail=f"'{request.user_email}' email adresine sahip kullanıcı bulunamadı."
+                
+                if not auth_user:
+                    raise HTTPException(
+                        status_code=404,
+                        detail=f"'{request.user_email}' email adresine sahip kullanıcı bulunamadı."
+                    )
+                
+                # users tablosunda yeni kayıt oluştur
+                now = datetime.now(timezone.utc).isoformat()
+                insert_response = await client.post(
+                    f"{SUPABASE_URL}/rest/v1/users",
+                    json={
+                        "id": auth_user["id"],
+                        "email": auth_user["email"],
+                        "password": "supabase_auth_managed",
+                        "role": "user",
+                        "is_admin": False,
+                        "user_credits_points": request.video_count,
+                        "created_at": now
+                    },
+                    headers={
+                        "apikey": SUPABASE_SERVICE_KEY,
+                        "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}",
+                        "Content-Type": "application/json",
+                        "Prefer": "return=representation"
+                    }
                 )
+                
+                if insert_response.status_code in [200, 201]:
+                    return GiftTokenResponse(
+                        success=True,
+                        message=f"'{auth_user['email']}' kullanıcısına {request.video_count} video hakkı hediye edildi.",
+                        user_email=auth_user["email"],
+                        gift_videos=request.video_count,
+                        total_videos=request.video_count
+                    )
+                else:
+                    raise HTTPException(500, f"Kullanıcı oluşturma hatası: {insert_response.text}")
             
+            # 3. Mevcut kredileri güncelle
             user = users_data[0]
-            user_id = user["id"]
-            user_email = user.get("email", request.user_email)
+            current_credits = user.get("user_credits_points", 0) or 0
+            new_total = current_credits + request.video_count
             
-            # 2. Mevcut hediye haklarını kontrol et
-            gift_response = await client.get(
-                f"{SUPABASE_URL}/rest/v1/gift_videos",
-                params={
-                    "user_id": f"eq.{user_id}",
-                    "select": "*"
-                },
+            update_response = await client.patch(
+                f"{SUPABASE_URL}/rest/v1/users",
+                params={"email": f"eq.{request.user_email}"},
+                json={"user_credits_points": new_total},
+                headers={
+                    "apikey": SUPABASE_SERVICE_KEY,
+                    "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}",
+                    "Content-Type": "application/json",
+                    "Prefer": "return=minimal"
+                }
+            )
+            
+            if update_response.status_code not in [200, 204]:
+                raise HTTPException(500, f"Kredi güncelleme hatası: {update_response.text}")
+            
+            return GiftTokenResponse(
+                success=True,
+                message=f"'{user['email']}' kullanıcısına {request.video_count} video hakkı eklendi.",
+                user_email=user["email"],
+                gift_videos=request.video_count,
+                total_videos=new_total
+            )
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Gift token error: {e}")
+        raise HTTPException(500, f"Hediye verme hatası: {str(e)}")
+
+
+@subscription_router.get("/admin/users", response_model=List[UserListItem])
+async def get_all_users_for_admin(authorization: str = Header(None)):
+    """Admin için tüm kullanıcıları listele"""
+    # Admin yetkisi kontrolü
+    admin_user = await get_supabase_user_from_token(authorization)
+    if not admin_user:
+        raise HTTPException(status_code=401, detail="Oturum açmanız gerekiyor.")
+    
+    admin_email = admin_user.get("email", "")
+    ADMIN_EMAILS = ["beratyilmaz626@gmail.com"]
+    
+    if admin_email not in ADMIN_EMAILS:
+        raise HTTPException(status_code=403, detail="Bu işlem için admin yetkisi gerekiyor.")
+    
+    try:
+        async with httpx.AsyncClient() as client:
+            # Auth'dan tüm kullanıcıları getir
+            auth_response = await client.get(
+                f"{SUPABASE_URL}/auth/v1/admin/users",
                 headers={
                     "apikey": SUPABASE_SERVICE_KEY,
                     "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}"
                 }
             )
             
-            existing_gift = gift_response.json() if gift_response.status_code == 200 else []
+            if auth_response.status_code != 200:
+                return []
             
-            now = datetime.now(timezone.utc).isoformat()
+            auth_users = auth_response.json().get("users", [])
             
-            if existing_gift:
-                # Mevcut kaydı güncelle
-                current_videos = existing_gift[0].get("remaining_videos", 0)
-                new_total = current_videos + request.video_count
-                
-                update_response = await client.patch(
-                    f"{SUPABASE_URL}/rest/v1/gift_videos",
-                    params={"user_id": f"eq.{user_id}"},
-                    json={
-                        "remaining_videos": new_total,
-                        "updated_at": now
-                    },
-                    headers={
-                        "apikey": SUPABASE_SERVICE_KEY,
-                        "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}",
-                        "Content-Type": "application/json",
-                        "Prefer": "return=minimal"
-                    }
-                )
-                
-                if update_response.status_code not in [200, 204]:
-                    raise HTTPException(500, f"Hediye güncelleme hatası: {update_response.text}")
-                
-                return GiftTokenResponse(
-                    success=True,
-                    message=f"'{user_email}' kullanıcısına {request.video_count} video hakkı eklendi.",
-                    user_email=user_email,
-                    gift_videos=request.video_count,
-                    total_videos=new_total
-                )
-            else:
-                # Yeni kayıt oluştur
-                insert_response = await client.post(
-                    f"{SUPABASE_URL}/rest/v1/gift_videos",
+            # users tablosundan kredileri getir
+            users_response = await client.get(
+                f"{SUPABASE_URL}/rest/v1/users",
+                params={"select": "id,email,user_credits_points"},
+                headers={
+                    "apikey": SUPABASE_SERVICE_KEY,
+                    "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}"
+                }
+            )
+            
+            users_credits = {}
+            if users_response.status_code == 200:
+                for u in users_response.json():
+                    users_credits[u["id"]] = u.get("user_credits_points", 0) or 0
+            
+            # Kullanıcı listesi oluştur
+            result = []
+            for u in auth_users:
+                result.append(UserListItem(
+                    id=u["id"],
+                    email=u.get("email", ""),
+                    credits=users_credits.get(u["id"], 0)
+                ))
+            
+            return result
+    
+    except Exception as e:
+        print(f"Get users error: {e}")
+        return []
                     json={
                         "user_id": user_id,
                         "user_email": user_email,
