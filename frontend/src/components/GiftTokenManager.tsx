@@ -18,7 +18,10 @@ export default function GiftTokenManager() {
   const [sending, setSending] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+  // Backend URL - Vite uses import.meta.env, check for both naming conventions
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 
+                     import.meta.env.REACT_APP_BACKEND_URL || 
+                     'https://influencer-sentinel.preview.emergentagent.com';
 
   useEffect(() => {
     fetchUsers();
