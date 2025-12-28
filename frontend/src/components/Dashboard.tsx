@@ -770,16 +770,19 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
     isSubscriptionActive, 
     canCreateVideo, 
     hasFeature,
+    hasGiftCredits,
     remainingVideos, 
     videoLimit, 
     videosUsed,
+    giftCredits,
     currentPlan,
     currentPlanId,
     loading: subscriptionLoading,
     dismissLimitBanner,
     isLimitBannerDismissed,
     getSubscriptionStatusMessage,
-    incrementVideoUsage
+    incrementVideoUsage,
+    refetchGiftCredits
   } = useSubscriptionAccess();
   
   const [selectedFormat, setSelectedFormat] = useState('');
