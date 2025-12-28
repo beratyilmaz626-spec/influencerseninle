@@ -561,3 +561,199 @@ async def get_all_plans():
     return {
         "plans": list(PLAN_CONFIGS.values())
     }
+
+
+# ============================================
+# ADMIN ENDPOINTS - Hediye Token Sistemi
+# ============================================
+
+class GiftTokenRequest(BaseModel):
+    user_email: str = Field(..., description="Kullanıcı email adresi")
+    video_count: int = Field(default=1, description="Hediye edilecek video sayısı")
+    admin_email: str = Field(..., description="Admin email (yetkilendirme için)")
+
+class GiftTokenResponse(BaseModel):
+    success: bool
+    message: str
+    user_email: Optional[str] = None
+    gift_videos: int = 0
+    total_videos: int = 0
+
+
+@subscription_router.post("/admin/gift-token", response_model=GiftTokenResponse)
+async def gift_token_to_user(request: GiftTokenRequest):
+    """
+    Admin endpoint: Kullanıcıya hediye video hakkı ver.
+    
+    Bu endpoint:
+    1. Kullanıcıyı email ile bulur
+    2. gift_videos tablosuna hediye kaydı ekler
+    3. Kullanıcı video oluşturabilir
+    
+    NOT: Sadece admin kullanabilir (beratyilmaz626@gmail.com)
+    """
+    # Admin yetkilendirme kontrolü
+    ADMIN_EMAILS = ["beratyilmaz626@gmail.com"]
+    if request.admin_email not in ADMIN_EMAILS:
+        raise HTTPException(
+            status_code=403,
+            detail="Bu işlem için admin yetkisi gerekiyor."
+        )
+    
+    try:
+        # 1. Kullanıcıyı Supabase auth.users tablosunda bul
+        async with httpx.AsyncClient() as client:
+            # Önce users tablosunda email ile ara
+            response = await client.get(
+                f"{SUPABASE_URL}/rest/v1/users",
+                params={
+                    "email": f"eq.{request.user_email}",
+                    "select": "id,email,full_name"
+                },
+                headers={
+                    "apikey": SUPABASE_SERVICE_KEY,
+                    "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}"
+                }
+            )
+            
+            users_data = response.json() if response.status_code == 200 else []
+            
+            # Eğer users tablosunda bulunamazsa, auth.users'dan ara
+            if not users_data:
+                # Auth admin API ile kullanıcı ara
+                auth_response = await client.get(
+                    f"{SUPABASE_URL}/auth/v1/admin/users",
+                    headers={
+                        "apikey": SUPABASE_SERVICE_KEY,
+                        "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}"
+                    }
+                )
+                
+                if auth_response.status_code == 200:
+                    all_users = auth_response.json().get("users", [])
+                    # Email ile eşleşen kullanıcıyı bul (büyük/küçük harf duyarsız)
+                    for u in all_users:
+                        if u.get("email", "").lower() == request.user_email.lower():
+                            users_data = [{"id": u["id"], "email": u["email"], "full_name": u.get("user_metadata", {}).get("full_name", "")}]
+                            break
+            
+            if not users_data:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"'{request.user_email}' email adresine sahip kullanıcı bulunamadı."
+                )
+            
+            user = users_data[0]
+            user_id = user["id"]
+            user_email = user.get("email", request.user_email)
+            
+            # 2. Mevcut hediye haklarını kontrol et
+            gift_response = await client.get(
+                f"{SUPABASE_URL}/rest/v1/gift_videos",
+                params={
+                    "user_id": f"eq.{user_id}",
+                    "select": "*"
+                },
+                headers={
+                    "apikey": SUPABASE_SERVICE_KEY,
+                    "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}"
+                }
+            )
+            
+            existing_gift = gift_response.json() if gift_response.status_code == 200 else []
+            
+            now = datetime.now(timezone.utc).isoformat()
+            
+            if existing_gift:
+                # Mevcut kaydı güncelle
+                current_videos = existing_gift[0].get("remaining_videos", 0)
+                new_total = current_videos + request.video_count
+                
+                update_response = await client.patch(
+                    f"{SUPABASE_URL}/rest/v1/gift_videos",
+                    params={"user_id": f"eq.{user_id}"},
+                    json={
+                        "remaining_videos": new_total,
+                        "updated_at": now
+                    },
+                    headers={
+                        "apikey": SUPABASE_SERVICE_KEY,
+                        "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}",
+                        "Content-Type": "application/json",
+                        "Prefer": "return=minimal"
+                    }
+                )
+                
+                if update_response.status_code not in [200, 204]:
+                    raise HTTPException(500, f"Hediye güncelleme hatası: {update_response.text}")
+                
+                return GiftTokenResponse(
+                    success=True,
+                    message=f"'{user_email}' kullanıcısına {request.video_count} video hakkı eklendi.",
+                    user_email=user_email,
+                    gift_videos=request.video_count,
+                    total_videos=new_total
+                )
+            else:
+                # Yeni kayıt oluştur
+                insert_response = await client.post(
+                    f"{SUPABASE_URL}/rest/v1/gift_videos",
+                    json={
+                        "user_id": user_id,
+                        "user_email": user_email,
+                        "remaining_videos": request.video_count,
+                        "total_gifted": request.video_count,
+                        "created_at": now,
+                        "updated_at": now
+                    },
+                    headers={
+                        "apikey": SUPABASE_SERVICE_KEY,
+                        "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}",
+                        "Content-Type": "application/json",
+                        "Prefer": "return=minimal"
+                    }
+                )
+                
+                if insert_response.status_code not in [200, 201, 204]:
+                    raise HTTPException(500, f"Hediye ekleme hatası: {insert_response.text}")
+                
+                return GiftTokenResponse(
+                    success=True,
+                    message=f"'{user_email}' kullanıcısına {request.video_count} video hakkı hediye edildi.",
+                    user_email=user_email,
+                    gift_videos=request.video_count,
+                    total_videos=request.video_count
+                )
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Gift token error: {e}")
+        raise HTTPException(500, f"Hediye verme hatası: {str(e)}")
+
+
+@subscription_router.get("/gift-videos/{user_id}")
+async def get_user_gift_videos(user_id: str, authorization: str = Header(None)):
+    """Kullanıcının hediye video haklarını getir"""
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{SUPABASE_URL}/rest/v1/gift_videos",
+                params={
+                    "user_id": f"eq.{user_id}",
+                    "select": "*"
+                },
+                headers={
+                    "apikey": SUPABASE_SERVICE_KEY,
+                    "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}"
+                }
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data:
+                    return {"remaining_videos": data[0].get("remaining_videos", 0)}
+            return {"remaining_videos": 0}
+    except Exception as e:
+        print(f"Gift videos fetch error: {e}")
+        return {"remaining_videos": 0}
