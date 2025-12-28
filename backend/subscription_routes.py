@@ -772,32 +772,6 @@ async def get_all_users_for_admin(authorization: str = Header(None)):
     except Exception as e:
         print(f"Get users error: {e}")
         return []
-                    json={
-                        "user_id": user_id,
-                        "user_email": user_email,
-                        "remaining_videos": request.video_count,
-                        "total_gifted": request.video_count,
-                        "created_at": now,
-                        "updated_at": now
-                    },
-                    headers={
-                        "apikey": SUPABASE_SERVICE_KEY,
-                        "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}",
-                        "Content-Type": "application/json",
-                        "Prefer": "return=minimal"
-                    }
-                )
-                
-                if insert_response.status_code not in [200, 201, 204]:
-                    raise HTTPException(500, f"Hediye ekleme hatası: {insert_response.text}")
-                
-                return GiftTokenResponse(
-                    success=True,
-                    message=f"'{user_email}' kullanıcısına {request.video_count} video hakkı hediye edildi.",
-                    user_email=user_email,
-                    gift_videos=request.video_count,
-                    total_videos=request.video_count
-                )
     
     except HTTPException:
         raise
