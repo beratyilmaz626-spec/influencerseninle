@@ -350,19 +350,20 @@ async def can_create_video(
     
     Performs ALL required checks IN ORDER:
     1. User authentication
-    2. Active subscription status + Period validity (30 gün)
+    2. Gift credits OR Active subscription status + Period validity (30 gün)
     3. Photo uploaded (ZORUNLU)
     4. Monthly video limit not exceeded (SADECE completed videolar)
     5. Race condition protection
     
     Error codes:
     - UNAUTHORIZED: User not authenticated
-    - NO_ACTIVE_SUBSCRIPTION: No active subscription
+    - NO_ACTIVE_SUBSCRIPTION: No active subscription or gift credits
     - SUBSCRIPTION_EXPIRED: Period ended (30 gün doldu)
     - PHOTO_REQUIRED: Photo not uploaded
     - MONTHLY_LIMIT_REACHED: Video limit exceeded
     
     NOT: Failed videolar hak düşürmez, sadece completed videolar sayılır.
+    NOT: Hediye kredisi olan kullanıcılar abonelik olmadan da video oluşturabilir.
     """
     
     # 1. CHECK: User authenticated?
@@ -378,7 +379,32 @@ async def can_create_video(
     
     user_id = user.get("id")
     
-    # 2. CHECK: Active subscription?
+    # 2. CHECK: Gift credits first (öncelik hediye kredisinde)
+    gift_credits = await get_user_gift_credits(user_id)
+    use_gift_credits = gift_credits > 0
+    
+    if use_gift_credits:
+        # Hediye kredisi var - abonelik kontrolü ATLA
+        # 3. CHECK: Photo uploaded? (ZORUNLU - kesinlikle)
+        if not request.has_photo:
+            raise HTTPException(
+                status_code=400,
+                detail={
+                    "code": "PHOTO_REQUIRED",
+                    "message": "Video oluşturmak için en az 1 fotoğraf yüklemelisiniz."
+                }
+            )
+        
+        # Hediye kredisi ile video oluşturabilir!
+        return VideoCreationResponse(
+            allowed=True,
+            remaining_videos=gift_credits - request.video_count,
+            plan_limit=gift_credits,
+            current_plan="Hediye Kredisi"
+        )
+    
+    # Hediye kredisi yok - Abonelik kontrolü yap
+    # 2b. CHECK: Active subscription?
     subscription = await get_user_subscription(user_id)
     
     if not subscription:
@@ -386,7 +412,7 @@ async def can_create_video(
             status_code=402,
             detail={
                 "code": "NO_ACTIVE_SUBSCRIPTION",
-                "message": "Aktif bir aboneliğiniz bulunmuyor. Lütfen bir plan seçin."
+                "message": "Aktif bir aboneliğiniz veya hediye krediniz bulunmuyor. Lütfen bir plan seçin."
             }
         )
     
@@ -400,7 +426,7 @@ async def can_create_video(
             }
         )
     
-    # 2b. CHECK: Period validity (30 gün kuralı)
+    # 2c. CHECK: Period validity (30 gün kuralı)
     period_end_ts = subscription.get("current_period_end")
     if not is_period_valid(period_end_ts):
         raise HTTPException(
