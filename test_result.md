@@ -92,8 +92,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Admin Gift Token - Get Users List"
-    - "Admin Gift Token - Gift Credits API"
+    - "Gift Credits Video Creation"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -101,3 +100,5 @@ test_plan:
 agent_communication:
   - agent: "testing"
     message: "✅ ADMIN GIFT TOKEN FEATURE FULLY TESTED AND WORKING. All backend endpoints tested successfully: 1) GET /api/subscription/admin/users returns proper user list with credits, 2) POST /api/subscription/admin/gift-token successfully gifts credits and updates database, 3) Admin authentication working correctly with proper authorization checks, 4) Unauthorized access properly rejected. Test user arzcbk1303@gmail.com credits successfully updated from 1 to 3. All 32 tests passed with 100% success rate."
+  - agent: "testing"
+    message: "✅ GIFT CREDITS VIDEO CREATION FEATURE TESTED AND WORKING. Backend API /api/subscription/can-create-video correctly prioritizes gift credits over subscription checks. Users with gift credits can create videos without active subscription. Test user beratyilmaz626@gmail.com with 1 gift credit successfully authorized for video creation with response: allowed=true, plan='Hediye Kredisi', remaining=0. All 34 backend tests passed with 100% success rate."
