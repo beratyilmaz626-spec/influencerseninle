@@ -199,6 +199,36 @@ async def get_videos_count_in_period(user_id: str, period_start: datetime, perio
         return 0
 
 
+async def get_user_gift_credits(user_id: str) -> int:
+    """
+    Get user's gift credits from users table.
+    
+    Hediye kredisi kontrolü - users tablosundaki user_credits_points
+    """
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{SUPABASE_URL}/rest/v1/users",
+                params={
+                    "id": f"eq.{user_id}",
+                    "select": "user_credits_points"
+                },
+                headers={
+                    "apikey": SUPABASE_SERVICE_KEY,
+                    "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}"
+                }
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data:
+                    return data[0].get("user_credits_points", 0) or 0
+            return 0
+    except Exception as e:
+        print(f"Gift credits fetch error: {e}")
+        return 0
+
+
 def get_plan_from_price_id(price_id: str) -> Optional[dict]:
     """Get plan config from price/plan ID (Iyzico veya legacy Stripe)"""
     if not price_id:
