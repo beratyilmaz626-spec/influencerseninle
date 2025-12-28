@@ -177,43 +177,71 @@ export function useSubscriptionAccess() {
     return getMonthlyVideoLimit(planId);
   }, [getCurrentPlanId]);
 
-  // Kalan video hakkı
+  // Kalan video hakkı (abonelik + hediye kredisi)
   const getRemainingVideos = useCallback((): number => {
+    // Önce abonelik limitini kontrol et
     const limit = getVideoLimit();
-    return Math.max(0, limit - monthlyUsage.videosCreated);
-  }, [getVideoLimit, monthlyUsage.videosCreated]);
+    const subscriptionRemaining = Math.max(0, limit - monthlyUsage.videosCreated);
+    
+    // Hediye kredisi varsa ekle
+    return subscriptionRemaining + giftCredits;
+  }, [getVideoLimit, monthlyUsage.videosCreated, giftCredits]);
+
+  // Hediye kredisi var mı?
+  const hasGiftCredits = useCallback((): boolean => {
+    return giftCredits > 0;
+  }, [giftCredits]);
 
   // Video oluşturabilir mi kontrol et
-  const canCreateVideo = useCallback((): { allowed: boolean; reason?: string } => {
-    // Abonelik aktif mi?
+  const canCreateVideo = useCallback((): { allowed: boolean; reason?: string; useGiftCredits?: boolean } => {
+    // 1. Hediye kredisi varsa, abonelik şart değil
+    if (giftCredits > 0) {
+      return { allowed: true, useGiftCredits: true };
+    }
+    
+    // 2. Abonelik aktif mi?
     if (!isSubscriptionActive()) {
       return {
         allowed: false,
-        reason: 'Aktif bir aboneliğiniz bulunmuyor. Lütfen bir plan seçin.',
+        reason: 'Aktif bir aboneliğiniz veya hediye krediniz bulunmuyor. Lütfen bir plan seçin.',
       };
     }
 
-    // Aylık limit aşıldı mı?
-    const remaining = getRemainingVideos();
+    // 3. Aylık limit aşıldı mı?
+    const limit = getVideoLimit();
+    const remaining = Math.max(0, limit - monthlyUsage.videosCreated);
     if (remaining <= 0) {
-      const planId = getCurrentPlanId();
-      const limit = getVideoLimit();
       return {
         allowed: false,
         reason: `Aylık video limitiniz (${limit} video) doldu. Yeni dönem başladığında tekrar video oluşturabilirsiniz veya planınızı yükseltin.`,
       };
     }
 
-    return { allowed: true };
-  }, [isSubscriptionActive, getRemainingVideos, getCurrentPlanId, getVideoLimit]);
+    return { allowed: true, useGiftCredits: false };
+  }, [isSubscriptionActive, giftCredits, getVideoLimit, monthlyUsage.videosCreated]);
 
   // Video oluşturma sonrası kullanımı güncelle
-  const incrementVideoUsage = useCallback(async (): Promise<void> => {
-    setMonthlyUsage(prev => ({
-      ...prev,
-      videosCreated: prev.videosCreated + 1,
-    }));
-  }, []);
+  const incrementVideoUsage = useCallback(async (useGiftCredits: boolean = false): Promise<void> => {
+    if (useGiftCredits && giftCredits > 0) {
+      // Hediye kredisini düş
+      const newCredits = giftCredits - 1;
+      setGiftCredits(newCredits);
+      
+      // Veritabanını güncelle
+      if (user) {
+        await supabase
+          .from('users')
+          .update({ user_credits_points: newCredits })
+          .eq('id', user.id);
+      }
+    } else {
+      // Normal abonelik kullanımını artır
+      setMonthlyUsage(prev => ({
+        ...prev,
+        videosCreated: prev.videosCreated + 1,
+      }));
+    }
+  }, [giftCredits, user]);
 
   // Mevcut plan bilgilerini al
   const getCurrentPlan = useCallback(() => {
