@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Home, Video, Plus, Settings, LogOut, CreditCard, Play, BarChart3, Clock, Eye, TrendingUp, Users, Sparkles, Grid3x3 as Grid3X3, UserCheck, Wand2, Upload, X, ChevronDown, CheckCircle2, AlertTriangle, Menu } from 'lucide-react';
+import { Home, Video, Plus, Settings, LogOut, CreditCard, Play, BarChart3, Clock, Eye, TrendingUp, Users, Sparkles, Grid3x3 as Grid3X3, UserCheck, Wand2, Upload, X, ChevronDown, CheckCircle2, AlertTriangle, Menu, Gift } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useVideos } from '../hooks/useVideos';
 import VideoLibrary from './VideoLibrary';
@@ -9,6 +9,7 @@ import ProfileSettings from './ProfileSettings';
 import UserManagement from './UserManagement';
 import SliderVideoManager from './SliderVideoManager';
 import VideoStyleManager from './VideoStyleManager';
+import GiftTokenManager from './GiftTokenManager';
 import { BackgroundGradient } from './ui/background-gradient';
 import ImageUploadSection from './video-creation/ImageUploadSection';
 import FormatSelectionSection from './video-creation/FormatSelectionSection';
@@ -24,7 +25,7 @@ interface DashboardProps {
   onLogout: () => void;
 }
 
-type ViewType = 'home' | 'videos' | 'create' | 'create2' | 'subscription' | 'settings' | 'users' | 'slider' | 'styles';
+type ViewType = 'home' | 'videos' | 'create' | 'create2' | 'subscription' | 'settings' | 'users' | 'slider' | 'styles' | 'gift';
 
 export default function Dashboard({ onLogout }: DashboardProps) {
   const [currentView, setCurrentView] = useState<ViewType>('home');
