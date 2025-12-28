@@ -30,7 +30,7 @@ interface MonthlyUsage {
 let limitBannerDismissed = false;
 
 export function useSubscriptionAccess() {
-  const { user } = useAuth();
+  const { user, userProfile } = useAuth();
   const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
   const [monthlyUsage, setMonthlyUsage] = useState<MonthlyUsage>({
     videosCreated: 0,
@@ -39,6 +39,29 @@ export function useSubscriptionAccess() {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [giftCredits, setGiftCredits] = useState<number>(0);
+
+  // Hediye kredilerini getir
+  const fetchGiftCredits = useCallback(async () => {
+    if (!user) {
+      setGiftCredits(0);
+      return;
+    }
+
+    try {
+      const { data, error: creditsError } = await supabase
+        .from('users')
+        .select('user_credits_points')
+        .eq('id', user.id)
+        .single();
+
+      if (!creditsError && data) {
+        setGiftCredits(data.user_credits_points || 0);
+      }
+    } catch (err) {
+      console.error('Hediye kredi bilgisi alınamadı:', err);
+    }
+  }, [user]);
 
   // Abonelik bilgilerini getir
   const fetchSubscription = useCallback(async () => {
