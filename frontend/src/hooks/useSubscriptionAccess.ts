@@ -306,15 +306,18 @@ export function useSubscriptionAccess() {
     isPeriodValid,
     hasFeature,
     canCreateVideo,
+    hasGiftCredits,
     
     // Limitler
     videoLimit: getVideoLimit(),
     remainingVideos: getRemainingVideos(),
     videosUsed: monthlyUsage.videosCreated,
+    giftCredits,
     
     // Aksiyonlar
     incrementVideoUsage,
     refetch: fetchSubscription,
+    refetchGiftCredits: fetchGiftCredits,
     
     // Banner
     dismissLimitBanner,
