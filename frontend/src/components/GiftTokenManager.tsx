@@ -18,7 +18,7 @@ export default function GiftTokenManager() {
   const [sending, setSending] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || process.env.REACT_APP_BACKEND_URL || '';
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
 
   useEffect(() => {
     fetchUsers();
