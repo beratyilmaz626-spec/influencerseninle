@@ -35,6 +35,18 @@ backend:
         agent: "testing"
         comment: "✅ Admin authentication working correctly. beratyilmaz626@gmail.com has proper admin privileges. Unauthorized access properly rejected with 401 status."
 
+  - task: "Gift Credits Video Creation"
+    implemented: true
+    working: true
+    file: "backend/subscription_routes.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ Gift credits video creation feature working correctly. Users with gift credits (user_credits_points > 0) can create videos WITHOUT subscription. Backend endpoint /api/subscription/can-create-video checks gift credits first and returns allowed: true with plan: 'Hediye Kredisi'. Test user beratyilmaz626@gmail.com with 1 credit successfully authorized for video creation."
+
 frontend:
   - task: "Admin Gift Token Page Access"
     implemented: true
