@@ -15,12 +15,6 @@ export default function ImageUploadSection({ uploadedImage, setUploadedImage }: 
   const handleImageUpload = (file: File) => {
     setUploadError(null);
     
-    // Validate file size (max 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      setUploadError('Dosya boyutu 10MB\'dan küçük olmalıdır');
-      return;
-    }
-    
     // Validate file type
     if (!file.type.startsWith('image/')) {
       setUploadError('Lütfen geçerli bir resim dosyası seçin');
