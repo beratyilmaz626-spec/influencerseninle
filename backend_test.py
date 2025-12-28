@@ -908,8 +908,8 @@ class SubscriptionTester:
         return True
     
     async def run_all_tests(self):
-        """Run all subscription system tests - Updated for v2"""
-        print("🚀 Starting InfluencerSeninle Subscription System Tests v2")
+        """Run all subscription system tests - Updated for v2 + Admin Gift Token"""
+        print("🚀 Starting InfluencerSeninle Subscription System Tests v2 + Admin Gift Token")
         print(f"Backend URL: {self.backend_url}")
         print(f"Test User: {TEST_EMAIL}")
         print("=" * 70)
@@ -919,6 +919,7 @@ class SubscriptionTester:
         print("  3. ONLY completed videos count (processing/failed don't count)")
         print("  4. Race condition protection")
         print("  5. USD pricing display")
+        print("  6. Admin Gift Token System")
         print("=" * 70)
         
         # Test 1: Subscription Plans v2 (no auth required)
@@ -948,13 +949,18 @@ class SubscriptionTester:
             
             # Test 9: Feature Access (requires auth)
             await self.test_feature_access()
+            
+            # Test 10: Admin Gift Token System (requires admin auth)
+            await self.test_admin_get_users()
+            await self.test_admin_gift_token()
         
-        # Test 10: Unauthorized Access
+        # Test 11: Unauthorized Access (including admin endpoints)
         await self.test_unauthorized_access()
+        await self.test_admin_unauthorized_access()
         
         # Summary
         print("=" * 70)
-        print("📊 TEST SUMMARY v2")
+        print("📊 TEST SUMMARY v2 + Admin Gift Token")
         print("=" * 70)
         
         total_tests = len(self.test_results)
@@ -967,10 +973,12 @@ class SubscriptionTester:
         print(f"Success Rate: {(passed_tests/total_tests)*100:.1f}%")
         
         # Categorize results
+        admin_tests = [r for r in self.test_results if 'admin' in r['test'].lower() or 'gift' in r['test'].lower()]
         v2_tests = [r for r in self.test_results if 'v2' in r['test'].lower() or 'iyzico' in r['test'].lower() or 'usd' in r['test'].lower() or 'race' in r['test'].lower() or 'completed' in r['test'].lower()]
-        legacy_tests = [r for r in self.test_results if r not in v2_tests]
+        legacy_tests = [r for r in self.test_results if r not in v2_tests and r not in admin_tests]
         
-        print(f"\n🆕 v2 Features: {sum(1 for r in v2_tests if r['success'])}/{len(v2_tests)} passed")
+        print(f"\n🎁 Admin Gift Token: {sum(1 for r in admin_tests if r['success'])}/{len(admin_tests)} passed")
+        print(f"🆕 v2 Features: {sum(1 for r in v2_tests if r['success'])}/{len(v2_tests)} passed")
         print(f"🔄 Legacy Features: {sum(1 for r in legacy_tests if r['success'])}/{len(legacy_tests)} passed")
         
         if failed_tests > 0:
