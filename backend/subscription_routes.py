@@ -772,36 +772,3 @@ async def get_all_users_for_admin(authorization: str = Header(None)):
     except Exception as e:
         print(f"Get users error: {e}")
         return []
-    
-    except HTTPException:
-        raise
-    except Exception as e:
-        print(f"Gift token error: {e}")
-        raise HTTPException(500, f"Hediye verme hatası: {str(e)}")
-
-
-@subscription_router.get("/gift-videos/{user_id}")
-async def get_user_gift_videos(user_id: str, authorization: str = Header(None)):
-    """Kullanıcının hediye video haklarını getir"""
-    try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get(
-                f"{SUPABASE_URL}/rest/v1/gift_videos",
-                params={
-                    "user_id": f"eq.{user_id}",
-                    "select": "*"
-                },
-                headers={
-                    "apikey": SUPABASE_SERVICE_KEY,
-                    "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}"
-                }
-            )
-            
-            if response.status_code == 200:
-                data = response.json()
-                if data:
-                    return {"remaining_videos": data[0].get("remaining_videos", 0)}
-            return {"remaining_videos": 0}
-    except Exception as e:
-        print(f"Gift videos fetch error: {e}")
-        return {"remaining_videos": 0}
