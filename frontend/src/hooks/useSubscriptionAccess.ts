@@ -129,7 +129,8 @@ export function useSubscriptionAccess() {
 
   useEffect(() => {
     fetchSubscription();
-  }, [fetchSubscription]);
+    fetchGiftCredits();
+  }, [fetchSubscription, fetchGiftCredits]);
 
   useEffect(() => {
     if (subscription) {
