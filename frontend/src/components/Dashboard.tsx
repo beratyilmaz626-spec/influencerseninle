@@ -1121,7 +1121,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                       <Upload className="w-6 h-6 text-text-secondary mx-auto" />
                       <div>
                         <p className="text-text-primary font-medium text-xs">Fotoğraf yükle</p>
-                        <p className="text-text-secondary text-xs">PNG, JPG (maks. 10MB)</p>
+                        <p className="text-text-secondary text-xs">PNG, JPG</p>
                       </div>
                     </div>
                   )}
