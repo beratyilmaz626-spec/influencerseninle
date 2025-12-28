@@ -693,6 +693,220 @@ class SubscriptionTester:
             self.log_test("USD Pricing Display", False, f"Exception: {str(e)}")
             return False
     
+    async def test_admin_get_users(self):
+        """Test GET /api/subscription/admin/users endpoint (admin only)"""
+        print("👥 Testing admin get users endpoint...")
+        
+        if not self.auth_token:
+            self.log_test("Admin Get Users", False, "No auth token available")
+            return False
+        
+        try:
+            response = await self.client.get(
+                f"{self.backend_url}/api/subscription/admin/users",
+                headers={"Authorization": f"Bearer {self.auth_token}"}
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Should return a list of users
+                if not isinstance(data, list):
+                    self.log_test("Admin Get Users", False, "Response is not a list", data)
+                    return False
+                
+                # Check if test user exists in the list
+                test_user_found = False
+                test_user_email = "arzcbk1303@gmail.com"
+                
+                for user in data:
+                    if not isinstance(user, dict):
+                        self.log_test("Admin Get Users", False, "User item is not a dict", user)
+                        return False
+                    
+                    # Check required fields
+                    required_fields = ["id", "email", "credits"]
+                    for field in required_fields:
+                        if field not in user:
+                            self.log_test("Admin Get Users", False, f"Missing field '{field}' in user", user)
+                            return False
+                    
+                    if user.get("email") == test_user_email:
+                        test_user_found = True
+                        credits = user.get("credits", 0)
+                        self.log_test("Test User Found", True, f"Found {test_user_email} with {credits} credits")
+                
+                if test_user_found:
+                    self.log_test("Admin Get Users", True, f"Successfully retrieved {len(data)} users including test user")
+                else:
+                    self.log_test("Admin Get Users", True, f"Successfully retrieved {len(data)} users (test user not found, which is acceptable)")
+                
+                return True
+                
+            elif response.status_code == 401:
+                self.log_test("Admin Get Users", False, "Authentication failed - admin token may be invalid")
+                return False
+            elif response.status_code == 403:
+                self.log_test("Admin Get Users", False, "Access denied - user may not have admin privileges")
+                return False
+            else:
+                self.log_test("Admin Get Users", False, f"HTTP {response.status_code}", response.json())
+                return False
+                
+        except Exception as e:
+            self.log_test("Admin Get Users", False, f"Exception: {str(e)}")
+            return False
+    
+    async def test_admin_gift_token(self):
+        """Test POST /api/subscription/admin/gift-token endpoint (admin only)"""
+        print("🎁 Testing admin gift token endpoint...")
+        
+        if not self.auth_token:
+            self.log_test("Admin Gift Token", False, "No auth token available")
+            return False
+        
+        # Test gifting tokens to the test user
+        test_user_email = "arzcbk1303@gmail.com"
+        gift_amount = 2
+        
+        try:
+            # First, get current credits to compare later
+            users_response = await self.client.get(
+                f"{self.backend_url}/api/subscription/admin/users",
+                headers={"Authorization": f"Bearer {self.auth_token}"}
+            )
+            
+            current_credits = 0
+            if users_response.status_code == 200:
+                users = users_response.json()
+                for user in users:
+                    if user.get("email") == test_user_email:
+                        current_credits = user.get("credits", 0)
+                        break
+            
+            # Now gift tokens
+            response = await self.client.post(
+                f"{self.backend_url}/api/subscription/admin/gift-token",
+                headers={"Authorization": f"Bearer {self.auth_token}"},
+                json={
+                    "user_email": test_user_email,
+                    "video_count": gift_amount
+                }
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                
+                # Check response structure
+                required_fields = ["success", "message", "user_email", "gift_videos", "total_videos"]
+                for field in required_fields:
+                    if field not in data:
+                        self.log_test("Admin Gift Token", False, f"Missing field '{field}' in response", data)
+                        return False
+                
+                # Check response values
+                if not data.get("success"):
+                    self.log_test("Admin Gift Token", False, f"Gift failed: {data.get('message')}", data)
+                    return False
+                
+                if data.get("user_email") != test_user_email:
+                    self.log_test("Admin Gift Token", False, f"Wrong user email in response: {data.get('user_email')}")
+                    return False
+                
+                if data.get("gift_videos") != gift_amount:
+                    self.log_test("Admin Gift Token", False, f"Wrong gift amount in response: {data.get('gift_videos')}")
+                    return False
+                
+                expected_total = current_credits + gift_amount
+                if data.get("total_videos") != expected_total:
+                    self.log_test("Admin Gift Token", False, 
+                                f"Wrong total credits: expected {expected_total}, got {data.get('total_videos')}")
+                    return False
+                
+                self.log_test("Admin Gift Token", True, 
+                            f"Successfully gifted {gift_amount} videos to {test_user_email}. Total: {data.get('total_videos')}")
+                
+                # Verify the credits were actually updated by checking users list again
+                verify_response = await self.client.get(
+                    f"{self.backend_url}/api/subscription/admin/users",
+                    headers={"Authorization": f"Bearer {self.auth_token}"}
+                )
+                
+                if verify_response.status_code == 200:
+                    users = verify_response.json()
+                    for user in users:
+                        if user.get("email") == test_user_email:
+                            actual_credits = user.get("credits", 0)
+                            if actual_credits == expected_total:
+                                self.log_test("Gift Token Verification", True, 
+                                            f"Credits correctly updated to {actual_credits}")
+                            else:
+                                self.log_test("Gift Token Verification", False, 
+                                            f"Credits not updated correctly: expected {expected_total}, got {actual_credits}")
+                                return False
+                            break
+                    else:
+                        self.log_test("Gift Token Verification", False, "Test user not found after gift")
+                        return False
+                
+                return True
+                
+            elif response.status_code == 401:
+                self.log_test("Admin Gift Token", False, "Authentication failed - admin token may be invalid")
+                return False
+            elif response.status_code == 403:
+                self.log_test("Admin Gift Token", False, "Access denied - user may not have admin privileges")
+                return False
+            elif response.status_code == 404:
+                self.log_test("Admin Gift Token", False, f"User {test_user_email} not found")
+                return False
+            else:
+                self.log_test("Admin Gift Token", False, f"HTTP {response.status_code}", response.json())
+                return False
+                
+        except Exception as e:
+            self.log_test("Admin Gift Token", False, f"Exception: {str(e)}")
+            return False
+    
+    async def test_admin_unauthorized_access(self):
+        """Test admin endpoints without authentication"""
+        print("🚫 Testing unauthorized access to admin endpoints...")
+        
+        # Test admin users endpoint without auth
+        try:
+            response = await self.client.get(f"{self.backend_url}/api/subscription/admin/users")
+            
+            if response.status_code == 401:
+                self.log_test("Admin Users - No Auth", True, "Correctly rejected unauthorized request")
+            else:
+                self.log_test("Admin Users - No Auth", False, 
+                            f"Expected 401, got {response.status_code}")
+                return False
+                
+        except Exception as e:
+            self.log_test("Admin Users - No Auth", False, f"Exception: {str(e)}")
+            return False
+        
+        # Test admin gift token endpoint without auth
+        try:
+            response = await self.client.post(
+                f"{self.backend_url}/api/subscription/admin/gift-token",
+                json={"user_email": "test@example.com", "video_count": 1}
+            )
+            
+            if response.status_code == 401:
+                self.log_test("Admin Gift Token - No Auth", True, "Correctly rejected unauthorized request")
+            else:
+                self.log_test("Admin Gift Token - No Auth", False, 
+                            f"Expected 401, got {response.status_code}")
+                return False
+                
+        except Exception as e:
+            self.log_test("Admin Gift Token - No Auth", False, f"Exception: {str(e)}")
+            return False
+        
+        return True
+    
     async def run_all_tests(self):
         """Run all subscription system tests - Updated for v2"""
         print("🚀 Starting InfluencerSeninle Subscription System Tests v2")
