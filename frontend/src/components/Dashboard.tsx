@@ -977,8 +977,13 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
             await createVideo(videoData);
             console.log('✅ Video veritabanına kaydedildi:', videoData);
             
-            // Aylık kullanımı güncelle
-            await incrementVideoUsage();
+            // Kullanımı güncelle (hediye kredisi veya abonelik)
+            await incrementVideoUsage(useGiftCredits);
+            
+            // Hediye kredisi kullanıldıysa yeniden yükle
+            if (useGiftCredits) {
+              await refetchGiftCredits();
+            }
             
             if (!videoUrl) {
               // Video henüz hazır değil - processing durumu
