@@ -91,6 +91,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
     { id: 'settings', label: 'Ayarlar', icon: Settings },
     ...(isAdmin ? [
       { id: 'users', label: 'Kullanıcılar', icon: UserCheck },
+      { id: 'gift', label: 'Hediye Token', icon: Gift },
       { id: 'slider', label: 'Ana Sayfa Slider', icon: Grid3X3 },
       { id: 'styles', label: 'Video Stilleri', icon: Wand2 },
     ] : []),
