@@ -376,6 +376,92 @@ class SubscriptionTester:
             self.log_test("Video Creation v2 - With Photo", False, f"Exception: {str(e)}")
             return False
     
+    async def test_gift_credits_video_creation(self):
+        """Test gift credits video creation feature - NEW FEATURE"""
+        print("🎁 Testing gift credits video creation feature...")
+        
+        if not self.auth_token:
+            self.log_test("Gift Credits Video Creation", False, "No auth token available")
+            return False
+        
+        # Test 1: Check if user has gift credits
+        try:
+            # First check current user's gift credits via admin endpoint
+            users_response = await self.client.get(
+                f"{self.backend_url}/api/subscription/admin/users",
+                headers={"Authorization": f"Bearer {self.auth_token}"}
+            )
+            
+            current_credits = 0
+            if users_response.status_code == 200:
+                users = users_response.json()
+                for user in users:
+                    if user.get("email") == TEST_EMAIL:
+                        current_credits = user.get("credits", 0)
+                        break
+            
+            self.log_test("Gift Credits Check", True, f"User {TEST_EMAIL} has {current_credits} gift credits")
+            
+            # Test 2: Video creation with gift credits
+            if current_credits > 0:
+                response = await self.client.post(
+                    f"{self.backend_url}/api/subscription/can-create-video",
+                    headers={"Authorization": f"Bearer {self.auth_token}"},
+                    json={"has_photo": True, "video_count": 1}
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("allowed") == True:
+                        remaining = data.get("remaining_videos", 0)
+                        plan_limit = data.get("plan_limit", 0)
+                        current_plan = data.get("current_plan", "")
+                        
+                        # Check if it's using gift credits
+                        if "Hediye" in current_plan or plan_limit == current_credits:
+                            self.log_test("Gift Credits Video Creation", True, 
+                                        f"✅ Video creation allowed with gift credits! Plan: {current_plan}, Remaining: {remaining}")
+                            return True
+                        else:
+                            self.log_test("Gift Credits Video Creation", False, 
+                                        f"Video allowed but not using gift credits. Plan: {current_plan}, Limit: {plan_limit}")
+                            return False
+                    else:
+                        self.log_test("Gift Credits Video Creation", False, 
+                                    f"Video creation not allowed despite having {current_credits} gift credits")
+                        return False
+                else:
+                    self.log_test("Gift Credits Video Creation", False, 
+                                f"HTTP {response.status_code}: {response.json()}")
+                    return False
+            else:
+                # No gift credits - test that it falls back to subscription check
+                response = await self.client.post(
+                    f"{self.backend_url}/api/subscription/can-create-video",
+                    headers={"Authorization": f"Bearer {self.auth_token}"},
+                    json={"has_photo": True, "video_count": 1}
+                )
+                
+                if response.status_code == 402:
+                    data = response.json()
+                    error_detail = data.get("detail", {})
+                    if isinstance(error_detail, dict) and error_detail.get("code") in ["NO_ACTIVE_SUBSCRIPTION", "SUBSCRIPTION_EXPIRED"]:
+                        self.log_test("Gift Credits Video Creation", True, 
+                                    f"✅ No gift credits - correctly falls back to subscription check: {error_detail.get('code')}")
+                        return True
+                    else:
+                        self.log_test("Gift Credits Video Creation", False, 
+                                    f"Unexpected error when no gift credits: {error_detail}")
+                        return False
+                else:
+                    self.log_test("Gift Credits Video Creation", False, 
+                                f"Expected 402 when no gift credits, got {response.status_code}")
+                    return False
+                
+        except Exception as e:
+            self.log_test("Gift Credits Video Creation", False, f"Exception: {str(e)}")
+            return False
+    
     async def test_feature_access(self):
         """Test GET /api/subscription/check-feature/{feature_id} endpoint"""
         print("🔓 Testing feature access endpoints...")
