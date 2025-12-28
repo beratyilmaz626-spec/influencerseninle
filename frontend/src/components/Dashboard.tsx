@@ -1054,23 +1054,18 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
 
   // Form validation reason for UI feedback
   const getFormValidationError = (): string | null => {
-    // 1. Abonelik kontrolü (status + period)
-    if (!isSubscriptionActive()) {
-      return 'Aktif bir aboneliğin bulunmuyor. Lütfen bir plan seç.';
-    }
-    
-    // 2. Limit kontrolü (sadece completed videolar sayılır)
+    // 1. Video oluşturma hakkı kontrolü (abonelik VEYA hediye kredisi)
     const videoCheck = canCreateVideo();
     if (!videoCheck.allowed) {
       return videoCheck.reason || 'Bu dönemlik video hakkın bitti. Dönem yenilenince devam edebilirsin.';
     }
     
-    // 3. Fotoğraf kontrolü (ZORUNLU - kesinlikle)
+    // 2. Fotoğraf kontrolü (ZORUNLU - kesinlikle)
     if (!uploadedImage) {
       return 'Video oluşturmak için en az 1 fotoğraf yüklemelisin.';
     }
     
-    // 4. Diğer alan kontrolleri
+    // 3. Diğer alan kontrolleri
     if (!gender) return 'Lütfen cinsiyet seç.';
     if (!age) return 'Lütfen yaş aralığı seç.';
     if (!location) return 'Lütfen mekan seç.';
