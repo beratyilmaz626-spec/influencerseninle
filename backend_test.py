@@ -1027,16 +1027,19 @@ class SubscriptionTester:
             # Test 6: Video Creation Authorization v2 (requires auth)
             await self.test_can_create_video_v2()
             
-            # Test 7: Completed Videos Only Counting
+            # Test 7: Gift Credits Video Creation (NEW FEATURE)
+            await self.test_gift_credits_video_creation()
+            
+            # Test 8: Completed Videos Only Counting
             await self.test_completed_videos_only_counting()
             
-            # Test 8: Race Condition Protection
+            # Test 9: Race Condition Protection
             await self.test_race_condition_protection()
             
-            # Test 9: Feature Access (requires auth)
+            # Test 10: Feature Access (requires auth)
             await self.test_feature_access()
             
-            # Test 10: Admin Gift Token System (requires admin auth)
+            # Test 11: Admin Gift Token System (requires admin auth)
             await self.test_admin_get_users()
             await self.test_admin_gift_token()
         
