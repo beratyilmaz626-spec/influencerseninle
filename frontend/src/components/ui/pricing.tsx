@@ -18,6 +18,7 @@ interface PricingPlan {
   price: string;
   yearlyPrice: string;
   period: string;
+  currency?: string;
   features: string[];
   description: string;
   buttonText: string;
