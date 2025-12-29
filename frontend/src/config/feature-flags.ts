@@ -4,12 +4,12 @@
 
 export const FEATURE_FLAGS = {
   // Ses seçimi özelliği - Video oluşturmada ses/seslendirme seçimi
-  // Aktif etmek için: true yapın
-  VOICE_SELECTION: false,
+  // ✅ AKTİF - Kullanıcılar video için ses seçebilir
+  VOICE_SELECTION: true,
   
   // Video oluşturma sihirbazı - Çok adımlı wizard UI  
-  // Aktif etmek için: true yapın
-  VIDEO_CREATION_WIZARD: false,
+  // ✅ AKTİF - Adım adım video oluşturma deneyimi
+  VIDEO_CREATION_WIZARD: true,
   
   // Gelecekteki özellikler için placeholder
   // ADVANCED_ANALYTICS: false,
