@@ -1,7 +1,7 @@
-import { CheckCircle2, Crown, Zap, Building2, Download } from 'lucide-react';
+import { CheckCircle2, Crown, Zap, Building2, Download, Clock } from 'lucide-react';
 import { useSubscription } from '../hooks/useSubscription';
 import { useStripe } from '../hooks/useStripe';
-import { stripeProducts } from '../stripe-config';
+import { stripeProducts, formatPriceTRY } from '../stripe-config';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -11,9 +11,9 @@ export default function SubscriptionPanel() {
   const { redirectToCheckout, loading: stripeLoading } = useStripe();
   
   const activeProduct = getActiveProduct();
-  const currentPlan = activeProduct?.name.toLowerCase().includes('başlangıç') ? 'starter' :
-                    activeProduct?.name.toLowerCase().includes('profesyonel') ? 'professional' :
-                    activeProduct?.name.toLowerCase().includes('kurumsal') ? 'enterprise' : null;
+  const currentPlan = activeProduct?.name.toLowerCase().includes('starter') ? 'starter' :
+                    activeProduct?.name.toLowerCase().includes('professional') ? 'professional' :
+                    activeProduct?.name.toLowerCase().includes('business') ? 'enterprise' : null;
 
   return (
     <div className="space-y-8">
@@ -72,10 +72,10 @@ export default function SubscriptionPanel() {
         <h2 className="text-2xl font-bold text-text-primary mb-6">Mevcut Planlar</h2>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {stripeProducts.map((product, index) => {
-            const planType = product.name.toLowerCase().includes('başlangıç') ? 'starter' :
-                           product.name.toLowerCase().includes('profesyonel') ? 'professional' :
-                           product.name.toLowerCase().includes('kurumsal') ? 'enterprise' : 'other';
+          {stripeProducts.map((product) => {
+            const planType = product.name.toLowerCase().includes('starter') ? 'starter' :
+                           product.name.toLowerCase().includes('professional') ? 'professional' :
+                           product.name.toLowerCase().includes('business') ? 'enterprise' : 'other';
             
             const isCurrentPlan = currentPlan === planType;
             
@@ -86,9 +86,11 @@ export default function SubscriptionPanel() {
                 icon={planType === 'starter' ? <Zap className="w-8 h-8" /> :
                       planType === 'professional' ? <Crown className="w-8 h-8" /> :
                       <Building2 className="w-8 h-8" />}
-                price={String(Math.round(product.price))}
+                price={product.price}
+                videoDuration={product.videoDuration}
+                videoLimit={product.videoLimit}
                 description={product.description}
-                features={getFeaturesByPlan(planType)}
+                features={getFeaturesByPlan(planType, product.videoDuration, product.videoLimit)}
                 isActive={isCurrentPlan}
                 highlighted={planType === 'professional'}
                 buttonText={isCurrentPlan ? 'Mevcut Plan' : 
@@ -113,9 +115,9 @@ export default function SubscriptionPanel() {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            <BillingRow date="12 Eki 2025" amount="$99.00" status="Ödendi" plan="Profesyonel Plan" />
-            <BillingRow date="12 Eyl 2025" amount="$99.00" status="Ödendi" plan="Profesyonel Plan" />
-            <BillingRow date="12 Ağu 2025" amount="$29.00" status="Ödendi" plan="Başlangıç Planı" />
+            <BillingRow date="12 Eki 2025" amount="₺3.799" status="Ödendi" plan="Professional Plan" />
+            <BillingRow date="12 Eyl 2025" amount="₺3.799" status="Ödendi" plan="Professional Plan" />
+            <BillingRow date="12 Ağu 2025" amount="₺949" status="Ödendi" plan="Starter Plan" />
           </div>
         </CardContent>
       </Card>
@@ -136,11 +138,15 @@ export default function SubscriptionPanel() {
   );
 }
 
-function getFeaturesByPlan(planType: string): string[] {
+function getFeaturesByPlan(planType: string, videoDuration: number, videoLimit: number): string[] {
+  const durationText = `${videoDuration} saniyelik videolar`;
+  const limitText = `${videoLimit} video/ay`;
+  
   switch (planType) {
     case 'starter':
       return [
-        '20 video/ay',
+        limitText,
+        durationText,
         'HD 1080p dışa aktarma',
         'Filigransız videolar',
         'Temel şablonlar',
@@ -148,7 +154,8 @@ function getFeaturesByPlan(planType: string): string[] {
       ];
     case 'professional':
       return [
-        '45 video/ay',
+        limitText,
+        durationText,
         'HD 1080p dışa aktarma',
         'Filigransız videolar',
         'Premium şablonlar',
@@ -157,7 +164,8 @@ function getFeaturesByPlan(planType: string): string[] {
       ];
     case 'enterprise':
       return [
-        '100 video/ay',
+        limitText,
+        durationText,
         'HD 1080p dışa aktarma',
         'Filigransız videolar',
         'Premium şablonlar',
@@ -174,6 +182,8 @@ function PlanCard({
   name,
   icon,
   price,
+  videoDuration,
+  videoLimit,
   description,
   features,
   isActive,
@@ -184,7 +194,9 @@ function PlanCard({
 }: {
   name: string;
   icon: React.ReactNode;
-  price: string;
+  price: number;
+  videoDuration: number;
+  videoLimit: number;
   description: string;
   features: string[];
   isActive: boolean;
@@ -219,11 +231,17 @@ function PlanCard({
         </div>
         <h3 className="text-2xl font-bold text-text-primary mb-2">{name}</h3>
         <div className="flex items-baseline justify-center mb-2">
-          {price !== 'Özel' && <span className="text-4xl font-bold bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">${price}</span>}
-          {price === 'Özel' && <span className="text-4xl font-bold bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">{price}</span>}
-          {price !== 'Özel' && <span className="text-text-muted ml-2">/ay</span>}
+          <span className="text-4xl font-bold bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">
+            {formatPriceTRY(price)}
+          </span>
+          <span className="text-text-muted ml-2">/ay</span>
         </div>
-        <p className="text-text-secondary text-sm">{description}</p>
+        <div className="flex items-center justify-center gap-2 text-text-secondary text-sm">
+          <Clock className="w-4 h-4" />
+          <span>{videoDuration} saniye video</span>
+          <span className="text-text-muted">•</span>
+          <span>{videoLimit} video/ay</span>
+        </div>
       </div>
 
       <ul className="space-y-3 mb-6">
