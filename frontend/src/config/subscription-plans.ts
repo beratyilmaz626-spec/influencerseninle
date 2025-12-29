@@ -1,5 +1,6 @@
 // Aylık Abonelik Paketleri Konfigürasyonu
 // SADECE AYLIK ABONELİK - TEK SEFERLİK VEYA YILLIK ÖDEME YOK
+// Ödeme: İyzico (TL bazlı)
 
 export type PlanId = 'starter' | 'professional' | 'enterprise';
 export type FeatureId = 
@@ -12,55 +13,67 @@ export type FeatureId =
   | 'dedicated_support'
   | 'api_access'
   | 'advanced_api'
-  | 'white_label';
+  | 'white_label'
+  | 'video_10sec'
+  | 'video_15sec';
 
 export interface SubscriptionPlan {
   id: PlanId;
   name: string;
   nameEn: string;
   description: string;
-  priceMonthly: number;
+  priceMonthly: number;      // TL fiyat
+  priceMonthlyUSD?: number;  // USD karşılığı (referans)
   currency: string;
-  stripePriceId: string;
+  stripePriceId: string;     // İyzico için de kullanılabilir
   monthlyVideoLimit: number;
+  maxVideoDuration: number;  // Saniye cinsinden video süresi
   features: FeatureId[];
   isPopular?: boolean;
 }
 
-// Stripe Price ID'leri - AYLIK ABONELİK
-export const STRIPE_PRICE_IDS = {
-  starter: 'price_starter_monthly', // Stripe'da oluşturulacak
-  professional: 'price_professional_monthly',
-  enterprise: 'price_enterprise_monthly',
+// İyzico Price ID'leri - AYLIK ABONELİK
+export const IYZICO_PRICE_IDS = {
+  starter: 'iyzico_starter_monthly',
+  professional: 'iyzico_professional_monthly',
+  enterprise: 'iyzico_enterprise_monthly',
 } as const;
+
+// Legacy Stripe Price ID'leri (geriye uyumluluk için)
+export const STRIPE_PRICE_IDS = IYZICO_PRICE_IDS;
 
 export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
   starter: {
     id: 'starter',
-    name: 'Başlangıç',
+    name: 'Starter',
     nameEn: 'Starter',
-    description: 'Küçük işletmeler ve bireysel kullanıcılar için ideal',
-    priceMonthly: 10,
-    currency: 'USD',
-    stripePriceId: STRIPE_PRICE_IDS.starter,
+    description: '10 saniyelik videolar ile başlangıç paketi',
+    priceMonthly: 949,
+    priceMonthlyUSD: 27,
+    currency: 'TRY',
+    stripePriceId: IYZICO_PRICE_IDS.starter,
     monthlyVideoLimit: 20,
+    maxVideoDuration: 10,
     features: [
       'hd_video',
       'no_watermark',
       'basic_templates',
       'email_support',
+      'video_10sec',
     ],
     isPopular: false,
   },
   professional: {
     id: 'professional',
-    name: 'Profesyonel',
+    name: 'Professional',
     nameEn: 'Professional',
-    description: 'Büyüyen işletmeler ve ajanslar için',
-    priceMonthly: 20,
-    currency: 'USD',
-    stripePriceId: STRIPE_PRICE_IDS.professional,
+    description: '15 saniyelik videolar ile profesyonel paket',
+    priceMonthly: 3799,
+    priceMonthlyUSD: 108,
+    currency: 'TRY',
+    stripePriceId: IYZICO_PRICE_IDS.professional,
     monthlyVideoLimit: 45,
+    maxVideoDuration: 15,
     features: [
       'hd_video',
       'no_watermark',
@@ -68,18 +81,21 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
       'premium_templates',
       'priority_support',
       'api_access',
+      'video_15sec',
     ],
     isPopular: true,
   },
   enterprise: {
     id: 'enterprise',
-    name: 'Kurumsal',
-    nameEn: 'Enterprise',
-    description: 'Büyük organizasyonlar ve kurumsal müşteriler için',
-    priceMonthly: 40,
-    currency: 'USD',
-    stripePriceId: STRIPE_PRICE_IDS.enterprise,
+    name: 'Business',
+    nameEn: 'Business',
+    description: '15 saniyelik videolar ile kurumsal paket',
+    priceMonthly: 8549,
+    priceMonthlyUSD: 244,
+    currency: 'TRY',
+    stripePriceId: IYZICO_PRICE_IDS.enterprise,
     monthlyVideoLimit: 100,
+    maxVideoDuration: 15,
     features: [
       'hd_video',
       'no_watermark',
@@ -89,6 +105,7 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
       'api_access',
       'advanced_api',
       'white_label',
+      'video_15sec',
     ],
     isPopular: false,
   },
@@ -136,6 +153,14 @@ export const FEATURE_LABELS: Record<FeatureId, { name: string; description: stri
     name: 'Beyaz Etiket',
     description: 'Kendi markanızla kullanım',
   },
+  video_10sec: {
+    name: '10 Saniye Video',
+    description: 'Maksimum 10 saniyelik video oluşturma',
+  },
+  video_15sec: {
+    name: '15 Saniye Video',
+    description: 'Maksimum 15 saniyelik video oluşturma',
+  },
 };
 
 // Yardımcı fonksiyonlar
@@ -156,6 +181,20 @@ export const getMonthlyVideoLimit = (planId: PlanId): number => {
   return SUBSCRIPTION_PLANS[planId]?.monthlyVideoLimit ?? 0;
 };
 
+export const getMaxVideoDuration = (planId: PlanId): number => {
+  return SUBSCRIPTION_PLANS[planId]?.maxVideoDuration ?? 10;
+};
+
 export const getAllPlans = (): SubscriptionPlan[] => {
   return Object.values(SUBSCRIPTION_PLANS);
+};
+
+// TL formatı için yardımcı fonksiyon
+export const formatPriceTRY = (price: number): string => {
+  return new Intl.NumberFormat('tr-TR', {
+    style: 'currency',
+    currency: 'TRY',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price);
 };
