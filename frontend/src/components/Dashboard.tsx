@@ -913,6 +913,10 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       if (selectedStyle) {
         formData.append('selectedStyle', selectedStyle);
       }
+      // Voice selection (if feature enabled)
+      if (FEATURE_FLAGS.VOICE_SELECTION && selectedVoice) {
+        formData.append('selectedVoice', selectedVoice);
+      }
       
       // Add image if uploaded
       if (uploadedImage) {
