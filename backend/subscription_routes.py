@@ -6,10 +6,10 @@ limit kontrollerini içerir.
 ABONELİK KURALLARI:
 - SADECE aylık abonelik modeli (30 gün erişim)
 - Ödeme sağlayıcı: IYZICO (Stripe kullanılmıyor)
-- Fiyatlar USD
-- Başlangıç: 20 video/ay, $10
-- Profesyonel: 45 video/ay, $20 (premium templates, api_access)
-- Kurumsal: 100 video/ay, $40 (tüm özellikler)
+- Fiyatlar TL (Türk Lirası)
+- Starter: 20 video/ay, 10 saniye, ₺949
+- Professional: 45 video/ay, 15 saniye, ₺3.799 (premium templates, api_access)
+- Business: 100 video/ay, 15 saniye, ₺8.549 (tüm özellikler)
 
 PERIOD KURALLARI:
 - Ödeme başarılı -> current_period_start = now, current_period_end = now + 30 gün
@@ -20,6 +20,10 @@ VIDEO LIMIT KURALLARI:
 - SADECE completed videolar sayılır
 - processing ve failed sayılmaz
 - Failed video = hak iadesi (hak düşmez)
+
+VIDEO SÜRESİ KURALLARI:
+- Starter: Maksimum 10 saniye
+- Professional & Business: Maksimum 15 saniye
 """
 
 from fastapi import APIRouter, HTTPException, Depends, Header
@@ -44,33 +48,47 @@ SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://yxoynfnyrietkisnbqwf.supa
 SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
 
 # Plan configurations - MUST MATCH frontend/src/config/subscription-plans.ts
+# Fiyatlar TL, video süreleri saniye cinsinden
 PLAN_CONFIGS = {
     "starter": {
         "id": "starter",
-        "name": "Başlangıç",
+        "name": "Starter",
         "monthly_video_limit": 20,
-        "features": ["hd_video", "no_watermark", "basic_templates", "email_support"]
+        "max_video_duration": 10,  # saniye
+        "price_try": 949,
+        "price_usd": 27,
+        "features": ["hd_video", "no_watermark", "basic_templates", "email_support", "video_10sec"]
     },
     "professional": {
         "id": "professional",
-        "name": "Profesyonel",
+        "name": "Professional",
         "monthly_video_limit": 45,
-        "features": ["hd_video", "no_watermark", "basic_templates", "premium_templates", "priority_support", "api_access"]
+        "max_video_duration": 15,  # saniye
+        "price_try": 3799,
+        "price_usd": 108,
+        "features": ["hd_video", "no_watermark", "basic_templates", "premium_templates", "priority_support", "api_access", "video_15sec"]
     },
     "enterprise": {
         "id": "enterprise",
-        "name": "Kurumsal",
+        "name": "Business",
         "monthly_video_limit": 100,
-        "features": ["hd_video", "no_watermark", "basic_templates", "premium_templates", "dedicated_support", "api_access", "advanced_api", "white_label"]
+        "max_video_duration": 15,  # saniye
+        "price_try": 8549,
+        "price_usd": 244,
+        "features": ["hd_video", "no_watermark", "basic_templates", "premium_templates", "dedicated_support", "api_access", "advanced_api", "white_label", "video_15sec"]
     }
 }
 
-# Plan ID mapping - Iyzico entegrasyonu için (Stripe yerine)
+# Plan ID mapping - Iyzico entegrasyonu için
 PLAN_ID_MAPPING = {
     "starter": "starter",
     "professional": "professional",
     "enterprise": "enterprise",
     # Iyzico product ID'leri (ödeme entegrasyonu için)
+    "iyzico_starter_monthly": "starter",
+    "iyzico_professional_monthly": "professional",
+    "iyzico_enterprise_monthly": "enterprise",
+    # Legacy mappings
     "iyzico_starter": "starter",
     "iyzico_professional": "professional",
     "iyzico_enterprise": "enterprise",
@@ -80,7 +98,9 @@ PLAN_ID_MAPPING = {
     "price_1SI93eIXoILZ7benaTtahoH7": "professional",
     "price_professional_monthly": "professional",
     "price_1SI995IXoILZ7benbXtYoVJb": "enterprise",
-    "price_enterprise_monthly": "enterprise"
+    "price_enterprise_monthly": "enterprise",
+    # Gift plans
+    "gift_1_video": "starter"
 }
 
 # Models
