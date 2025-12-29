@@ -494,47 +494,53 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
             <Pricing
               plans={[
                 {
-                  name: "Başlangıç",
-                  price: "10",
-                  yearlyPrice: "10",
+                  name: "Starter",
+                  price: "949",
+                  yearlyPrice: "949",
                   period: "/ay",
+                  currency: "₺",
                   features: [
                     "20 video/ay",
+                    "10 saniyelik videolar",
                     "HD 1080p dışa aktarma",
                     "Filigransız videolar",
                     "Temel şablonlar",
                     "E-posta desteği",
                   ],
-                  description: "Aylık abonelik ile 20 adet HD kalite video",
+                  description: "10 saniyelik videolar ile başlangıç paketi",
                   buttonText: "Planı Seç",
-                  priceId: "price_1SI8r5IXoILZ7benDrZEtPLb",
+                  priceId: "iyzico_starter_monthly",
                   isPopular: false,
                 },
                 {
-                  name: "Profesyonel",
-                  price: "20",
-                  yearlyPrice: "20",
+                  name: "Professional",
+                  price: "3.799",
+                  yearlyPrice: "3.799",
                   period: "/ay",
+                  currency: "₺",
                   features: [
                     "45 video/ay",
+                    "15 saniyelik videolar",
                     "HD 1080p dışa aktarma",
                     "Filigransız videolar",
                     "Premium şablonlar",
                     "Öncelikli destek",
                     "API erişimi",
                   ],
-                  description: "Aylık abonelik ile 45 adet HD kalite video",
+                  description: "15 saniyelik videolar ile profesyonel paket",
                   buttonText: "Planı Seç",
-                  priceId: "price_1SI93eIXoILZ7benaTtahoH7",
+                  priceId: "iyzico_professional_monthly",
                   isPopular: true,
                 },
                 {
-                  name: "Kurumsal",
-                  price: "40",
-                  yearlyPrice: "40",
+                  name: "Business",
+                  price: "8.549",
+                  yearlyPrice: "8.549",
                   period: "/ay",
+                  currency: "₺",
                   features: [
                     "100 video/ay",
+                    "15 saniyelik videolar",
                     "HD 1080p dışa aktarma",
                     "Filigransız videolar",
                     "Premium şablonlar",
@@ -542,14 +548,14 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
                     "Gelişmiş API",
                     "Beyaz etiket seçeneği",
                   ],
-                  description: "Aylık abonelik ile 100 adet HD kalite video",
+                  description: "15 saniyelik videolar ile kurumsal paket",
                   buttonText: "Planı Seç",
-                  priceId: "price_1SI995IXoILZ7benbXtYoVJb",
+                  priceId: "iyzico_enterprise_monthly",
                   isPopular: false,
                 },
               ]}
               title="Uygun, Şeffaf Fiyatlandırma"
-              description="İhtiyaçlarınıza uygun planı seçin. Tüm fiyatlar USD olarak gösterilmektedir."
+              description="İhtiyaçlarınıza uygun planı seçin. Tüm fiyatlar TL olarak gösterilmektedir."
               setShowAuthModal={setShowAuthModal}
             />
           </div>
