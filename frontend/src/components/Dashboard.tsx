@@ -16,10 +16,12 @@ import FormatSelectionSection from './video-creation/FormatSelectionSection';
 import ContentCountSection from './video-creation/ContentCountSection';
 import DialogSection from './video-creation/DialogSection';
 import PromptSection from './video-creation/PromptSection';
+import VoiceSelection from './video-creation/VoiceSelection';
 import CreditDisplay from './CreditDisplay';
 import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
 import { useSubscriptionAccess } from '../hooks/useSubscriptionAccess';
+import { FEATURE_FLAGS } from '../config/feature-flags';
 
 interface DashboardProps {
   onLogout: () => void;
