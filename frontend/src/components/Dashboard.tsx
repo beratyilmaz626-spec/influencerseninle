@@ -805,6 +805,9 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   const [promptType, setPromptType] = useState('auto'); // 'auto' or 'manual'
   const [manualPrompt, setManualPrompt] = useState('');
   
+  // Voice Selection state (Feature Flag: VOICE_SELECTION)
+  const [selectedVoice, setSelectedVoice] = useState<string | null>(null);
+  
   // Modal state
   const [showSectorModal, setShowSectorModal] = useState(false);
   const [showWarningModal, setShowWarningModal] = useState(false);
