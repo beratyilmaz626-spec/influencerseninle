@@ -1,12 +1,45 @@
-import { CheckCircle2, X } from 'lucide-react';
+import { CheckCircle2, X, Check } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-interface ComparisonData {
+// Exported interfaces for reusability
+export interface ComparisonRow {
+  feature: string;
+  us: string | boolean;
+  them: string | boolean;
+}
+
+// Re-export for backwards compatibility
+export interface ComparisonData {
   feature: string;
   reklamDeha: string | boolean;
   others: string | boolean;
 }
 
-const comparisonData: ComparisonData[] = [
+// Default comparison data (can be imported and used elsewhere)
+export const DEFAULT_COMPARISON_DATA: ComparisonRow[] = [
+  { feature: 'İçerik Üretim Hızı', us: 'Tek tıkla, gerçek zamanlı', them: 'Günler, hatta haftalar' },
+  { feature: 'Maliyet', us: '$10-40/ay ile sınırsız', them: 'Yüksek prodüksiyon + influencer ücretleri' },
+  { feature: 'Lojistik & Set Yönetimi', us: true, them: false },
+  { feature: 'Kargo & Ürün Gönderimi', us: true, them: false },
+  { feature: 'Risk Faktörleri', us: 'Sıfır risk - Her zaman hazır', them: 'İptal, influencer bulunamama' },
+  { feature: 'Revizyon İmkanı', us: 'İstediğin kadar, sınırsız', them: 'Sınırlı, ekstra ücret' },
+  { feature: 'İçerik Çeşitliliği', us: 'Tek üründen yüzlerce varyasyon', them: 'Her seferinde yeni çekim' },
+  { feature: 'Yönetim', us: '100% dijital, uzaktan', them: 'Fiziksel koordinasyon, toplantılar' }
+];
+
+// Props interface for customizable ComparisonTable
+export interface ComparisonTableProps {
+  data?: ComparisonRow[];
+  usTitle?: string;
+  themTitle?: string;
+  theme?: 'dark' | 'light';
+  className?: string;
+  showCTA?: boolean;
+  onCTAClick?: () => void;
+}
+
+// Legacy data format (for backwards compatibility)
+const legacyComparisonData: ComparisonData[] = [
   {
     feature: 'İçerik Üretim Hızı',
     reklamDeha: 'Tek tıkla, gerçek zamanlı',
@@ -49,6 +82,140 @@ const comparisonData: ComparisonData[] = [
   }
 ];
 
+// Helper function to render cell values (exported for reuse)
+export function renderComparisonValue(value: string | boolean, isPositive: boolean, theme: 'dark' | 'light' = 'dark') {
+  if (typeof value === 'boolean') {
+    return value ? (
+      <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ${
+        theme === 'dark' 
+          ? (isPositive ? 'bg-neon-cyan/20' : 'bg-red-500/20')
+          : (isPositive ? 'bg-green-100' : 'bg-red-100')
+      }`}>
+        {value ? (
+          <Check className={`w-3 h-3 sm:w-4 sm:h-4 ${
+            theme === 'dark' ? 'text-neon-cyan' : 'text-green-600'
+          }`} />
+        ) : (
+          <X className={`w-3 h-3 sm:w-4 sm:h-4 ${
+            theme === 'dark' ? 'text-red-500' : 'text-red-600'
+          }`} />
+        )}
+      </div>
+    ) : (
+      <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center ${
+        theme === 'dark' ? 'bg-red-500/20' : 'bg-red-100'
+      }`}>
+        <X className={`w-3 h-3 sm:w-4 sm:h-4 ${
+          theme === 'dark' ? 'text-red-500' : 'text-red-600'
+        }`} />
+      </div>
+    );
+  }
+  return (
+    <span className={`text-xs sm:text-sm ${
+      theme === 'dark'
+        ? (isPositive ? 'text-neon-cyan' : 'text-red-400')
+        : (isPositive ? 'text-green-700' : 'text-red-700')
+    }`}>
+      {value}
+    </span>
+  );
+}
+
+// Dark theme comparison table (for Landing Page)
+export function DarkComparisonTable({ 
+  data = DEFAULT_COMPARISON_DATA, 
+  usTitle = 'InfluencerSeninle',
+  themTitle = 'Geleneksel',
+  className = ''
+}: ComparisonTableProps) {
+  return (
+    <div className={className}>
+      {/* Desktop Table View */}
+      <div className="hidden md:block overflow-x-auto">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="border-b border-border">
+              <th className="py-3 sm:py-4 px-4 sm:px-6 text-left text-text-secondary font-medium text-sm sm:text-base">
+                Özellik
+              </th>
+              <th className="py-3 sm:py-4 px-4 sm:px-6 text-center">
+                <span className="text-base sm:text-lg font-bold bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">
+                  {usTitle}
+                </span>
+              </th>
+              <th className="py-3 sm:py-4 px-4 sm:px-6 text-center">
+                <span className="text-base sm:text-lg font-bold text-neon-pink">
+                  {themTitle}
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((row, index) => (
+              <motion.tr
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                viewport={{ once: true }}
+                className="border-b border-border/50 hover:bg-surface-elevated/30 transition-colors"
+              >
+                <td className="py-3 sm:py-4 px-4 sm:px-6 text-text-primary font-medium text-sm sm:text-base">
+                  {row.feature}
+                </td>
+                <td className="py-3 sm:py-4 px-4 sm:px-6 text-center">
+                  {renderComparisonValue(row.us, true, 'dark')}
+                </td>
+                <td className="py-3 sm:py-4 px-4 sm:px-6 text-center">
+                  {renderComparisonValue(row.them, false, 'dark')}
+                </td>
+              </motion.tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-3">
+        <div className="grid grid-cols-3 gap-2 px-2 py-3 rounded-xl bg-surface-elevated/50 border border-border">
+          <div className="text-xs text-text-secondary font-medium">Özellik</div>
+          <div className="text-center">
+            <span className="text-xs font-bold bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">
+              {usTitle}
+            </span>
+          </div>
+          <div className="text-center">
+            <span className="text-xs font-bold text-neon-pink">{themTitle}</span>
+          </div>
+        </div>
+
+        {data.map((row, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.03 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-3 gap-2 px-3 py-3 rounded-xl bg-surface/50 border border-border/30 items-center"
+          >
+            <div className="text-xs text-text-primary font-medium leading-tight">
+              {row.feature}
+            </div>
+            <div className="flex justify-center">
+              {renderComparisonValue(row.us, true, 'dark')}
+            </div>
+            <div className="flex justify-center">
+              {renderComparisonValue(row.them, false, 'dark')}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Default export - Light theme (legacy, backwards compatible)
 export default function ComparisonTable() {
   const renderCell = (value: string | boolean, isPositive: boolean) => {
     if (typeof value === 'boolean') {
@@ -97,7 +264,7 @@ export default function ComparisonTable() {
                   <th className="px-8 py-6 text-center text-lg font-bold text-green-600 w-1/3 bg-green-50/80">
                     <div className="flex flex-col items-center">
                       <CheckCircle2 className="w-8 h-8 mb-2 text-green-500" />
-                      <span>reklamDeha</span>
+                      <span>InfluencerSeninle</span>
                       <span className="text-xs font-normal text-gray-600 mt-1">AI Tabanlı UGC</span>
                     </div>
                   </th>
@@ -105,13 +272,13 @@ export default function ComparisonTable() {
                     <div className="flex flex-col items-center">
                       <X className="w-8 h-8 mb-2 text-red-500" />
                       <span>Geleneksel Yöntemler</span>
-                      <span className="text-xs font-normal text-gray-600 mt-1">Ajanslar, Diğer Yapay Zeka Araçları, Kendi Başına</span>
+                      <span className="text-xs font-normal text-gray-600 mt-1">Ajanslar, Diğer Yapay Zeka Araçları</span>
                     </div>
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {comparisonData.map((row, index) => (
+                {legacyComparisonData.map((row, index) => (
                   <tr 
                     key={index} 
                     className={`border-b border-gray-100 transition-all hover:shadow-md ${
@@ -135,20 +302,6 @@ export default function ComparisonTable() {
                 ))}
               </tbody>
             </table>
-          </div>
-        </div>
-
-        <div className="text-center mt-12">
-          <div className="bg-gradient-to-r from-blue-500 to-cyan-400 rounded-2xl p-8 text-white">
-            <h3 className="text-2xl font-bold mb-4">
-              Farkı Kendiniz Görün
-            </h3>
-            <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-              ReklamDeha ile video reklam üretiminizi hızlandırın ve maliyetlerinizi düşürün
-            </p>
-            <button className="bg-white text-blue-600 px-8 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors inline-flex items-center space-x-2 shadow-lg">
-              <span>Ücretsiz Deneme Başlat</span>
-            </button>
           </div>
         </div>
       </div>
