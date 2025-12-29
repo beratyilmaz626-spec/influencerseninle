@@ -1350,6 +1350,17 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
               )}
             </div>
 
+            {/* Voice Selection - Feature Flag Controlled */}
+            {FEATURE_FLAGS.VOICE_SELECTION && (
+              <div className="space-y-2">
+                <VoiceSelection
+                  selectedVoice={selectedVoice}
+                  onSelectVoice={setSelectedVoice}
+                  disabled={isGenerating}
+                />
+              </div>
+            )}
+
             {/* Video Stilini Seçin */}
             <div className="space-y-2 relative">
               <h3 className="text-sm font-semibold text-text-primary">🎨 Video Stilini Seçin</h3>
