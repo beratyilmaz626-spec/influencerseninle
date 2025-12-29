@@ -4,9 +4,11 @@
 
 export const FEATURE_FLAGS = {
   // Ses seçimi özelliği - Video oluşturmada ses/seslendirme seçimi
-  VOICE_SELECTION: true, // TEST: Temporarily enabled for testing
+  // Aktif etmek için: true yapın
+  VOICE_SELECTION: false,
   
-  // Video oluşturma sihirbazı - Çok adımlı wizard UI
+  // Video oluşturma sihirbazı - Çok adımlı wizard UI  
+  // Aktif etmek için: true yapın
   VIDEO_CREATION_WIZARD: false,
   
   // Gelecekteki özellikler için placeholder
