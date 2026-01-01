@@ -177,7 +177,6 @@ export function useVideos() {
     videos,
     loading,
     error,
-    hasEnoughCredits,
     createVideo,
     updateVideo,
     deleteVideo,
