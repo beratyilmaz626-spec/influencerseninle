@@ -73,17 +73,14 @@ export function useVideos() {
   const createVideo = async (videoData: Omit<VideoInsert, 'user_id'>) => {
     if (!user) throw new Error('Kullanıcı girişi yapılmamış');
 
-    // Check if user has enough credits
-    if (!hasEnoughCredits(1)) {
-      throw new Error('Yetersiz kredi. Video oluşturmak için en az 1 krediniz olmalı.');
-    }
+    // NOT: Kredi/abonelik kontrolü Dashboard.tsx'de useSubscriptionAccess ile yapılıyor.
+    // Bu fonksiyon sadece video kaydı oluşturur.
+    
     try {
       console.log('🎬 Yeni video oluşturuluyor, kullanıcı:', user.id);
+      console.log('📝 Video data:', videoData);
       
-      // Deduct 1 credit for video creation
-      await deductCredits(1, `Video oluşturma: ${videoData.name}`);
-      
-      // 🎯 YENİ VİDEO OLUŞTURURKEN DE user_id EKLİYORUM:
+      // 🎯 YENİ VİDEO OLUŞTURURKEN user_id EKLİYORUM:
       const { data, error } = await supabase
         .from('videos')
         .insert({
@@ -93,7 +90,10 @@ export function useVideos() {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Supabase insert error:', error);
+        throw error;
+      }
       
       console.log('✅ Video başarıyla oluşturuldu:', data.id);
       
@@ -101,6 +101,7 @@ export function useVideos() {
       setVideos(prev => [data, ...prev]);
       return data;
     } catch (err) {
+      console.error('❌ createVideo error:', err);
       const errorMessage = err instanceof Error ? err.message : 'Video oluşturulamadı';
       setError(errorMessage);
       throw new Error(errorMessage);
