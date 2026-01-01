@@ -898,6 +898,10 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       // Prepare form data
       const formData = new FormData();
       
+      // ÖNEMLİ: Dil ve video süresi parametreleri
+      formData.append('language', 'tr');  // Türkçe dil
+      formData.append('videoDuration', maxVideoDuration.toString());  // 10 veya 15 saniye
+      
       // Add all form fields
       formData.append('format', selectedFormat);
       formData.append('contentCount', contentCount.toString());
