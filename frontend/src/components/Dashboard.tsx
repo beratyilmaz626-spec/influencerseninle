@@ -779,6 +779,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
     giftCredits,
     currentPlan,
     currentPlanId,
+    maxVideoDuration,
     loading: subscriptionLoading,
     dismissLimitBanner,
     isLimitBannerDismissed,
