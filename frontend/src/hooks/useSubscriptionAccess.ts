@@ -322,8 +322,8 @@ export function useSubscriptionAccess() {
     remainingVideos: getRemainingVideos(),
     videosUsed: monthlyUsage.videosCreated,
     giftCredits,
-    // Video süresi (saniye) - Starter: 10sn, Professional/Business: 15sn
-    maxVideoDuration: getCurrentPlanId() ? getMaxVideoDuration(getCurrentPlanId()!) : 10,
+    // Video süresi (saniye) - Admin/Hediye: 15sn, Starter: 10sn, Professional/Business: 15sn
+    maxVideoDuration: giftCredits > 0 ? 15 : (getCurrentPlanId() ? getMaxVideoDuration(getCurrentPlanId()!) : 15),
     
     // Aksiyonlar
     incrementVideoUsage,
