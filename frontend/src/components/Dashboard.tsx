@@ -945,8 +945,16 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       const videoName = `${sectorName} - ${new Date().toLocaleDateString('tr-TR')}`;
       const videoDescription = `${gender}, ${age}, ${location} - ${dialogType === 'custom' ? customDialog : 'Otomatik diyalog'}`;
       
+      // Debug: FormData içeriğini logla
+      console.log('📤 N8N webhook\'a gönderilen veriler:');
+      console.log('  - language:', 'tr (Türkçe)');
+      console.log('  - videoDuration:', maxVideoDuration, 'saniye');
+      console.log('  - format:', selectedFormat);
+      console.log('  - gender:', gender);
+      console.log('  - sector:', sector);
+      console.log('  - webhookUrl:', webhookUrl);
+      
       // Send to n8n webhook
-      console.log('📤 N8N webhook\'a istek gönderiliyor...');
       const response = await fetch(webhookUrl, {
         method: 'POST',
         body: formData,
