@@ -8,6 +8,7 @@ import {
   getPlanByStripePriceId,
   hasFeature as checkFeature,
   getMonthlyVideoLimit,
+  getMaxVideoDuration,
 } from '../config/subscription-plans';
 
 interface SubscriptionData {
