@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase, Database } from '../lib/supabase';
 import { useAuth } from './useAuth';
-import { useCredits } from './useCredits';
 
 type Video = Database['public']['Tables']['videos']['Row'];
 type VideoInsert = Database['public']['Tables']['videos']['Insert'];
@@ -12,7 +11,6 @@ export function useVideos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
-  const { deductCredits, hasEnoughCredits } = useCredits();
 
   const fetchVideos = async () => {
     try {
