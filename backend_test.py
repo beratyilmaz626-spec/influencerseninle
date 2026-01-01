@@ -21,7 +21,7 @@ import os
 from datetime import datetime, timezone, timedelta
 
 # Configuration
-BACKEND_URL = "https://influencer-sentinel.preview.emergentagent.com"
+BACKEND_URL = "https://vidtrack-status.preview.emergentagent.com"
 TEST_EMAIL = "beratyilmaz626@gmail.com"
 TEST_PASSWORD = "berat881612"
 
