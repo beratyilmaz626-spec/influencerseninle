@@ -16,6 +16,10 @@ export default defineConfig({
       '.preview.emergentagent.com',
       'localhost',
     ],
+    watch: {
+      usePolling: true,
+      interval: 1000,
+    },
   },
   preview: {
     port: 3000,
