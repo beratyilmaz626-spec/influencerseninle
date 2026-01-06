@@ -987,9 +987,8 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
               description: videoDescription,
               video_url: videoUrl || '', // URL yoksa boş string (processing durumunda)
               thumbnail_url: videoUrl ? videoUrl.replace('.mp4', '_thumb.jpg') : '',
-              status: videoUrl ? 'completed' : 'processing', // URL varsa completed, yoksa processing
+              status: (videoUrl ? 'completed' : 'processing') as 'completed' | 'processing' | 'failed', // URL varsa completed, yoksa processing
               views: 0,
-              format: selectedFormat,
             };
             
             await createVideo(videoData);
