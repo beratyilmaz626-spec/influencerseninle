@@ -290,7 +290,6 @@ export default function Dashboard({ onLogout }: DashboardProps) {
               {currentView === 'home' && <HomeContent videos={videos} onCreateVideo={() => setCurrentView('create')} />}
               {currentView === 'videos' && <VideoLibrary />}
               {currentView === 'create' && <VideoCreateContent styleOptions={styleOptions} />}
-              {currentView === 'create2' && <VideoCreate2Content />}
               {currentView === 'subscription' && <SubscriptionPanel />}
               {currentView === 'settings' && <ProfileSettings />}
               {currentView === 'users' && <UserManagement />}
