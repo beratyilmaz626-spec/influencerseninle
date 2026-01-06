@@ -516,7 +516,7 @@ function VideoThumbnail({ video }: { video: any }) {
           <video 
             ref={videoRef}
             src={video.video_url}
-            alt={video.name}
+            title={video.name}
             className={`w-full h-full object-cover transition-all duration-300 group-hover:scale-110 ${
               thumbnailLoaded ? 'opacity-100' : 'opacity-0'
             }`}

@@ -228,7 +228,6 @@ export const VideoSlider = () => {
                         loop
                         playsInline
                         preload="metadata"
-                        loading="lazy"
                         onLoadedData={(e) => {
                           const video = e.target as HTMLVideoElement;
                           video.currentTime = 2;
