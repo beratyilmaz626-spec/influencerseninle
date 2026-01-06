@@ -645,7 +645,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
 
           <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center">
             <p className="text-text-secondary text-sm">
-              © 2025 InfluencerSeninle. Tüm hakları saklıdır.
+              © 2026 InfluencerSeninle. Tüm hakları saklıdır.
             </p>
           </div>
         </div>
