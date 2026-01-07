@@ -955,6 +955,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       
       // Debug: FormData içeriğini logla
       console.log('📤 N8N webhook\'a gönderilen veriler:');
+      console.log('  - user_id:', user?.id);
       console.log('  - language:', 'tr (Türkçe)');
       console.log('  - videoDuration:', maxVideoDuration, 'saniye');
       console.log('  - format:', selectedFormat);
