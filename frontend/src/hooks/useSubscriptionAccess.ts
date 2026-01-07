@@ -195,6 +195,11 @@ export function useSubscriptionAccess() {
 
   // Video oluşturabilir mi kontrol et
   const canCreateVideo = useCallback((): { allowed: boolean; reason?: string; useGiftCredits?: boolean } => {
+    // Loading durumunda bekle
+    if (loading) {
+      return { allowed: false, reason: 'Yükleniyor...' };
+    }
+    
     // DEBUG: Admin kontrolü
     console.log('🔐 canCreateVideo çağrıldı:');
     console.log('  - isAdmin:', isAdmin);
@@ -233,7 +238,7 @@ export function useSubscriptionAccess() {
     }
 
     return { allowed: true, useGiftCredits: false };
-  }, [isAdmin, isSubscriptionActive, giftCredits, getVideoLimit, monthlyUsage.videosCreated, user]);
+  }, [loading, isAdmin, isSubscriptionActive, giftCredits, getVideoLimit, monthlyUsage.videosCreated, user]);
 
   // Video oluşturma sonrası kullanımı güncelle
   const incrementVideoUsage = useCallback(async (useGiftCredits: boolean = false): Promise<void> => {
