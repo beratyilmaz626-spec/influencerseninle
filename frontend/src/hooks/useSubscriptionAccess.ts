@@ -195,6 +195,11 @@ export function useSubscriptionAccess() {
 
   // Video oluşturabilir mi kontrol et
   const canCreateVideo = useCallback((): { allowed: boolean; reason?: string; useGiftCredits?: boolean } => {
+    // 0. Admin ise her zaman video oluşturabilir (jeton gerekmez)
+    if (isAdmin) {
+      return { allowed: true, useGiftCredits: false };
+    }
+    
     // 1. Hediye kredisi varsa, abonelik şart değil
     if (giftCredits > 0) {
       return { allowed: true, useGiftCredits: true };
@@ -219,7 +224,7 @@ export function useSubscriptionAccess() {
     }
 
     return { allowed: true, useGiftCredits: false };
-  }, [isSubscriptionActive, giftCredits, getVideoLimit, monthlyUsage.videosCreated]);
+  }, [isAdmin, isSubscriptionActive, giftCredits, getVideoLimit, monthlyUsage.videosCreated]);
 
   // Video oluşturma sonrası kullanımı güncelle
   const incrementVideoUsage = useCallback(async (useGiftCredits: boolean = false): Promise<void> => {
