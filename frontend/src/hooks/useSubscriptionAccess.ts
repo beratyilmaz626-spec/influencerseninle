@@ -200,27 +200,18 @@ export function useSubscriptionAccess() {
       return { allowed: false, reason: 'Yükleniyor...' };
     }
     
-    // DEBUG: Admin kontrolü
-    console.log('🔐 canCreateVideo çağrıldı:');
-    console.log('  - isAdmin:', isAdmin);
-    console.log('  - giftCredits:', giftCredits);
-    console.log('  - user:', user?.id);
-    
     // 0. Admin ise her zaman video oluşturabilir (jeton gerekmez)
     if (isAdmin) {
-      console.log('✅ Admin kullanıcı - video oluşturmaya izin verildi');
       return { allowed: true, useGiftCredits: false };
     }
     
     // 1. Hediye kredisi varsa, abonelik şart değil
     if (giftCredits > 0) {
-      console.log('✅ Hediye kredisi var - video oluşturmaya izin verildi');
       return { allowed: true, useGiftCredits: true };
     }
     
     // 2. Abonelik aktif mi?
     if (!isSubscriptionActive()) {
-      console.log('❌ Abonelik aktif değil ve hediye kredisi yok');
       return {
         allowed: false,
         reason: 'Aktif bir aboneliğiniz veya hediye krediniz bulunmuyor. Lütfen bir plan seçin.',
