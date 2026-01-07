@@ -324,7 +324,7 @@ export function useSubscriptionAccess() {
     }
     
     return null;
-  }, [loading, isSubscriptionActive, getRemainingVideos, getVideoLimit, giftCredits]);
+  }, [loading, isAdmin, isSubscriptionActive, getRemainingVideos, getVideoLimit, giftCredits]);
 
   return {
     // State
