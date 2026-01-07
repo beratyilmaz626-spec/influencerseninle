@@ -31,7 +31,7 @@ interface MonthlyUsage {
 let limitBannerDismissed = false;
 
 export function useSubscriptionAccess() {
-  const { user, userProfile } = useAuth();
+  const { user, userProfile, isAdmin } = useAuth();
   const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
   const [monthlyUsage, setMonthlyUsage] = useState<MonthlyUsage>({
     videosCreated: 0,
