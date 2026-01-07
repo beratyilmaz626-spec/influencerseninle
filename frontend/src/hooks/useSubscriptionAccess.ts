@@ -228,6 +228,11 @@ export function useSubscriptionAccess() {
 
   // Video oluşturma sonrası kullanımı güncelle
   const incrementVideoUsage = useCallback(async (useGiftCredits: boolean = false): Promise<void> => {
+    // Admin için kredi düşürme
+    if (isAdmin) {
+      return;
+    }
+    
     if (useGiftCredits && giftCredits > 0) {
       // Hediye kredisini düş
       const newCredits = giftCredits - 1;
@@ -247,7 +252,7 @@ export function useSubscriptionAccess() {
         videosCreated: prev.videosCreated + 1,
       }));
     }
-  }, [giftCredits, user]);
+  }, [isAdmin, giftCredits, user]);
 
   // Mevcut plan bilgilerini al
   const getCurrentPlan = useCallback(() => {
