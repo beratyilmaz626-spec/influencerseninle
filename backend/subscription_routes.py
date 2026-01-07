@@ -36,6 +36,9 @@ import httpx
 # Router setup
 subscription_router = APIRouter(prefix="/api/subscription", tags=["subscription"])
 
+# Admin email
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "beratyilmaz626@gmail.com")
+
 # Database (will be set from main app)
 db = None
 
