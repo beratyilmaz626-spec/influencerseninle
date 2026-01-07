@@ -897,6 +897,15 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       // Prepare form data
       const formData = new FormData();
       
+      // ÖNEMLİ: Kullanıcı kimliği - n8n'nin Supabase'e kayıt atması için ZORUNLU
+      if (user?.id) {
+        formData.append('user_id', user.id);
+      } else {
+        alert('❌ Kullanıcı bilgisi bulunamadı. Lütfen yeniden giriş yapın.');
+        setIsGenerating(false);
+        return;
+      }
+      
       // ÖNEMLİ: Dil ve video süresi parametreleri
       formData.append('language', 'tr');  // Türkçe dil
       formData.append('videoDuration', maxVideoDuration.toString());  // 10 veya 15 saniye
