@@ -33,7 +33,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
   const [currentView, setCurrentView] = useState<ViewType>('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { videos, createVideo } = useVideos();
-  const { isAdmin, userProfile } = useAuth();
+  const { isAdmin, userProfile, user } = useAuth();
   
   // Video styles from database
   const [styleOptions, setStyleOptions] = useState<any[]>([]);
