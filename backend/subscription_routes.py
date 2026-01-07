@@ -431,6 +431,26 @@ async def can_create_video(
         )
     
     user_id = user.get("id")
+    user_email = user.get("email", "")
+    
+    # 1b. CHECK: Admin ise direkt izin ver (jeton gerekmez)
+    if user_email == ADMIN_EMAIL:
+        # Admin için sadece fotoğraf kontrolü yap
+        if not request.has_photo:
+            raise HTTPException(
+                status_code=400,
+                detail={
+                    "code": "PHOTO_REQUIRED",
+                    "message": "Video oluşturmak için en az 1 fotoğraf yüklemelisiniz."
+                }
+            )
+        
+        return VideoCreationResponse(
+            allowed=True,
+            remaining_videos=999,  # Admin için sınırsız
+            plan_limit=999,
+            current_plan="Admin"
+        )
     
     # 2. CHECK: Gift credits first (öncelik hediye kredisinde)
     gift_credits = await get_user_gift_credits(user_id)
