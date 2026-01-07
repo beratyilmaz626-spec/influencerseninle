@@ -288,6 +288,9 @@ export function useSubscriptionAccess() {
   const getSubscriptionStatusMessage = useCallback((): { type: 'error' | 'warning' | 'info' | 'success'; message: string } | null => {
     if (loading) return null;
     
+    // Admin için banner gösterme
+    if (isAdmin) return null;
+    
     // Hediye kredisi varsa, pozitif mesaj göster
     if (giftCredits > 0) {
       return {
