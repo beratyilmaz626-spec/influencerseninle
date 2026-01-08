@@ -195,14 +195,14 @@ export function useSubscriptionAccess() {
 
   // Video oluşturabilir mi kontrol et
   const canCreateVideo = useCallback((): { allowed: boolean; reason?: string; useGiftCredits?: boolean } => {
-    // Loading durumunda bekle
-    if (loading) {
-      return { allowed: false, reason: 'Yükleniyor...' };
-    }
-    
-    // 0. Admin ise her zaman video oluşturabilir (jeton gerekmez)
+    // 0. Admin ise her zaman video oluşturabilir (jeton gerekmez) - loading kontrolünden önce!
     if (isAdmin) {
       return { allowed: true, useGiftCredits: false };
+    }
+    
+    // Loading durumunda bekle (admin değilse)
+    if (loading) {
+      return { allowed: false, reason: 'Yükleniyor...' };
     }
     
     // 1. Hediye kredisi varsa, abonelik şart değil
