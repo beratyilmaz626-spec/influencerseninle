@@ -229,7 +229,7 @@ export function useSubscriptionAccess() {
     }
 
     return { allowed: true, useGiftCredits: false };
-  }, [loading, isAdmin, isSubscriptionActive, giftCredits, getVideoLimit, monthlyUsage.videosCreated, user]);
+  }, [loading, isAdmin, isSubscriptionActive, giftCredits, getVideoLimit, monthlyUsage.videosCreated]);
 
   // Video oluşturma sonrası kullanımı güncelle
   const incrementVideoUsage = useCallback(async (useGiftCredits: boolean = false): Promise<void> => {
