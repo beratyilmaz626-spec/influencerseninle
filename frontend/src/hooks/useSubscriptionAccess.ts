@@ -173,20 +173,26 @@ export function useSubscriptionAccess() {
 
   // Aylık video limiti
   const getVideoLimit = useCallback((): number => {
+    // Admin için sınırsız (999 göster)
+    if (isAdmin) return 999;
+    
     const planId = getCurrentPlanId();
     if (!planId) return 0;
     return getMonthlyVideoLimit(planId);
-  }, [getCurrentPlanId]);
+  }, [isAdmin, getCurrentPlanId]);
 
   // Kalan video hakkı (abonelik + hediye kredisi)
   const getRemainingVideos = useCallback((): number => {
+    // Admin için sınırsız
+    if (isAdmin) return 999;
+    
     // Önce abonelik limitini kontrol et
     const limit = getVideoLimit();
     const subscriptionRemaining = Math.max(0, limit - monthlyUsage.videosCreated);
     
     // Hediye kredisi varsa ekle
     return subscriptionRemaining + giftCredits;
-  }, [getVideoLimit, monthlyUsage.videosCreated, giftCredits]);
+  }, [isAdmin, getVideoLimit, monthlyUsage.videosCreated, giftCredits]);
 
   // Hediye kredisi var mı?
   const hasGiftCredits = useCallback((): boolean => {
