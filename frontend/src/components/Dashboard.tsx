@@ -767,6 +767,7 @@ function StyleCard({
 
 function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   const { createVideo } = useVideos(); // Video oluşturma fonksiyonu
+  const { user } = useAuth(); // User bilgisi - webhook için gerekli
   const { 
     isAdmin,
     isSubscriptionActive, 
