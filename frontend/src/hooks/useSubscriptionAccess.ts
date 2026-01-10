@@ -238,15 +238,18 @@ export function useSubscriptionAccess() {
   }, [loading, isAdmin, isSubscriptionActive, giftCredits, getVideoLimit, monthlyUsage.videosCreated]);
 
   // Video oluşturma sonrası kullanımı güncelle
+  // NOT: 1 video = 200 jeton tüketir
+  const VIDEO_COST = 200; // Her video 200 jeton
+  
   const incrementVideoUsage = useCallback(async (useGiftCredits: boolean = false): Promise<void> => {
     // Admin için kredi düşürme
     if (isAdmin) {
       return;
     }
     
-    if (useGiftCredits && giftCredits > 0) {
-      // Hediye kredisini düş
-      const newCredits = giftCredits - 1;
+    if (useGiftCredits && giftCredits >= VIDEO_COST) {
+      // Hediye kredisini düş (200 jeton)
+      const newCredits = giftCredits - VIDEO_COST;
       setGiftCredits(newCredits);
       
       // Veritabanını güncelle
