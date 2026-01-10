@@ -867,11 +867,18 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   ];
 
   const handlePhotoUpload = (file: File) => {
+    console.log('📷 handlePhotoUpload çağrıldı');
+    console.log('📷 File:', file);
+    console.log('📷 File name:', file.name);
+    console.log('📷 File type:', file.type);
+    console.log('📷 File size:', file.size);
+    
     if (!file.type.startsWith('image/')) {
       alert('Lütfen geçerli bir resim dosyası seçin');
       return;
     }
     setUploadedImage(file);
+    console.log('✅ uploadedImage state güncellendi:', file.name);
   };
 
   const handleVideoGeneration = async () => {
