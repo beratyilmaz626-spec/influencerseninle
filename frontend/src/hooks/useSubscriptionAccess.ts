@@ -200,6 +200,9 @@ export function useSubscriptionAccess() {
   }, [giftCredits]);
 
   // Video oluşturabilir mi kontrol et
+  // NOT: 1 video = 200 jeton gerektirir
+  const VIDEO_COST_CHECK = 200;
+  
   const canCreateVideo = useCallback((): { allowed: boolean; reason?: string; useGiftCredits?: boolean } => {
     // 0. Admin ise her zaman video oluşturabilir (jeton gerekmez) - loading kontrolünden önce!
     if (isAdmin) {
@@ -211,16 +214,24 @@ export function useSubscriptionAccess() {
       return { allowed: false, reason: 'Yükleniyor...' };
     }
     
-    // 1. Hediye kredisi varsa, abonelik şart değil
-    if (giftCredits > 0) {
+    // 1. Hediye kredisi varsa (en az 200 jeton), abonelik şart değil
+    if (giftCredits >= VIDEO_COST_CHECK) {
       return { allowed: true, useGiftCredits: true };
+    }
+    
+    // 1b. Hediye kredisi var ama yetersiz (200'den az)
+    if (giftCredits > 0 && giftCredits < VIDEO_COST_CHECK) {
+      return {
+        allowed: false,
+        reason: `Video oluşturmak için ${VIDEO_COST_CHECK} jeton gerekli. Mevcut jetonun: ${giftCredits}. Lütfen bir plan seçin.`,
+      };
     }
     
     // 2. Abonelik aktif mi?
     if (!isSubscriptionActive()) {
       return {
         allowed: false,
-        reason: 'Aktif bir aboneliğiniz veya hediye krediniz bulunmuyor. Lütfen bir plan seçin.',
+        reason: 'Aktif bir aboneliğiniz veya yeterli hediye jetonunuz bulunmuyor. Lütfen bir plan seçin.',
       };
     }
 
