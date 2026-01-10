@@ -9,15 +9,18 @@ export function useAuth() {
   const [session, setSession] = useState<Session | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [profileLoading, setProfileLoading] = useState(true);
 
   // Check if current user is admin
   const isAdmin = userProfile?.is_admin || false;
 
   // Kullanıcı profilini getir
   const fetchUserProfile = async (userId: string) => {
+    setProfileLoading(true);
     try {
       if (!supabase) {
         console.error('Supabase client not initialized. Please check environment variables.');
+        setProfileLoading(false);
         return;
       }
 
@@ -54,6 +57,7 @@ export function useAuth() {
           if (createError) throw createError;
           console.log('✅ Yeni kullanıcı oluşturuldu, 200 jeton hediye edildi:', createdProfile);
           setUserProfile(createdProfile);
+          setProfileLoading(false);
           return;
         }
       }
@@ -61,6 +65,8 @@ export function useAuth() {
       setUserProfile(data || null);
     } catch (error) {
       console.error('Kullanıcı profili getirilemedi:', error);
+    } finally {
+      setProfileLoading(false);
     }
   };
 
@@ -185,6 +191,7 @@ export function useAuth() {
     userProfile,
     isAdmin,
     loading,
+    profileLoading,
     signUp,
     signIn,
     signOut,

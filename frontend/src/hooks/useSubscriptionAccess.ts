@@ -77,7 +77,7 @@ export function useSubscriptionAccess() {
       setError(null);
 
       const { data, error: subError } = await supabase
-        .from('stripe_user_subscriptions')
+        .from('user_subscriptions')
         .select('*')
         .maybeSingle();
 
