@@ -1744,6 +1744,48 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
         document.body
       )}
 
+      {/* Subscription Required Modal - Hakkı olmayan kullanıcılar için */}
+      {showSubscriptionModal && createPortal(
+        <div 
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" 
+          style={{ zIndex: 10001 }}
+          onClick={() => setShowSubscriptionModal(false)}
+        >
+          <div 
+            className="glass-card max-w-md w-full shadow-elevated"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6 text-center">
+              <div className="text-6xl mb-4">🎬</div>
+              <h3 className="text-xl font-bold text-text-primary mb-2">
+                Video Oluşturmak İçin Plan Gerekli
+              </h3>
+              <p className="text-text-secondary mb-6">
+                Video oluşturabilmek için bir abonelik planı seçmeniz veya hediye krediniz olması gerekiyor.
+              </p>
+              <div className="space-y-3">
+                <button
+                  onClick={() => {
+                    setShowSubscriptionModal(false);
+                    setShowUpgradeModal(true);
+                  }}
+                  className="w-full py-3 rounded-lg bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold hover:shadow-lg transition-all"
+                >
+                  📋 Planları İncele
+                </button>
+                <button
+                  onClick={() => setShowSubscriptionModal(false)}
+                  className="w-full py-2 text-text-secondary hover:text-text-primary transition-colors"
+                >
+                  Kapat
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
       {/* Upgrade/Select Plan Modal - Kullanıcı durumuna göre dinamik içerik */}
       {showUpgradeModal && createPortal(
         <div 
