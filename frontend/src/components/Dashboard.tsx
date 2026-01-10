@@ -768,6 +768,7 @@ function StyleCard({
 function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   const { createVideo } = useVideos(); // Video oluşturma fonksiyonu
   const { 
+    isAdmin,
     isSubscriptionActive, 
     canCreateVideo, 
     hasFeature,
