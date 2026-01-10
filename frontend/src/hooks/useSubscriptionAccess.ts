@@ -31,7 +31,7 @@ interface MonthlyUsage {
 let limitBannerDismissed = false;
 
 export function useSubscriptionAccess() {
-  const { user, userProfile, isAdmin } = useAuth();
+  const { user, userProfile, isAdmin, profileLoading } = useAuth();
   const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
   const [monthlyUsage, setMonthlyUsage] = useState<MonthlyUsage>({
     videosCreated: 0,
@@ -203,14 +203,18 @@ export function useSubscriptionAccess() {
   // NOT: 1 video = 200 jeton gerektirir
   const VIDEO_COST_CHECK = 200;
   
+  // Toplam loading durumu - hem profil hem abonelik yüklenene kadar bekle
+  const isFullyLoaded = !profileLoading && !loading;
+  
   const canCreateVideo = useCallback((): { allowed: boolean; reason?: string; useGiftCredits?: boolean } => {
-    // 0. Admin ise her zaman video oluşturabilir (jeton gerekmez) - loading kontrolünden önce!
-    if (isAdmin) {
+    // 0. Admin ise her zaman video oluşturabilir (jeton gerekmez) 
+    // Admin kontrolü için profileLoading'in bitmesini bekle
+    if (!profileLoading && isAdmin) {
       return { allowed: true, useGiftCredits: false };
     }
     
-    // Loading durumunda bekle (admin değilse)
-    if (loading) {
+    // Loading durumunda bekle (profil veya abonelik yükleniyorsa)
+    if (profileLoading || loading) {
       return { allowed: false, reason: 'Yükleniyor...' };
     }
     
@@ -246,7 +250,7 @@ export function useSubscriptionAccess() {
     }
 
     return { allowed: true, useGiftCredits: false };
-  }, [loading, isAdmin, isSubscriptionActive, giftCredits, getVideoLimit, monthlyUsage.videosCreated]);
+  }, [profileLoading, loading, isAdmin, isSubscriptionActive, giftCredits, getVideoLimit, monthlyUsage.videosCreated]);
 
   // Video oluşturma sonrası kullanımı güncelle
   // NOT: 1 video = 200 jeton tüketir
@@ -299,11 +303,13 @@ export function useSubscriptionAccess() {
   const getSubscriptionStatusMessage = useCallback((): { type: 'error' | 'warning' | 'info' | 'success'; message: string } | null => {
     // DEBUG
     console.log('🔍 getSubscriptionStatusMessage çağrıldı:');
+    console.log('  - profileLoading:', profileLoading);
     console.log('  - loading:', loading);
     console.log('  - isAdmin:', isAdmin);
     console.log('  - giftCredits:', giftCredits);
     
-    if (loading) {
+    // Profil veya abonelik yükleniyorsa banner gösterme
+    if (profileLoading || loading) {
       console.log('  → loading, null döndürülüyor');
       return null;
     }
@@ -360,7 +366,7 @@ export function useSubscriptionAccess() {
     }
     
     return null;
-  }, [loading, isAdmin, isSubscriptionActive, getRemainingVideos, getVideoLimit, giftCredits]);
+  }, [profileLoading, loading, isAdmin, isSubscriptionActive, getRemainingVideos, getVideoLimit, giftCredits]);
 
   return {
     // State
