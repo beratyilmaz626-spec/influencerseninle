@@ -373,6 +373,8 @@ export function useSubscriptionAccess() {
     subscription,
     monthlyUsage,
     loading,
+    profileLoading,
+    isFullyLoaded,
     error,
     
     // Plan bilgileri
