@@ -303,17 +303,27 @@ export function useSubscriptionAccess() {
     if (isAdmin) return null;
     
     // Hediye kredisi varsa, pozitif mesaj göster
-    if (giftCredits > 0) {
+    // 200 jeton = 1 video, kaç video yapılabilir hesapla
+    if (giftCredits >= 200) {
+      const videosAvailable = Math.floor(giftCredits / 200);
       return {
         type: 'success',
-        message: `🎁 ${giftCredits} hediye video hakkın var!`,
+        message: `🎁 ${giftCredits} jeton hediye hakkın var! (${videosAvailable} video oluşturabilirsin)`,
+      };
+    }
+    
+    // Yetersiz hediye kredisi
+    if (giftCredits > 0 && giftCredits < 200) {
+      return {
+        type: 'warning',
+        message: `⚠️ ${giftCredits} jetonun var ama 1 video için 200 jeton gerekli. Lütfen bir plan seç.`,
       };
     }
     
     if (!isSubscriptionActive()) {
       return {
         type: 'error',
-        message: 'Aktif bir aboneliğin veya hediye kredin bulunmuyor. Video oluşturmak için bir plan seç.',
+        message: 'Aktif bir aboneliğin veya yeterli hediye jetonun bulunmuyor. Video oluşturmak için bir plan seç.',
       };
     }
     
