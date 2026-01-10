@@ -1566,34 +1566,55 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
               
               <button
                 onClick={() => {
-                  console.log('🔘 Video Oluştur butonuna tıklandı!');
-                  // Hakkı yoksa plan seçim modalını aç
+                  // DETAYLI DEBUG LOG
+                  console.log('========================================');
+                  console.log('🔘 VIDEO OLUŞTUR BUTONUNA TIKLANDI!');
+                  console.log('========================================');
+                  console.log('📸 uploadedImage:', uploadedImage);
+                  console.log('📸 uploadedImage type:', typeof uploadedImage);
+                  console.log('📸 uploadedImage name:', uploadedImage?.name);
+                  console.log('👤 isAdmin:', isAdmin);
+                  console.log('🔄 isGenerating:', isGenerating);
+                  console.log('📋 Form values:', { gender, age, location, sector, selectedFormat });
+                  
+                  // canCreateVideo kontrolü
                   const videoCheck = canCreateVideo();
-                  console.log('📋 Video check:', videoCheck);
+                  console.log('✅ canCreateVideo:', videoCheck);
+                  
+                  // Hakkı yoksa plan seçim modalını aç
                   if (!videoCheck.allowed) {
+                    console.log('❌ Video oluşturma izni yok, modal açılıyor');
                     setShowSubscriptionModal(true);
                     return;
                   }
-                  // Fotoğraf yoksa uyarı göster
+                  
+                  // Fotoğraf kontrolü
+                  console.log('📸 Fotoğraf kontrolü: uploadedImage =', uploadedImage ? 'VAR' : 'YOK');
                   if (!uploadedImage) {
+                    console.log('❌ Fotoğraf yok, alert gösteriliyor');
                     alert('⚠️ Video oluşturmak için en az 1 fotoğraf yüklemelisin.');
                     return;
                   }
+                  
                   // Diğer validasyonlar
                   const error = getFormValidationError();
+                  console.log('📋 Form validation error:', error);
                   if (error) {
+                    console.log('❌ Form hatası:', error);
                     alert(`⚠️ ${error}`);
                     return;
                   }
+                  
                   // Video oluştur
+                  console.log('✅ Tüm kontroller geçti, video oluşturuluyor...');
                   handleVideoGeneration();
                 }}
                 disabled={isGenerating}
                 type="button"
-                style={{ position: 'relative', zIndex: 10 }}
+                style={{ position: 'relative', zIndex: 100 }}
                 className={`w-full ${isGenerating ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:scale-[1.02]'} transition-transform`}
               >
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 pointer-events-none"></div>
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 pointer-events-none" style={{ zIndex: -1 }}></div>
                 <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 shadow-glow-cyan">
                   {isGenerating ? (
                     <>
