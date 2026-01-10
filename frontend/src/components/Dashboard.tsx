@@ -1564,11 +1564,31 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
               )}
               
               <button
-                onClick={handleVideoGeneration}
-                disabled={isGenerating || !isFormValid()}
-                className="w-full relative group disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => {
+                  // Hakkı yoksa plan seçim modalını aç
+                  const videoCheck = canCreateVideo();
+                  if (!videoCheck.allowed) {
+                    setShowSubscriptionModal(true);
+                    return;
+                  }
+                  // Fotoğraf yoksa uyarı göster
+                  if (!uploadedImage) {
+                    alert('⚠️ Video oluşturmak için en az 1 fotoğraf yüklemelisin.');
+                    return;
+                  }
+                  // Diğer validasyonlar
+                  const error = getFormValidationError();
+                  if (error) {
+                    alert(`⚠️ ${error}`);
+                    return;
+                  }
+                  // Video oluştur
+                  handleVideoGeneration();
+                }}
+                disabled={isGenerating}
+                className={`w-full relative group ${isGenerating ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
               >
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 group-hover:opacity-100 transition duration-300 group-disabled:opacity-0"></div>
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
                 <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 shadow-glow-cyan">
                   {isGenerating ? (
                     <>
