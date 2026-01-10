@@ -297,15 +297,28 @@ export function useSubscriptionAccess() {
 
   // Abonelik durum kontrolü için helper
   const getSubscriptionStatusMessage = useCallback((): { type: 'error' | 'warning' | 'info' | 'success'; message: string } | null => {
-    if (loading) return null;
+    // DEBUG
+    console.log('🔍 getSubscriptionStatusMessage çağrıldı:');
+    console.log('  - loading:', loading);
+    console.log('  - isAdmin:', isAdmin);
+    console.log('  - giftCredits:', giftCredits);
+    
+    if (loading) {
+      console.log('  → loading, null döndürülüyor');
+      return null;
+    }
     
     // Admin için banner gösterme
-    if (isAdmin) return null;
+    if (isAdmin) {
+      console.log('  → isAdmin=true, null döndürülüyor (banner yok)');
+      return null;
+    }
     
     // Hediye kredisi varsa, pozitif mesaj göster
     // 200 jeton = 1 video, kaç video yapılabilir hesapla
     if (giftCredits >= 200) {
       const videosAvailable = Math.floor(giftCredits / 200);
+      console.log('  → Yeterli hediye kredisi var');
       return {
         type: 'success',
         message: `🎁 ${giftCredits} jeton hediye hakkın var! (${videosAvailable} video oluşturabilirsin)`,
@@ -314,6 +327,7 @@ export function useSubscriptionAccess() {
     
     // Yetersiz hediye kredisi
     if (giftCredits > 0 && giftCredits < 200) {
+      console.log('  → Yetersiz hediye kredisi');
       return {
         type: 'warning',
         message: `⚠️ ${giftCredits} jetonun var ama 1 video için 200 jeton gerekli. Lütfen bir plan seç.`,
@@ -321,6 +335,7 @@ export function useSubscriptionAccess() {
     }
     
     if (!isSubscriptionActive()) {
+      console.log('  → Abonelik aktif değil, hata mesajı gösteriliyor');
       return {
         type: 'error',
         message: 'Aktif bir aboneliğin veya yeterli hediye jetonun bulunmuyor. Video oluşturmak için bir plan seç.',
