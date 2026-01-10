@@ -1566,8 +1566,10 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
               
               <button
                 onClick={() => {
+                  console.log('🔘 Video Oluştur butonuna tıklandı!');
                   // Hakkı yoksa plan seçim modalını aç
                   const videoCheck = canCreateVideo();
+                  console.log('📋 Video check:', videoCheck);
                   if (!videoCheck.allowed) {
                     setShowSubscriptionModal(true);
                     return;
@@ -1587,19 +1589,21 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                   handleVideoGeneration();
                 }}
                 disabled={isGenerating}
-                className={`w-full relative group ${isGenerating ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                type="button"
+                style={{ position: 'relative', zIndex: 10 }}
+                className={`w-full ${isGenerating ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:scale-[1.02]'} transition-transform`}
               >
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
-                <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 shadow-glow-cyan">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 pointer-events-none"></div>
+                <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 shadow-glow-cyan">
                   {isGenerating ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span>✨ Oluşturuluyor...</span>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span className="text-lg">✨ Oluşturuluyor...</span>
                     </>
                   ) : (
                     <>
-                      <Sparkles className="w-4 h-4" />
-                      <span>🎬 Video Oluştur</span>
+                      <Sparkles className="w-5 h-5" />
+                      <span className="text-lg">🎬 Video Oluştur</span>
                     </>
                   )}
                 </div>
