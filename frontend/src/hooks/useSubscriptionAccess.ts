@@ -334,6 +334,9 @@ export function useSubscriptionAccess() {
     currentPlan: getCurrentPlan(),
     currentPlanId: getCurrentPlanId(),
     
+    // Admin durumu
+    isAdmin,
+    
     // Erişim kontrolleri
     isSubscriptionActive,
     isPeriodValid,
@@ -346,8 +349,8 @@ export function useSubscriptionAccess() {
     remainingVideos: getRemainingVideos(),
     videosUsed: monthlyUsage.videosCreated,
     giftCredits,
-    // Video süresi (saniye) - Admin/Hediye: 15sn, Starter: 10sn, Professional/Business: 15sn
-    maxVideoDuration: giftCredits > 0 ? 15 : (getCurrentPlanId() ? getMaxVideoDuration(getCurrentPlanId()!) : 15),
+    // Video süresi (saniye) - Admin: 15sn, Hediye: 15sn, Starter: 10sn, Professional/Business: 15sn
+    maxVideoDuration: isAdmin ? 15 : (giftCredits > 0 ? 15 : (getCurrentPlanId() ? getMaxVideoDuration(getCurrentPlanId()!) : 15)),
     
     // Aksiyonlar
     incrementVideoUsage,
