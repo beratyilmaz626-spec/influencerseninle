@@ -814,6 +814,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [showLimitBanner, setShowLimitBanner] = useState(true);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   
   // Dropdown states
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
