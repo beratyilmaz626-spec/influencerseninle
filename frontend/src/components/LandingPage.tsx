@@ -649,55 +649,32 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-surface border-t border-border py-16 px-4 sm:px-6 lg:px-8">
+      {/* Footer - Clean & Minimal */}
+      <footer className="bg-[#030712] border-t border-white/5 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center shadow-glow-cyan">
-                  <Play className="w-5 h-5 text-white" fill="white" />
-                </div>
-                <span className="text-xl font-bold text-text-primary">InfluencerSeninle</span>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            {/* Logo & Description */}
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center shadow-glow-cyan">
+                <Play className="w-5 h-5 text-white" fill="white" />
               </div>
-              <p className="text-text-secondary">
-                Modern influencer'lar için AI destekli video içerik üretim platformu.
-              </p>
+              <div>
+                <span className="text-lg font-bold text-white">InfluencerSeninle</span>
+                <p className="text-sm text-gray-500">AI destekli video platformu</p>
+              </div>
             </div>
 
-            <div>
-              <h3 className="font-semibold text-text-primary mb-4">Ürün</h3>
-              <ul className="space-y-2 text-text-secondary">
-                <li><a href="#features" className="hover:text-neon-cyan transition-colors">Özellikler</a></li>
-                <li><a href="#pricing" className="hover:text-neon-cyan transition-colors">Fiyatlandırma</a></li>
-                <li><a href="#sectors" className="hover:text-neon-cyan transition-colors">Sektörler</a></li>
-                <li><a href="#comparison" className="hover:text-neon-cyan transition-colors">Karşılaştırma</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-text-primary mb-4">Kaynaklar</h3>
-              <ul className="space-y-2 text-text-secondary">
-                <li><a href="#" className="hover:text-neon-cyan transition-colors">Dokümantasyon</a></li>
-                <li><a href="#" className="hover:text-neon-cyan transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-neon-cyan transition-colors">Vaka Çalışmaları</a></li>
-                <li><a href="#" className="hover:text-neon-cyan transition-colors">Destek</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-text-primary mb-4">Şirket</h3>
-              <ul className="space-y-2 text-text-secondary">
-                <li><a href="#" className="hover:text-neon-cyan transition-colors">Hakkımızda</a></li>
-                <li><a href="#" className="hover:text-neon-cyan transition-colors">Kariyer</a></li>
-                <li><a href="#" className="hover:text-neon-cyan transition-colors">Gizlilik</a></li>
-                <li><a href="#" className="hover:text-neon-cyan transition-colors">Şartlar</a></li>
-              </ul>
+            {/* Quick Links */}
+            <div className="flex items-center gap-6 text-sm">
+              <a href="#features" className="text-gray-400 hover:text-neon-cyan transition-colors">Özellikler</a>
+              <a href="#pricing" className="text-gray-400 hover:text-neon-cyan transition-colors">Fiyatlandırma</a>
+              <a href="#sectors" className="text-gray-400 hover:text-neon-cyan transition-colors">Sektörler</a>
             </div>
           </div>
 
-          <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center">
-            <p className="text-text-secondary text-sm">
+          {/* Copyright */}
+          <div className="mt-8 pt-6 border-t border-white/5 text-center">
+            <p className="text-gray-600 text-sm">
               © 2026 InfluencerSeninle. Tüm hakları saklıdır.
             </p>
           </div>
