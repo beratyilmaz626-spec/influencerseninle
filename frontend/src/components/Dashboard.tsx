@@ -372,13 +372,13 @@ export default function Dashboard({ onLogout }: DashboardProps) {
           </header>
 
           {/* PREMIUM MAIN CONTENT AREA */}
-          <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">
+          <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 bg-[#030712]">
             <motion.div
               key={currentView}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
             >
               {currentView === 'home' && <HomeContent videos={videos} onCreateVideo={() => setCurrentView('create')} />}
               {currentView === 'videos' && <VideoLibrary />}
