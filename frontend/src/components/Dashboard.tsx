@@ -1294,18 +1294,27 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-full bg-transparent rounded-2xl overflow-hidden">
+    <div className="flex flex-col lg:flex-row h-full bg-transparent rounded-2xl overflow-hidden gap-6" data-testid="video-create-content">
       {/* Premium Left Panel - Controls */}
-      <div className="w-full lg:w-80 glass-card lg:border-r border-border p-4 sm:p-6 space-y-4 overflow-y-auto flex-shrink-0">
+      <div className="w-full lg:w-80 bg-[#0a0f1a]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-4 sm:p-6 space-y-4 overflow-y-auto flex-shrink-0">
         {/* Premium Header */}
-        <div className="text-center pb-3 border-b border-border">
-          <h2 className="text-xl font-bold text-text-primary mb-1">🎬 Video Oluştur</h2>
-          <p className="text-text-secondary text-xs">✨ AI ile profesyonel video reklamları</p>
-        </div>
+        <motion.div 
+          className="text-center pb-4 border-b border-white/5"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h2 className="text-xl font-bold text-white mb-1">🎬 Video Oluştur</h2>
+          <p className="text-gray-500 text-xs">✨ AI ile profesyonel video reklamları</p>
+        </motion.div>
             {/* Premium Photo Upload */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-text-primary">📸 Fotoğraf Yükle</h3>
-              <div className="border-2 border-dashed border-neon-cyan/30 rounded-lg p-3 text-center hover:border-neon-cyan hover:shadow-glow-cyan transition-all duration-300 bg-surface-elevated">
+            <motion.div 
+              className="space-y-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <h3 className="text-sm font-semibold text-white">📸 Fotoğraf Yükle</h3>
+              <div className="border-2 border-dashed border-neon-cyan/20 rounded-xl p-3 text-center hover:border-neon-cyan/50 hover:bg-neon-cyan/5 transition-all duration-300 bg-white/[0.02]">
                 <input
                   type="file"
                   accept="image/png,image/jpg,image/jpeg"
@@ -1315,27 +1324,31 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                 />
                 <label htmlFor="photo-upload" className="cursor-pointer">
                   {uploadedImage ? (
-                    <div className="space-y-1">
+                    <motion.div 
+                      className="space-y-1"
+                      initial={{ scale: 0.9 }}
+                      animate={{ scale: 1 }}
+                    >
                       <img 
                         src={URL.createObjectURL(uploadedImage)} 
                         alt="Uploaded photo"
-                        className="w-full h-16 object-cover rounded-md"
+                        className="w-full h-20 object-cover rounded-lg"
                       />
                       <p className="text-neon-green text-xs font-medium truncate">{uploadedImage.name}</p>
-                      <p className="text-text-secondary text-xs">Değiştir</p>
-                    </div>
+                      <p className="text-gray-500 text-xs">Değiştir</p>
+                    </motion.div>
                   ) : (
-                    <div className="space-y-1">
-                      <Upload className="w-6 h-6 text-text-secondary mx-auto" />
+                    <div className="space-y-1 py-2">
+                      <Upload className="w-6 h-6 text-gray-500 mx-auto" />
                       <div>
-                        <p className="text-text-primary font-medium text-xs">Fotoğraf yükle</p>
-                        <p className="text-text-secondary text-xs">PNG, JPG</p>
+                        <p className="text-white font-medium text-xs">Fotoğraf yükle</p>
+                        <p className="text-gray-500 text-xs">PNG, JPG</p>
                       </div>
                     </div>
                   )}
                 </label>
               </div>
-            </div>
+            </motion.div>
 
             {/* Content Count */}
             <div className="space-y-2">
