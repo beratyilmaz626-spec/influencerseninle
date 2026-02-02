@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Play, Sparkles, Zap, Video, ArrowRight, CheckCircle2, Star, X, Clock, DollarSign, Package, Shield, RefreshCcw, Palette, Users, Globe, Rocket, Building2, ShoppingBag, Briefcase } from 'lucide-react';
+import { Play, Sparkles, Zap, Video, ArrowRight, CheckCircle2, X, Clock, DollarSign, Package, Shield, RefreshCcw, Palette, Globe, Rocket } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import AuthModal from './AuthModal';
 import { VideoSlider } from '@/components/ui/video-slider';
 import { Pricing } from '@/components/ui/pricing';
