@@ -78,17 +78,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
     { emoji: '✈️', title: 'Seyahat', color: 'from-sky-500 to-blue-500' }
   ];
 
-  // Karşılaştırma verileri
-  const comparisonData = [
-    { feature: 'İçerik Üretim Hızı', us: 'Tek tıkla, gerçek zamanlı', them: 'Günler, hatta haftalar' },
-    { feature: 'Maliyet', us: '₺949-8.549/ay ile sınırsız', them: 'Yüksek prodüksiyon + influencer ücretleri' },
-    { feature: 'Lojistik & Set Yönetimi', us: true, them: false },
-    { feature: 'Kargo & Ürün Gönderimi', us: true, them: false },
-    { feature: 'Risk Faktörleri', us: 'Sıfır risk - Her zaman hazır', them: 'İptal, influencer bulunamama' },
-    { feature: 'Revizyon İmkanı', us: 'İstediğin kadar, sınırsız', them: 'Sınırlı, ekstra ücret' },
-    { feature: 'İçerik Çeşitliliği', us: 'Tek üründen yüzlerce varyasyon', them: 'Her seferinde yeni çekim' },
-    { feature: 'Yönetim', us: '100% dijital, uzaktan', them: 'Fiziksel koordinasyon, toplantılar' }
-  ];
+ 
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
