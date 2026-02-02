@@ -18,7 +18,6 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
-  const [socialLoading, setSocialLoading] = useState<'google' | 'apple' | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { signIn, signUp } = useAuth();
 
