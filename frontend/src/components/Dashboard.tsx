@@ -2157,47 +2157,53 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
               <div className="grid gap-3">
                 {/* Başlangıç - Sadece abonelik yoksa veya inactive ise göster */}
                 {(!isSubscriptionActive() || currentPlanId === null) && (
-                  <div className="p-4 rounded-xl border border-neon-green/30 bg-neon-green/5 hover:bg-neon-green/10 transition-colors">
+                  <motion.div 
+                    className="p-4 rounded-xl border border-neon-green/20 bg-neon-green/5 hover:bg-neon-green/10 transition-colors"
+                    whileHover={{ scale: 1.02 }}
+                  >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="font-bold text-text-primary">Başlangıç</span>
+                      <span className="font-bold text-white">Başlangıç</span>
                       <span className="text-neon-green font-bold">$10/ay</span>
                     </div>
-                    <p className="text-xs text-text-secondary mb-2">20 video/ay • HD 1080p • Filigransız • E-posta desteği</p>
-                    <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-green to-emerald-500 text-white text-sm font-semibold hover:shadow-lg transition-all">
+                    <p className="text-xs text-gray-400 mb-2">20 video/ay • HD 1080p • Filigransız • E-posta desteği</p>
+                    <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-green to-emerald-500 text-white text-sm font-semibold hover:shadow-[0_0_15px_rgba(0,255,136,0.3)] transition-all">
                       Başlangıç'a Geç
                     </button>
-                  </div>
+                  </motion.div>
                 )}
                 
                 {/* Profesyonel - Starter veya abonelik yoksa göster */}
                 {(!isSubscriptionActive() || currentPlanId === 'starter') && (
-                  <div className="p-4 rounded-xl border border-neon-cyan/30 bg-neon-cyan/5 hover:bg-neon-cyan/10 transition-colors">
+                  <motion.div 
+                    className="p-4 rounded-xl border border-neon-cyan/20 bg-neon-cyan/5 hover:bg-neon-cyan/10 transition-colors"
+                    whileHover={{ scale: 1.02 }}
+                  >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center space-x-2">
-                        <span className="font-bold text-text-primary">Profesyonel</span>
+                        <span className="font-bold text-white">Profesyonel</span>
                         <span className="text-xs px-2 py-0.5 rounded-full bg-neon-cyan/20 text-neon-cyan">Popüler</span>
                       </div>
                       <span className="text-neon-cyan font-bold">$20/ay</span>
                     </div>
-                    <p className="text-xs text-text-secondary mb-2">45 video/ay • Premium şablonlar • Öncelikli destek • API erişimi</p>
-                    <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-cyan to-neon-purple text-white text-sm font-semibold hover:shadow-glow-cyan transition-all">
+                    <p className="text-xs text-gray-400 mb-2">45 video/ay • Premium şablonlar • Öncelikli destek • API erişimi</p>
+                    <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-cyan to-neon-purple text-white text-sm font-semibold hover:shadow-[0_0_15px_rgba(0,240,255,0.3)] transition-all">
                       Profesyonel'e Geç
                     </button>
-                  </div>
+                  </motion.div>
                 )}
                 
                 {/* Professional plan - disabled gösterim */}
                 {isSubscriptionActive() && currentPlanId === 'professional' && (
-                  <div className="p-4 rounded-xl border border-neon-cyan/50 bg-neon-cyan/10 opacity-70">
+                  <div className="p-4 rounded-xl border border-neon-cyan/30 bg-neon-cyan/10 opacity-70">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center space-x-2">
-                        <span className="font-bold text-text-primary">Profesyonel</span>
+                        <span className="font-bold text-white">Profesyonel</span>
                         <span className="text-xs px-2 py-0.5 rounded-full bg-neon-cyan/30 text-neon-cyan">Mevcut Plan</span>
                       </div>
                       <span className="text-neon-cyan font-bold">$20/ay</span>
                     </div>
-                    <p className="text-xs text-text-secondary mb-2">45 video/ay • Premium şablonlar • Öncelikli destek • API erişimi</p>
-                    <button disabled className="w-full py-2 rounded-lg bg-surface-elevated text-text-muted text-sm font-semibold cursor-not-allowed">
+                    <p className="text-xs text-gray-400 mb-2">45 video/ay • Premium şablonlar • Öncelikli destek • API erişimi</p>
+                    <button disabled className="w-full py-2 rounded-lg bg-white/5 text-gray-500 text-sm font-semibold cursor-not-allowed">
                       ✓ Mevcut Planın
                     </button>
                   </div>
@@ -2205,32 +2211,35 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                 
                 {/* Kurumsal - Starter, Professional veya abonelik yoksa göster */}
                 {(!isSubscriptionActive() || currentPlanId === 'starter' || currentPlanId === 'professional') && (
-                  <div className="p-4 rounded-xl border border-neon-purple/30 bg-neon-purple/5 hover:bg-neon-purple/10 transition-colors">
+                  <motion.div 
+                    className="p-4 rounded-xl border border-neon-purple/20 bg-neon-purple/5 hover:bg-neon-purple/10 transition-colors"
+                    whileHover={{ scale: 1.02 }}
+                  >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="font-bold text-text-primary">Kurumsal</span>
+                      <span className="font-bold text-white">Kurumsal</span>
                       <span className="text-neon-purple font-bold">$40/ay</span>
                     </div>
-                    <p className="text-xs text-text-secondary mb-2">100 video/ay • Tüm özellikler • Özel destek • Beyaz etiket</p>
-                    <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-purple to-neon-pink text-white text-sm font-semibold hover:shadow-lg transition-all">
+                    <p className="text-xs text-gray-400 mb-2">100 video/ay • Tüm özellikler • Özel destek • Beyaz etiket</p>
+                    <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-purple to-neon-pink text-white text-sm font-semibold hover:shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all">
                       Kurumsal'a Geç
                     </button>
-                  </div>
+                  </motion.div>
                 )}
                 
                 {/* Enterprise plan - disabled gösterim veya en yüksek plan mesajı */}
                 {isSubscriptionActive() && currentPlanId === 'enterprise' && (
-                  <div className="p-6 rounded-xl border border-neon-purple/50 bg-neon-purple/10 text-center">
+                  <div className="p-6 rounded-xl border border-neon-purple/30 bg-neon-purple/10 text-center">
                     <div className="text-4xl mb-3">🎉</div>
-                    <h4 className="text-lg font-bold text-text-primary mb-2">Zaten en yüksek plandasın!</h4>
-                    <p className="text-sm text-text-secondary">
+                    <h4 className="text-lg font-bold text-white mb-2">Zaten en yüksek plandasın!</h4>
+                    <p className="text-sm text-gray-400">
                       Kurumsal plan ile tüm özelliklere ve en yüksek video limitine sahipsin.
                     </p>
                   </div>
                 )}
               </div>
             </div>
-          </div>
-        </div>,
+          </motion.div>
+        </motion.div>,
         document.body
       )}
     </div>
