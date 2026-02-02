@@ -1883,12 +1883,16 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       </div>
 
       {/* Premium Right Panel - Style Selection - Hidden on mobile, shown on lg+ */}
-      <div className="hidden lg:block flex-1 glass-card p-4 sm:p-6">
+      <div className="hidden lg:block flex-1 bg-[#0a0f1a]/60 backdrop-blur-xl border border-white/5 rounded-2xl p-4 sm:p-6">
         <div className="h-full">
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold text-text-primary mb-2">Video Stili Seçin</h3>
-            <p className="text-sm text-text-secondary">Videonuz için uygun bir stil kategorisi seçin</p>
-          </div>
+          <motion.div 
+            className="mb-4"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <h3 className="text-lg font-semibold text-white mb-2">Video Stili Seçin</h3>
+            <p className="text-sm text-gray-500">Videonuz için uygun bir stil kategorisi seçin</p>
+          </motion.div>
           
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
             {styleOptions.map((style) => (
@@ -1904,10 +1908,15 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       </div>
       
       {/* Mobile Style Selection - Shown only on mobile/tablet (below lg) */}
-      <div className="lg:hidden mt-4 glass-card p-3 sm:p-4">
+      <motion.div 
+        className="lg:hidden mt-4 bg-[#0a0f1a]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-3 sm:p-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+      >
         <div className="mb-3">
-          <h3 className="text-base font-semibold text-text-primary mb-1">Video Stili Seçin</h3>
-          <p className="text-xs text-text-secondary">Videonuz için uygun bir stil seçin (kaydırarak tümünü görebilirsin)</p>
+          <h3 className="text-base font-semibold text-white mb-1">Video Stili Seçin</h3>
+          <p className="text-xs text-gray-500">Videonuz için uygun bir stil seçin (kaydırarak tümünü görebilirsin)</p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-[350px] overflow-y-auto pb-2 pr-1">
           {styleOptions.map((style) => (
@@ -1920,13 +1929,17 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
           ))}
         </div>
         {selectedStyle && (
-          <div className="mt-3 p-2 bg-neon-cyan/10 rounded-lg border border-neon-cyan/30">
+          <motion.div 
+            className="mt-3 p-2 bg-neon-cyan/10 rounded-lg border border-neon-cyan/20"
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+          >
             <p className="text-xs text-neon-cyan text-center font-medium">
               ✓ Seçilen: {styleOptions.find(s => s.id === selectedStyle)?.name || 'Stil'}
             </p>
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
 
       {/* Sektör Modal */}
       {showSectorModal && createPortal(
