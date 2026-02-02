@@ -349,90 +349,121 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
         </div>
       </section>
 
-      {/* Sektörler / Kullanım Alanları */}
-      <section id="sectors" className="py-20 px-4 sm:px-6 lg:px-8 relative">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-4xl md:text-5xl font-bold text-text-primary mb-4"
-            >
-              Tüm Sektörler İçin{' '}
-              <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">
-                Akıllı Çözüm
-              </span>
-            </motion.h2>
-          </div>
-
-          {/* Sektör Butonları */}
+      {/* Sektörler / Kullanım Alanları - Modern Tasarım */}
+      <section id="sectors" className="relative py-24 md:py-32 overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0f1a] to-background" />
+        <motion.div
+          className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(168,85,247,0.08) 0%, transparent 60%)',
+            filter: 'blur(80px)',
+          }}
+          animate={{ x: [0, 50, 0], y: [0, -30, 0] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        />
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="glass-card p-8"
+            className="text-center mb-16"
           >
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-3">
-              {sectors.map((sector, index) => (
-                <button
-                  key={index}
-                  className={`bg-white/5 hover:bg-gradient-to-r hover:${sector.color} backdrop-blur-sm text-text-primary hover:text-white px-3 py-2.5 rounded-full text-sm font-medium transition-all duration-300 flex items-center justify-center space-x-2 border border-white/10 hover:border-transparent shadow-lg hover:shadow-glow-cyan hover:scale-105`}
-                >
-                  <span>{sector.emoji}</span>
-                  <span>{sector.name}</span>
-                </button>
-              ))}
-            </div>
+            <motion.div
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neon-purple/10 border border-neon-purple/20 mb-6"
+              whileHover={{ scale: 1.05 }}
+            >
+              <Globe className="w-4 h-4 text-neon-purple" />
+              <span className="text-sm font-semibold text-neon-purple">Sınırsız Olasılık</span>
+            </motion.div>
+            
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-6">
+              Tüm Sektörler İçin{' '}
+              <span className="bg-gradient-to-r from-neon-purple via-neon-pink to-neon-cyan bg-clip-text text-transparent">
+                Akıllı Çözüm
+              </span>
+            </h2>
+            
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+              E-ticaretten sağlığa, teknolojiden güzelliğe her sektörde profesyonel UGC içerikler
+            </p>
           </motion.div>
 
-          {/* Kategori Kartları Slider */}
-          <div className="mt-12">
-            <div className="overflow-x-auto scrollbar-hide">
-              <div className="flex space-x-4 pb-4">
-                {categoryCards.map((item, index) => (
-                  <motion.div 
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex-shrink-0 w-72 h-96 rounded-2xl overflow-hidden shadow-xl hover:shadow-glow-purple transition-all duration-300 hover:scale-105 cursor-pointer relative group"
+          {/* Sectors Grid - Modern Cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+          >
+            {[
+              { emoji: '🛍️', name: 'E-Ticaret', description: 'Ürün tanıtımları', color: 'from-orange-500 to-red-500' },
+              { emoji: '💄', name: 'Güzellik', description: 'Makyaj & bakım', color: 'from-pink-500 to-rose-500' },
+              { emoji: '👗', name: 'Moda', description: 'Giyim & aksesuar', color: 'from-purple-500 to-violet-500' },
+              { emoji: '🍽️', name: 'Yemek', description: 'Restoran & cafe', color: 'from-amber-500 to-orange-500' },
+              { emoji: '💪', name: 'Fitness', description: 'Spor & sağlık', color: 'from-green-500 to-emerald-500' },
+              { emoji: '🏠', name: 'Ev & Yaşam', description: 'Dekorasyon', color: 'from-cyan-500 to-blue-500' },
+              { emoji: '💻', name: 'Teknoloji', description: 'Elektronik', color: 'from-blue-500 to-indigo-500' },
+              { emoji: '🎮', name: 'Gaming', description: 'Oyun & eğlence', color: 'from-violet-500 to-purple-500' },
+            ].map((sector, index) => (
+              <motion.div
+                key={index}
+                className="group relative"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -8, scale: 1.02 }}
+              >
+                {/* Glow effect */}
+                <div className={`absolute -inset-[1px] bg-gradient-to-r ${sector.color} rounded-2xl opacity-0 group-hover:opacity-50 blur-xl transition-all duration-500`} />
+                
+                {/* Card */}
+                <div className="relative p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm group-hover:border-white/20 transition-all duration-300 h-full">
+                  <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                    {sector.emoji}
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-1">{sector.name}</h3>
+                  <p className="text-sm text-gray-500">{sector.description}</p>
+                  
+                  {/* Hover arrow */}
+                  <motion.div
+                    className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
+                    initial={{ x: -10 }}
+                    whileHover={{ x: 0 }}
                   >
-                    {/* Gradient Background */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-90 group-hover:opacity-100 transition-opacity`}>
-                      <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
-                        <div className="text-8xl mb-4 animate-pulse">{item.emoji}</div>
-                        <h3 className="text-white text-2xl font-bold mb-2">{item.title}</h3>
-                        <p className="text-white/90 text-center text-sm">
-                          AI ile üretilmiş profesyonel içerik
-                        </p>
-                      </div>
-                    </div>
-                    
-                    {/* Play Icon Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30 backdrop-blur-sm">
-                      <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center border border-white/30">
-                        <Play className="w-8 h-8 text-white ml-1" />
-                      </div>
-                    </div>
-                    
-                    {/* AI Badge */}
-                    <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full border border-white/30">
-                      <span className="text-white text-xs font-semibold">AI Üretimi</span>
-                    </div>
+                    <ArrowRight className="w-5 h-5 text-gray-400" />
                   </motion.div>
-                ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Bottom Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="mt-16 flex flex-wrap items-center justify-center gap-8 md:gap-16 text-center"
+          >
+            {[
+              { value: '50+', label: 'Sektör' },
+              { value: '10K+', label: 'Video Üretildi' },
+              { value: '500+', label: 'Marka' },
+            ].map((stat, index) => (
+              <div key={index}>
+                <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">
+                  {stat.value}
+                </div>
+                <div className="text-sm text-gray-500 mt-1">{stat.label}</div>
               </div>
-            </div>
-            
-            {/* Scroll Hint */}
-            <div className="text-center mt-4 text-text-secondary text-sm">
-              ← Kaydırarak daha fazla içerik görün →
-            </div>
-          </div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
