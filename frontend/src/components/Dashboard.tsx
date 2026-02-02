@@ -298,6 +298,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
               {currentView === 'gift' && <GiftTokenManager />}
               {currentView === 'slider' && <SliderVideoManager />}
               {currentView === 'styles' && <VideoStyleManager />}
+              {currentView === 'database' && <DatabaseMaintenance />}
             </motion.div>
           </main>
         </div>
