@@ -208,47 +208,6 @@ export const VideoSlider = () => {
             </div>
           </div>
         </div>
-
-        {/* Centered Video Player Modal */}
-        {selectedVideoIndex !== null && duplicatedItems[selectedVideoIndex] && (
-          <div 
-            className="video-modal fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-md transition-opacity duration-200"
-            onClick={closeVideo}
-          >
-            <div 
-              className="relative"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <video
-                src={duplicatedItems[selectedVideoIndex].video_url!}
-                className="w-80 h-[600px] object-cover rounded-xl shadow-2xl"
-                autoPlay
-                loop
-                playsInline
-                controls
-                preload="auto"
-              />
-              
-              {/* Close button - büyük ve görünür */}
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  closeVideo();
-                }}
-                className="absolute -top-3 -right-3 w-10 h-10 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors shadow-lg z-[10000] cursor-pointer"
-                type="button"
-                aria-label="Videoyu kapat"
-              >
-                <span className="text-white text-2xl font-bold leading-none">×</span>
-              </button>
-              
-              {/* ESC info */}
-              <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 text-white/70 text-sm">
-                <p>ESC tuşu veya dışarı tıklayarak kapatın</p>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );
