@@ -137,8 +137,8 @@ export const VideoSlider = () => {
     }
   };
   
-  // Use videos if available, otherwise fallback to images
-  const displayItems = videos.length > 0 ? videos : fallbackImages.map((img, index) => ({
+  // Use videos if available from DB, otherwise use demo videos, then fallback to images
+  const displayItems = videos.length > 0 ? videos : demoVideos.length > 0 ? demoVideos : fallbackImages.map((img, index) => ({
     id: `fallback-${index}`,
     title: `Demo Video ${index + 1}`,
     video_url: null,
