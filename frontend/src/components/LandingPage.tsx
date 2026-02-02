@@ -551,36 +551,115 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
         </div>
       </section>
 
-      {/* CTA Section - Farkı Kendiniz Görün */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/10 via-neon-purple/10 to-neon-pink/10"></div>
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-neon-cyan/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-neon-purple/20 rounded-full blur-3xl"></div>
+      {/* Final CTA Section - Premium */}
+      <section className="relative py-32 overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 bg-[#030712]" />
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            background: `
+              radial-gradient(ellipse 100% 100% at 50% 100%, rgba(0,217,255,0.15), transparent 50%),
+              radial-gradient(ellipse 80% 50% at 0% 50%, rgba(168,85,247,0.1), transparent),
+              radial-gradient(ellipse 80% 50% at 100% 50%, rgba(255,0,128,0.1), transparent)
+            `,
+          }}
+          animate={{ opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
         
-        <div className="max-w-4xl mx-auto relative z-10">
+        {/* Floating elements */}
+        {[...Array(15)].map((_, i) => (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            key={i}
+            className="absolute w-2 h-2 bg-neon-cyan/20 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -80, 0],
+              opacity: [0, 0.8, 0],
+            }}
+            transition={{
+              duration: 4 + Math.random() * 4,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+            }}
+          />
+        ))}
+        
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="glass-card p-12 text-center"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-6">
-              🚀 Farkı Kendiniz Görün
-            </h2>
-            <p className="text-xl text-text-secondary mb-10 max-w-2xl mx-auto">
-              AI kullanarak muhteşem videolar oluşturan binlerce içerik üreticisine katılın. 
-              Video reklam üretiminizi hızlandırın ve maliyetlerinizi düşürün.
-            </p>
-            <Button 
-              size="lg" 
-              variant="premium"
-              onClick={() => setShowAuthModal(true)}
-              className="group"
+            <motion.div
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neon-cyan/10 border border-neon-cyan/20 mb-8"
+              whileHover={{ scale: 1.05 }}
             >
-              <span>Ücretsiz Deneme Başlat</span>
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
+              <Rocket className="w-4 h-4 text-neon-cyan" />
+              <span className="text-sm font-semibold text-neon-cyan">Hemen Başla</span>
+            </motion.div>
+            
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6">
+              Video Üretimini
+              <br />
+              <span className="bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">
+                Dönüştürmeye Hazır mısın?
+              </span>
+            </h2>
+            
+            <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-12">
+              500+ markaya katıl ve AI gücüyle içerik üretimini hızlandır.
+              <br className="hidden md:block" />
+              <span className="text-gray-500">İlk video ücretsiz, kredi kartı gerekmez.</span>
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <motion.button
+                onClick={() => setShowAuthModal(true)}
+                className="group relative px-10 py-5 rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold text-lg overflow-hidden shadow-[0_0_40px_rgba(0,217,255,0.3)]"
+                whileHover={{ scale: 1.05, boxShadow: '0 0 60px rgba(0,217,255,0.5)' }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-neon-purple to-neon-pink"
+                  initial={{ x: '100%' }}
+                  whileHover={{ x: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+                <span className="relative flex items-center gap-3">
+                  <Zap className="w-5 h-5" />
+                  Ücretsiz Hesap Oluştur
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </motion.button>
+            </div>
+            
+            {/* Trust indicators */}
+            <motion.div
+              className="mt-12 flex flex-wrap items-center justify-center gap-8 text-gray-500 text-sm"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-400" />
+                <span>Kurulum gerektirmez</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-400" />
+                <span>7/24 Destek</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-400" />
+                <span>İstediğin zaman iptal</span>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
