@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Play } from 'lucide-react';
+import { Play, ExternalLink } from 'lucide-react';
 
 interface SliderVideo {
   id: string;
