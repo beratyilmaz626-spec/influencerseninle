@@ -135,91 +135,40 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        {/* Animated Background Orbs - Smaller on mobile */}
-        <div className="absolute top-20 right-0 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-neon-cyan/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-20 left-0 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-neon-purple/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
-        
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center space-x-2 glass-card px-4 py-2 mb-8"
-            >
-              <div className="w-2 h-2 bg-neon-green rounded-full animate-pulse"></div>
-              <span className="text-sm font-semibold text-text-secondary">AI Destekli Video Platformu</span>
-              <Badge variant="success">YENİ</Badge>
-            </motion.div>
-            
-            {/* Main Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-5xl md:text-7xl font-black mb-6 leading-tight"
-            >
-              <span className="text-text-primary">Muhteşem Videolar</span>
-              <br />
-              <span className="bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">
-                AI Teknolojisi ile Oluşturun
-              </span>
-            </motion.h1>
-            
-            {/* Subtext */}
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-xl text-text-secondary mb-10 max-w-3xl mx-auto leading-relaxed"
-            >
-              Fikirlerinizi saniyeler içinde profesyonel kalitede videolara dönüştürün. 
-              Düzenleme becerisi gerektirmez.
-            </motion.p>
-            
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-            >
-              <Button 
-                size="lg" 
-                variant="premium"
-                onClick={() => setShowAuthModal(true)}
-                className="group"
-              >
-                <span>Video Oluştur</span>
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline"
-                onClick={() => setShowAuthModal(true)}
-              >
-                <Video className="w-5 h-5 mr-2" />
-                <span>Demo İzle</span>
-              </Button>
-            </motion.div>
-            
-            {/* Video Slider Preview */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="mt-20 max-w-6xl mx-auto"
-            >
-              <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink rounded-3xl blur-xl opacity-30 group-hover:opacity-50 transition duration-1000"></div>
-                <div className="relative h-[500px] glass-card rounded-3xl overflow-hidden">
-                  <VideoSlider />
-                </div>
+      <HeroSection onGetStarted={() => setShowAuthModal(true)} />
+
+      {/* Farkı Kendiniz Görün Section */}
+      <DifferenceSection onGetStarted={() => setShowAuthModal(true)} />
+
+      {/* Video Slider Preview */}
+      <section className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030712] to-background" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4">
+              Gerçek <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">Örnekler</span>
+            </h2>
+            <p className="text-gray-400 text-lg">AI ile oluşturulmuş profesyonel UGC videolar</p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink rounded-3xl blur-xl opacity-30 group-hover:opacity-50 transition duration-1000" />
+              <div className="relative h-[400px] md:h-[500px] glass-card rounded-3xl overflow-hidden border border-white/10">
+                <VideoSlider />
               </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
