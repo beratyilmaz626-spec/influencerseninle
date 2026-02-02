@@ -75,60 +75,6 @@ export const VideoSlider = () => {
       setLoading(false);
     }
   };
-
-  const handleVideoClick = (index: number, item: any) => {
-    if (item.video_url) {
-      setSelectedVideoIndex(index);
-    }
-  };
-
-  const handleCloseVideo = () => {
-    setSelectedVideoIndex(null);
-  };
-
-  // Enhanced close video function with cleanup
-  const closeVideo = () => {
-    // Stop any playing video
-    const videos = document.querySelectorAll('video');
-    videos.forEach(video => {
-      video.pause();
-      video.currentTime = 0;
-    });
-    
-    // Close the modal
-    setSelectedVideoIndex(null);
-    
-    // Optional: Add fade out animation
-    const modal = document.querySelector('.video-modal');
-    if (modal) {
-      modal.classList.add('fade-out');
-      setTimeout(() => {
-        setSelectedVideoIndex(null);
-      }, 200);
-    }
-  };
-
-  // Handle ESC key press
-  useEffect(() => {
-    const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && selectedVideoIndex !== null) {
-        closeVideo();
-      }
-    };
-
-    if (selectedVideoIndex !== null) {
-      document.addEventListener('keydown', handleEscKey);
-      // Prevent body scroll when modal is open
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscKey);
-      document.body.style.overflow = 'unset';
-    };
-  }, [selectedVideoIndex]);
   
   // Use videos if available from DB, otherwise use demo videos, then fallback to images
   const displayItems = videos.length > 0 ? videos : demoVideos.length > 0 ? demoVideos : fallbackImages.map((img, index) => ({
