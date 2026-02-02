@@ -97,6 +97,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
       { id: 'gift', label: 'Hediye Token', icon: Gift },
       { id: 'slider', label: 'Ana Sayfa Slider', icon: Grid3X3 },
       { id: 'styles', label: 'Video Stilleri', icon: Wand2 },
+      { id: 'database', label: 'Veritabanı', icon: Database },
     ] : []),
   ];
 
