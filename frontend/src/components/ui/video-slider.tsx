@@ -235,19 +235,12 @@ export const VideoSlider = () => {
                     )}
 
                     {item.video_url && selectedVideoIndex === index ? (
-                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                        <div className="text-gray-500 text-center">
-                          <Play className="w-8 h-8 mx-auto mb-2" />
+                      <div className="w-full h-full bg-gray-900 flex items-center justify-center">
+                        <div className="text-white text-center">
+                          <Play className="w-8 h-8 mx-auto mb-2 animate-pulse" />
                           <p className="text-sm">Video oynatılıyor</p>
                         </div>
                       </div>
-                    ) : item.thumbnail_url ? (
-                      <img
-                        src={item.thumbnail_url}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
                     ) : item.video_url ? (
                       <video
                         src={item.video_url}
@@ -256,16 +249,15 @@ export const VideoSlider = () => {
                         autoPlay
                         loop
                         playsInline
-                        preload="metadata"
-                        poster={fallbackImages[0]}
+                        preload="auto"
                         onLoadedData={(e) => {
                           const video = e.target as HTMLVideoElement;
-                          video.currentTime = 2;
+                          video.currentTime = 0;
                         }}
                       />
                     ) : (
                       <img
-                        src={fallbackImages[index % fallbackImages.length]}
+                        src={item.thumbnail_url || fallbackImages[index % fallbackImages.length]}
                         alt={item.title}
                         className="w-full h-full object-cover"
                         loading="lazy"
