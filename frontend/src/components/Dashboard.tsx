@@ -204,7 +204,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
             {isAdmin && (
               <>
                 <div className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3 px-3 pt-6">Yönetim</div>
-                {bottomItems.filter(i => ['users', 'gift', 'slider', 'styles'].includes(i.id)).map((item) => (
+                {bottomItems.filter(i => ['users', 'gift', 'slider', 'styles', 'database'].includes(i.id)).map((item) => (
                   <button
                     key={item.id}
                     onClick={() => {
