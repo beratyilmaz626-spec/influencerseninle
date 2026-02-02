@@ -175,52 +175,70 @@ export default function Dashboard({ onLogout }: DashboardProps) {
       )}
 
       {/* PremiumAppShell Wrapper - Sidebar ve Topbar burada */}
-      <div className="flex">
-        {/* PREMIUM SIDEBAR - Responsive */}
-        <aside className={`
-          ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-          lg:translate-x-0
-          fixed lg:static
-          z-50
-          w-64 
-          bg-surface border-r border-border flex flex-col
-          h-[calc(100vh-56px)] lg:h-screen lg:min-h-screen
-          transition-transform duration-300 ease-in-out
-          top-14 lg:top-0
-          overflow-y-auto
-        `}>
+      <div className="flex relative">
+        {/* PREMIUM SIDEBAR - Responsive with Glassmorphism */}
+        <motion.aside 
+          className={`
+            ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+            lg:translate-x-0
+            fixed lg:sticky
+            z-50
+            w-64 
+            bg-[#0a0f1a]/95 backdrop-blur-xl border-r border-white/5 flex flex-col
+            h-[calc(100vh-56px)] lg:h-screen lg:min-h-screen
+            transition-transform duration-300 ease-in-out
+            top-14 lg:top-0
+            overflow-y-auto
+          `}
+          initial={false}
+        >
           {/* Logo */}
-          <div className="p-6 border-b border-border">
-            <div className="flex items-center space-x-3">
+          <div className="p-6 border-b border-white/5">
+            <motion.div 
+              className="flex items-center space-x-3"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400 }}
+            >
               <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50"></div>
+                <motion.div 
+                  className="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-40"
+                  animate={{ opacity: [0.3, 0.6, 0.3] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                />
                 <div className="relative w-10 h-10 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center shadow-glow-cyan">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
               </div>
               <div className="text-lg font-bold">
-                <span className="text-text-primary">Influencer</span>
+                <span className="text-white">Influencer</span>
                 <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">Seninle</span>
               </div>
-            </div>
+            </motion.div>
             {/* Kullanıcı Bilgisi */}
-            <div className="mt-4 p-3 bg-white/5 rounded-xl border border-white/10">
+            <motion.div 
+              className="mt-4 p-3 bg-white/5 rounded-xl border border-white/10 hover:border-neon-cyan/30 transition-colors duration-300"
+              whileHover={{ y: -2 }}
+            >
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-neon-cyan/30 to-neon-purple/30 rounded-full flex items-center justify-center border border-white/20">
-                  <span className="text-text-primary font-bold text-sm">
-                    {userProfile?.full_name?.charAt(0)?.toUpperCase() || userProfile?.email?.charAt(0)?.toUpperCase() || 'U'}
-                  </span>
+                <div className="relative">
+                  <div className="w-10 h-10 bg-gradient-to-br from-neon-cyan/30 to-neon-purple/30 rounded-full flex items-center justify-center border border-white/20">
+                    <span className="text-white font-bold text-sm">
+                      {userProfile?.full_name?.charAt(0)?.toUpperCase() || userProfile?.email?.charAt(0)?.toUpperCase() || 'U'}
+                    </span>
+                  </div>
+                  {/* Online indicator */}
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-[#0a0f1a]" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-text-primary truncate">
+                  <p className="text-sm font-medium text-white truncate">
                     {userProfile?.full_name || userProfile?.email?.split('@')[0] || 'Kullanıcı'}
                   </p>
-                  <p className="text-xs text-text-secondary truncate">
+                  <p className="text-xs text-gray-400 truncate">
                     {isAdmin ? '👑 Admin' : '👤 Kullanıcı'}
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Navigation */}
