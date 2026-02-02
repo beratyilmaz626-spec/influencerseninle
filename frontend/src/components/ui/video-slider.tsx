@@ -130,12 +130,6 @@ export const VideoSlider = () => {
       document.body.style.overflow = 'unset';
     };
   }, [selectedVideoIndex]);
-
-  const handleBackgroundClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      closeVideo();
-    }
-  };
   
   // Use videos if available from DB, otherwise use demo videos, then fallback to images
   const displayItems = videos.length > 0 ? videos : demoVideos.length > 0 ? demoVideos : fallbackImages.map((img, index) => ({
