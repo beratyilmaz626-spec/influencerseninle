@@ -1498,41 +1498,55 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
             </motion.div>
 
             {/* Sektör */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-text-primary">💼 Sektör</h3>
+            <motion.div 
+              className="space-y-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+            >
+              <h3 className="text-sm font-semibold text-white">💼 Sektör</h3>
               <button
                 onClick={() => setShowSectorModal(true)}
                 className={`w-full p-3 rounded-xl border transition-all duration-300 text-left ${
                   sector
-                    ? 'border-neon-cyan bg-neon-cyan/10 text-neon-cyan'
-                    : 'border-border hover:border-neon-cyan/50 bg-surface text-text-primary'
+                    ? 'border-neon-cyan/50 bg-neon-cyan/5 text-neon-cyan'
+                    : 'border-white/10 hover:border-neon-cyan/30 bg-white/[0.02] text-white'
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">
                     {sector ? sectorOptions.find(s => s.id === sector)?.name : 'Sektör Seçin'}
                   </span>
-                  <svg className="w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </div>
               </button>
-            </div>
+            </motion.div>
 
             {/* Format Selection */}
-            <div className="space-y-2 relative">
-              <h3 className="text-sm font-semibold text-text-primary">📐 Format</h3>
+            <motion.div 
+              className="space-y-2 relative"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <h3 className="text-sm font-semibold text-white">📐 Format</h3>
               <button
                 onClick={() => setOpenDropdown(openDropdown === 'format' ? null : 'format')}
-                className={`w-full p-3 rounded-xl border border-border bg-surface text-text-primary transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/50 ${openDropdown === 'format' ? 'border-neon-cyan shadow-glow-cyan' : ''}`}
+                className={`w-full p-3 rounded-xl border bg-white/[0.02] text-white transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/30 ${openDropdown === 'format' ? 'border-neon-cyan/50 shadow-[0_0_15px_rgba(0,240,255,0.1)]' : 'border-white/10'}`}
               >
                 <span className="text-sm font-medium">
                   {selectedFormat ? formats.find(f => f.id === selectedFormat)?.name : 'Video Formatını Seçin'}
                 </span>
-                <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${openDropdown === 'format' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${openDropdown === 'format' ? 'rotate-180' : ''}`} />
               </button>
               {openDropdown === 'format' && (
-                <div className="absolute z-50 w-full bg-surface border border-border rounded-xl shadow-elevated mt-2 overflow-hidden">
+                <motion.div 
+                  className="absolute z-50 w-full bg-[#0a0f1a] border border-white/10 rounded-xl shadow-elevated mt-2 overflow-hidden"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
                   {formats.map((format) => (
                     <button
                       key={format.id}
@@ -1540,8 +1554,8 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                         setSelectedFormat(format.id);
                         setOpenDropdown(null);
                       }}
-                      className={`w-full p-4 text-left transition-all duration-200 border-b border-border last:border-0 flex items-center space-x-2 hover:bg-surface-elevated ${
-                        selectedFormat === format.id ? 'bg-neon-cyan/10 text-neon-cyan' : 'text-text-primary'
+                      className={`w-full p-4 text-left transition-all duration-200 border-b border-white/5 last:border-0 flex items-center space-x-2 hover:bg-white/5 ${
+                        selectedFormat === format.id ? 'bg-neon-cyan/10 text-neon-cyan' : 'text-white'
                       }`}
                     >
                       <div className="font-medium text-sm">{format.name}</div>
@@ -1552,24 +1566,33 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                       )}
                     </button>
                   ))}
-                </div>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
 
             {/* Dialog Type */}
-            <div className="space-y-2 relative">
-              <h3 className="text-sm font-semibold text-text-primary">💬 Konuşma Metni</h3>
+            <motion.div 
+              className="space-y-2 relative"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45 }}
+            >
+              <h3 className="text-sm font-semibold text-white">💬 Konuşma Metni</h3>
               <button
                 onClick={() => setOpenDropdown(openDropdown === 'dialog' ? null : 'dialog')}
-                className={`w-full p-3 rounded-xl border border-border bg-surface text-text-primary transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/50 ${openDropdown === 'dialog' ? 'border-neon-cyan shadow-glow-cyan' : ''}`}
+                className={`w-full p-3 rounded-xl border bg-white/[0.02] text-white transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/30 ${openDropdown === 'dialog' ? 'border-neon-cyan/50 shadow-[0_0_15px_rgba(0,240,255,0.1)]' : 'border-white/10'}`}
               >
                 <span className="text-sm font-medium">
                   {dialogOptions.find(d => d.id === dialogType)?.name || 'Seçin'}
                 </span>
-                <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${openDropdown === 'dialog' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${openDropdown === 'dialog' ? 'rotate-180' : ''}`} />
               </button>
               {openDropdown === 'dialog' && (
-                <div className="absolute z-50 w-full bg-surface border border-border rounded-xl shadow-elevated mt-2 overflow-hidden">
+                <motion.div 
+                  className="absolute z-50 w-full bg-[#0a0f1a] border border-white/10 rounded-xl shadow-elevated mt-2 overflow-hidden"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
                   {dialogOptions.map((option) => (
                     <button
                       key={option.id}
@@ -1577,28 +1600,32 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                         setDialogType(option.id);
                         setOpenDropdown(null);
                       }}
-                      className={`w-full p-3 text-left transition-all duration-200 border-b border-border last:border-0 hover:bg-surface-elevated ${
-                        dialogType === option.id ? 'bg-neon-cyan/10 text-neon-cyan' : 'text-text-primary'
+                      className={`w-full p-3 text-left transition-all duration-200 border-b border-white/5 last:border-0 hover:bg-white/5 ${
+                        dialogType === option.id ? 'bg-neon-cyan/10 text-neon-cyan' : 'text-white'
                       }`}
                     >
                       <div className="font-medium text-sm">{option.name}</div>
-                      <div className="text-xs text-text-secondary mt-0.5">{option.desc}</div>
+                      <div className="text-xs text-gray-500 mt-0.5">{option.desc}</div>
                     </button>
                   ))}
-                </div>
+                </motion.div>
               )}
               
               {dialogType === 'custom' && (
-                <div className="mt-2">
+                <motion.div 
+                  className="mt-2"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                >
                   <textarea
                     value={customDialog}
                     onChange={(e) => setCustomDialog(e.target.value)}
                     placeholder="Özel diyalog metnini yazın..."
-                    className="w-full h-16 bg-surface border border-border rounded-xl px-3 py-2 text-sm text-text-primary placeholder-text-secondary focus:border-neon-cyan focus:shadow-glow-cyan focus:outline-none resize-none transition-all duration-300"
+                    className="w-full h-16 bg-white/[0.02] border border-white/10 rounded-xl px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-neon-cyan/50 focus:shadow-[0_0_15px_rgba(0,240,255,0.1)] focus:outline-none resize-none transition-all duration-300"
                   />
-                </div>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
 
             {/* Voice Selection - Feature Flag Controlled */}
             {FEATURE_FLAGS.VOICE_SELECTION && (
