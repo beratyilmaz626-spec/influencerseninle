@@ -302,33 +302,35 @@ export default function Dashboard({ onLogout }: DashboardProps) {
           </nav>
 
           {/* Bottom Items */}
-          <div className="p-4 border-t border-border space-y-1">
+          <div className="p-4 border-t border-white/5 space-y-1">
             {bottomItems.filter(i => ['subscription', 'settings'].includes(i.id)).map((item) => (
-              <button
+              <motion.button
                 key={item.id}
                 onClick={() => {
                   setCurrentView(item.id as ViewType);
                   setMobileMenuOpen(false);
                 }}
+                whileHover={{ x: 4 }}
                 className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                   currentView === item.id
-                    ? 'bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 text-text-primary'
-                    : 'text-text-secondary hover:bg-surface-elevated hover:text-text-primary'
+                    ? 'bg-gradient-to-r from-neon-cyan/20 to-neon-purple/10 text-white'
+                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
                 }`}
               >
                 <item.icon className="w-5 h-5" />
                 <span className="font-medium">{item.label}</span>
-              </button>
+              </motion.button>
             ))}
-            <button
+            <motion.button
               onClick={onLogout}
-              className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-text-secondary hover:bg-surface-elevated hover:text-text-primary transition-all duration-300"
+              whileHover={{ x: 4 }}
+              className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-all duration-300"
             >
               <LogOut className="w-5 h-5" />
               <span className="font-medium">Çıkış Yap</span>
-            </button>
+            </motion.button>
           </div>
-        </aside>
+        </motion.aside>
 
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col min-h-screen lg:ml-0 pt-14 lg:pt-0">
