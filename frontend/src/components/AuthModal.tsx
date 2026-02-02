@@ -230,7 +230,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
                     type="submit"
                     variant="premium"
                     size="lg"
-                    disabled={loading || socialLoading !== null}
+                    disabled={loading}
                     className="w-full"
                   >
                     {loading ? (
