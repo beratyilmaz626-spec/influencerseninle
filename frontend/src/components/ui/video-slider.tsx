@@ -149,14 +149,10 @@ export const VideoSlider = () => {
         }
       `}</style>
 
-      <div className={`w-full h-full relative overflow-hidden flex items-center justify-center bg-transparent ${
-        selectedVideoIndex !== null ? 'pointer-events-none overflow-hidden' : ''
-      }`}>
+      <div className="w-full h-full relative overflow-hidden flex items-center justify-center bg-transparent">
         <div className="relative z-10 w-full flex items-center justify-center py-8">
           <div className="scroll-container w-full">
-            <div className={`infinite-scroll flex gap-6 w-max ${
-              selectedVideoIndex !== null ? 'blur-sm opacity-30 animation-paused' : ''
-            }`}>
+            <div className="infinite-scroll flex gap-6 w-max">
               {duplicatedItems.map((item, index) => (
                 <div
                   key={index}
