@@ -294,13 +294,16 @@ export const VideoSlider = () => {
           </div>
         </div>
 
-        {/* Centered Video Player */}
+        {/* Centered Video Player Modal */}
         {selectedVideoIndex !== null && duplicatedItems[selectedVideoIndex] && (
           <div 
-            className="video-modal fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity duration-200"
-            onClick={handleBackgroundClick}
+            className="video-modal fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-md transition-opacity duration-200"
+            onClick={closeVideo}
           >
-            <div className="relative">
+            <div 
+              className="relative"
+              onClick={(e) => e.stopPropagation()}
+            >
               <video
                 src={duplicatedItems[selectedVideoIndex].video_url!}
                 className="w-80 h-[600px] object-cover rounded-xl shadow-2xl"
@@ -308,27 +311,25 @@ export const VideoSlider = () => {
                 loop
                 playsInline
                 controls
-                preload="metadata"
-                onClick={(e) => e.stopPropagation()}
-                onLoadedData={(e) => {
-                  const video = e.target as HTMLVideoElement;
-                  video.currentTime = 2;
-                }}
+                preload="auto"
               />
               
-              {/* Close button */}
+              {/* Close button - büyük ve görünür */}
               <button
-                onClick={closeVideo}
-                className="absolute -top-4 -right-4 w-10 h-10 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors shadow-lg z-10 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeVideo();
+                }}
+                className="absolute -top-3 -right-3 w-10 h-10 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors shadow-lg z-[10000] cursor-pointer"
                 type="button"
                 aria-label="Videoyu kapat"
               >
-                <span className="text-gray-700 text-xl font-bold leading-none">×</span>
+                <span className="text-white text-2xl font-bold leading-none">×</span>
               </button>
               
-              {/* Additional close options */}
-              <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-white text-sm opacity-75">
-                <p>ESC tuşu ile kapatabilirsiniz</p>
+              {/* ESC info */}
+              <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 text-white/70 text-sm">
+                <p>ESC tuşu veya dışarı tıklayarak kapatın</p>
               </div>
             </div>
           </div>
