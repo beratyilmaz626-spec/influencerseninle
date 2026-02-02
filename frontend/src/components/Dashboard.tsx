@@ -2055,80 +2055,92 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
 
       {/* Subscription Required Modal - Hakkı olmayan kullanıcılar için */}
       {showSubscriptionModal && createPortal(
-        <div 
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" 
+        <motion.div 
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" 
           style={{ zIndex: 10001 }}
           onClick={() => setShowSubscriptionModal(false)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
         >
-          <div 
-            className="glass-card max-w-md w-full shadow-elevated"
+          <motion.div 
+            className="bg-[#0a0f1a] border border-white/10 rounded-2xl max-w-md w-full shadow-[0_0_50px_rgba(0,0,0,0.5)]"
             onClick={(e) => e.stopPropagation()}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
           >
             <div className="p-6 text-center">
               <div className="text-6xl mb-4">🎬</div>
-              <h3 className="text-xl font-bold text-text-primary mb-2">
+              <h3 className="text-xl font-bold text-white mb-2">
                 Video Oluşturmak İçin Plan Gerekli
               </h3>
-              <p className="text-text-secondary mb-6">
+              <p className="text-gray-400 mb-6">
                 Video oluşturabilmek için bir abonelik planı seçmeniz veya hediye krediniz olması gerekiyor.
               </p>
               <div className="space-y-3">
-                <button
+                <motion.button
                   onClick={() => {
                     setShowSubscriptionModal(false);
                     setShowUpgradeModal(true);
                   }}
-                  className="w-full py-3 rounded-lg bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold hover:shadow-lg transition-all"
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   📋 Planları İncele
-                </button>
+                </motion.button>
                 <button
                   onClick={() => setShowSubscriptionModal(false)}
-                  className="w-full py-2 text-text-secondary hover:text-text-primary transition-colors"
+                  className="w-full py-2 text-gray-500 hover:text-white transition-colors"
                 >
                   Kapat
                 </button>
               </div>
             </div>
-          </div>
-        </div>,
+          </motion.div>
+        </motion.div>,
         document.body
       )}
 
       {/* Upgrade/Select Plan Modal - Kullanıcı durumuna göre dinamik içerik */}
       {showUpgradeModal && createPortal(
-        <div 
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" 
+        <motion.div 
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" 
           style={{ zIndex: 10001 }}
           onClick={() => setShowUpgradeModal(false)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
         >
-          <div 
-            className="glass-card max-w-lg w-full shadow-elevated"
+          <motion.div 
+            className="bg-[#0a0f1a] border border-white/10 rounded-2xl max-w-lg w-full shadow-[0_0_50px_rgba(0,0,0,0.5)]"
             onClick={(e) => e.stopPropagation()}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
           >
-            <div className="p-6 border-b border-border">
+            <div className="p-6 border-b border-white/5">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-xl font-bold text-text-primary">
+                  <h3 className="text-xl font-bold text-white">
                     {isSubscriptionActive() ? '🚀 Planını Yükselt' : '📋 Plan Seç'}
                   </h3>
                   {/* Mevcut Plan gösterimi */}
                   {currentPlan && isSubscriptionActive() && (
-                    <p className="text-xs text-text-secondary mt-1">
+                    <p className="text-xs text-gray-500 mt-1">
                       Mevcut Plan: <span className="text-neon-cyan font-semibold">{currentPlan.name}</span>
                     </p>
                   )}
                 </div>
-                <button
+                <motion.button
                   onClick={() => setShowUpgradeModal(false)}
-                  className="text-text-secondary hover:text-text-primary transition-colors"
+                  className="text-gray-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                 >
                   <X className="w-6 h-6" />
-                </button>
+                </motion.button>
               </div>
             </div>
             <div className="p-6 space-y-4">
-              <p className="text-text-secondary text-sm">
+              <p className="text-gray-400 text-sm">
                 {isSubscriptionActive() 
                   ? 'Daha fazla video oluşturmak ve premium özelliklere erişmek için planınızı yükseltin.'
                   : 'Video oluşturmaya başlamak için bir plan seçin.'}
@@ -2136,7 +2148,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
               
               {/* USD Bilgilendirme */}
               <div className="p-2 rounded-lg bg-neon-cyan/5 border border-neon-cyan/20">
-                <p className="text-xs text-text-secondary">
+                <p className="text-xs text-gray-400">
                   💱 Ödeme USD ($) olarak alınır. Bankanız TL karşılığını yansıtabilir.
                 </p>
               </div>
