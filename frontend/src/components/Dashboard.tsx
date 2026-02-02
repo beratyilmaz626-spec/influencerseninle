@@ -1351,40 +1351,56 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
             </motion.div>
 
             {/* Content Count */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-text-primary">🎯 Kaç Adet UGC İçerik Üretilsin</h3>
+            <motion.div 
+              className="space-y-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+            >
+              <h3 className="text-sm font-semibold text-white">🎯 Kaç Adet UGC İçerik Üretilsin</h3>
               <div className="flex items-center justify-center space-x-2">
-                <button
+                <motion.button
                   onClick={() => setContentCount(Math.max(1, contentCount - 1))}
-                  className="w-8 h-8 bg-surface-elevated hover:bg-neon-cyan/20 border border-border hover:border-neon-cyan rounded-lg flex items-center justify-center transition-all duration-300"
+                  className="w-8 h-8 bg-white/5 hover:bg-neon-cyan/10 border border-white/10 hover:border-neon-cyan/30 rounded-lg flex items-center justify-center transition-all duration-300"
+                  whileTap={{ scale: 0.9 }}
                 >
-                  <span className="text-sm font-bold text-text-primary">-</span>
-                </button>
+                  <span className="text-sm font-bold text-white">-</span>
+                </motion.button>
                 <div className="text-center px-4">
                   <div className="text-xl font-bold text-neon-cyan">{contentCount}</div>
-                  <div className="text-text-secondary text-xs">Video</div>
+                  <div className="text-gray-500 text-xs">Video</div>
                 </div>
-                <button
+                <motion.button
                   onClick={() => setContentCount(Math.min(10, contentCount + 1))}
-                  className="w-8 h-8 bg-surface-elevated hover:bg-neon-cyan/20 border border-border hover:border-neon-cyan rounded-lg flex items-center justify-center transition-all duration-300"
+                  className="w-8 h-8 bg-white/5 hover:bg-neon-cyan/10 border border-white/10 hover:border-neon-cyan/30 rounded-lg flex items-center justify-center transition-all duration-300"
+                  whileTap={{ scale: 0.9 }}
                 >
-                  <span className="text-sm font-bold text-text-primary">+</span>
-                </button>
+                  <span className="text-sm font-bold text-white">+</span>
+                </motion.button>
               </div>
-            </div>
+            </motion.div>
 
             {/* Cinsiyet */}
-            <div className="space-y-2 relative">
-              <h3 className="text-sm font-semibold text-text-primary">👤 Cinsiyet</h3>
+            <motion.div 
+              className="space-y-2 relative"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <h3 className="text-sm font-semibold text-white">👤 Cinsiyet</h3>
               <button
                 onClick={() => setOpenDropdown(openDropdown === 'gender' ? null : 'gender')}
-                className={`w-full p-3 rounded-xl border border-border bg-surface text-text-primary transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/50 ${openDropdown === 'gender' ? 'border-neon-cyan shadow-glow-cyan' : ''}`}
+                className={`w-full p-3 rounded-xl border bg-white/[0.02] text-white transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/30 ${openDropdown === 'gender' ? 'border-neon-cyan/50 shadow-[0_0_15px_rgba(0,240,255,0.1)]' : 'border-white/10'}`}
               >
                 <span className="text-sm font-medium">{gender || 'Cinsiyet Seçin'}</span>
-                <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${openDropdown === 'gender' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${openDropdown === 'gender' ? 'rotate-180' : ''}`} />
               </button>
               {openDropdown === 'gender' && (
-                <div className="absolute z-50 w-full bg-surface border border-border rounded-xl shadow-elevated mt-2 overflow-hidden">
+                <motion.div 
+                  className="absolute z-50 w-full bg-[#0a0f1a] border border-white/10 rounded-xl shadow-elevated mt-2 overflow-hidden"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
                   {['Kadın', 'Erkek'].map((g) => (
                     <button
                       key={g}
@@ -1392,29 +1408,38 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                         setGender(g);
                         setOpenDropdown(null);
                       }}
-                      className={`w-full p-3 text-sm text-left transition-all duration-200 border-b border-border last:border-0 hover:bg-surface-elevated ${
-                        gender === g ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-text-primary'
+                      className={`w-full p-3 text-sm text-left transition-all duration-200 border-b border-white/5 last:border-0 hover:bg-white/5 ${
+                        gender === g ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-white'
                       }`}
                     >
                       {g}
                     </button>
                   ))}
-                </div>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
 
             {/* Yaş */}
-            <div className="space-y-2 relative">
-              <h3 className="text-sm font-semibold text-text-primary">🎂 Yaş</h3>
+            <motion.div 
+              className="space-y-2 relative"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+            >
+              <h3 className="text-sm font-semibold text-white">🎂 Yaş</h3>
               <button
                 onClick={() => setOpenDropdown(openDropdown === 'age' ? null : 'age')}
-                className={`w-full p-3 rounded-xl border border-border bg-surface text-text-primary transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/50 ${openDropdown === 'age' ? 'border-neon-cyan shadow-glow-cyan' : ''}`}
+                className={`w-full p-3 rounded-xl border bg-white/[0.02] text-white transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/30 ${openDropdown === 'age' ? 'border-neon-cyan/50 shadow-[0_0_15px_rgba(0,240,255,0.1)]' : 'border-white/10'}`}
               >
                 <span className="text-sm font-medium">{age ? `${age} yaş` : 'Yaş Seçin'}</span>
-                <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${openDropdown === 'age' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${openDropdown === 'age' ? 'rotate-180' : ''}`} />
               </button>
               {openDropdown === 'age' && (
-                <div className="absolute z-50 w-full bg-surface border border-border rounded-xl shadow-elevated mt-2 overflow-hidden">
+                <motion.div 
+                  className="absolute z-50 w-full bg-[#0a0f1a] border border-white/10 rounded-xl shadow-elevated mt-2 overflow-hidden"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
                   {['18-25', '25-35', '35-50'].map((a) => (
                     <button
                       key={a}
@@ -1422,29 +1447,38 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                         setAge(a);
                         setOpenDropdown(null);
                       }}
-                      className={`w-full p-3 text-sm text-left transition-all duration-200 border-b border-border last:border-0 hover:bg-surface-elevated ${
-                        age === a ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-text-primary'
+                      className={`w-full p-3 text-sm text-left transition-all duration-200 border-b border-white/5 last:border-0 hover:bg-white/5 ${
+                        age === a ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-white'
                       }`}
                     >
                       {a} yaş
                     </button>
                   ))}
-                </div>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
 
             {/* Mekan */}
-            <div className="space-y-2 relative">
-              <h3 className="text-sm font-semibold text-text-primary">🏠 Mekan</h3>
+            <motion.div 
+              className="space-y-2 relative"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <h3 className="text-sm font-semibold text-white">🏠 Mekan</h3>
               <button
                 onClick={() => setOpenDropdown(openDropdown === 'location' ? null : 'location')}
-                className={`w-full p-3 rounded-xl border border-border bg-surface text-text-primary transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/50 ${openDropdown === 'location' ? 'border-neon-cyan shadow-glow-cyan' : ''}`}
+                className={`w-full p-3 rounded-xl border bg-white/[0.02] text-white transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/30 ${openDropdown === 'location' ? 'border-neon-cyan/50 shadow-[0_0_15px_rgba(0,240,255,0.1)]' : 'border-white/10'}`}
               >
                 <span className="text-sm font-medium">{location || 'Mekan Seçin'}</span>
-                <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${openDropdown === 'location' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${openDropdown === 'location' ? 'rotate-180' : ''}`} />
               </button>
               {openDropdown === 'location' && (
-                <div className="absolute z-50 w-full bg-surface border border-border rounded-xl shadow-elevated mt-2 overflow-hidden">
+                <motion.div 
+                  className="absolute z-50 w-full bg-[#0a0f1a] border border-white/10 rounded-xl shadow-elevated mt-2 overflow-hidden"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
                   {['İç Mekan', 'Dış Mekan'].map((l) => (
                     <button
                       key={l}
@@ -1452,16 +1486,16 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                         setLocation(l);
                         setOpenDropdown(null);
                       }}
-                      className={`w-full p-3 text-sm text-left transition-all duration-200 border-b border-border last:border-0 hover:bg-surface-elevated ${
-                        location === l ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-text-primary'
+                      className={`w-full p-3 text-sm text-left transition-all duration-200 border-b border-white/5 last:border-0 hover:bg-white/5 ${
+                        location === l ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-white'
                       }`}
                     >
                       {l}
                     </button>
                   ))}
-                </div>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
 
             {/* Sektör */}
             <div className="space-y-2">
