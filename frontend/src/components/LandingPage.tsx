@@ -36,52 +36,6 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
     }
   ];
 
-  // Sektör kategorileri
-  const sectors = [
-    { emoji: '🤖', name: 'AI', color: 'from-neon-cyan to-neon-purple' },
-    { emoji: '💪', name: 'Fitness', color: 'from-orange-500 to-red-500' },
-    { emoji: '💻', name: 'Teknoloji', color: 'from-blue-500 to-indigo-500' },
-    { emoji: '🍎', name: 'Beslenme', color: 'from-green-500 to-emerald-500' },
-    { emoji: '📈', name: 'Pazarlama', color: 'from-yellow-500 to-orange-500' },
-    { emoji: '₿', name: 'Kripto', color: 'from-yellow-400 to-amber-500' },
-    { emoji: '💕', name: 'İlişkiler', color: 'from-pink-500 to-rose-400' },
-    { emoji: '⚖️', name: 'Hukuk', color: 'from-indigo-500 to-purple-500' },
-    { emoji: '💰', name: 'Finans', color: 'from-green-500 to-teal-500' },
-    { emoji: '🛒', name: 'E-ticaret', color: 'from-neon-cyan to-blue-500' },
-    { emoji: '✈️', name: 'Seyahat', color: 'from-sky-500 to-blue-500' },
-    { emoji: '👨‍💻', name: 'Geliştirici', color: 'from-emerald-500 to-green-500' },
-    { emoji: '🏢', name: 'Kurumsal', color: 'from-slate-500 to-gray-500' },
-    { emoji: '👔', name: 'Kariyer', color: 'from-teal-500 to-cyan-500' },
-    { emoji: '💼', name: 'İş', color: 'from-amber-500 to-yellow-500' },
-    { emoji: '📊', name: 'Ticaret', color: 'from-red-500 to-pink-500' },
-    { emoji: '🎮', name: 'Oyun', color: 'from-purple-500 to-indigo-500' },
-    { emoji: '👶', name: 'Çocuk', color: 'from-pink-500 to-rose-500' },
-    { emoji: '🔮', name: 'Astroloji', color: 'from-purple-500 to-violet-500' },
-    { emoji: '🗣️', name: 'Dil', color: 'from-blue-500 to-indigo-500' },
-    { emoji: '📚', name: 'Kitaplar', color: 'from-emerald-500 to-teal-500' },
-    { emoji: '💄', name: 'Güzellik', color: 'from-pink-500 to-rose-500' },
-    { emoji: '🏥', name: 'Medikal', color: 'from-red-500 to-pink-500' },
-    { emoji: '💋', name: 'Kozmetik', color: 'from-neon-pink to-pink-500' },
-    { emoji: '🎨', name: 'Tasarım', color: 'from-violet-500 to-purple-500' },
-    { emoji: '🏘️', name: 'Emlak', color: 'from-green-500 to-emerald-500' },
-    { emoji: '👗', name: 'Moda', color: 'from-neon-purple to-pink-500' },
-    { emoji: '🎵', name: 'Müzik', color: 'from-indigo-500 to-blue-500' },
-  ];
-
-  // Kategori kartları
-  const categoryCards = [
-    { emoji: '💄', title: 'Güzellik', color: 'from-pink-500 to-rose-400' },
-    { emoji: '👗', title: 'Moda', color: 'from-neon-purple to-indigo-500' },
-    { emoji: '💪', title: 'Fitness', color: 'from-orange-500 to-red-500' },
-    { emoji: '🍎', title: 'Beslenme', color: 'from-green-500 to-emerald-500' },
-    { emoji: '💻', title: 'Teknoloji', color: 'from-neon-cyan to-blue-500' },
-    { emoji: '🏠', title: 'Emlak', color: 'from-emerald-500 to-teal-500' },
-    { emoji: '🎮', title: 'Oyun', color: 'from-purple-600 to-pink-500' },
-    { emoji: '✈️', title: 'Seyahat', color: 'from-sky-500 to-blue-500' }
-  ];
-
- 
-
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* Header */}
