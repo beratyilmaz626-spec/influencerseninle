@@ -23,7 +23,7 @@ export const VideoSlider = () => {
       id: 'demo-1',
       title: 'AI UGC Video 1',
       video_url: 'https://customer-assets.emergentagent.com/job_a7689bd5-97e9-4431-bbf5-a6a12c456863/artifacts/6m89hyy5__d80c8bae411bb055af3a4e660e638d44_0221593f-e5d3-44fa-9657-31e653668b40%20%281%29.mp4',
-      thumbnail_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop',
+      thumbnail_url: null,
       order_index: 0,
       is_active: true,
       created_at: new Date().toISOString()
@@ -32,26 +32,8 @@ export const VideoSlider = () => {
       id: 'demo-2',
       title: 'AI UGC Video 2',
       video_url: 'https://customer-assets.emergentagent.com/job_a7689bd5-97e9-4431-bbf5-a6a12c456863/artifacts/y4olrozc_74b4567a-c5a8-4be5-992a-c9a0020c56f5.mp4',
-      thumbnail_url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=600&fit=crop',
+      thumbnail_url: null,
       order_index: 1,
-      is_active: true,
-      created_at: new Date().toISOString()
-    },
-    {
-      id: 'demo-3',
-      title: 'AI UGC Video 3',
-      video_url: 'https://customer-assets.emergentagent.com/job_a7689bd5-97e9-4431-bbf5-a6a12c456863/artifacts/6m89hyy5__d80c8bae411bb055af3a4e660e638d44_0221593f-e5d3-44fa-9657-31e653668b40%20%281%29.mp4',
-      thumbnail_url: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=600&fit=crop',
-      order_index: 2,
-      is_active: true,
-      created_at: new Date().toISOString()
-    },
-    {
-      id: 'demo-4',
-      title: 'AI UGC Video 4',
-      video_url: 'https://customer-assets.emergentagent.com/job_a7689bd5-97e9-4431-bbf5-a6a12c456863/artifacts/y4olrozc_74b4567a-c5a8-4be5-992a-c9a0020c56f5.mp4',
-      thumbnail_url: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=400&h=600&fit=crop',
-      order_index: 3,
       is_active: true,
       created_at: new Date().toISOString()
     }
