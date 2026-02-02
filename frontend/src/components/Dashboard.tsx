@@ -1943,92 +1943,113 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
 
       {/* Sektör Modal */}
       {showSectorModal && createPortal(
-        <div 
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" 
+        <motion.div 
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" 
           style={{ zIndex: 9999 }}
           onClick={(e) => {
             if (e.target === e.currentTarget) {
               setShowSectorModal(false);
             }
           }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
         >
-          <div 
-            className="glass-card max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-elevated"
+          <motion.div 
+            className="bg-[#0a0f1a] border border-white/10 rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)]"
             onClick={(e) => e.stopPropagation()}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 300 }}
           >
-            <div className="p-6 border-b border-border">
+            <div className="p-6 border-b border-white/5">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold text-text-primary">Sektör Seçin</h3>
-                <button
+                <h3 className="text-xl font-bold text-white">Sektör Seçin</h3>
+                <motion.button
                   onClick={() => setShowSectorModal(false)}
-                  className="text-text-secondary hover:text-text-primary transition-colors"
+                  className="text-gray-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                 >
                   <X className="w-6 h-6" />
-                </button>
+                </motion.button>
               </div>
             </div>
             <div className="p-6 overflow-y-auto max-h-[60vh]">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {sectorOptions.map((sectorOption) => (
-                  <button
+                  <motion.button
                     key={sectorOption.id}
                     onClick={() => handleSectorSelect(sectorOption.id)}
-                    className={`p-4 rounded-xl border transition-all hover:scale-105 ${
+                    className={`p-4 rounded-xl border transition-all ${
                       sector === sectorOption.id
-                        ? 'border-neon-cyan bg-neon-cyan/10 shadow-glow-cyan'
-                        : 'border-border hover:border-neon-cyan/50 bg-surface'
+                        ? 'border-neon-cyan/50 bg-neon-cyan/10 shadow-[0_0_20px_rgba(0,240,255,0.15)]'
+                        : 'border-white/10 hover:border-neon-cyan/30 bg-white/[0.02]'
                     }`}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     <div className="text-center">
                       <div className="text-3xl mb-2">{sectorOption.emoji}</div>
                       <div className={`text-sm font-medium ${
-                        sector === sectorOption.id ? 'text-neon-cyan' : 'text-text-primary'
+                        sector === sectorOption.id ? 'text-neon-cyan' : 'text-white'
                       }`}>
                         {sectorOption.name.replace(sectorOption.emoji + ' ', '')}
                       </div>
                     </div>
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>
-          </div>
-        </div>,
+          </motion.div>
+        </motion.div>,
         document.body
       )}
 
       {/* Warning Modal */}
       {showWarningModal && createPortal(
-        <div 
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4" 
+        <motion.div 
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" 
           style={{ zIndex: 10000 }}
           onClick={() => setShowWarningModal(false)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
         >
-          <div 
-            className="glass-card max-w-md w-full shadow-elevated transform transition-all animate-bounce-in"
+          <motion.div 
+            className="bg-[#0a0f1a] border border-white/10 rounded-2xl max-w-md w-full shadow-[0_0_50px_rgba(0,0,0,0.5)]"
             onClick={(e) => e.stopPropagation()}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 400 }}
           >
             <div className="p-8 text-center">
-              <div className="mb-6 text-7xl animate-wiggle">
+              <motion.div 
+                className="mb-6 text-7xl"
+                animate={{ rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 0.5, repeat: 2 }}
+              >
                 🎨✨
-              </div>
-              <h3 className="text-2xl font-bold text-text-primary mb-4">
+              </motion.div>
+              <h3 className="text-2xl font-bold text-white mb-4">
                 Hoop! Bir dakika! 🙌
               </h3>
-              <p className="text-text-secondary text-base leading-relaxed mb-6">
+              <p className="text-gray-400 text-base leading-relaxed mb-6">
                 Manuel video stili seçmek için önce <span className="font-semibold text-neon-cyan">"Stilini Seç"</span> seçeneğine geçmelisin! 😊
               </p>
-              <button
+              <motion.button
                 onClick={() => setShowWarningModal(false)}
                 className="relative group"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-full blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
-                <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-glow-cyan">
+                <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold py-3 px-8 rounded-full shadow-[0_0_20px_rgba(0,240,255,0.3)]">
                   Anladım! 👍
                 </div>
-              </button>
+              </motion.button>
             </div>
-          </div>
-        </div>,
+          </motion.div>
+        </motion.div>,
         document.body
       )}
 
