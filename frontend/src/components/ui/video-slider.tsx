@@ -219,68 +219,48 @@ export const VideoSlider = () => {
                   style={{ aspectRatio: '9/16', height: '400px' }}
                 >
                   <div className="relative w-full h-full group">
-                    {/* Clickable overlay for videos */}
+                    {/* Clickable overlay for videos - opens in new tab */}
                     {item.video_url && (
-                      <button
-                        onClick={() => handleVideoClick(index, item)}
+                      <a
+                        href={item.video_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="absolute inset-0 w-full h-full z-20 cursor-pointer"
                         aria-label={`${item.title} videosunu izle`}
                       />
                     )}
 
-                    {item.video_url && selectedVideoIndex === index ? (
-                      <div className="w-full h-full bg-gray-900 flex items-center justify-center">
-                        <div className="text-white text-center">
-                          <Play className="w-8 h-8 mx-auto mb-2 animate-pulse" />
-                          <p className="text-sm">Video oynatılıyor</p>
-                        </div>
-                      </div>
-                    ) : item.video_url ? (
-                      <video
-                        src={item.video_url}
-                        className="w-full h-full object-cover"
-                        muted
-                        autoPlay
-                        loop
-                        playsInline
-                        preload="auto"
-                        onLoadedData={(e) => {
-                          const video = e.target as HTMLVideoElement;
-                          video.currentTime = 0;
-                        }}
-                      />
-                    ) : (
-                      <img
-                        src={item.thumbnail_url || fallbackImages[index % fallbackImages.length]}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    )}
+                    {/* Show thumbnail image */}
+                    <img
+                      src={item.thumbnail_url || fallbackImages[index % fallbackImages.length]}
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
                     
                     {/* Video overlay with play button and info */}
-                    <div className={`absolute inset-0 video-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4 ${
-                      selectedVideoIndex === index ? 'hidden' : ''
-                    }`}>
+                    <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4`}>
                       {/* Play button */}
                       <div className="flex-1 flex items-center justify-center">
-                        <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                        <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                           <Play className="w-8 h-8 text-white fill-white ml-1" />
                         </div>
                       </div>
                       
                       {/* Video info */}
                       <div className="text-white">
+                        <div className="flex items-center gap-2 mb-2">
+                          <ExternalLink className="w-4 h-4" />
+                          <span className="text-xs">Tıkla ve izle</span>
+                        </div>
                         <h3 className="font-semibold text-sm mb-1 line-clamp-2">
                           {item.title}
                         </h3>
-                        <div className="flex items-center justify-between text-xs opacity-90">
-                          <span>Bu video yapay zeka ile üretilmiştir.</span>
+                        <div className="text-xs opacity-80">
+                          AI ile üretilmiş UGC video
                         </div>
                       </div>
                     </div>
-                    
-                    {/* Close button for selected video */}
                   </div>
                 </div>
               ))}
