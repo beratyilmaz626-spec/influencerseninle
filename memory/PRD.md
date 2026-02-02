@@ -4,7 +4,7 @@
 AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, stil ve sektör seçerek otomatik UGC (User Generated Content) videoları oluşturabiliyor.
 
 ## Teknoloji Stack'i
-- **Frontend:** React + TypeScript + Vite + TailwindCSS
+- **Frontend:** React + TypeScript + Vite + TailwindCSS + Framer Motion
 - **Backend:** FastAPI (Python)
 - **Database:** Supabase (PostgreSQL)
 - **Video İşleme:** n8n webhook entegrasyonu
@@ -23,6 +23,7 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 - Hediye token verme
 - Video stilleri yönetimi
 - Slider video yönetimi
+- Veritabanı bakımı (RLS & Indexes)
 
 ### ✅ Video Oluşturma Akışı
 - Fotoğraf yükleme
@@ -33,21 +34,40 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 - n8n webhook entegrasyonu
 
 ### ✅ Bug Fixes - 10 Ocak 2025
-- **Race Condition Düzeltildi:** `profileLoading` state eklendi, UI artık admin durumu yüklenmeden render etmiyor
-- **404 Hatası Düzeltildi:** `stripe_user_subscriptions` → `user_subscriptions` olarak değiştirildi
-- **Supabase SQL Script:** Performans ve güvenlik düzeltmeleri için kapsamlı SQL script oluşturuldu
+- **Race Condition Düzeltildi:** `profileLoading` state eklendi
+- **404 Hatası Düzeltildi:** `stripe_user_subscriptions` → `user_subscriptions`
+- **Supabase SQL Script:** Performans ve güvenlik düzeltmeleri uygulandı
+
+### ✅ Modern UI/UX Redesign - 2 Şubat 2025
+- **Landing Page:** Tamamen yenilendi (HeroSection, DifferenceSection)
+- **Dashboard Ana Sayfa:** Modern tasarım, animasyonlar, glassmorphism
+- **Video Oluşturma Sayfası:** Yeni dropdown stilleri, modern kartlar
+- **Sidebar:** Animasyonlu geçişler, aktif durumu göstergesi
+- **Modallar:** Framer Motion animasyonları
+- **Renk Paleti:** Neon cyan (#00f0ff), neon purple (#b066ff), neon pink (#ff0080)
+- **Tasarım Dili:** Koyu tema, glassmorphism, gradient efektler
+
+### ✅ Sosyal Giriş UI - 2 Şubat 2025
+- Google ile giriş butonu (UI hazır)
+- Apple ile giriş butonu (UI hazır)
+- **NOT:** Supabase'de provider etkinleştirmesi BEKLEMEDE
 
 ## Bekleyen Görevler
 
 ### P1 - Yüksek Öncelik
-- [ ] Supabase SQL script'ini çalıştır (performans + güvenlik)
-- [ ] HaveIBeenPwned şifre kontrolünü aktifleştir (Supabase Dashboard)
-- [ ] Video işleniyor durumu UI'da gösterimi
+- [ ] **Google/Apple OAuth Yapılandırması** - Kullanıcının Supabase'de etkinleştirmesi gerekiyor
+- [ ] Supabase Dashboard'dan performans/güvenlik uyarıları kontrol edilmeli (USER VERIFICATION)
+- [ ] Video işleniyor durumu UI'da gösterimi iyileştirilmeli
 
 ### P2 - Orta Öncelik
 - [ ] Dashboard.tsx refaktör (bileşenlere ayır)
 - [ ] `stripe-config.ts` → `plan-config.ts` olarak yeniden adlandır
 - [ ] Iyzico ödeme entegrasyonu (MOCKED)
+- [ ] Eski dosyaları temizle (ComparisonTable.tsx, supabase_fixes.sql)
+
+### P3 - Düşük Öncelik
+- [ ] Tüm mevcut kullanıcıların kredilerini 200x çarp (bulk update)
+- [ ] Jeton sistemi tam test
 
 ## Veritabanı Şeması
 
@@ -80,10 +100,14 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 - order_index (integer)
 
 ## Önemli Dosyalar
+- `/app/frontend/src/components/Dashboard.tsx` - Ana dashboard (YENİ TASARIM)
+- `/app/frontend/src/components/LandingPage.tsx` - Landing page (YENİ TASARIM)
+- `/app/frontend/src/components/HeroSection.tsx` - Hero bölümü
+- `/app/frontend/src/components/DifferenceSection.tsx` - Karşılaştırma bölümü
+- `/app/frontend/src/components/AuthModal.tsx` - Giriş modal (Google/Apple UI)
 - `/app/frontend/src/hooks/useAuth.ts` - Auth ve admin durumu
 - `/app/frontend/src/hooks/useSubscriptionAccess.ts` - İzin kontrolü
-- `/app/frontend/src/components/Dashboard.tsx` - Ana dashboard
-- `/app/supabase_fixes.sql` - Supabase düzeltme script'i
+- `/app/design_guidelines.json` - Tasarım kuralları
 
 ## Admin Hesabı
 - Email: beratyilmaz626@gmail.com
@@ -91,5 +115,6 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 
 ## Notlar
 - Iyzico entegrasyonu henüz yapılmadı (MOCKED)
+- Google/Apple OAuth UI hazır, Supabase yapılandırması bekliyor
 - Tüm fiyatlar Türk Lirası (TL)
 - Video işleme n8n webhook üzerinden yapılıyor
