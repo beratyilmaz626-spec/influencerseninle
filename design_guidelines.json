@@ -1,120 +1,116 @@
 {
-  "design_system": {
-    "typography": {
-      "font_family": {
-        "heading": "Inter, sans-serif",
-        "body": "Inter, sans-serif"
-      },
-      "scale": {
-        "h2": "text-3xl md:text-4xl font-bold tracking-tight",
-        "h3": "text-xl font-semibold",
-        "body": "text-base text-text-secondary",
-        "label": "text-sm font-medium text-text-muted uppercase tracking-wider"
-      }
-    },
+  "identity": {
+    "persona": "E1: The Anti-AI Designer",
+    "mission": "Create a legendary, high-voltage SaaS experience that breaks the 'boring template' mold.",
+    "principles": [
+      "Fusion over Imitation: Mix Cyberpunk aesthetics with clean SaaS usability.",
+      "Emotion First: Every interaction must feel 'electric' and 'premium'.",
+      "Content is King: The 'See the Difference' section is the narrative climax.",
+      "Zoom In: Focus on the details of the UGC video quality."
+    ]
+  },
+  "theme": {
+    "mode": "dark",
+    "style": "Neon Glassmorphism",
     "colors": {
       "background": {
-        "primary": "#0a0a0f",
-        "surface": "#16161f",
-        "glass": "rgba(22, 22, 31, 0.7)",
-        "winner_column": "rgba(0, 240, 255, 0.03)"
+        "primary": "#030712",
+        "secondary": "#111827",
+        "card": "rgba(17, 24, 39, 0.7)"
       },
-      "accents": {
-        "cyan": "#00f0ff",
-        "purple": "#b066ff",
-        "pink": "#ff0080",
-        "green": "#00ff88",
-        "red": "#ff3b30"
+      "brand": {
+        "cyan": "#00D9FF",
+        "purple": "#A855F7",
+        "pink": "#FF0080",
+        "gradient_primary": "linear-gradient(135deg, #00D9FF 0%, #A855F7 100%)",
+        "gradient_secondary": "linear-gradient(to right, #FF0080, #A855F7)"
       },
       "text": {
-        "primary": "#ffffff",
-        "secondary": "rgba(255, 255, 255, 0.8)",
-        "muted": "rgba(255, 255, 255, 0.5)"
+        "primary": "#F9FAFB",
+        "secondary": "#9CA3AF",
+        "muted": "#6B7280"
+      },
+      "border": "rgba(255, 255, 255, 0.1)"
+    },
+    "typography": {
+      "headings": {
+        "fontFamily": "Unbounded, sans-serif",
+        "weights": ["700", "900"],
+        "letterSpacing": "-0.02em"
+      },
+      "body": {
+        "fontFamily": "Inter, sans-serif",
+        "weights": ["400", "500"],
+        "letterSpacing": "0.01em"
       }
     },
-    "effects": {
-      "glassmorphism": "backdrop-blur-xl bg-surface/70 border border-white/10",
-      "neon_glow_cyan": "shadow-[0_0_20px_rgba(0,240,255,0.15)]",
-      "neon_border": "border border-neon-cyan/30"
+    "shadows": {
+      "neon_cyan": "0 0 20px rgba(0, 217, 255, 0.3)",
+      "neon_purple": "0 0 20px rgba(168, 85, 247, 0.3)",
+      "glass": "0 8px 32px 0 rgba(0, 0, 0, 0.37)"
     }
+  },
+  "layout_strategy": {
+    "grid_system": "Bento Grid (Mode A for Landing, Mode B for Dashboard)",
+    "spacing": "Generous (Tailwind scale p-8 to p-32)",
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
   },
   "components": {
-    "ComparisonTable": {
-      "path": "/app/frontend/src/components/ComparisonTable.tsx",
-      "description": "A high-contrast, dark-mode comparison table comparing 'InfluencerSeninle' vs 'Geleneksel'.",
-      "structure": {
-        "layout": "Grid-based layout. Desktop: 3 columns (Feature | Us | Them). Mobile: Stacked cards or scrollable view.",
-        "visual_hierarchy": {
-          "winner_column": "Must visually dominate. Use 'glass-card' class, cyan border glow, and slightly larger scale or z-index.",
-          "loser_column": "Receded visual. Lower opacity (0.6), grayscale or muted red accents for negatives.",
-          "icons": "Use Lucide-React icons. CheckCircle2 (Cyan/Green) for Us, XCircle (Red/Gray) for Them."
-        }
+    "HeroSection": {
+      "instruction": "Create a high-impact hero with animated text and a background that feels 'alive'.",
+      "background": "Use 'AuroraBackground' or 'BackgroundGradientAnimation' from the existing UI components.",
+      "typography": "Huge, gradient text (text-6xl md:text-8xl).",
+      "cta": "Neon gradient button with glow effect."
+    },
+    "DifferenceSection": {
+      "instruction": "THE MOST CRITICAL SECTION. Implement a 'Before/After' comparison slider.",
+      "type": "Interactive Slider",
+      "before_content": {
+        "type": "image",
+        "src": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999&auto=format&fit=crop",
+        "label": "Sıradan Ürün Fotoğrafı",
+        "filter": "grayscale(100%) blur(1px)"
       },
-      "data_structure": [
-        {
-          "feature": "İçerik Üretim Hızı",
-          "us": "24-48 Saat",
-          "them": "2-3 Hafta",
-          "us_positive": true
-        },
-        {
-          "feature": "Maliyet",
-          "us": "%70 Daha Uygun",
-          "them": "Yüksek Ajans Ücretleri",
-          "us_positive": true
-        },
-        {
-          "feature": "Lojistik & Kargo",
-          "us": "Otomatik Süreç",
-          "them": "Manuel Takip",
-          "us_positive": true
-        },
-        {
-          "feature": "Risk & Güven",
-          "us": "Sözleşmeli & Garantili",
-          "them": "Belirsiz",
-          "us_positive": true
-        },
-        {
-          "feature": "İçerik Çeşitliliği",
-          "us": "Sınırsız UGC",
-          "them": "Standart Stüdyo",
-          "us_positive": true
-        }
-      ],
-      "styling_rules": {
-        "container": "relative w-full max-w-5xl mx-auto p-4 md:p-8",
-        "header": "text-center mb-12 space-y-4",
-        "grid_header": "grid grid-cols-3 gap-4 p-4 border-b border-white/10 text-text-muted text-sm",
-        "row": "grid grid-cols-3 gap-4 p-4 items-center border-b border-white/5 hover:bg-white/5 transition-colors",
-        "cell_feature": "text-text-secondary font-medium",
-        "cell_us": "text-neon-cyan font-bold flex items-center gap-2",
-        "cell_them": "text-text-muted flex items-center gap-2 decoration-slice"
+      "after_content": {
+        "type": "image",
+        "src": "https://images.unsplash.com/photo-1559114123-509b13dfeb17?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzN8MHwxfHNlYXJjaHwxfHxoaWdoJTIwZW5lcmd5JTIwdmlicmFudCUyMGUtY29tbWVyY2UlMjBwcm9kdWN0JTIwbGlmZXN0eWxlJTIwcGhvdG9ncmFwaHklMjBuZW9ufGVufDB8fHx8MTc3MDA1NDM1MXww&ixlib=rb-4.1.0&q=85",
+        "label": "UGC Video Etkisi",
+        "filter": "none"
       },
-      "animations": {
-        "initial": { "opacity": 0, "y": 20 },
-        "animate": { "opacity": 1, "y": 0 },
-        "transition": { "duration": 0.5, "staggerChildren": 0.1 }
-      }
+      "interaction": "Draggable slider revealing the 'After' state. Use Framer Motion."
+    },
+    "Dashboard": {
+      "instruction": "Glassmorphism sidebar and cards. Dark gray background, NOT pure black.",
+      "sidebar": "Glass effect (backdrop-blur-xl), border-r border-white/10.",
+      "cards": "bg-gray-900/50 border border-white/5 hover:border-cyan-500/50 transition-colors duration-300.",
+      "charts": "Use Recharts with custom neon colors (#00D9FF, #A855F7)."
     }
   },
-  "assets": {
-    "background_image": "https://images.unsplash.com/photo-1739471131322-1f4a338347d6?crop=entropy&cs=srgb&fm=jpg&q=85",
-    "icons": "lucide-react"
+  "motion": {
+    "library": "framer-motion",
+    "default_transition": {
+      "type": "spring",
+      "stiffness": 260,
+      "damping": 20
+    },
+    "scroll_animations": "Fade in up, stagger children.",
+    "hover_effects": "Scale up (1.02), glow intensity increase."
   },
-  "instructions_to_main_agent": [
-    "1. Refactor '/app/frontend/src/components/ComparisonTable.tsx' to use the new design.",
-    "2. Use 'framer-motion' for entrance animations.",
-    "3. Ensure the 'InfluencerSeninle' column has a subtle 'neon-cyan' glow and border to highlight it as the winner.",
-    "4. Use the 'glass-card' utility class from index.css for the main container or the winner column background.",
-    "5. Ensure mobile responsiveness: On mobile, features can be stacked or the table can scroll horizontally.",
-    "6. Do NOT use TypeScript interfaces in the code if you are writing .js, but since the file is .tsx, maintain valid TSX syntax.",
-    "7. Add 'data-testid' attributes to the table container and rows."
-  ],
+  "assets": {
+    "images": {
+      "hero_bg": "https://images.pexels.com/photos/34281360/pexels-photo-34281360.jpeg",
+      "ugc_example": "https://images.unsplash.com/photo-1559114123-509b13dfeb17",
+      "boring_example": "https://images.unsplash.com/photo-1523275335684-37898b6baf30"
+    },
+    "icons": "Lucide React (use thin strokes for elegance)"
+  },
   "universal_guidelines": [
-    "Avoid generic centered layouts; use asymmetry where possible.",
-    "Use 2-3x more spacing than typical designs.",
-    "Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients.",
-    "Use glass-morphism effects with backdrop filters (12-24px blur)."
-  ]
+    "Do not use 'Inter' for headings. Use 'Unbounded' or a similar wide display font.",
+    "Avoid pure black (#000000) backgrounds; use very dark gray/blue (#030712).",
+    "Ensure all text has sufficient contrast (WCAG AA).",
+    "Use 'sonner' for toasts.",
+    "All interactive elements must have 'data-testid'.",
+    "Use 'clsx' and 'tailwind-merge' for class manipulation."
+  ],
+  "instructions_to_main_agent": "1. Update 'tailwind.config.js' to include the new neon colors and fonts. 2. Refactor 'LandingPage.tsx' to use the new 'HeroSection' and 'DifferenceSection'. 3. Update 'Dashboard.tsx' to apply the glassmorphism style. 4. Ensure the 'See the Difference' section is the visual highlight."
 }
