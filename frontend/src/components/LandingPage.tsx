@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Play, Sparkles, Zap, Video, ArrowRight, CheckCircle2, Star, X, Clock, DollarSign, Package, Shield, RefreshCcw, Palette, Users, Globe, Rocket } from 'lucide-react';
+import { Play, Sparkles, Zap, Video, ArrowRight, CheckCircle2, Star, X, Clock, DollarSign, Package, Shield, RefreshCcw, Palette, Users, Globe, Rocket, Building2, ShoppingBag, Briefcase } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
