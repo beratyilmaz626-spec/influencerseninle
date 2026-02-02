@@ -28,7 +28,7 @@ interface DashboardProps {
   onLogout: () => void;
 }
 
-type ViewType = 'home' | 'videos' | 'create' | 'subscription' | 'settings' | 'users' | 'slider' | 'styles' | 'gift';
+type ViewType = 'home' | 'videos' | 'create' | 'subscription' | 'settings' | 'users' | 'slider' | 'styles' | 'gift' | 'database';
 
 export default function Dashboard({ onLogout }: DashboardProps) {
   const [currentView, setCurrentView] = useState<ViewType>('home');
