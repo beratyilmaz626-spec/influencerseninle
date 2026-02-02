@@ -49,65 +49,6 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
     }
   };
 
-  // Google ile giriş
-  // REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
-  const handleGoogleSignIn = async () => {
-    try {
-      setSocialLoading('google');
-      setError(null);
-      
-      const redirectUrl = window.location.origin + '/auth/callback';
-      
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: redirectUrl,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
-        },
-      });
-
-      if (error) throw error;
-    } catch (err) {
-      console.error('Google sign in error:', err);
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Google ile giriş yapılırken bir hata oluştu');
-      }
-      setSocialLoading(null);
-    }
-  };
-
-  // Apple ile giriş
-  const handleAppleSignIn = async () => {
-    try {
-      setSocialLoading('apple');
-      setError(null);
-      
-      const redirectUrl = window.location.origin + '/auth/callback';
-      
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'apple',
-        options: {
-          redirectTo: redirectUrl,
-        },
-      });
-
-      if (error) throw error;
-    } catch (err) {
-      console.error('Apple sign in error:', err);
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('Apple ile giriş yapılırken bir hata oluştu');
-      }
-      setSocialLoading(null);
-    }
-  };
-
   const features = [
     'AI Destekli Video Oluşturma',
     'HD Kalite Dışa Aktarma',
