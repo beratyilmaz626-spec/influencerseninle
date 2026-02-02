@@ -17,6 +17,28 @@ export const VideoSlider = () => {
   const [loading, setLoading] = useState(true);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number | null>(null);
 
+  // Demo videos - these will show if no database videos are available
+  const demoVideos = [
+    {
+      id: 'demo-1',
+      title: 'AI UGC Video 1',
+      video_url: 'https://customer-assets.emergentagent.com/job_a7689bd5-97e9-4431-bbf5-a6a12c456863/artifacts/6m89hyy5__d80c8bae411bb055af3a4e660e638d44_0221593f-e5d3-44fa-9657-31e653668b40%20%281%29.mp4',
+      thumbnail_url: null,
+      order_index: 0,
+      is_active: true,
+      created_at: new Date().toISOString()
+    },
+    {
+      id: 'demo-2',
+      title: 'AI UGC Video 2',
+      video_url: 'https://customer-assets.emergentagent.com/job_a7689bd5-97e9-4431-bbf5-a6a12c456863/artifacts/y4olrozc_74b4567a-c5a8-4be5-992a-c9a0020c56f5.mp4',
+      thumbnail_url: null,
+      order_index: 1,
+      is_active: true,
+      created_at: new Date().toISOString()
+    }
+  ];
+
   // Fallback images for when no videos are available
   const fallbackImages = [
     "https://images.unsplash.com/photo-1518495973542-4542c06a5843?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
