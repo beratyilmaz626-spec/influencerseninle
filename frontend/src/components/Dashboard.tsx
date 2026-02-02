@@ -335,25 +335,38 @@ export default function Dashboard({ onLogout }: DashboardProps) {
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col min-h-screen lg:ml-0 pt-14 lg:pt-0">
           {/* PREMIUM TOPBAR - Hidden on mobile (using mobile header instead) */}
-          <header className="hidden lg:flex h-16 bg-surface-elevated border-b border-border px-4 sm:px-6 lg:px-8 items-center justify-between sticky top-0 z-40">
-            <h2 className="text-lg font-semibold text-text-primary">
-              {sidebarItems.find(i => i.id === currentView)?.label || 
-               bottomItems.find(i => i.id === currentView)?.label || 
-               'Dashboard'}
-            </h2>
+          <header className="hidden lg:flex h-16 bg-[#0a0f1a]/80 backdrop-blur-xl border-b border-white/5 px-4 sm:px-6 lg:px-8 items-center justify-between sticky top-0 z-40">
+            <div className="flex items-center space-x-4">
+              <h2 className="text-lg font-semibold text-white">
+                {sidebarItems.find(i => i.id === currentView)?.label || 
+                 bottomItems.find(i => i.id === currentView)?.label || 
+                 'Dashboard'}
+              </h2>
+              {/* Breadcrumb dots */}
+              <div className="hidden md:flex items-center space-x-1.5">
+                {['Ana Sayfa', currentView !== 'home' ? sidebarItems.find(i => i.id === currentView)?.label || bottomItems.find(i => i.id === currentView)?.label : null].filter(Boolean).map((item, index, arr) => (
+                  <span key={index} className="flex items-center text-sm">
+                    <span className="text-gray-500">{item}</span>
+                    {index < arr.length - 1 && <span className="mx-2 text-gray-600">/</span>}
+                  </span>
+                ))}
+              </div>
+            </div>
             <div className="flex items-center space-x-4">
               <CreditDisplay onBuyCredits={() => setCurrentView('subscription')} />
               {currentView === 'home' && (
-                <button
+                <motion.button
                   onClick={() => setCurrentView('create')}
                   className="relative group"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
                   <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-6 py-2.5 rounded-xl font-bold transition-all duration-300 inline-flex items-center space-x-2 shadow-glow-cyan">
                     <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-500" />
                     <span className="hidden sm:inline">Video Oluştur</span>
                   </div>
-                </button>
+                </motion.button>
               )}
             </div>
           </header>
