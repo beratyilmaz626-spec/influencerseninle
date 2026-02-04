@@ -17,8 +17,8 @@ export const VideoSlider = () => {
   const [loading, setLoading] = useState(true);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number | null>(null);
 
-  // Use REACT_APP_BACKEND_URL for consistent API calls
-  const backendUrl = process.env.REACT_APP_BACKEND_URL || window.location.origin;
+  // Use backend URL - Vite uses import.meta.env
+  const backendUrl = (import.meta.env.VITE_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL || window.location.origin) as string;
   const demoVideos: SliderVideo[] = [
     {
       id: 'demo-1',
