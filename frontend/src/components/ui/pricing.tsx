@@ -108,8 +108,10 @@ export function Pricing({
         console.log('⚠️ Kullanıcı giriş yapmamış, modal açılıyor...');
         if (setShowAuthModal) {
           setShowAuthModal(true);
+        } else if (onSelectPlan) {
+          onSelectPlan();
         } else {
-          console.error('❌ setShowAuthModal prop bulunamadı!');
+          console.error('❌ setShowAuthModal veya onSelectPlan prop bulunamadı!');
         }
       }
     } else {
