@@ -145,7 +145,7 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
                   onLoadedData={() => setVideoLoaded(true)}
                   onCanPlay={() => setVideoLoaded(true)}
                 >
-                  <source src="/api/static/videos/ugc_video_1.mp4" type="video/mp4" />
+                  <source src={videoUrl} type="video/mp4" />
                 </video>
                 
                 {/* Loading state */}
