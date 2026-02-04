@@ -162,46 +162,45 @@ export const VideoSlider = () => {
                   style={{ aspectRatio: '9/16', height: '400px' }}
                 >
                   <div className="relative w-full h-full group">
-                    {/* Clickable overlay for videos - opens in new tab */}
-                    {item.video_url && (
-                      <a
-                        href={item.video_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="absolute inset-0 w-full h-full z-20 cursor-pointer"
-                        aria-label={`${item.title} videosunu izle`}
+                    {/* Show video or thumbnail */}
+                    {item.video_url ? (
+                      <video
+                        src={item.video_url}
+                        className="w-full h-full object-cover"
+                        muted
+                        autoPlay
+                        loop
+                        playsInline
+                        preload="auto"
+                        onClick={() => {
+                          // Open video modal
+                          setSelectedVideoIndex(index);
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src={item.thumbnail_url || fallbackImages[index % fallbackImages.length]}
+                        alt={item.title}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
                       />
                     )}
-
-                    {/* Show thumbnail image */}
-                    <img
-                      src={item.thumbnail_url || fallbackImages[index % fallbackImages.length]}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
                     
-                    {/* Video overlay with play button and info */}
-                    <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4`}>
+                    {/* Video overlay with play button */}
+                    <div 
+                      className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 cursor-pointer"
+                      onClick={() => item.video_url && setSelectedVideoIndex(index)}
+                    >
                       {/* Play button */}
-                      <div className="flex-1 flex items-center justify-center">
+                      <div className="absolute inset-0 flex items-center justify-center">
                         <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                           <Play className="w-8 h-8 text-white fill-white ml-1" />
                         </div>
                       </div>
                       
                       {/* Video info */}
-                      <div className="text-white">
-                        <div className="flex items-center gap-2 mb-2">
-                          <ExternalLink className="w-4 h-4" />
-                          <span className="text-xs">Tıkla ve izle</span>
-                        </div>
-                        <h3 className="font-semibold text-sm mb-1 line-clamp-2">
-                          {item.title}
-                        </h3>
-                        <div className="text-xs opacity-80">
-                          AI ile üretilmiş UGC video
-                        </div>
+                      <div className="text-white mt-auto">
+                        <p className="text-xs opacity-80">Sesi açmak için tıklayın</p>
                       </div>
                     </div>
                   </div>
