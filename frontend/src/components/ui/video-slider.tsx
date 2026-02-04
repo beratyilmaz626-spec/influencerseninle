@@ -17,7 +17,8 @@ export const VideoSlider = () => {
   const [loading, setLoading] = useState(true);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number | null>(null);
 
-  const backendUrl = window.location.origin;
+  // Use REACT_APP_BACKEND_URL for consistent API calls
+  const backendUrl = process.env.REACT_APP_BACKEND_URL || window.location.origin;
   const demoVideos: SliderVideo[] = [
     {
       id: 'demo-1',
