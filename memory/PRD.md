@@ -47,6 +47,14 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 - **Renk Paleti:** Neon cyan (#00f0ff), neon purple (#b066ff), neon pink (#ff0080)
 - **Tasarım Dili:** Koyu tema, glassmorphism, gradient efektler
 
+### ✅ Kritik Bug Fix - 4 Şubat 2025
+- **process.env Hatası Düzeltildi:** Vite ortamında `process.env` yerine `import.meta.env` kullanıldı
+- **Etkilenen Dosyalar:**
+  - DifferenceSection.tsx - Video URL için env değişkeni düzeltildi
+  - video-slider.tsx - Backend URL için env değişkeni düzeltildi
+  - pricing.tsx - `plans` prop'u isteğe bağlı yapıldı, varsayılan planlar eklendi
+- **Sonuç:** Landing page artık düzgün yükleniyor, React crash hatası giderildi
+
 ### ✅ Sosyal Giriş UI - 2 Şubat 2025
 - Google ile giriş butonu (UI hazır)
 - Apple ile giriş butonu (UI hazır)
