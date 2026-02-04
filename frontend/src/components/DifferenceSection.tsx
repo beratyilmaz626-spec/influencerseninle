@@ -14,8 +14,8 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
 
-  // Use full backend URL for video
-  const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
+  // Use full backend URL for video - Vite uses import.meta.env
+  const backendUrl = (import.meta.env.VITE_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL || window.location.origin) as string;
   const videoUrl = `${backendUrl}/api/static/videos/ugc_video_1.mp4`;
 
   const x = useMotionValue(0);
