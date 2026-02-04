@@ -10,7 +10,7 @@ import json
 from typing import Dict, Any, Optional
 
 # Configuration
-BACKEND_URL = "https://legendary-ui.preview.emergentagent.com"
+BACKEND_URL = "https://social-login-debug.preview.emergentagent.com"
 
 # Test users mentioned in review request
 TEST_USERS = [

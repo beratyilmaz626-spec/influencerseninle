@@ -14,7 +14,7 @@ import json
 from typing import Dict, Any, Optional
 
 # Configuration
-BACKEND_URL = "https://legendary-ui.preview.emergentagent.com"
+BACKEND_URL = "https://social-login-debug.preview.emergentagent.com"
 ADMIN_EMAIL = "beratyilmaz626@gmail.com"
 ADMIN_PASSWORD = "berat881612"
 
