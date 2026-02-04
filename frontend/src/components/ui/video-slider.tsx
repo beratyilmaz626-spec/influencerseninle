@@ -184,22 +184,36 @@ export const VideoSlider = () => {
                   style={{ aspectRatio: '9/16', height: '400px' }}
                 >
                   <div className="relative w-full h-full group">
-                    {/* Show video or thumbnail */}
+                    {/* Show video directly */}
                     {item.video_url ? (
-                      <video
-                        className="w-full h-full object-cover"
-                        muted
-                        autoPlay
-                        loop
-                        playsInline
-                        poster={fallbackImages[index % fallbackImages.length]}
-                        onClick={() => {
-                          // Open video modal
-                          setSelectedVideoIndex(index);
-                        }}
-                      >
-                        <source src={item.video_url} type="video/mp4" />
-                      </video>
+                      <>
+                        <video
+                          className="w-full h-full object-cover"
+                          muted
+                          autoPlay
+                          loop
+                          playsInline
+                          onClick={() => setSelectedVideoIndex(index)}
+                        >
+                          <source src={item.video_url} type="video/mp4" />
+                          Video yüklenemedi
+                        </video>
+                        
+                        {/* Video overlay with play button */}
+                        <div 
+                          className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 cursor-pointer"
+                          onClick={() => setSelectedVideoIndex(index)}
+                        >
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                              <Play className="w-8 h-8 text-white fill-white ml-1" />
+                            </div>
+                          </div>
+                          <div className="text-white mt-auto">
+                            <p className="text-xs opacity-80">Sesi açmak için tıklayın</p>
+                          </div>
+                        </div>
+                      </>
                     ) : (
                       <img
                         src={item.thumbnail_url || fallbackImages[index % fallbackImages.length]}
@@ -208,24 +222,6 @@ export const VideoSlider = () => {
                         loading="lazy"
                       />
                     )}
-                    
-                    {/* Video overlay with play button */}
-                    <div 
-                      className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 cursor-pointer"
-                      onClick={() => item.video_url && setSelectedVideoIndex(index)}
-                    >
-                      {/* Play button */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <Play className="w-8 h-8 text-white fill-white ml-1" />
-                        </div>
-                      </div>
-                      
-                      {/* Video info */}
-                      <div className="text-white mt-auto">
-                        <p className="text-xs opacity-80">Sesi açmak için tıklayın</p>
-                      </div>
-                    </div>
                   </div>
                 </div>
               ))}
