@@ -142,8 +142,10 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
                   muted={isMuted}
                   loop
                   playsInline
+                  preload="auto"
                   onLoadedData={() => setVideoLoaded(true)}
                   onCanPlay={() => setVideoLoaded(true)}
+                  onError={(e) => console.log('DifferenceSection video error:', e)}
                 >
                   <source src={videoUrl} type="video/mp4" />
                 </video>
