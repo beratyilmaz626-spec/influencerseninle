@@ -62,6 +62,11 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 
 ## Bekleyen Görevler
 
+### P0 - Video Oynatma Sorunu (Devam Ediyor)
+- [ ] **Video Playback:** Tarayıcıda video yüklenmiyor (`net::ERR_ABORTED`)
+  - Backend doğru çalışıyor (curl ile 200 OK, video/mp4)
+  - Çözüm: Videoları Supabase Storage'a yüklemek (kullanıcı bucket oluşturmalı)
+
 ### P1 - Yüksek Öncelik
 - [ ] **Google/Apple OAuth Yapılandırması** - Kullanıcının Supabase'de etkinleştirmesi gerekiyor
 - [ ] Supabase Dashboard'dan performans/güvenlik uyarıları kontrol edilmeli (USER VERIFICATION)
