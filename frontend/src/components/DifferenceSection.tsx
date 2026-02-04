@@ -240,15 +240,28 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
             >
               {/* Video Element */}
               <video
+                ref={videoRef}
                 className="w-full h-full object-cover"
                 autoPlay
-                muted
+                muted={isMuted}
                 loop
                 playsInline
-                poster="https://images.unsplash.com/photo-1559114123-509b13dfeb17?crop=entropy&cs=srgb&fm=jpg&q=85"
+                onLoadedData={() => setVideoLoaded(true)}
+                onCanPlay={() => setVideoLoaded(true)}
               >
                 <source src="/api/static/videos/ugc_video_1.mp4" type="video/mp4" />
               </video>
+              
+              {/* Loading state */}
+              {!videoLoaded && (
+                <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/20 to-neon-purple/20 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-16 h-16 border-4 border-neon-cyan border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                    <p className="text-white">Video yükleniyor...</p>
+                  </div>
+                </div>
+              )}
+              
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               
               {/* After Label */}
@@ -269,16 +282,38 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
                 </p>
               </motion.div>
 
-              {/* Sound indicator */}
-              <motion.div 
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                animate={{ scale: [1, 1.1, 1], opacity: [0.8, 1, 0.8] }}
-                transition={{ duration: 2, repeat: Infinity }}
+              {/* Sound toggle button */}
+              <motion.button
+                className="absolute top-6 right-6 w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center border border-white/20 hover:bg-black/70 transition-colors z-20"
+                onClick={() => {
+                  setIsMuted(!isMuted);
+                  if (videoRef.current) {
+                    videoRef.current.muted = !isMuted;
+                  }
+                }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
-                  <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white ml-1" />
-                </div>
-              </motion.div>
+                {isMuted ? (
+                  <VolumeX className="w-5 h-5 text-white" />
+                ) : (
+                  <Volume2 className="w-5 h-5 text-neon-cyan" />
+                )}
+              </motion.button>
+
+              {/* Play indicator */}
+              {videoLoaded && (
+                <motion.div 
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                  initial={{ opacity: 1, scale: 1 }}
+                  animate={{ opacity: 0, scale: 1.5 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                >
+                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
+                    <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white ml-1" />
+                  </div>
+                </motion.div>
+              )}
             </motion.div>
 
             {/* Slider Handle */}
