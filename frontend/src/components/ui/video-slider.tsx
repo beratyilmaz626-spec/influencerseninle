@@ -167,6 +167,8 @@ export const VideoSlider = () => {
                     autoPlay
                     loop
                     playsInline
+                    preload="auto"
+                    onError={(e) => console.log('Video error:', e)}
                   >
                     <source src={item.video_url} type="video/mp4" />
                   </video>
