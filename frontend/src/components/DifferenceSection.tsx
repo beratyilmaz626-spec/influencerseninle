@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from 'framer-motion';
-import { Sparkles, Play, ArrowRight, Zap, MousePointer2 } from 'lucide-react';
+import { Sparkles, Play, ArrowRight, Zap, MousePointer2, Volume2, VolumeX } from 'lucide-react';
 
 interface DifferenceSectionProps {
   onGetStarted?: () => void;
@@ -8,8 +8,11 @@ interface DifferenceSectionProps {
 
 export default function DifferenceSection({ onGetStarted }: DifferenceSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [containerWidth, setContainerWidth] = useState(0);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   
   const x = useMotionValue(0.5);
   const springX = useSpring(x, { stiffness: 300, damping: 30 });
