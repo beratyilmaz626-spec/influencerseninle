@@ -78,6 +78,27 @@ export const VideoSlider = () => {
       setLoading(false);
     }
   };
+
+  // Handle ESC key press to close modal
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && selectedVideoIndex !== null) {
+        setSelectedVideoIndex(null);
+      }
+    };
+
+    if (selectedVideoIndex !== null) {
+      document.addEventListener('keydown', handleEscKey);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscKey);
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedVideoIndex]);
   
   // Use videos if available from DB, otherwise use demo videos, then fallback to images
   const displayItems = videos.length > 0 ? videos : demoVideos.length > 0 ? demoVideos : fallbackImages.map((img, index) => ({
