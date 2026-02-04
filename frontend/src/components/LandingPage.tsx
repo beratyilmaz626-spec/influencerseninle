@@ -38,7 +38,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border backdrop-blur-glass bg-background/80">
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border  bg-background/80">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -376,7 +376,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
                 <div className={`absolute -inset-[1px] bg-gradient-to-r ${sector.color} rounded-2xl opacity-0 group-hover:opacity-50 blur-xl transition-all duration-500`} />
                 
                 {/* Card */}
-                <div className="relative p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm group-hover:border-white/20 transition-all duration-300 h-full">
+                <div className="relative p-6 rounded-2xl bg-white/5 border border-white/10  group-hover:border-white/20 transition-all duration-300 h-full">
                   <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
                     {sector.emoji}
                   </div>

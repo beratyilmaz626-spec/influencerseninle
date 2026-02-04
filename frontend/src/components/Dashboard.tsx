@@ -122,7 +122,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
       </div>
 
       {/* Mobile Header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-[#030712]/90 backdrop-blur-sm border-b border-white/5 flex items-center justify-between px-4">
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-[#030712]/90  border-b border-white/5 flex items-center justify-between px-4">
         <div className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center">
             <Sparkles className="w-4 h-4 text-white" />
@@ -159,7 +159,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
             fixed lg:sticky
             z-50
             w-64 
-            bg-[#0a0f1a]/95 backdrop-blur-xl border-r border-white/5 flex flex-col
+            bg-[#0a0f1a]/95  border-r border-white/5 flex flex-col
             h-[calc(100vh-56px)] lg:h-screen lg:min-h-screen
             transition-transform duration-300 ease-in-out
             top-14 lg:top-0
@@ -284,7 +284,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col min-h-screen lg:ml-0 pt-14 lg:pt-0">
           {/* PREMIUM TOPBAR - Hidden on mobile (using mobile header instead) */}
-          <header className="hidden lg:flex h-16 bg-[#0a0f1a]/80 backdrop-blur-xl border-b border-white/5 px-4 sm:px-6 lg:px-8 items-center justify-between sticky top-0 z-40">
+          <header className="hidden lg:flex h-16 bg-[#0a0f1a]/80  border-b border-white/5 px-4 sm:px-6 lg:px-8 items-center justify-between sticky top-0 z-40">
             <div className="flex items-center space-x-4">
               <h2 className="text-lg font-semibold text-white">
                 {sidebarItems.find(i => i.id === currentView)?.label || 
@@ -404,7 +404,7 @@ function HomeContent({
             className="group"
           >
             <motion.div
-              className="relative p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm overflow-hidden"
+              className="relative p-6 rounded-2xl bg-white/[0.02] border border-white/5  overflow-hidden"
               whileHover={{ y: -4, borderColor: 'rgba(255,255,255,0.1)' }}
               transition={{ type: "spring", stiffness: 400 }}
               style={{ boxShadow: `0 0 40px ${stat.glowColor}` }}
@@ -718,7 +718,7 @@ function VideoThumbnail({ video }: { video: any }) {
       {/* Play button overlay */}
       {video.status === 'completed' && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className={`bg-white/90 backdrop-blur-sm text-blue-600 px-3 py-1.5 rounded-full font-medium shadow-lg transition-all duration-300 ${
+          <div className={`bg-white/90  text-blue-600 px-3 py-1.5 rounded-full font-medium shadow-lg transition-all duration-300 ${
             isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
           }`}>
             <div className="flex items-center space-x-1.5">
@@ -731,7 +731,7 @@ function VideoThumbnail({ video }: { video: any }) {
       
       {/* Processing overlay */}
       {video.status === 'processing' && (
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-50/95 to-orange-50/95 backdrop-blur-sm flex flex-col items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-50/95 to-orange-50/95  flex flex-col items-center justify-center">
           <div className="w-6 h-6 border-2 border-yellow-500 border-t-transparent rounded-full animate-spin mb-2" />
           <p className="text-xs text-yellow-700 font-semibold">İşleniyor</p>
         </div>
@@ -747,7 +747,7 @@ function VideoThumbnail({ video }: { video: any }) {
       {/* Status badge */}
       <div className="absolute top-1.5 left-1.5">
         <span
-          className={`px-2 py-0.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm ${
+          className={`px-2 py-0.5 rounded-full text-xs font-semibold shadow-lg  ${
             video.status === 'completed'
               ? 'bg-green-500/90 text-white border border-green-400/50'
               : 'bg-yellow-500/90 text-white border border-yellow-400/50'
@@ -1245,7 +1245,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   return (
     <div className="flex flex-col lg:flex-row h-full bg-transparent rounded-2xl overflow-hidden gap-6" data-testid="video-create-content">
       {/* Premium Left Panel - Controls */}
-      <div className="w-full lg:w-80 bg-[#0a0f1a]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-4 sm:p-6 space-y-4 overflow-y-auto flex-shrink-0">
+      <div className="w-full lg:w-80 bg-[#0a0f1a]/80  border border-white/5 rounded-2xl p-4 sm:p-6 space-y-4 overflow-y-auto flex-shrink-0">
         {/* Premium Header */}
         <motion.div 
           className="text-center pb-4 border-b border-white/5"
@@ -1832,7 +1832,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       </div>
 
       {/* Premium Right Panel - Style Selection - Hidden on mobile, shown on lg+ */}
-      <div className="hidden lg:block flex-1 bg-[#0a0f1a]/60 backdrop-blur-xl border border-white/5 rounded-2xl p-4 sm:p-6">
+      <div className="hidden lg:block flex-1 bg-[#0a0f1a]/60  border border-white/5 rounded-2xl p-4 sm:p-6">
         <div className="h-full">
           <motion.div 
             className="mb-4"
@@ -1858,7 +1858,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       
       {/* Mobile Style Selection - Shown only on mobile/tablet (below lg) */}
       <motion.div 
-        className="lg:hidden mt-4 bg-[#0a0f1a]/80 backdrop-blur-xl border border-white/5 rounded-2xl p-3 sm:p-4"
+        className="lg:hidden mt-4 bg-[#0a0f1a]/80  border border-white/5 rounded-2xl p-3 sm:p-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
@@ -1893,7 +1893,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       {/* Sektör Modal */}
       {showSectorModal && createPortal(
         <motion.div 
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" 
+          className="fixed inset-0 bg-black/80  flex items-center justify-center p-4" 
           style={{ zIndex: 9999 }}
           onClick={(e) => {
             if (e.target === e.currentTarget) {
@@ -1958,7 +1958,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       {/* Warning Modal */}
       {showWarningModal && createPortal(
         <motion.div 
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" 
+          className="fixed inset-0 bg-black/80  flex items-center justify-center p-4" 
           style={{ zIndex: 10000 }}
           onClick={() => setShowWarningModal(false)}
           initial={{ opacity: 0 }}
@@ -2005,7 +2005,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       {/* Subscription Required Modal - Hakkı olmayan kullanıcılar için */}
       {showSubscriptionModal && createPortal(
         <motion.div 
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" 
+          className="fixed inset-0 bg-black/80  flex items-center justify-center p-4" 
           style={{ zIndex: 10001 }}
           onClick={() => setShowSubscriptionModal(false)}
           initial={{ opacity: 0 }}
@@ -2053,7 +2053,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       {/* Upgrade/Select Plan Modal - Kullanıcı durumuna göre dinamik içerik */}
       {showUpgradeModal && createPortal(
         <motion.div 
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" 
+          className="fixed inset-0 bg-black/80  flex items-center justify-center p-4" 
           style={{ zIndex: 10001 }}
           onClick={() => setShowUpgradeModal(false)}
           initial={{ opacity: 0 }}
