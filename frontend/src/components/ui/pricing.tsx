@@ -147,7 +147,7 @@ export function Pricing({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        {plans.map((plan, index) => (
+        {displayPlans.map((plan, index) => (
           <motion.div
             key={index}
             initial={{ y: 50, opacity: 0 }}
