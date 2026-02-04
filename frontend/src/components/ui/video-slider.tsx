@@ -17,10 +17,8 @@ export const VideoSlider = () => {
   const [loading, setLoading] = useState(true);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number | null>(null);
 
-  // Demo videos - these will show if no database videos are available
-  // Videos are served from backend static files
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || window.location.origin;
-  const demoVideos = [
+  const backendUrl = window.location.origin;
+  const demoVideos: SliderVideo[] = [
     {
       id: 'demo-1',
       title: 'AI UGC Video 1',
@@ -41,27 +39,30 @@ export const VideoSlider = () => {
     }
   ];
 
-  // Fallback images for when no videos are available
-  const fallbackImages = [
-    "https://images.unsplash.com/photo-1518495973542-4542c06a5843?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1472396961693-142e6e269027?q=80&w=2152&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1505142468610-359e7d316be0?q=80&w=2126&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1482881497185-d4a9ddbe4151?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://plus.unsplash.com/premium_photo-1673264933212-d78737f38e48?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://plus.unsplash.com/premium_photo-1711434824963-ca894373272e?q=80&w=2030&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://plus.unsplash.com/premium_photo-1675705721263-0bbeec261c49?q=80&w=1940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1524799526615-766a9833dec0?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-  ];
-
   useEffect(() => {
     fetchVideos();
   }, []);
 
+  // ESC key handler
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedVideoIndex(null);
+    };
+    if (selectedVideoIndex !== null) {
+      document.addEventListener('keydown', handleEsc);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedVideoIndex]);
+
   const fetchVideos = async () => {
     try {
       setLoading(true);
-      
-      // Fetch active slider videos
       const { data, error } = await supabase
         .from('slider_videos')
         .select('*')
@@ -69,171 +70,124 @@ export const VideoSlider = () => {
         .order('order_index', { ascending: true });
 
       if (error) throw error;
-      
       setVideos(data || []);
     } catch (err) {
-      console.error('Error fetching videos for slider:', err);
+      console.error('Error fetching videos:', err);
       setVideos([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle ESC key press to close modal
-  useEffect(() => {
-    const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && selectedVideoIndex !== null) {
-        setSelectedVideoIndex(null);
-      }
-    };
+  // Use DB videos, demo videos, or nothing
+  const displayItems = videos.length > 0 ? videos : demoVideos;
 
-    if (selectedVideoIndex !== null) {
-      document.addEventListener('keydown', handleEscKey);
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscKey);
-      document.body.style.overflow = 'unset';
-    };
-  }, [selectedVideoIndex]);
-  
-  // Use videos if available from DB, otherwise use demo videos, then fallback to images
-  const displayItems = videos.length > 0 ? videos : demoVideos.length > 0 ? demoVideos : fallbackImages.map((img, index) => ({
-    id: `fallback-${index}`,
-    title: `Demo Video ${index + 1}`,
-    video_url: null,
-    thumbnail_url: img,
-    order_index: index,
-    is_active: true,
-    created_at: new Date().toISOString()
-  }));
-
-  // Only duplicate if we have fewer than 6 items for smooth animation
-  const duplicatedItems = displayItems.length < 6 ? [...displayItems, ...displayItems] : displayItems;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="w-8 h-8 border-4 border-neon-cyan border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <>
       <style>{`
-        @keyframes scroll-right {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(${displayItems.length < 6 ? '-50%' : `-${100 / displayItems.length}%`});
-          }
+        .scroll-container {
+          overflow: hidden;
+          width: 100%;
         }
-
         .infinite-scroll {
-          animation: scroll-right ${displayItems.length < 6 ? '20s' : `${displayItems.length * 3}s`} linear infinite;
+          animation: scroll 30s linear infinite;
         }
-
         .infinite-scroll:hover {
           animation-play-state: paused;
         }
-        
-        .animation-paused {
-          animation-play-state: paused !important;
+        @keyframes scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
-
-        .scroll-container {
-          mask: linear-gradient(
-            90deg,
-            transparent 0%,
-            black 10%,
-            black 90%,
-            transparent 100%
-          );
-          -webkit-mask: linear-gradient(
-            90deg,
-            transparent 0%,
-            black 10%,
-            black 90%,
-            transparent 100%
-          );
+        .video-card {
+          transition: transform 0.3s ease;
         }
-
-        .image-item {
-          transition: transform 0.3s ease, filter 0.3s ease;
-        }
-
-        .image-item:hover {
-          transform: scale(1.05);
-          filter: brightness(1.1);
-        }
-
-        .video-overlay {
-          background: linear-gradient(
-            45deg,
-            rgba(59, 130, 246, 0.9) 0%,
-            rgba(147, 51, 234, 0.9) 100%
-          );
+        .video-card:hover {
+          transform: scale(1.02);
         }
       `}</style>
 
-      <div className="w-full h-full relative overflow-hidden flex items-center justify-center bg-transparent">
-        <div className="relative z-10 w-full flex items-center justify-center py-8">
-          <div className="scroll-container w-full">
-            <div className="infinite-scroll flex gap-6 w-max">
-              {duplicatedItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="image-item flex-shrink-0 w-48 lg:w-56 rounded-xl overflow-hidden shadow-2xl transition-all duration-300"
-                  style={{ aspectRatio: '9/16', height: '400px' }}
-                >
-                  <div className="relative w-full h-full group">
-                    {/* Show video directly */}
-                    {item.video_url ? (
-                      <>
-                        <video
-                          className="w-full h-full object-cover"
-                          muted
-                          autoPlay
-                          loop
-                          playsInline
-                          onClick={() => setSelectedVideoIndex(index)}
-                        >
-                          <source src={item.video_url} type="video/mp4" />
-                          Video yüklenemedi
-                        </video>
-                        
-                        {/* Video overlay with play button */}
-                        <div 
-                          className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 cursor-pointer"
-                          onClick={() => setSelectedVideoIndex(index)}
-                        >
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                              <Play className="w-8 h-8 text-white fill-white ml-1" />
-                            </div>
-                          </div>
-                          <div className="text-white mt-auto">
-                            <p className="text-xs opacity-80">Sesi açmak için tıklayın</p>
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <img
-                        src={item.thumbnail_url || fallbackImages[index % fallbackImages.length]}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                    )}
+      <div className="w-full relative overflow-hidden py-8">
+        <div className="scroll-container">
+          <div className="infinite-scroll flex gap-6 w-max">
+            {/* First set */}
+            {displayItems.map((item, index) => (
+              <div
+                key={`first-${item.id}`}
+                className="video-card flex-shrink-0 w-48 h-80 rounded-2xl overflow-hidden bg-gray-900 cursor-pointer relative group"
+                onClick={() => item.video_url && setSelectedVideoIndex(index)}
+              >
+                {item.video_url ? (
+                  <video
+                    className="w-full h-full object-cover"
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                  >
+                    <source src={item.video_url} type="video/mp4" />
+                  </video>
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                    <Play className="w-12 h-12 text-gray-600" />
+                  </div>
+                )}
+                
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
+                    <Play className="w-7 h-7 text-white fill-white ml-1" />
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
+            
+            {/* Duplicate for seamless scroll */}
+            {displayItems.map((item, index) => (
+              <div
+                key={`second-${item.id}`}
+                className="video-card flex-shrink-0 w-48 h-80 rounded-2xl overflow-hidden bg-gray-900 cursor-pointer relative group"
+                onClick={() => item.video_url && setSelectedVideoIndex(index)}
+              >
+                {item.video_url ? (
+                  <video
+                    className="w-full h-full object-cover"
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                  >
+                    <source src={item.video_url} type="video/mp4" />
+                  </video>
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                    <Play className="w-12 h-12 text-gray-600" />
+                  </div>
+                )}
+                
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center">
+                    <Play className="w-7 h-7 text-white fill-white ml-1" />
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Video Modal - Full screen with sound */}
-      {selectedVideoIndex !== null && duplicatedItems[selectedVideoIndex]?.video_url && (
+      {/* Video Modal */}
+      {selectedVideoIndex !== null && displayItems[selectedVideoIndex]?.video_url && (
         <div 
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-md"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90"
           onClick={() => setSelectedVideoIndex(null)}
         >
           <div 
@@ -241,29 +195,20 @@ export const VideoSlider = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <video
-              src={duplicatedItems[selectedVideoIndex].video_url!}
-              className="w-full h-auto max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+              src={displayItems[selectedVideoIndex].video_url!}
+              className="w-full h-auto max-h-[80vh] object-contain rounded-2xl"
               autoPlay
               loop
               playsInline
               controls
-              preload="auto"
             />
             
-            {/* Close button */}
             <button
               onClick={() => setSelectedVideoIndex(null)}
-              className="absolute -top-4 -right-4 w-12 h-12 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors shadow-lg z-10"
-              type="button"
-              aria-label="Videoyu kapat"
+              className="absolute -top-4 -right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-100 transition-colors"
             >
-              <X className="w-6 h-6 text-gray-700" />
+              <X className="w-5 h-5 text-gray-700" />
             </button>
-            
-            {/* Info text */}
-            <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-white/70 text-sm text-center">
-              <p>ESC tuşu veya dışarı tıklayarak kapatın</p>
-            </div>
           </div>
         </div>
       )}
