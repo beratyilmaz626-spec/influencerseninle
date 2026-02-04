@@ -233,14 +233,15 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
             >
               {/* Video Element */}
               <video
-                src="/api/static/videos/ugc_video_1.mp4"
                 className="w-full h-full object-cover"
                 autoPlay
                 muted
                 loop
                 playsInline
-                preload="auto"
-              />
+                poster="https://images.unsplash.com/photo-1559114123-509b13dfeb17?crop=entropy&cs=srgb&fm=jpg&q=85"
+              >
+                <source src="/api/static/videos/ugc_video_1.mp4" type="video/mp4" />
+              </video>
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               
               {/* After Label */}
