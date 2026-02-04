@@ -232,58 +232,46 @@ export default function Dashboard({ onLogout }: DashboardProps) {
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
             <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Menü</div>
-            {sidebarItems.map((item, index) => (
-              <motion.button
+            {sidebarItems.map((item) => (
+              <button
                 key={item.id}
                 onClick={() => {
                   setCurrentView(item.id as ViewType);
                   setMobileMenuOpen(false);
                 }}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ x: 4 }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all ${
                   currentView === item.id
-                    ? 'bg-gradient-to-r from-neon-cyan/20 to-neon-purple/10 text-white border border-neon-cyan/20 shadow-[0_0_20px_rgba(0,240,255,0.1)]'
+                    ? 'bg-gradient-to-r from-neon-cyan/20 to-neon-purple/10 text-white border border-neon-cyan/20'
                     : 'text-gray-400 hover:bg-white/5 hover:text-white'
                 }`}
               >
-                <item.icon className={`w-5 h-5 transition-colors ${currentView === item.id ? 'text-neon-cyan' : ''}`} />
+                <item.icon className={`w-5 h-5 ${currentView === item.id ? 'text-neon-cyan' : ''}`} />
                 <span className="font-medium">{item.label}</span>
                 {currentView === item.id && (
-                  <motion.div
-                    layoutId="activeIndicator"
-                    className="ml-auto w-1.5 h-1.5 rounded-full bg-neon-cyan"
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
+                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-neon-cyan" />
                 )}
-              </motion.button>
+              </button>
             ))}
 
             {isAdmin && (
               <>
                 <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3 pt-6">Yönetim</div>
-                {bottomItems.filter(i => ['users', 'gift', 'slider', 'styles', 'database'].includes(i.id)).map((item, index) => (
-                  <motion.button
+                {bottomItems.filter(i => ['users', 'gift', 'slider', 'styles', 'database'].includes(i.id)).map((item) => (
+                  <button
                     key={item.id}
                     onClick={() => {
                       setCurrentView(item.id as ViewType);
                       setMobileMenuOpen(false);
                     }}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: (sidebarItems.length + index) * 0.05 }}
-                    whileHover={{ x: 4 }}
-                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all ${
                       currentView === item.id
-                        ? 'bg-gradient-to-r from-neon-purple/20 to-neon-pink/10 text-white border border-neon-purple/20 shadow-[0_0_20px_rgba(168,85,247,0.1)]'
+                        ? 'bg-gradient-to-r from-neon-purple/20 to-neon-pink/10 text-white border border-neon-purple/20'
                         : 'text-gray-400 hover:bg-white/5 hover:text-white'
                     }`}
                   >
                     <item.icon className={`w-5 h-5 ${currentView === item.id ? 'text-neon-purple' : ''}`} />
                     <span className="font-medium">{item.label}</span>
-                  </motion.button>
+                  </button>
                 ))}
               </>
             )}
