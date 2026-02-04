@@ -15,6 +15,7 @@ interface SliderVideo {
 export const VideoSlider = () => {
   const [videos, setVideos] = useState<SliderVideo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedVideoIndex, setSelectedVideoIndex] = useState<number | null>(null);
 
   // Demo videos - these will show if no database videos are available
   // Videos are served from backend static files
