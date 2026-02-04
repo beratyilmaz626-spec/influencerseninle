@@ -103,74 +103,49 @@ export default function Dashboard({ onLogout }: DashboardProps) {
 
   return (
     <div className="min-h-screen bg-[#030712] overflow-x-hidden">
-      {/* Animated Background - Subtle aurora effect */}
+      {/* Static Background - No animations */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <motion.div
-          className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full opacity-30"
+        <div
+          className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full opacity-20"
           style={{
             background: 'radial-gradient(circle, rgba(0,217,255,0.08) 0%, transparent 70%)',
-            filter: 'blur(80px)',
-          }}
-          animate={{
-            x: [0, 50, 0],
-            y: [0, 30, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut"
+            filter: 'blur(60px)',
           }}
         />
-        <motion.div
-          className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full opacity-20"
+        <div
+          className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full opacity-15"
           style={{
             background: 'radial-gradient(circle, rgba(168,85,247,0.08) 0%, transparent 70%)',
-            filter: 'blur(80px)',
-          }}
-          animate={{
-            x: [0, -40, 0],
-            y: [0, -30, 0],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut"
+            filter: 'blur(60px)',
           }}
         />
       </div>
 
-      {/* Mobile Header - Only visible on mobile */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-[#030712]/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-4">
+      {/* Mobile Header */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-[#030712]/90 backdrop-blur-sm border-b border-white/5 flex items-center justify-between px-4">
         <div className="flex items-center space-x-2">
-          <div className="relative">
-            <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-lg blur opacity-30"></div>
-            <div className="relative w-8 h-8 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
+          <div className="w-8 h-8 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-white" />
           </div>
           <span className="font-bold text-white">InfluencerSeninle</span>
         </div>
-        <motion.button
+        <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="p-2 rounded-lg hover:bg-white/5 transition-colors"
-          whileTap={{ scale: 0.95 }}
         >
           {mobileMenuOpen ? (
             <X className="w-6 h-6 text-white" />
           ) : (
             <Menu className="w-6 h-6 text-white" />
           )}
-        </motion.button>
+        </button>
       </header>
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <motion.div 
-          className="lg:hidden fixed inset-0 z-40 bg-black/70 backdrop-blur-sm"
+        <div 
+          className="lg:hidden fixed inset-0 z-40 bg-black/70"
           onClick={() => setMobileMenuOpen(false)}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
         />
       )}
 
