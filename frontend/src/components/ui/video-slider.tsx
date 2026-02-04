@@ -187,18 +187,19 @@ export const VideoSlider = () => {
                     {/* Show video or thumbnail */}
                     {item.video_url ? (
                       <video
-                        src={item.video_url}
                         className="w-full h-full object-cover"
                         muted
                         autoPlay
                         loop
                         playsInline
-                        preload="auto"
+                        poster={fallbackImages[index % fallbackImages.length]}
                         onClick={() => {
                           // Open video modal
                           setSelectedVideoIndex(index);
                         }}
-                      />
+                      >
+                        <source src={item.video_url} type="video/mp4" />
+                      </video>
                     ) : (
                       <img
                         src={item.thumbnail_url || fallbackImages[index % fallbackImages.length]}
