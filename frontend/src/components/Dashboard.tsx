@@ -280,14 +280,13 @@ export default function Dashboard({ onLogout }: DashboardProps) {
           {/* Bottom Items */}
           <div className="p-4 border-t border-white/5 space-y-1">
             {bottomItems.filter(i => ['subscription', 'settings'].includes(i.id)).map((item) => (
-              <motion.button
+              <button
                 key={item.id}
                 onClick={() => {
                   setCurrentView(item.id as ViewType);
                   setMobileMenuOpen(false);
                 }}
-                whileHover={{ x: 4 }}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all ${
                   currentView === item.id
                     ? 'bg-gradient-to-r from-neon-cyan/20 to-neon-purple/10 text-white'
                     : 'text-gray-400 hover:bg-white/5 hover:text-white'
@@ -295,16 +294,15 @@ export default function Dashboard({ onLogout }: DashboardProps) {
               >
                 <item.icon className="w-5 h-5" />
                 <span className="font-medium">{item.label}</span>
-              </motion.button>
+              </button>
             ))}
-            <motion.button
+            <button
               onClick={onLogout}
-              whileHover={{ x: 4 }}
-              className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-all duration-300"
+              className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-red-500/10 hover:text-red-400 transition-all"
             >
               <LogOut className="w-5 h-5" />
               <span className="font-medium">Çıkış Yap</span>
-            </motion.button>
+            </button>
           </div>
         </motion.aside>
 
