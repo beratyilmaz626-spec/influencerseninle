@@ -198,12 +198,12 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
           <div className="absolute -inset-[1px] bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink rounded-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
           
           <div className="absolute inset-[2px] rounded-3xl overflow-hidden bg-[#0a0f1a]">
-            {/* Before Image (Boring) */}
+            {/* Before - Product Photo (Static) */}
             <div className="absolute inset-0">
               <img
                 src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999&auto=format&fit=crop"
                 alt="Sıradan Ürün Fotoğrafı"
-                className="w-full h-full object-cover grayscale brightness-50"
+                className="w-full h-full object-cover grayscale brightness-75"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               
@@ -217,7 +217,7 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
               >
                 <div className="px-4 py-2 rounded-xl bg-red-500/20 border border-red-500/30 backdrop-blur-sm">
                   <span className="text-sm md:text-base font-semibold text-red-400">
-                    😴 Sıradan Ürün Fotoğrafı
+                    📸 Sıradan Ürün Fotoğrafı
                   </span>
                 </div>
                 <p className="text-gray-500 text-xs md:text-sm mt-2 max-w-xs">
