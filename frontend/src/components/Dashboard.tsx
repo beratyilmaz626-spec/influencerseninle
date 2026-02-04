@@ -194,17 +194,9 @@ export default function Dashboard({ onLogout }: DashboardProps) {
         >
           {/* Logo */}
           <div className="p-6 border-b border-white/5">
-            <motion.div 
-              className="flex items-center space-x-3"
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 400 }}
-            >
+            <div className="flex items-center space-x-3">
               <div className="relative">
-                <motion.div 
-                  className="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-40"
-                  animate={{ opacity: [0.3, 0.6, 0.3] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                />
+                <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-40" />
                 <div className="relative w-10 h-10 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center shadow-glow-cyan">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
@@ -213,12 +205,9 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                 <span className="text-white">Influencer</span>
                 <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">Seninle</span>
               </div>
-            </motion.div>
+            </div>
             {/* Kullanıcı Bilgisi */}
-            <motion.div 
-              className="mt-4 p-3 bg-white/5 rounded-xl border border-white/10 hover:border-neon-cyan/30 transition-colors duration-300"
-              whileHover={{ y: -2 }}
-            >
+            <div className="mt-4 p-3 bg-white/5 rounded-xl border border-white/10 hover:border-neon-cyan/30 transition-colors">
               <div className="flex items-center space-x-3">
                 <div className="relative">
                   <div className="w-10 h-10 bg-gradient-to-br from-neon-cyan/30 to-neon-purple/30 rounded-full flex items-center justify-center border border-white/20">
@@ -226,7 +215,6 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                       {userProfile?.full_name?.charAt(0)?.toUpperCase() || userProfile?.email?.charAt(0)?.toUpperCase() || 'U'}
                     </span>
                   </div>
-                  {/* Online indicator */}
                   <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-[#0a0f1a]" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -238,7 +226,7 @@ export default function Dashboard({ onLogout }: DashboardProps) {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {/* Navigation */}
