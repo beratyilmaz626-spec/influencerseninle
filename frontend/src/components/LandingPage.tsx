@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import { Play, Sparkles, Zap, Video, ArrowRight, CheckCircle2, X, Clock, DollarSign, Package, Shield, RefreshCcw, Palette, Globe, Rocket } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Play, Sparkles, Zap, Video, CheckCircle2, Clock, DollarSign, Package, Shield, RefreshCcw, Palette, Globe, Rocket } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import AuthModal from './AuthModal';
 import { VideoSlider } from '@/components/ui/video-slider';
 import { Pricing } from '@/components/ui/pricing';
@@ -17,70 +15,39 @@ interface LandingPageProps {
 export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPageProps) {
   const [showAuthModal, setShowAuthModal] = useState(false);
 
-  const features = [
-    {
-      icon: Sparkles,
-      title: 'AI Destekli Oluşturma',
-      description: 'Gelişmiş AI teknolojisi ile saniyeler içinde profesyonel videolar oluşturun'
-    },
-    {
-      icon: Zap,
-      title: 'Yıldırım Hızı',
-      description: 'Geleneksel yöntemlere göre 10 kat daha hızlı yüksek kaliteli video içeriği üretin'
-    },
-    {
-      icon: Video,
-      title: 'HD Kalite Çıktı',
-      description: 'Her platform için hazır 4K çözünürlükte muhteşem videolar dışa aktarın'
-    }
+  const sectors = [
+    { name: 'E-Ticaret', icon: '🛒', color: 'from-blue-500 to-cyan-500' },
+    { name: 'Moda', icon: '👗', color: 'from-pink-500 to-rose-500' },
+    { name: 'Teknoloji', icon: '💻', color: 'from-purple-500 to-indigo-500' },
+    { name: 'Sağlık', icon: '🏥', color: 'from-green-500 to-emerald-500' },
+    { name: 'Yemek', icon: '🍕', color: 'from-orange-500 to-amber-500' },
+    { name: 'Spor', icon: '⚽', color: 'from-red-500 to-pink-500' },
   ];
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border  bg-background/80">
+    <div className="min-h-screen bg-[#030712] overflow-x-hidden">
+      {/* Header - Simple, no blur */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#030712]/95">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <div className="flex items-center space-x-2 sm:space-x-3 group cursor-pointer">
-              <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink rounded-2xl blur opacity-50 group-hover:opacity-100 transition duration-500"></div>
-                <div className="relative w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center shadow-glow-cyan">
-                  <Play className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="white" />
-                </div>
+            <div className="flex items-center space-x-3 cursor-pointer">
+              <div className="w-10 h-10 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center">
+                <Play className="w-5 h-5 text-white" fill="white" />
               </div>
-              <div className="text-lg sm:text-xl font-bold">
-                <span className="text-text-primary">Influencer</span>
-                <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">Seninle</span>
+              <div className="text-xl font-bold">
+                <span className="text-white">Influencer</span>
+                <span className="text-neon-cyan">Seninle</span>
               </div>
             </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-4">
+            {/* Navigation */}
+            <div className="flex items-center space-x-3">
               <Button variant="ghost" onClick={() => setShowAuthModal(true)}>
                 Giriş Yap
               </Button>
               <Button onClick={() => setShowAuthModal(true)}>
                 Başlayın
-              </Button>
-            </div>
-            
-            {/* Mobile Navigation */}
-            <div className="flex md:hidden items-center space-x-2">
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => setShowAuthModal(true)}
-                className="text-sm px-3 py-2"
-              >
-                Giriş Yap
-              </Button>
-              <Button 
-                size="sm"
-                onClick={() => setShowAuthModal(true)}
-                className="text-sm px-3 py-2"
-              >
-                Başla
               </Button>
             </div>
           </div>
@@ -90,598 +57,147 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
       {/* Hero Section */}
       <HeroSection onGetStarted={() => setShowAuthModal(true)} />
 
-      {/* Farkı Kendiniz Görün Section */}
+      {/* Difference Section */}
       <DifferenceSection onGetStarted={() => setShowAuthModal(true)} />
 
-      {/* Video Slider Preview */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030712] to-background" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4">
-              Gerçek <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">Örnekler</span>
+      {/* Video Examples - Simple */}
+      <section className="py-20 bg-[#030712]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Gerçek <span className="text-neon-cyan">Örnekler</span>
             </h2>
             <p className="text-gray-400 text-lg">AI ile oluşturulmuş profesyonel UGC videolar</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink rounded-3xl blur-xl opacity-30 group-hover:opacity-50 transition duration-1000" />
-              <div className="relative h-[400px] md:h-[500px] glass-card rounded-3xl overflow-hidden border border-white/10">
-                <VideoSlider />
-              </div>
-            </div>
-          </motion.div>
+          </div>
+          <div className="rounded-3xl overflow-hidden border border-white/10 bg-[#0a0f1a]">
+            <VideoSlider />
+          </div>
         </div>
       </section>
 
-      {/* Biz vs Onlar - Karşılaştırma Bölümü */}
-      <section id="comparison" className="relative py-20 sm:py-32 overflow-hidden">
-        {/* Background Effects */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-surface/30 to-background" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-neon-purple/5 rounded-full blur-3xl" />
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-neon-cyan/5 rounded-full blur-3xl" />
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <motion.div 
-            className="text-center mb-12 md:mb-20"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
+      {/* Comparison Section - Simplified */}
+      <section id="comparison" className="py-20 bg-[#0a0f1a]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neon-cyan/10 border border-neon-cyan/20 mb-6">
               <Sparkles className="w-4 h-4 text-neon-cyan" />
               <span className="text-sm font-medium text-neon-cyan">Farkı Gör</span>
             </div>
-            
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-              Neden <span className="bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">Biz?</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Neden <span className="text-neon-cyan">Biz?</span>
             </h2>
-            
-            <p className="text-base sm:text-lg md:text-xl text-text-secondary max-w-2xl mx-auto">
-              Geleneksel yöntemlerle AI tabanlı UGC arasındaki <span className="text-neon-cyan font-semibold">devasa farkı</span> keşfet
-            </p>
-          </motion.div>
-
-          {/* Desktop/Tablet Header */}
-          <motion.div 
-            className="hidden md:grid grid-cols-7 gap-4 mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            <div className="col-span-3" />
-            <div className="col-span-2 text-center">
-              <div className="inline-flex flex-col items-center p-4 rounded-2xl bg-gradient-to-br from-neon-cyan/20 to-neon-purple/20 border border-neon-cyan/30 shadow-[0_0_30px_rgba(0,240,255,0.15)]">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center mb-2">
-                  <CheckCircle2 className="w-6 h-6 text-white" />
-                </div>
-                <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">
-                  InfluencerSeninle
-                </span>
-                <span className="text-xs text-text-muted mt-1">AI Tabanlı UGC</span>
-              </div>
-            </div>
-            <div className="col-span-2 text-center">
-              <div className="inline-flex flex-col items-center p-4 rounded-2xl bg-surface/50 border border-white/5">
-                <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center mb-2">
-                  <X className="w-6 h-6 text-red-400" />
-                </div>
-                <span className="text-lg sm:text-xl font-bold text-red-400">
-                  Geleneksel
-                </span>
-                <span className="text-xs text-text-muted mt-1">Ajanslar & Diğer Araçlar</span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Comparison Rows */}
-          <div className="space-y-3 md:space-y-4">
-            {[
-              { feature: 'İçerik Üretim Hızı', icon: Clock, us: '24-48 Saat', them: '2-4 Hafta', usDetail: 'Anında sonuç', themDetail: 'Uzun süreçler' },
-              { feature: 'Maliyet', icon: DollarSign, us: '%70 Daha Uygun', them: 'Yüksek Ücretler', usDetail: '₺949-8.549/ay', themDetail: 'Binlerce TL' },
-              { feature: 'Lojistik & Kargo', icon: Package, us: 'Otomatik Süreç', them: 'Manuel Takip', usDetail: 'Sıfır lojistik', themDetail: 'Ürün gönderimi' },
-              { feature: 'Risk Faktörleri', icon: Shield, us: 'Garantili Teslimat', them: 'Belirsiz Sonuç', usDetail: 'Her zaman hazır', themDetail: 'İptal riski' },
-              { feature: 'Revizyon İmkanı', icon: RefreshCcw, us: 'Sınırsız Revizyon', them: 'Ekstra Ücret', usDetail: 'İstediğin kadar', themDetail: 'Sınırlı haklar' },
-              { feature: 'İçerik Çeşitliliği', icon: Palette, us: 'Sınırsız Varyasyon', them: 'Tek Çekim', usDetail: 'Yüzlerce stil', themDetail: 'Standart içerik' },
-            ].map((row, index) => {
-              const IconComponent = row.icon;
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="group"
-                >
-                  {/* Desktop/Tablet Row */}
-                  <div className="hidden md:grid grid-cols-7 gap-4 items-center p-4 rounded-2xl bg-surface/30 border border-white/5 hover:border-neon-cyan/20 hover:bg-surface/50 transition-all duration-300">
-                    {/* Feature */}
-                    <div className="col-span-3 flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-purple/20 to-neon-cyan/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <IconComponent className="w-6 h-6 text-neon-cyan" />
-                      </div>
-                      <span className="text-lg font-semibold text-white">{row.feature}</span>
-                    </div>
-                    
-                    {/* Us - Winner */}
-                    <div className="col-span-2">
-                      <div className="relative p-4 rounded-xl bg-gradient-to-br from-neon-cyan/10 to-neon-purple/10 border border-neon-cyan/20 text-center group-hover:shadow-[0_0_20px_rgba(0,240,255,0.1)] transition-shadow">
-                        <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-neon-cyan flex items-center justify-center">
-                          <CheckCircle2 className="w-4 h-4 text-background" />
-                        </div>
-                        <div className="text-lg font-bold text-neon-cyan mb-1">{row.us}</div>
-                        <div className="text-xs text-text-muted">{row.usDetail}</div>
-                      </div>
-                    </div>
-                    
-                    {/* Them - Loser */}
-                    <div className="col-span-2">
-                      <div className="p-4 rounded-xl bg-red-500/5 border border-red-500/10 text-center opacity-70">
-                        <div className="text-lg font-medium text-red-400 mb-1">{row.them}</div>
-                        <div className="text-xs text-text-muted">{row.themDetail}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Mobile Card */}
-                  <div className="md:hidden p-4 rounded-2xl bg-surface/30 border border-white/5 space-y-4">
-                    {/* Feature Header */}
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-purple/20 to-neon-cyan/20 flex items-center justify-center">
-                        <IconComponent className="w-5 h-5 text-neon-cyan" />
-                      </div>
-                      <span className="text-base font-semibold text-white">{row.feature}</span>
-                    </div>
-                    
-                    {/* Comparison Grid */}
-                    <div className="grid grid-cols-2 gap-3">
-                      {/* Us */}
-                      <div className="relative p-3 rounded-xl bg-gradient-to-br from-neon-cyan/10 to-neon-purple/10 border border-neon-cyan/20">
-                        <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-neon-cyan flex items-center justify-center">
-                          <CheckCircle2 className="w-3 h-3 text-background" />
-                        </div>
-                        <div className="text-xs text-neon-cyan font-medium mb-1">Biz</div>
-                        <div className="text-sm font-bold text-white">{row.us}</div>
-                        <div className="text-xs text-text-muted mt-1">{row.usDetail}</div>
-                      </div>
-                      
-                      {/* Them */}
-                      <div className="p-3 rounded-xl bg-red-500/5 border border-red-500/10 opacity-70">
-                        <div className="text-xs text-red-400 font-medium mb-1">Onlar</div>
-                        <div className="text-sm font-medium text-red-300">{row.them}</div>
-                        <div className="text-xs text-text-muted mt-1">{row.themDetail}</div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Bottom CTA */}
-          <motion.div 
-            className="mt-12 md:mt-16 text-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <div className="inline-flex flex-col sm:flex-row items-center gap-4 p-6 rounded-2xl bg-gradient-to-r from-neon-cyan/10 via-neon-purple/10 to-neon-pink/10 border border-neon-cyan/20">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center">
-                  <Zap className="w-6 h-6 text-white" />
-                </div>
-                <div className="text-left">
-                  <div className="text-lg font-bold text-white">Hemen Başla</div>
-                  <div className="text-sm text-text-muted">İlk videon bizden hediye</div>
-                </div>
-              </div>
-              <button 
-                onClick={() => setShowAuthModal(true)}
-                className="px-8 py-3 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-semibold hover:shadow-[0_0_30px_rgba(0,240,255,0.3)] transition-all duration-300"
-              >
-                Planları İncele
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Sektörler / Kullanım Alanları - Modern Tasarım */}
-      <section id="sectors" className="relative py-24 md:py-32 overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-[#0a0f1a] to-background" />
-        <motion.div
-          className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(168,85,247,0.08) 0%, transparent 60%)',
-            filter: 'blur(80px)',
-          }}
-          animate={{ x: [0, 50, 0], y: [0, -30, 0] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        />
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <motion.div
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neon-purple/10 border border-neon-purple/20 mb-6"
-              whileHover={{ scale: 1.05 }}
-            >
-              <Globe className="w-4 h-4 text-neon-purple" />
-              <span className="text-sm font-semibold text-neon-purple">Sınırsız Olasılık</span>
-            </motion.div>
-            
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-6">
-              Tüm Sektörler İçin{' '}
-              <span className="bg-gradient-to-r from-neon-purple via-neon-pink to-neon-cyan bg-clip-text text-transparent">
-                Akıllı Çözüm
-              </span>
-            </h2>
-            
-            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              E-ticaretten sağlığa, teknolojiden güzelliğe her sektörde profesyonel UGC içerikler
-            </p>
-          </motion.div>
-
-          {/* Sectors Grid - Modern Cards */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
-          >
-            {[
-              { emoji: '🛍️', name: 'E-Ticaret', description: 'Ürün tanıtımları', color: 'from-orange-500 to-red-500' },
-              { emoji: '💄', name: 'Güzellik', description: 'Makyaj & bakım', color: 'from-pink-500 to-rose-500' },
-              { emoji: '👗', name: 'Moda', description: 'Giyim & aksesuar', color: 'from-purple-500 to-violet-500' },
-              { emoji: '🍽️', name: 'Yemek', description: 'Restoran & cafe', color: 'from-amber-500 to-orange-500' },
-              { emoji: '💪', name: 'Fitness', description: 'Spor & sağlık', color: 'from-green-500 to-emerald-500' },
-              { emoji: '🏠', name: 'Ev & Yaşam', description: 'Dekorasyon', color: 'from-cyan-500 to-blue-500' },
-              { emoji: '💻', name: 'Teknoloji', description: 'Elektronik', color: 'from-blue-500 to-indigo-500' },
-              { emoji: '🎮', name: 'Gaming', description: 'Oyun & eğlence', color: 'from-violet-500 to-purple-500' },
-            ].map((sector, index) => (
-              <motion.div
-                key={index}
-                className="group relative"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -8, scale: 1.02 }}
-              >
-                {/* Glow effect */}
-                <div className={`absolute -inset-[1px] bg-gradient-to-r ${sector.color} rounded-2xl opacity-0 group-hover:opacity-50 blur-xl transition-all duration-500`} />
-                
-                {/* Card */}
-                <div className="relative p-6 rounded-2xl bg-white/5 border border-white/10  group-hover:border-white/20 transition-all duration-300 h-full">
-                  <div className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                    {sector.emoji}
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-1">{sector.name}</h3>
-                  <p className="text-sm text-gray-500">{sector.description}</p>
-                  
-                  {/* Hover arrow */}
-                  <motion.div
-                    className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity"
-                    initial={{ x: -10 }}
-                    whileHover={{ x: 0 }}
-                  >
-                    <ArrowRight className="w-5 h-5 text-gray-400" />
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Bottom Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="mt-16 flex flex-wrap items-center justify-center gap-8 md:gap-16 text-center"
-          >
-            {[
-              { value: '50+', label: 'Sektör' },
-              { value: '10K+', label: 'Video Üretildi' },
-              { value: '500+', label: 'Marka' },
-            ].map((stat, index) => (
-              <div key={index}>
-                <div className="text-3xl md:text-4xl font-black bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-gray-500 mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 relative">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
-              Neden Platformumuzu Seçmelisiniz?
-            </h2>
-            <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Video oluşturmayı zahmetsiz hale getiren güçlü özellikler
-            </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <motion.div
+          {/* Comparison Grid */}
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Traditional */}
+            <div className="p-8 rounded-2xl bg-red-500/5 border border-red-500/20">
+              <h3 className="text-2xl font-bold text-red-400 mb-6">😓 Geleneksel Yöntem</h3>
+              <ul className="space-y-4">
+                {['Influencer bulma: 2-4 hafta', 'Çekim ve düzenleme: 1-2 hafta', 'Maliyet: 5.000₺ - 50.000₺', 'Revizyon süreci uzun', 'Sonuç garantisi yok'].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3 text-gray-400">
+                    <span className="text-red-400">✗</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Our Way */}
+            <div className="p-8 rounded-2xl bg-neon-cyan/5 border border-neon-cyan/20">
+              <h3 className="text-2xl font-bold text-neon-cyan mb-6">🚀 InfluencerSeninle</h3>
+              <ul className="space-y-4">
+                {['AI ile anında video: Dakikalar içinde', 'Profesyonel kalite: 4K çözünürlük', 'Uygun fiyat: Aylık 299₺\'den başlayan', 'Sınırsız revizyon hakkı', '7/24 destek ve garanti'].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3 text-gray-300">
+                    <CheckCircle2 className="w-5 h-5 text-neon-cyan flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sectors Section - Simple Grid */}
+      <section id="sectors" className="py-20 bg-[#030712]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Her Sektör İçin <span className="text-neon-purple">Çözüm</span>
+            </h2>
+            <p className="text-gray-400">Hangi sektörde olursanız olun, size özel içerikler</p>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {sectors.map((sector, index) => (
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
+                className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-neon-cyan/30 transition-colors text-center cursor-pointer"
               >
-                <Card className="holographic-hover h-full hover:shadow-glow-cyan transition-all duration-300">
-                  <CardContent className="p-8">
-                    <div className="w-14 h-14 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-2xl flex items-center justify-center mb-6 shadow-glow-cyan">
-                      <feature.icon className="w-7 h-7 text-white" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-text-primary mb-3">
-                      {feature.title}
-                    </h3>
-                    <p className="text-text-secondary leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                <div className="text-4xl mb-3">{sector.icon}</div>
+                <p className="text-white font-medium">{sector.name}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 relative">
-        <div className="max-w-7xl mx-auto">
-          <div className="glass-card p-8">
-            <Pricing
-              plans={[
-                {
-                  name: "Starter",
-                  price: "949",
-                  yearlyPrice: "949",
-                  period: "/ay",
-                  currency: "₺",
-                  features: [
-                    "20 video/ay",
-                    "10 saniyelik videolar",
-                    "HD 1080p dışa aktarma",
-                    "Filigransız videolar",
-                    "Temel şablonlar",
-                    "E-posta desteği",
-                  ],
-                  description: "10 saniyelik videolar ile başlangıç paketi",
-                  buttonText: "Planı Seç",
-                  priceId: "iyzico_starter_monthly",
-                  isPopular: false,
-                },
-                {
-                  name: "Professional",
-                  price: "3.799",
-                  yearlyPrice: "3.799",
-                  period: "/ay",
-                  currency: "₺",
-                  features: [
-                    "45 video/ay",
-                    "15 saniyelik videolar",
-                    "HD 1080p dışa aktarma",
-                    "Filigransız videolar",
-                    "Premium şablonlar",
-                    "Öncelikli destek",
-                    "API erişimi",
-                  ],
-                  description: "15 saniyelik videolar ile profesyonel paket",
-                  buttonText: "Planı Seç",
-                  priceId: "iyzico_professional_monthly",
-                  isPopular: true,
-                },
-                {
-                  name: "Business",
-                  price: "8.549",
-                  yearlyPrice: "8.549",
-                  period: "/ay",
-                  currency: "₺",
-                  features: [
-                    "100 video/ay",
-                    "15 saniyelik videolar",
-                    "HD 1080p dışa aktarma",
-                    "Filigransız videolar",
-                    "Premium şablonlar",
-                    "Özel destek",
-                    "Gelişmiş API",
-                    "Beyaz etiket seçeneği",
-                  ],
-                  description: "15 saniyelik videolar ile kurumsal paket",
-                  buttonText: "Planı Seç",
-                  priceId: "iyzico_enterprise_monthly",
-                  isPopular: false,
-                },
-              ]}
-              title="Uygun, Şeffaf Fiyatlandırma"
-              description="İhtiyaçlarınıza uygun planı seçin. Tüm fiyatlar TL olarak gösterilmektedir."
-              setShowAuthModal={setShowAuthModal}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA Section - Premium */}
-      <section className="relative py-32 overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 bg-[#030712]" />
-        <motion.div
-          className="absolute inset-0"
-          style={{
-            background: `
-              radial-gradient(ellipse 100% 100% at 50% 100%, rgba(0,217,255,0.15), transparent 50%),
-              radial-gradient(ellipse 80% 50% at 0% 50%, rgba(168,85,247,0.1), transparent),
-              radial-gradient(ellipse 80% 50% at 100% 50%, rgba(255,0,128,0.1), transparent)
-            `,
-          }}
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        
-        {/* Floating elements */}
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-neon-cyan/20 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -80, 0],
-              opacity: [0, 0.8, 0],
-            }}
-            transition={{
-              duration: 4 + Math.random() * 4,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-            }}
-          />
-        ))}
-        
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <motion.div
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neon-cyan/10 border border-neon-cyan/20 mb-8"
-              whileHover={{ scale: 1.05 }}
-            >
-              <Rocket className="w-4 h-4 text-neon-cyan" />
-              <span className="text-sm font-semibold text-neon-cyan">Hemen Başla</span>
-            </motion.div>
-            
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6">
-              Video Üretimini
-              <br />
-              <span className="bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">
-                Dönüştürmeye Hazır mısın?
-              </span>
+      <section id="pricing" className="py-20 bg-[#0a0f1a]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Basit <span className="text-neon-cyan">Fiyatlandırma</span>
             </h2>
-            
-            <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-12">
-              500+ markaya katıl ve AI gücüyle içerik üretimini hızlandır.
-              <br className="hidden md:block" />
-              <span className="text-gray-500">İlk video ücretsiz, kredi kartı gerekmez.</span>
-            </p>
-            
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <motion.button
-                onClick={() => setShowAuthModal(true)}
-                className="group relative px-10 py-5 rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold text-lg overflow-hidden shadow-[0_0_40px_rgba(0,217,255,0.3)]"
-                whileHover={{ scale: 1.05, boxShadow: '0 0 60px rgba(0,217,255,0.5)' }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-neon-purple to-neon-pink"
-                  initial={{ x: '100%' }}
-                  whileHover={{ x: 0 }}
-                  transition={{ duration: 0.3 }}
-                />
-                <span className="relative flex items-center gap-3">
-                  <Zap className="w-5 h-5" />
-                  Ücretsiz Hesap Oluştur
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </motion.button>
-            </div>
-            
-            {/* Trust indicators */}
-            <motion.div
-              className="mt-12 flex flex-wrap items-center justify-center gap-8 text-gray-500 text-sm"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-            >
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-green-400" />
-                <span>Kurulum gerektirmez</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-green-400" />
-                <span>7/24 Destek</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-green-400" />
-                <span>İstediğin zaman iptal</span>
-              </div>
-            </motion.div>
-          </motion.div>
+            <p className="text-gray-400">İhtiyacınıza uygun planı seçin</p>
+          </div>
+          <Pricing onSelectPlan={() => setShowAuthModal(true)} />
         </div>
       </section>
 
-      {/* Footer - Clean & Minimal */}
-      <footer className="bg-[#030712] border-t border-white/5 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      {/* CTA Section - Simple */}
+      <section className="py-20 bg-[#030712]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Hemen <span className="text-neon-cyan">Başlayın</span>
+          </h2>
+          <p className="text-xl text-gray-400 mb-8">
+            İlk videonuzu ücretsiz oluşturun
+          </p>
+          <button
+            onClick={() => setShowAuthModal(true)}
+            className="px-10 py-5 rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold text-lg hover:opacity-90 transition-opacity"
+          >
+            Ücretsiz Deneyin
+          </button>
+        </div>
+      </section>
+
+      {/* Footer - Minimal */}
+      <footer className="py-12 border-t border-white/5 bg-[#030712]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            {/* Logo & Description */}
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center shadow-glow-cyan">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center">
                 <Play className="w-5 h-5 text-white" fill="white" />
               </div>
-              <div>
-                <span className="text-lg font-bold text-white">InfluencerSeninle</span>
-                <p className="text-sm text-gray-500">AI destekli video platformu</p>
-              </div>
+              <span className="text-lg font-bold text-white">InfluencerSeninle</span>
             </div>
-
-            {/* Quick Links */}
-            <div className="flex items-center gap-6 text-sm">
-              <a href="#features" className="text-gray-400 hover:text-neon-cyan transition-colors">Özellikler</a>
-              <a href="#pricing" className="text-gray-400 hover:text-neon-cyan transition-colors">Fiyatlandırma</a>
-              <a href="#sectors" className="text-gray-400 hover:text-neon-cyan transition-colors">Sektörler</a>
+            <div className="flex items-center gap-6 text-sm text-gray-500">
+              <a href="#" className="hover:text-neon-cyan transition-colors">Özellikler</a>
+              <a href="#pricing" className="hover:text-neon-cyan transition-colors">Fiyatlar</a>
+              <a href="#sectors" className="hover:text-neon-cyan transition-colors">Sektörler</a>
             </div>
           </div>
-
-          {/* Copyright */}
           <div className="mt-8 pt-6 border-t border-white/5 text-center">
-            <p className="text-gray-600 text-sm">
-              © 2026 InfluencerSeninle. Tüm hakları saklıdır.
-            </p>
+            <p className="text-gray-600 text-sm">© 2026 InfluencerSeninle. Tüm hakları saklıdır.</p>
           </div>
         </div>
       </footer>
 
       {/* Auth Modal */}
-      <AuthModal
+      <AuthModal 
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         onSuccess={onAuthSuccess}
