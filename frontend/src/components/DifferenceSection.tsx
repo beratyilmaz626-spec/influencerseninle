@@ -226,15 +226,20 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
               </motion.div>
             </div>
 
-            {/* After Image (UGC) */}
+            {/* After - UGC Video */}
             <motion.div 
               className="absolute inset-0"
               style={{ clipPath }}
             >
-              <img
-                src="https://images.unsplash.com/photo-1559114123-509b13dfeb17?crop=entropy&cs=srgb&fm=jpg&q=85"
-                alt="UGC Video Etkisi"
+              {/* Video Element */}
+              <video
+                src="/api/static/videos/ugc_video_1.mp4"
                 className="w-full h-full object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               
@@ -256,10 +261,10 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
                 </p>
               </motion.div>
 
-              {/* Play button overlay */}
+              {/* Sound indicator */}
               <motion.div 
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                animate={{ scale: [1, 1.1, 1] }}
+                animate={{ scale: [1, 1.1, 1], opacity: [0.8, 1, 0.8] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
                 <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
