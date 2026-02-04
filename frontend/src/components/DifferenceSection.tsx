@@ -198,13 +198,17 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
           <div className="absolute -inset-[1px] bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink rounded-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
           
           <div className="absolute inset-[2px] rounded-3xl overflow-hidden bg-[#0a0f1a]">
-            {/* Before - Product Photo (Static) */}
+            {/* Before - Product Photo (Static) - Use video poster as static image */}
             <div className="absolute inset-0">
-              <img
-                src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1999&auto=format&fit=crop"
-                alt="Sıradan Ürün Fotoğrafı"
-                className="w-full h-full object-cover grayscale brightness-75"
-              />
+              {/* Static product image - first frame of the video */}
+              <div className="w-full h-full bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="w-32 h-32 mx-auto mb-4 bg-gray-700 rounded-2xl flex items-center justify-center">
+                    <span className="text-6xl">📸</span>
+                  </div>
+                  <p className="text-gray-400 text-lg">Ürün Fotoğrafı</p>
+                </div>
+              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               
               {/* Before Label */}
