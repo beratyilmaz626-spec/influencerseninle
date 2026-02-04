@@ -12,6 +12,7 @@ import confetti from "canvas-confetti";
 import NumberFlow from "@number-flow/react";
 import { useStripe } from "@/hooks/useStripe";
 import { useAuth } from "@/hooks/useAuth";
+import { SUBSCRIPTION_PLANS, FEATURE_LABELS } from "@/config/subscription-plans";
 
 interface PricingPlan {
   name: string;
@@ -27,18 +28,38 @@ interface PricingPlan {
 }
 
 interface PricingProps {
-  plans: PricingPlan[];
+  plans?: PricingPlan[];
   title?: string;
   description?: string;
   setShowAuthModal?: (show: boolean) => void;
+  onSelectPlan?: () => void;
 }
+
+// Varsayılan planları oluştur
+const getDefaultPlans = (): PricingPlan[] => {
+  return Object.values(SUBSCRIPTION_PLANS).map(plan => ({
+    name: plan.name,
+    price: plan.priceMonthly.toLocaleString('tr-TR'),
+    yearlyPrice: (plan.priceMonthly * 10).toLocaleString('tr-TR'),
+    period: '/ay',
+    currency: '₺',
+    features: plan.features.map(f => FEATURE_LABELS[f]?.name || f),
+    description: `${plan.monthlyVideoLimit} video/ay • ${plan.maxVideoDuration} saniyelik videolar`,
+    buttonText: 'Planı Seç',
+    priceId: plan.stripePriceId,
+    isPopular: plan.isPopular || false,
+  }));
+};
 
 export function Pricing({
   plans,
   title = "Basit, Şeffaf Fiyatlandırma",
   description = "İhtiyaçlarınıza uygun planı seçin\nTüm planlar platformumuza erişim, video oluşturma araçları ve özel destek içerir.",
   setShowAuthModal,
+  onSelectPlan,
 }: PricingProps) {
+  // plans prop'u yoksa varsayılan planları kullan
+  const displayPlans = plans || getDefaultPlans();
   const [isMonthly, setIsMonthly] = useState(true);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const switchRef = useRef<HTMLButtonElement>(null);
