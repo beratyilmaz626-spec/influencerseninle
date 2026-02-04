@@ -211,6 +211,44 @@ export const VideoSlider = () => {
           </div>
         </div>
       </div>
+
+      {/* Video Modal - Full screen with sound */}
+      {selectedVideoIndex !== null && duplicatedItems[selectedVideoIndex]?.video_url && (
+        <div 
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-md"
+          onClick={() => setSelectedVideoIndex(null)}
+        >
+          <div 
+            className="relative max-w-md w-full mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <video
+              src={duplicatedItems[selectedVideoIndex].video_url!}
+              className="w-full h-auto max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+              autoPlay
+              loop
+              playsInline
+              controls
+              preload="auto"
+            />
+            
+            {/* Close button */}
+            <button
+              onClick={() => setSelectedVideoIndex(null)}
+              className="absolute -top-4 -right-4 w-12 h-12 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors shadow-lg z-10"
+              type="button"
+              aria-label="Videoyu kapat"
+            >
+              <X className="w-6 h-6 text-gray-700" />
+            </button>
+            
+            {/* Info text */}
+            <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-white/70 text-sm text-center">
+              <p>ESC tuşu veya dışarı tıklayarak kapatın</p>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
