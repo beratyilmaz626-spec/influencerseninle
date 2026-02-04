@@ -147,7 +147,7 @@ export function Pricing({
               delay: index * 0.1,
             }}
             className={cn(
-              `rounded-2xl border p-8 bg-white/5 backdrop-blur-xl text-center relative shadow-sm hover:shadow-glow-cyan transition-all duration-300`,
+              `rounded-2xl border p-8 bg-white/5  text-center relative shadow-sm hover:shadow-glow-cyan transition-all duration-300`,
               plan.isPopular ? "border-neon-cyan border-2 shadow-glow-cyan" : "border-white/10",
               "flex flex-col h-full",
               plan.isPopular && "relative"
