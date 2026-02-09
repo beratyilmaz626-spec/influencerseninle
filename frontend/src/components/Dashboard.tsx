@@ -170,12 +170,11 @@ export default function Dashboard({ onLogout }: DashboardProps) {
           {/* Logo */}
           <div className="p-6 border-b border-white/5">
             <div className="flex items-center space-x-3">
-              <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl blur opacity-40" />
-                <div className="relative w-10 h-10 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center shadow-glow-cyan">
-                  <Sparkles className="w-5 h-5 text-white" />
-                </div>
-              </div>
+              <img 
+                src="/images/logo.png" 
+                alt="InfluencerSeninle Logo" 
+                className="w-12 h-12 object-contain"
+              />
               <div className="text-lg font-bold">
                 <span className="text-white">Influencer</span>
                 <span className="bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">Seninle</span>
