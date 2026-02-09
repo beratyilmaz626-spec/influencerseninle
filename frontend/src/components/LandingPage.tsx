@@ -31,11 +31,11 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-28">
             {/* Logo */}
-            <div className="flex items-center space-x-3 cursor-pointer">
+            <div className="flex items-center space-x-4 cursor-pointer">
               <img 
                 src="/images/logo.png" 
                 alt="InfluencerSeninle Logo" 
-                className="w-24 h-24 object-contain"
+                className="w-40 h-40 object-contain"
               />
               <div className="text-xl font-bold">
                 <span className="text-white">Influencer</span>
