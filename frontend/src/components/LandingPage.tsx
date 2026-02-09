@@ -32,9 +32,11 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center space-x-3 cursor-pointer">
-              <div className="w-10 h-10 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center">
-                <Play className="w-5 h-5 text-white" fill="white" />
-              </div>
+              <img 
+                src="/images/logo.png" 
+                alt="InfluencerSeninle Logo" 
+                className="w-12 h-12 object-contain"
+              />
               <div className="text-xl font-bold">
                 <span className="text-white">Influencer</span>
                 <span className="text-neon-cyan">Seninle</span>
