@@ -3,6 +3,7 @@ import { X, Mail, Lock, User, Sparkles, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { supabase } from '../lib/supabase';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -16,10 +17,63 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
+  const [socialLoading, setSocialLoading] = useState<'google' | 'apple' | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { signIn, signUp } = useAuth();
 
   if (!isOpen) return null;
+
+  // Google OAuth ile giriş
+  const handleGoogleSignIn = async () => {
+    if (!supabase) {
+      setError('Supabase bağlantısı kurulamadı');
+      return;
+    }
+    
+    setSocialLoading('google');
+    setError(null);
+    
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin,
+        }
+      });
+      
+      if (error) throw error;
+    } catch (err) {
+      console.error('Google giriş hatası:', err);
+      setError(err instanceof Error ? err.message : 'Google ile giriş yapılamadı');
+      setSocialLoading(null);
+    }
+  };
+
+  // Apple OAuth ile giriş
+  const handleAppleSignIn = async () => {
+    if (!supabase) {
+      setError('Supabase bağlantısı kurulamadı');
+      return;
+    }
+    
+    setSocialLoading('apple');
+    setError(null);
+    
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'apple',
+        options: {
+          redirectTo: window.location.origin,
+        }
+      });
+      
+      if (error) throw error;
+    } catch (err) {
+      console.error('Apple giriş hatası:', err);
+      setError(err instanceof Error ? err.message : 'Apple ile giriş yapılamadı');
+      setSocialLoading(null);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
