@@ -132,7 +132,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
             <img 
               src="/images/logo.png" 
               alt="InfluencerSeninle Logo" 
-              className="w-20 h-20 object-contain mb-8"
+              className="w-28 h-28 object-contain mb-8"
             />
             
             <h2 className="text-4xl font-bold mb-4 text-white">
