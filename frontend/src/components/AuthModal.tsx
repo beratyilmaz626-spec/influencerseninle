@@ -129,9 +129,11 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
         <div className="grid md:grid-cols-2">
           {/* Left Side - Branding */}
           <div className="hidden md:flex relative bg-gradient-to-br from-neon-cyan/10 to-neon-purple/10 p-12 flex-col justify-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-2xl flex items-center justify-center mb-8">
-              <Sparkles className="w-8 h-8 text-white" />
-            </div>
+            <img 
+              src="/images/logo.png" 
+              alt="InfluencerSeninle Logo" 
+              className="w-20 h-20 object-contain mb-8"
+            />
             
             <h2 className="text-4xl font-bold mb-4 text-white">
               {mode === 'signin' ? 'Tekrar Hoş Geldiniz!' : 'Bize Katılın'}
