@@ -162,9 +162,11 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
           <div className="p-8 md:p-12 bg-[#0a0f1a]">
             {/* Mobile Header */}
             <div className="md:hidden text-center mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
+              <img 
+                src="/images/logo.png" 
+                alt="InfluencerSeninle Logo" 
+                className="w-14 h-14 object-contain mx-auto mb-4"
+              />
               <h2 className="text-2xl font-bold text-white">
                 {mode === 'signin' ? 'Hoş Geldiniz!' : 'Kayıt Olun'}
               </h2>
