@@ -184,7 +184,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
               <img 
                 src="/images/logo.png" 
                 alt="InfluencerSeninle Logo" 
-                className="w-12 h-12 object-contain"
+                className="w-16 h-16 object-contain"
               />
               <span className="text-lg font-bold text-white">InfluencerSeninle</span>
             </div>
