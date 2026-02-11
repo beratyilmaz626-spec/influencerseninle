@@ -26,16 +26,27 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
 
   return (
     <div className="min-h-screen bg-[#030712] overflow-x-hidden">
-      {/* Header - Scrolls away with page */}
-      <header className="relative z-50 border-b border-white/5 bg-[#030712]">
+      {/* Background gradient that covers header and hero */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,217,255,0.12), transparent),
+            radial-gradient(ellipse 60% 40% at 80% 50%, rgba(168,85,247,0.08), transparent)
+          `,
+        }}
+      />
+
+      {/* Header - Scrolls away with page, transparent background */}
+      <header className="relative z-50 border-b border-white/5">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-52">
-            {/* Logo */}
+            {/* Logo with animation */}
             <div className="flex items-center space-x-2 cursor-pointer">
               <img 
                 src="/images/logo.png" 
                 alt="InfluencerSeninle Logo" 
-                className="w-48 h-48 object-contain"
+                className="w-48 h-48 object-contain animate-float drop-shadow-[0_0_25px_rgba(0,240,255,0.5)]"
               />
               <div className="text-2xl font-bold">
                 <span className="text-white">Influencer</span>
