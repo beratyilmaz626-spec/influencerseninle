@@ -6,7 +6,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ onGetStarted }: HeroSectionProps) {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-16 bg-[#030712]">
+    <section className="relative min-h-[80vh] flex items-center justify-center bg-[#030712]">
       {/* Simple static gradient background */}
       <div 
         className="absolute inset-0"
