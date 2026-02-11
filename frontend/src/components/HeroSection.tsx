@@ -6,18 +6,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ onGetStarted }: HeroSectionProps) {
   return (
-    <section className="relative min-h-[80vh] flex items-center justify-center bg-[#030712]">
-      {/* Simple static gradient background */}
-      <div 
-        className="absolute inset-0"
-        style={{
-          background: `
-            radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,217,255,0.12), transparent),
-            radial-gradient(ellipse 60% 40% at 80% 50%, rgba(168,85,247,0.08), transparent)
-          `,
-        }}
-      />
-
+    <section className="relative min-h-[80vh] flex items-center justify-center">
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Badge */}
