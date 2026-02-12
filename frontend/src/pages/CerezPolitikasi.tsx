@@ -76,7 +76,7 @@ export default function CerezPolitikasi({ onBack }: CerezPolitikasiProps) {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-white mb-4">5. İletişim</h2>
             <p className="text-gray-300 leading-relaxed">
-              Çerez politikamız hakkında sorularınız için: destek@influencerseninle.com
+              Çerez politikamız hakkında sorularınız için: influencerseninle@gmail.com
             </p>
           </section>
         </div>
