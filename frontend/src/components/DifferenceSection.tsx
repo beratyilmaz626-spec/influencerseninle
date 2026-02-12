@@ -119,24 +119,23 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
             <div className="absolute inset-[2px] rounded-3xl overflow-hidden bg-[#0a0f1a]">
               {/* After - UGC Video (base layer - shows on LEFT) */}
               <div className="absolute inset-0">
-                <video
-                  ref={videoRef}
-                  className="w-full h-full object-cover"
-                  autoPlay
-                  muted={isMuted}
-                  loop
-                  playsInline
-                  preload="metadata"
-                  poster="/images/product-before.jpeg"
-                  onLoadedData={() => setVideoLoaded(true)}
-                  onCanPlay={() => setVideoLoaded(true)}
-                  onError={(e) => console.log('DifferenceSection video error:', e)}
-                >
-                  <source src={videoUrl} type="video/mp4" />
-                </video>
-                
-                {/* Fallback gradient if video fails */}
-                <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/20 to-neon-purple/30 -z-10" />
+                {/* Video or gradient fallback */}
+                <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/30 via-neon-purple/20 to-neon-pink/30">
+                  <video
+                    ref={videoRef}
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    muted={isMuted}
+                    loop
+                    playsInline
+                    preload="metadata"
+                    onLoadedData={() => setVideoLoaded(true)}
+                    onCanPlay={() => setVideoLoaded(true)}
+                    onError={(e) => console.log('DifferenceSection video error:', e)}
+                  >
+                    <source src={videoUrl} type="video/mp4" />
+                  </video>
+                </div>
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 
