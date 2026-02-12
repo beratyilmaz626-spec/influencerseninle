@@ -17,13 +17,12 @@ export const VideoSlider = () => {
   const [loading, setLoading] = useState(true);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState<number | null>(null);
 
-  // Use backend URL - Vite uses import.meta.env
-  const backendUrl = (import.meta.env.VITE_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL || window.location.origin) as string;
+  // Use videos from public folder for Vercel compatibility
   const demoVideos: SliderVideo[] = [
     {
       id: 'demo-1',
       title: 'AI UGC Video 1',
-      video_url: `${backendUrl}/api/static/videos/ugc_video_1.mp4`,
+      video_url: '/videos/ugc_video_1.mp4',
       thumbnail_url: null,
       order_index: 0,
       is_active: true,
@@ -32,7 +31,7 @@ export const VideoSlider = () => {
     {
       id: 'demo-2',
       title: 'AI UGC Video 2',
-      video_url: `${backendUrl}/api/static/videos/ugc_video_2.mp4`,
+      video_url: '/videos/ugc_video_2.mp4',
       thumbnail_url: null,
       order_index: 1,
       is_active: true,
