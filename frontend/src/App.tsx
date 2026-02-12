@@ -1,21 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from './hooks/useAuth';
 import AuthModal from './components/AuthModal';
 import LandingPage from './components/LandingPage';
 import Dashboard from './components/Dashboard';
 import SuccessPage from './pages/SuccessPage';
+import GizlilikPolitikasi from './pages/GizlilikPolitikasi';
+import KullanimSartlari from './pages/KullanimSartlari';
+import CerezPolitikasi from './pages/CerezPolitikasi';
+import KVKK from './pages/KVKK';
+
+type ViewType = 'landing' | 'dashboard' | 'success' | 'gizlilik-politikasi' | 'kullanim-sartlari' | 'cerez-politikasi' | 'kvkk';
 
 function App() {
-  const [view, setView] = useState<'landing' | 'dashboard' | 'success'>('landing');
+  const [view, setView] = useState<ViewType>('landing');
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { user, loading, signOut } = useAuth();
 
-  // Check URL for success page
-  useState(() => {
-    if (window.location.pathname === '/success') {
+  // Check URL for different pages
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path === '/success') {
       setView('success');
+    } else if (path === '/gizlilik-politikasi') {
+      setView('gizlilik-politikasi');
+    } else if (path === '/kullanim-sartlari') {
+      setView('kullanim-sartlari');
+    } else if (path === '/cerez-politikasi') {
+      setView('cerez-politikasi');
+    } else if (path === '/kvkk') {
+      setView('kvkk');
     }
-  });
+  }, []);
 
   const handleGetStarted = () => {
     setView('dashboard');
@@ -28,6 +43,11 @@ function App() {
 
   const handleLogout = () => {
     signOut();
+    setView('landing');
+  };
+
+  const handleBackToLanding = () => {
+    window.history.pushState({}, '', '/');
     setView('landing');
   };
 
@@ -46,18 +66,34 @@ function App() {
     );
   }
 
+  // Render based on view
+  const renderView = () => {
+    switch (view) {
+      case 'success':
+        return <SuccessPage />;
+      case 'gizlilik-politikasi':
+        return <GizlilikPolitikasi onBack={handleBackToLanding} />;
+      case 'kullanim-sartlari':
+        return <KullanimSartlari onBack={handleBackToLanding} />;
+      case 'cerez-politikasi':
+        return <CerezPolitikasi onBack={handleBackToLanding} />;
+      case 'kvkk':
+        return <KVKK onBack={handleBackToLanding} />;
+      case 'dashboard':
+        return <Dashboard onLogout={handleLogout} />;
+      default:
+        return (
+          <LandingPage 
+            onGetStarted={handleGetStarted} 
+            onAuthSuccess={handleAuthSuccess}
+          />
+        );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      {view === 'success' ? (
-        <SuccessPage />
-      ) : view === 'landing' ? (
-        <LandingPage 
-          onGetStarted={handleGetStarted} 
-          onAuthSuccess={handleAuthSuccess}
-        />
-      ) : (
-        <Dashboard onLogout={handleLogout} />
-      )}
+      {renderView()}
     </div>
   );
 }
