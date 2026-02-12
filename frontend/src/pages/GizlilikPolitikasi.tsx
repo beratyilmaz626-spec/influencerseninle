@@ -93,8 +93,8 @@ export default function GizlilikPolitikasi({ onBack }: GizlilikPolitikasiProps) 
             <h2 className="text-2xl font-semibold text-white mb-4">7. İletişim</h2>
             <p className="text-gray-300 leading-relaxed">
               Gizlilik politikamız hakkında sorularınız için bizimle iletişime geçebilirsiniz:<br />
-              E-posta: destek@influencerseninle.com<br />
-              Adres: İstanbul, Türkiye
+              E-posta: influencerseninle@gmail.com<br />
+              Adres: Ankara, Türkiye
             </p>
           </section>
         </div>
