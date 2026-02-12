@@ -101,7 +101,7 @@ export default function KullanimSartlari({ onBack }: KullanimSartlariProps) {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-white mb-4">9. İletişim</h2>
             <p className="text-gray-300 leading-relaxed">
-              Sorularınız için: destek@influencerseninle.com
+              Sorularınız için: influencerseninle@gmail.com
             </p>
           </section>
         </div>
