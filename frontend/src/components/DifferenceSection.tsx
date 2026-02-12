@@ -188,21 +188,6 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
                   </p>
                 </div>
               </motion.div>
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsMuted(!isMuted);
-                    if (videoRef.current) {
-                      videoRef.current.muted = !isMuted;
-                    }
-                  }}
-                >
-                  {isMuted ? (
-                    <VolumeX className="w-4 h-4 text-white" />
-                  ) : (
-                    <Volume2 className="w-4 h-4 text-neon-cyan" />
-                  )}
-                </button>
-              </motion.div>
 
               {/* Slider Handle */}
               <motion.div
