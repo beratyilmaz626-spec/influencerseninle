@@ -15,7 +15,7 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
   const [isMuted, setIsMuted] = useState(true);
 
   // Use video from public folder for better compatibility
-  const videoUrl = '/videos/ugc_video_1.mp4';
+  const videoUrl = '/videos/ugc_video_2.mp4';
 
   const x = useMotionValue(0);
   const springX = useSpring(x, { stiffness: 300, damping: 30 });
