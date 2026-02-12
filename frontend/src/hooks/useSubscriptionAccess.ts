@@ -347,7 +347,12 @@ export function useSubscriptionAccess() {
     console.log('  - profileLoading:', profileLoading);
     console.log('  - loading:', loading);
     console.log('  - isAdmin:', isAdmin);
-    console.log('  - giftCredits:', giftCredits);
+    console.log('  - giftCredits (state):', giftCredits);
+    console.log('  - userProfile?.user_credits_points:', userProfile?.user_credits_points);
+    
+    // Efektif kredi - hem state hem profile'dan kontrol
+    const currentCredits = giftCredits > 0 ? giftCredits : (userProfile?.user_credits_points || 0);
+    console.log('  - currentCredits:', currentCredits);
     
     // Profil veya abonelik yükleniyorsa banner gösterme
     if (profileLoading || loading) {
@@ -363,21 +368,21 @@ export function useSubscriptionAccess() {
     
     // Hediye kredisi varsa, pozitif mesaj göster
     // 200 jeton = 1 video, kaç video yapılabilir hesapla
-    if (giftCredits >= 200) {
-      const videosAvailable = Math.floor(giftCredits / 200);
-      console.log('  → Yeterli hediye kredisi var');
+    if (currentCredits >= 200) {
+      const videosAvailable = Math.floor(currentCredits / 200);
+      console.log('  → Yeterli hediye kredisi var:', currentCredits);
       return {
         type: 'success',
-        message: `🎁 ${giftCredits} jeton hediye hakkın var! (${videosAvailable} video oluşturabilirsin)`,
+        message: `🎁 ${currentCredits} jeton hediye hakkın var! (${videosAvailable} video oluşturabilirsin)`,
       };
     }
     
     // Yetersiz hediye kredisi
-    if (giftCredits > 0 && giftCredits < 200) {
-      console.log('  → Yetersiz hediye kredisi');
+    if (currentCredits > 0 && currentCredits < 200) {
+      console.log('  → Yetersiz hediye kredisi:', currentCredits);
       return {
         type: 'warning',
-        message: `⚠️ ${giftCredits} jetonun var ama 1 video için 200 jeton gerekli. Lütfen bir plan seç.`,
+        message: `⚠️ ${currentCredits} jetonun var ama 1 video için 200 jeton gerekli. Lütfen bir plan seç.`,
       };
     }
     
@@ -407,7 +412,7 @@ export function useSubscriptionAccess() {
     }
     
     return null;
-  }, [profileLoading, loading, isAdmin, isSubscriptionActive, getRemainingVideos, getVideoLimit, giftCredits]);
+  }, [profileLoading, loading, isAdmin, isSubscriptionActive, getRemainingVideos, getVideoLimit, giftCredits, userProfile]);
 
   return {
     // State
