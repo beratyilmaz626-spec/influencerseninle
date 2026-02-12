@@ -226,33 +226,52 @@ export function useSubscriptionAccess() {
   // Toplam loading durumu - hem profil hem abonelik yüklenene kadar bekle
   const isFullyLoaded = !profileLoading && !loading;
   
+  // Efektif hediye kredisi - state veya userProfile'dan al
+  const effectiveGiftCredits = giftCredits > 0 ? giftCredits : (userProfile?.user_credits_points || 0);
+  
   const canCreateVideo = useCallback((): { allowed: boolean; reason?: string; useGiftCredits?: boolean } => {
+    console.log('🔍 canCreateVideo çağrıldı:');
+    console.log('  - profileLoading:', profileLoading);
+    console.log('  - loading:', loading);
+    console.log('  - isAdmin:', isAdmin);
+    console.log('  - giftCredits (state):', giftCredits);
+    console.log('  - userProfile?.user_credits_points:', userProfile?.user_credits_points);
+    console.log('  - effectiveGiftCredits:', effectiveGiftCredits);
+    
     // 0. Admin ise her zaman video oluşturabilir (jeton gerekmez) 
     // Admin kontrolü için profileLoading'in bitmesini bekle
     if (!profileLoading && isAdmin) {
+      console.log('  → Admin, izin veriliyor');
       return { allowed: true, useGiftCredits: false };
     }
     
     // Loading durumunda bekle (profil veya abonelik yükleniyorsa)
     if (profileLoading || loading) {
+      console.log('  → Loading, bekleniyor');
       return { allowed: false, reason: 'Yükleniyor...' };
     }
     
     // 1. Hediye kredisi varsa (en az 200 jeton), abonelik şart değil
-    if (giftCredits >= VIDEO_COST_CHECK) {
+    // Hem state'i hem userProfile'ı kontrol et
+    const currentCredits = giftCredits > 0 ? giftCredits : (userProfile?.user_credits_points || 0);
+    
+    if (currentCredits >= VIDEO_COST_CHECK) {
+      console.log('  → Hediye kredisi yeterli:', currentCredits);
       return { allowed: true, useGiftCredits: true };
     }
     
     // 1b. Hediye kredisi var ama yetersiz (200'den az)
-    if (giftCredits > 0 && giftCredits < VIDEO_COST_CHECK) {
+    if (currentCredits > 0 && currentCredits < VIDEO_COST_CHECK) {
+      console.log('  → Hediye kredisi yetersiz:', currentCredits);
       return {
         allowed: false,
-        reason: `Video oluşturmak için ${VIDEO_COST_CHECK} jeton gerekli. Mevcut jetonun: ${giftCredits}. Lütfen bir plan seçin.`,
+        reason: `Video oluşturmak için ${VIDEO_COST_CHECK} jeton gerekli. Mevcut jetonun: ${currentCredits}. Lütfen bir plan seçin.`,
       };
     }
     
     // 2. Abonelik aktif mi?
     if (!isSubscriptionActive()) {
+      console.log('  → Abonelik aktif değil ve hediye kredisi yok');
       return {
         allowed: false,
         reason: 'Aktif bir aboneliğiniz veya yeterli hediye jetonunuz bulunmuyor. Lütfen bir plan seçin.',
@@ -263,14 +282,16 @@ export function useSubscriptionAccess() {
     const limit = getVideoLimit();
     const remaining = Math.max(0, limit - monthlyUsage.videosCreated);
     if (remaining <= 0) {
+      console.log('  → Aylık limit aşıldı');
       return {
         allowed: false,
         reason: `Aylık video limitiniz (${limit} video) doldu. Yeni dönem başladığında tekrar video oluşturabilirsiniz veya planınızı yükseltin.`,
       };
     }
 
+    console.log('  → İzin veriliyor (abonelik)');
     return { allowed: true, useGiftCredits: false };
-  }, [profileLoading, loading, isAdmin, isSubscriptionActive, giftCredits, getVideoLimit, monthlyUsage.videosCreated]);
+  }, [profileLoading, loading, isAdmin, isSubscriptionActive, giftCredits, userProfile, getVideoLimit, monthlyUsage.videosCreated]);
 
   // Video oluşturma sonrası kullanımı güncelle
   // NOT: 1 video = 200 jeton tüketir
