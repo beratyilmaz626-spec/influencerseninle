@@ -113,7 +113,8 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
                   muted={isMuted}
                   loop
                   playsInline
-                  preload="auto"
+                  preload="metadata"
+                  poster="/images/product-before.jpeg"
                   onLoadedData={() => setVideoLoaded(true)}
                   onCanPlay={() => setVideoLoaded(true)}
                   onError={(e) => console.log('DifferenceSection video error:', e)}
@@ -121,15 +122,8 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
                   <source src={videoUrl} type="video/mp4" />
                 </video>
                 
-                {/* Loading state */}
-                {!videoLoaded && (
-                  <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/10 to-neon-purple/10 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-12 h-12 border-4 border-neon-cyan border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
-                      <p className="text-white text-sm">Video yükleniyor...</p>
-                    </div>
-                  </div>
-                )}
+                {/* Fallback gradient if video fails */}
+                <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/20 to-neon-purple/30 -z-10" />
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 
