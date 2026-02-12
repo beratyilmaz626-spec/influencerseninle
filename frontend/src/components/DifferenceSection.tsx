@@ -49,7 +49,7 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
 
   const clipPath = useTransform(springX, (value) => {
     const percent = containerWidth > 0 ? (value / containerWidth) * 100 : 50;
-    return `inset(0 0 0 ${percent}%)`;
+    return `inset(0 ${100 - percent}% 0 0)`;
   });
 
   const sliderPosition = useTransform(springX, (value) => {
