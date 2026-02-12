@@ -16,12 +16,18 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   const sectors = [
-    { name: 'E-Ticaret', icon: '🛒', color: 'from-blue-500 to-cyan-500' },
-    { name: 'Moda', icon: '👗', color: 'from-pink-500 to-rose-500' },
-    { name: 'Teknoloji', icon: '💻', color: 'from-purple-500 to-indigo-500' },
-    { name: 'Sağlık', icon: '🏥', color: 'from-green-500 to-emerald-500' },
-    { name: 'Yemek', icon: '🍕', color: 'from-orange-500 to-amber-500' },
-    { name: 'Spor', icon: '⚽', color: 'from-red-500 to-pink-500' },
+    { name: 'E-Ticaret', icon: '🛒' },
+    { name: 'Moda', icon: '👗' },
+    { name: 'Teknoloji', icon: '💻' },
+    { name: 'Sağlık', icon: '🏥' },
+    { name: 'Yemek', icon: '🍕' },
+    { name: 'Spor', icon: '⚽' },
+    { name: 'Kozmetik', icon: '💄' },
+    { name: 'Otomotiv', icon: '🚗' },
+    { name: 'Eğitim', icon: '📚' },
+    { name: 'Finans', icon: '💰' },
+    { name: 'Emlak', icon: '🏠' },
+    { name: 'Turizm', icon: '✈️' },
   ];
 
   return (
