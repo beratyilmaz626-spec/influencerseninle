@@ -240,26 +240,80 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
         </div>
       </section>
 
-      {/* Footer - Minimal */}
-      <footer className="py-12 border-t border-white/5 bg-[#030712]">
+      {/* Footer - Complete */}
+      <footer className="py-16 border-t border-white/5 bg-[#030712]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <img 
-                src="/images/logo.png" 
-                alt="InfluencerSeninle Logo" 
-                className="w-16 h-16 object-contain"
-              />
-              <span className="text-lg font-bold text-white">InfluencerSeninle</span>
+          {/* Main Footer Content */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            {/* Brand */}
+            <div className="md:col-span-1">
+              <div className="flex items-center gap-3 mb-4">
+                <img 
+                  src="/images/logo.png" 
+                  alt="InfluencerSeninle Logo" 
+                  className="w-16 h-16 object-contain"
+                />
+                <span className="text-lg font-bold text-white">InfluencerSeninle</span>
+              </div>
+              <p className="text-gray-400 text-sm">
+                AI destekli UGC video oluşturma platformu. Ürünlerinizi profesyonel influencer videolarıyla tanıtın.
+              </p>
             </div>
-            <div className="flex items-center gap-6 text-sm text-gray-500">
-              <a href="#" className="hover:text-neon-cyan transition-colors">Özellikler</a>
-              <a href="#pricing" className="hover:text-neon-cyan transition-colors">Fiyatlar</a>
-              <a href="#sectors" className="hover:text-neon-cyan transition-colors">Sektörler</a>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-white font-semibold mb-4">Hızlı Linkler</h4>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-gray-400 hover:text-neon-cyan transition-colors text-sm">Ana Sayfa</a></li>
+                <li><a href="#difference" className="text-gray-400 hover:text-neon-cyan transition-colors text-sm">Özellikler</a></li>
+                <li><a href="#pricing" className="text-gray-400 hover:text-neon-cyan transition-colors text-sm">Fiyatlar</a></li>
+                <li><a href="#sectors" className="text-gray-400 hover:text-neon-cyan transition-colors text-sm">Sektörler</a></li>
+              </ul>
+            </div>
+
+            {/* Legal */}
+            <div>
+              <h4 className="text-white font-semibold mb-4">Yasal</h4>
+              <ul className="space-y-2">
+                <li><a href="/gizlilik-politikasi" className="text-gray-400 hover:text-neon-cyan transition-colors text-sm">Gizlilik Politikası</a></li>
+                <li><a href="/kullanim-sartlari" className="text-gray-400 hover:text-neon-cyan transition-colors text-sm">Kullanım Şartları</a></li>
+                <li><a href="/cerez-politikasi" className="text-gray-400 hover:text-neon-cyan transition-colors text-sm">Çerez Politikası</a></li>
+                <li><a href="/kvkk" className="text-gray-400 hover:text-neon-cyan transition-colors text-sm">KVKK Aydınlatma Metni</a></li>
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h4 className="text-white font-semibold mb-4">İletişim</h4>
+              <ul className="space-y-2">
+                <li className="text-gray-400 text-sm">📧 destek@influencerseninle.com</li>
+                <li className="text-gray-400 text-sm">📱 +90 (212) 000 00 00</li>
+                <li className="text-gray-400 text-sm">📍 İstanbul, Türkiye</li>
+              </ul>
+              <div className="flex gap-4 mt-4">
+                <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors">
+                  <span className="text-lg">📸</span>
+                </a>
+                <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors">
+                  <span className="text-lg">🐦</span>
+                </a>
+                <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors">
+                  <span className="text-lg">💼</span>
+                </a>
+              </div>
             </div>
           </div>
-          <div className="mt-8 pt-6 border-t border-white/5 text-center">
-            <p className="text-gray-600 text-sm">© 2026 InfluencerSeninle. Tüm hakları saklıdır.</p>
+
+          {/* Bottom Bar */}
+          <div className="pt-8 border-t border-white/5">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-gray-500 text-sm">© 2026 InfluencerSeninle. Tüm hakları saklıdır.</p>
+              <div className="flex items-center gap-6 text-sm">
+                <a href="/gizlilik-politikasi" className="text-gray-500 hover:text-neon-cyan transition-colors">Gizlilik</a>
+                <a href="/kullanim-sartlari" className="text-gray-500 hover:text-neon-cyan transition-colors">Şartlar</a>
+                <a href="/kvkk" className="text-gray-500 hover:text-neon-cyan transition-colors">KVKK</a>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
