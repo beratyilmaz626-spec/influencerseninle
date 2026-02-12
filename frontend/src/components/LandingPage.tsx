@@ -94,7 +94,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
         </div>
       </section>
 
-      {/* Comparison Section - Simplified */}
+      {/* Comparison Section - Neden Biz */}
       <section id="comparison" className="py-20 bg-[#0a0f1a]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -105,15 +105,26 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
               Neden <span className="text-neon-cyan">Biz?</span>
             </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              Geleneksel influencer pazarlamasının zorluklarını AI ile aşıyoruz
+            </p>
           </div>
           
           {/* Comparison Grid */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
             {/* Traditional */}
             <div className="p-8 rounded-2xl bg-red-500/5 border border-red-500/20">
               <h3 className="text-2xl font-bold text-red-400 mb-6">😓 Geleneksel Yöntem</h3>
               <ul className="space-y-4">
-                {['Influencer bulma: 2-4 hafta', 'Çekim ve düzenleme: 1-2 hafta', 'Maliyet: 5.000₺ - 50.000₺', 'Revizyon süreci uzun', 'Sonuç garantisi yok'].map((item, i) => (
+                {[
+                  'Influencer bulma: 2-4 hafta araştırma',
+                  'Çekim ve düzenleme: 1-2 hafta bekleme',
+                  'Maliyet: 5.000₺ - 50.000₺ arası',
+                  'Revizyon süreci uzun ve karmaşık',
+                  'Sonuç garantisi yok',
+                  'Influencer ile iletişim zorlukları',
+                  'Sözleşme ve yasal süreçler'
+                ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-gray-400">
                     <span className="text-red-400">✗</span>
                     {item}
@@ -126,13 +137,41 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
             <div className="p-8 rounded-2xl bg-neon-cyan/5 border border-neon-cyan/20">
               <h3 className="text-2xl font-bold text-neon-cyan mb-6">🚀 InfluencerSeninle</h3>
               <ul className="space-y-4">
-                {['AI ile anında video: Dakikalar içinde', 'Profesyonel kalite: 4K çözünürlük', 'Uygun fiyat: Aylık 299₺\'den başlayan', 'Sınırsız revizyon hakkı', '7/24 destek ve garanti'].map((item, i) => (
+                {[
+                  'AI ile anında video: Dakikalar içinde hazır',
+                  'Profesyonel kalite: 4K çözünürlük',
+                  'Uygun fiyat: Aylık 299₺\'den başlayan fiyatlar',
+                  'Sınırsız revizyon hakkı',
+                  '7/24 destek ve memnuniyet garantisi',
+                  'Tek tıkla farklı dillerde içerik',
+                  'Yasal süreç yok, hemen kullanıma hazır'
+                ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-gray-300">
                     <CheckCircle2 className="w-5 h-5 text-neon-cyan flex-shrink-0" />
                     {item}
                   </li>
                 ))}
               </ul>
+            </div>
+          </div>
+
+          {/* Stats Row */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="text-center p-6 rounded-2xl bg-white/5 border border-white/10">
+              <div className="text-4xl font-bold text-neon-cyan mb-2">%90</div>
+              <p className="text-gray-400 text-sm">Maliyet Tasarrufu</p>
+            </div>
+            <div className="text-center p-6 rounded-2xl bg-white/5 border border-white/10">
+              <div className="text-4xl font-bold text-neon-purple mb-2">10x</div>
+              <p className="text-gray-400 text-sm">Daha Hızlı</p>
+            </div>
+            <div className="text-center p-6 rounded-2xl bg-white/5 border border-white/10">
+              <div className="text-4xl font-bold text-neon-pink mb-2">%300</div>
+              <p className="text-gray-400 text-sm">Etkileşim Artışı</p>
+            </div>
+            <div className="text-center p-6 rounded-2xl bg-white/5 border border-white/10">
+              <div className="text-4xl font-bold text-neon-green mb-2">24/7</div>
+              <p className="text-gray-400 text-sm">Destek</p>
             </div>
           </div>
         </div>
