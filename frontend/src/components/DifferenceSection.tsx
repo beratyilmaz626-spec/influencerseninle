@@ -123,7 +123,7 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
                 <img 
                   src="/images/ruj-urun.jpeg" 
                   alt="Ürün Fotoğrafı" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top"
                   onError={(e) => console.log('Image load error:', e)}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
