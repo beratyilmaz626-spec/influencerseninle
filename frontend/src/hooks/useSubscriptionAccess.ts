@@ -45,24 +45,44 @@ export function useSubscriptionAccess() {
   // Hediye kredilerini getir
   const fetchGiftCredits = useCallback(async () => {
     if (!user) {
+      console.log('🎁 fetchGiftCredits: Kullanıcı yok, 0 set ediliyor');
       setGiftCredits(0);
       return;
     }
 
     try {
+      console.log('🎁 fetchGiftCredits: Kullanıcı ID:', user.id);
+      
       const { data, error: creditsError } = await supabase
         .from('users')
         .select('user_credits_points')
         .eq('id', user.id)
         .single();
 
-      if (!creditsError && data) {
+      console.log('🎁 fetchGiftCredits response:', { data, error: creditsError });
+
+      if (creditsError) {
+        console.error('🎁 fetchGiftCredits error:', creditsError);
+        // RLS hatası olabilir, userProfile'dan almayı dene
+        if (userProfile?.user_credits_points !== undefined) {
+          console.log('🎁 userProfile\'dan alınıyor:', userProfile.user_credits_points);
+          setGiftCredits(userProfile.user_credits_points || 0);
+        }
+        return;
+      }
+      
+      if (data) {
+        console.log('🎁 Hediye kredisi set ediliyor:', data.user_credits_points);
         setGiftCredits(data.user_credits_points || 0);
       }
     } catch (err) {
-      console.error('Hediye kredi bilgisi alınamadı:', err);
+      console.error('🎁 Hediye kredi bilgisi alınamadı:', err);
+      // Fallback: userProfile'dan al
+      if (userProfile?.user_credits_points !== undefined) {
+        setGiftCredits(userProfile.user_credits_points || 0);
+      }
     }
-  }, [user]);
+  }, [user, userProfile]);
 
   // Abonelik bilgilerini getir
   const fetchSubscription = useCallback(async () => {
