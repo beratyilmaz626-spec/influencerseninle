@@ -21,11 +21,24 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
   const springX = useSpring(x, { stiffness: 300, damping: 30 });
 
   useEffect(() => {
-    if (containerRef.current) {
-      const width = containerRef.current.offsetWidth;
-      setContainerWidth(width);
-      x.set(width * 0.5);
-    }
+    const updateWidth = () => {
+      if (containerRef.current) {
+        const width = containerRef.current.offsetWidth;
+        setContainerWidth(width);
+        // Set initial position to 50%
+        if (x.get() === 0 && width > 0) {
+          x.set(width * 0.5);
+        }
+      }
+    };
+    
+    // Initial setup
+    updateWidth();
+    
+    // Also update after a short delay for layout
+    const timer = setTimeout(updateWidth, 100);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
