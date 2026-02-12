@@ -12,6 +12,39 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 
 ## Tamamlanan Özellikler
 
+### ✅ Major Update - 12 Şubat 2026
+- **DifferenceSection İyileştirmesi:**
+  - Ruj görselini sol tarafa (Before) ekledik
+  - ugc_video_2.mp4 ile video güncellendi
+  - object-top ile görsel kadrajı düzeltildi
+- **Neden Biz Bölümü Genişletildi:**
+  - Her karşılaştırma kartına 7 madde eklendi
+  - 4 istatistik metriği eklendi (%90, 10x, %300, 24/7)
+- **Sektörler Bölümü Genişletildi:**
+  - 6 sektörden 12 sektöre çıkartıldı
+  - "+50 farklı sektörde hizmet" badge eklendi
+- **Footer Yeniden Tasarlandı:**
+  - 4 sütun: Marka, Hızlı Linkler, Yasal, İletişim
+  - Sosyal medya ikonları eklendi
+- **Yasal Sayfalar Eklendi:**
+  - Gizlilik Politikası (/gizlilik-politikasi)
+  - Kullanım Şartları (/kullanim-sartlari)
+  - Çerez Politikası (/cerez-politikasi)
+  - KVKK Aydınlatma Metni (/kvkk)
+
+### ✅ Logo ve Tasarım - 11 Şubat 2026
+- Yeni neon play butonu logosu eklendi
+- Logo boyutu büyütüldü (192x192px)
+- Header scroll ile kaybolacak şekilde ayarlandı
+- Logo animasyonu (float) ve glow efekti eklendi
+- Header ve hero section arka planları birleştirildi
+
+### ✅ Google OAuth Entegrasyonu - 9 Şubat 2026
+- Supabase signInWithOAuth entegrasyonu yapıldı
+- Google ve Apple login butonları eklendi
+- Loading state ve hata yönetimi eklendi
+- **Not:** Kullanıcının Google Cloud Console'da redirect URI ayarlaması gerekiyor
+
 ### ✅ Jeton (Credit) Sistemi - 10 Ocak 2025
 - 1 video = 200 jeton
 - Yeni kullanıcılara otomatik 200 jeton hediye
@@ -33,27 +66,18 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 - Video stili seçimi
 - n8n webhook entegrasyonu
 
-### ✅ Bug Fixes - 10 Ocak 2025
-- **Race Condition Düzeltildi:** `profileLoading` state eklendi
-- **404 Hatası Düzeltildi:** `stripe_user_subscriptions` → `user_subscriptions`
-- **Supabase SQL Script:** Performans ve güvenlik düzeltmeleri uygulandı
-
 ### ✅ Modern UI/UX Redesign - 2 Şubat 2025
 - **Landing Page:** Tamamen yenilendi (HeroSection, DifferenceSection)
-- **Dashboard Ana Sayfa:** Modern tasarım, animasyonlar, glassmorphism
+- **Dashboard Ana Sayfa:** Modern tasarım, animasyonlar
 - **Video Oluşturma Sayfası:** Yeni dropdown stilleri, modern kartlar
 - **Sidebar:** Animasyonlu geçişler, aktif durumu göstergesi
-- **Modallar:** Framer Motion animasyonları
 - **Renk Paleti:** Neon cyan (#00f0ff), neon purple (#b066ff), neon pink (#ff0080)
-- **Tasarım Dili:** Koyu tema, glassmorphism, gradient efektler
+- **Tasarım Dili:** Koyu tema, gradient efektler
 
 ### ✅ Kritik Bug Fix - 4 Şubat 2025
 - **process.env Hatası Düzeltildi:** Vite ortamında `process.env` yerine `import.meta.env` kullanıldı
-- **Etkilenen Dosyalar:**
-  - DifferenceSection.tsx - Video URL için env değişkeni düzeltildi
-  - video-slider.tsx - Backend URL için env değişkeni düzeltildi
-  - pricing.tsx - `plans` prop'u isteğe bağlı yapıldı, varsayılan planlar eklendi
-- **Sonuç:** Landing page artık düzgün yükleniyor, React crash hatası giderildi
+- **Etkilenen Dosyalar:** DifferenceSection.tsx, video-slider.tsx, pricing.tsx
+- **Sonuç:** Landing page artık düzgün yükleniyor
 
 ### ✅ Sosyal Giriş UI - 2 Şubat 2025
 - Google ile giriş butonu (UI hazır)
