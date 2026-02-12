@@ -107,14 +107,11 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
             <div className="absolute inset-[2px] rounded-3xl overflow-hidden bg-[#0a0f1a]">
               {/* Before - Product Photo */}
               <div className="absolute inset-0">
-                <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-24 h-24 mx-auto mb-4 bg-gray-700/50 rounded-2xl flex items-center justify-center">
-                      <span className="text-5xl">📸</span>
-                    </div>
-                    <p className="text-gray-500 text-lg">Ürün Fotoğrafı</p>
-                  </div>
-                </div>
+                <img 
+                  src="/images/product-before.jpeg" 
+                  alt="Ürün Fotoğrafı" 
+                  className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 
                 {/* Before Label */}
