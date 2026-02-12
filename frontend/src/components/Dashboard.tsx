@@ -1095,10 +1095,36 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
         body: formData,
       });
       
-      if (response.ok) {
-        const result = await response.json();
-        console.log('📥 N8N Response:', result);
+      // Response'u parse et
+      const result = await response.json().catch(() => null);
+      console.log('📥 N8N Response:', response.status, result);
+      
+      // N8N webhook 404 hatası - webhook test modunda veya aktif değil
+      if (response.status === 404) {
+        const isTestMode = result?.hint?.includes('test mode') || 
+                          result?.message?.includes('not registered') ||
+                          webhookUrl.includes('webhook-test');
         
+        if (isTestMode) {
+          alert('⚠️ N8N Webhook Test Modunda!\n\n' +
+                'Webhook şu anda "test" modunda çalışıyor. Bu mod sadece n8n editöründen manuel olarak tetiklendiğinde çalışır.\n\n' +
+                '📋 Çözüm:\n' +
+                '1. n8n editörünüze gidin\n' +
+                '2. Workflow\'u açın\n' +
+                '3. Webhook node\'unu "Production" moduna geçirin\n' +
+                '4. Veya URL\'deki "webhook-test" kısmını "webhook" olarak değiştirin\n\n' +
+                'Production URL örneği:\n' +
+                'webhook-test → webhook');
+        } else {
+          alert('❌ N8N Webhook Bulunamadı!\n\n' +
+                'Webhook URL\'i geçersiz veya workflow aktif değil.\n\n' +
+                'Lütfen n8n ayarlarınızı kontrol edin.');
+        }
+        setIsGenerating(false);
+        return;
+      }
+      
+      if (response.ok && result) {
         // Parse response - support multiple formats
         // Format 1: { success, status, video: { id, url } }
         // Format 2: { success, videoId, videoUrl }
@@ -1174,9 +1200,21 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       } else {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ Webhook error:', error);
-      alert(`Video oluşturma isteği gönderilirken bir hata oluştu.\n\nHata: ${error}`);
+      
+      // Network/CORS hataları için özel mesaj
+      if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+        alert('❌ N8N Sunucusuna Bağlanılamadı!\n\n' +
+              'Olası sebepler:\n' +
+              '• N8N sunucusu kapalı olabilir\n' +
+              '• CORS ayarları engelliyor olabilir\n' +
+              '• İnternet bağlantınızı kontrol edin\n\n' +
+              '📋 Çözüm:\n' +
+              'N8N sunucunuzun çalıştığından emin olun.');
+      } else {
+        alert(`Video oluşturma isteği gönderilirken bir hata oluştu.\n\nHata: ${error.message || error}`);
+      }
     } finally {
       setIsGenerating(false);
     }
