@@ -92,8 +92,8 @@ export default function KVKK({ onBack }: KVKKProps) {
             <h2 className="text-2xl font-semibold text-white mb-4">7. Başvuru Yöntemi</h2>
             <p className="text-gray-300 leading-relaxed">
               Haklarınızı kullanmak için aşağıdaki iletişim kanallarından bize ulaşabilirsiniz:<br /><br />
-              <strong>E-posta:</strong> kvkk@influencerseninle.com<br />
-              <strong>Adres:</strong> İstanbul, Türkiye<br /><br />
+              <strong>E-posta:</strong> influencerseninle@gmail.com<br />
+              <strong>Adres:</strong> Ankara, Türkiye<br /><br />
               Başvurularınız en geç 30 gün içinde ücretsiz olarak sonuçlandırılacaktır.
             </p>
           </section>
