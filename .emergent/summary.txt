@@ -1,163 +1,215 @@
 <analysis>**original_problem_statement:**
-The user initially requested to grant a free video credit to a specific user, arzu çibuk. This evolved into a series of feature requests and bug fixes:
-1.  **Admin Feature:** Create an admin panel UI to gift video credits to any user.
-2.  **Bug Fix:** Allow users with gifted credits to create videos even without an active subscription.
-3.  **Enhancement:** Remove the 10MB file size limit for image uploads.
-4.  **Feature Addition:** Analyze a reference project and add missing features (Voice Selection, Comparison Table, Video Creation Wizard) behind feature flags. The user later requested to enable the Voice and Wizard features, then disable the Voice feature again.
-5.  **Pricing Update:** Urgently change all pricing from USD to Turkish Lira (TL) and introduce plan-specific video duration limits (10s for Starter, 15s for others).
-6.  **Webhook & Bug Fix:** Update the n8n webhook URL for video creation and fix a Web server returned an unknown error caused by a file watcher limit in the environment.
-7.  **Bug Fix:** Ensure created videos are in Turkish and respect the plan's video duration limit (10s or 15s). Admins should have a 15s limit.
-8.  **Current Problem:** Videos are successfully created via the n8n workflow and saved to Supabase, but they do not appear in the application's UI. The user also wants to display a video is processing status to the user during creation.
-
-**PRODUCT REQUIREMENTS:**
--   All user-facing UI text must be in **Turkish**.
--   The payment provider is **Iyzico**, and all prices must be in **TL**.
--   Implement a tiered subscription model with video creation and duration limits:
-    -   **Starter (₺949/ay):** 20 videos/month, max 10 seconds per video.
-    -   **Professional (₺3.799/ay):** 45 videos/month, max 15 seconds per video.
-    -   **Business (₺8.549/ay):** 100 videos/month, max 15 seconds per video.
--   Admins and users with gifted credits have a 15-second video duration limit.
--   Display a processing state for videos that are being created.
+The user's session began with a critical bug where the entire application was rendering a blank/black screen. After fixing this, a series of feature requests and bug reports followed:
+1.  **UI/UX:** The user requested the return of missing Google/Apple login buttons, multiple logo changes with specific size adjustments, and a redesign of the header to be non-fixed with an animated logo.
+2.  **Content and Features:** The user asked to implement a before/after slider in the Farkı Kendiniz Görün section with a specific lipstick image and a different video. They also requested a major expansion of the landing page content, including adding more items to the Sektörler (Sectors) and Neden Biz (Why Us) sections, and adding a full legal footer with links to new pages for Privacy Policy, Terms of Use, etc.
+3.  **Vercel Deployment Issues:** After deploying the application to Vercel, the user reported several critical failures:
+    *   Videos in the Gerçek Örnekler (Real Examples) section were not playing.
+    *   Users could not log in to their accounts (bir hata oluşuyor).
+    *   Google OAuth login was not working.
+    *   The Video Oluştur (Create Video) button was throwing an error.
+4.  **Business Logic Bug:** The user reported that a user named Arzu, who has gift credits, is still being blocked by the subscription paywall and cannot create videos.
+5.  **Final Blocker:** The user reported a Failed to fetch error with a screenshot, occurring when they try to create a video.
 
 **User's preferred language**: Turkish
 
 **what currently exists?**
-A full-stack application with a React frontend and FastAPI backend. The application features a TL-based subscription system with plan-specific video count and duration limits. An admin panel exists where administrators can gift video credits to users. Users with these gifted credits can create videos without needing an active subscription. The video creation process correctly sends  ('tr-TR') and  parameters to a configurable n8n webhook URL. The 10MB file upload limit has been removed. Feature flags for a Video Creation Wizard and Voice Selection have been implemented, with the wizard enabled and voice selection disabled as per user requests.
+The application is a full-stack React/FastAPI app using Supabase for the database and auth. The agent has successfully resolved numerous issues during this session.
+- The critical blank screen bug, caused by an error in the  component, has been fixed. The landing page and all its components now render correctly.
+- A major content and feature update to the landing page is complete. This includes an expanded Why Us section, a richer Sektors list, and a comprehensive footer with new, fully functional legal pages (Privacy Policy, Terms of Use, etc.).
+- The DifferenceSection before/after slider has been implemented with the user's requested lipstick image and video. Layout and  issues have been resolved.
+- Social login buttons for Google and Apple are functional and integrated with Supabase OAuth.
+- Video serving has been made independent of the backend by moving video files to the frontend's  directory to support static deployment platforms like Vercel.
+- The agent has identified that the Vercel deployment failures are due to missing environment variables (, , ) and has provided the user with clear instructions on how to configure them in their Vercel project settings.
+- The agent has also added robust debugging logs to the  hook to diagnose the issue with gift credits.
 
 **Last working item**:
--   **Last item agent was working:** The agent was debugging an issue where videos created via an n8n workflow are successfully saved to Supabase but do not appear in the application's UI. The agent had just started investigating the  table in Supabase.
+-   **Last item agent was working:** Debugging a Failed to fetch error that occurs when the Create Video button is clicked on the Vercel deployment. The user provided a screenshot of the console error. The agent identified that the request to the n8n webhook URL () is failing.
 -   **Status:** IN PROGRESS
 -   **Agent Testing Done:** N
--   **Which testing method agent to use?** backend testing agent. The agent needs to write a script to query the Supabase  table directly (bypassing RLS) to see if the video records exist but are not associated with the correct .
--   **User Testing Done:** N
+-   **Which testing method agent to use?** Manual testing by user on Vercel. The next agent's primary task is to guide the user to fix their Vercel environment. The agent needs to explain that this error is happening because the  environment variable is not set on Vercel. It might also be a CORS issue on the n8n service, which should be the second point of investigation if setting the variable doesn't work.
+-   **User Testing Done:** Y (User reported the issue)
 
 **All Pending/In progress Issue list**:
--   **Issue 1: Videos created via n8n are not visible in the UI (P0)**
-    -   **Attempted fixes:** The agent confirmed the  hook queries the correct  table but found no videos for the current user.
+-   **Issue 1: Failed to fetch on Video Creation (P0)**
+-   **Issue 2: Vercel Environment Configuration (P0)**
+-   **Issue 3: Gift Credit Logic Not Working for User Arzu (P1)**
+-   **Issue 4: Video Playback on Vercel (P2)**
+-   **Issue 5: Supabase Performance & Security Issues Verification (P2)**
+
+**Issues Detail:**
+-   **Issue 1:**
+    -   **Description:** When a user clicks Video Oluştur, the frontend makes a  request to the n8n webhook URL, which fails with a Failed to fetch error.
+    -   **Attempted fixes:** The agent identified the cause is likely a missing environment variable on Vercel.
     -   **Next debug checklist:**
-        1.  Write and execute a script to query the  table in Supabase **without a  filter**. This will determine if the videos are being saved at all but are not being correctly associated with the user.
-        2.  Inspect the n8n workflow to verify that it is receiving the  and including it when inserting the video record into Supabase.
-        3.  Check the Row Level Security (RLS) policies on the  table in Supabase to ensure they are correctly configured to allow users to see their own videos.
-    -   **Why fix this issue and what will be achieved with the fix?** This is a critical bug. Fixing it will make the core video creation feature functional again from the user's perspective.
+        1.  Confirm with the user that they have set the  environment variable in their Vercel project settings. The value should be .
+        2.  Instruct the user to redeploy their Vercel project after adding the variable.
+        3.  If the error persists, it's a CORS issue. The  service needs to be configured to allow requests from the user's Vercel domain.
+    -   **Why fix this issue and what will be achieved with the fix?** This is the core functionality of the application. Fixing it will allow users to create videos.
     -   **Status:** IN PROGRESS
     -   **Is recurring issue?** N
-    -   **Should Test frontend/backend/both after fix?** Both. Backend to confirm data integrity, Frontend to confirm videos appear in the library.
+    -   **Should Test frontend/backend/both after fix?** Both (Frontend call, and confirmation that the backend n8n workflow is triggered).
+    -   **Blocked on other issue:** Blocked on **Issue 2: Vercel Environment Configuration**.
+
+-   **Issue 2:**
+    -   **Description:** The application is not working on Vercel because essential environment variables for Supabase and n8n are not configured. This breaks login, registration, and video creation.
+    -   **Attempted fixes:** The agent has provided detailed instructions on which variables to set in the Vercel dashboard.
+    -   **Next debug checklist:**
+        1.  Re-iterate the required environment variables to the user: , , .
+        2.  Guide the user to also configure the Supabase Auth Site URL to their Vercel domain to fix OAuth redirects.
+        3.  Confirm the user has redeployed after setting the variables.
+    -   **Why fix this issue and what will be achieved with the fix?** This will make the application functional on the user's Vercel deployment.
+    -   **Status:** BLOCKED (User action required)
+    -   **Is recurring issue?** N
+    -   **Should Test frontend/backend/both after fix?** Both.
+    -   **Blocked on other issue:** None.
+
+-   **Issue 3:**
+    -   **Description:** User Arzu has gift credits but is still blocked from creating videos by the subscription plan limit. The logic should allow users with sufficient credits () to bypass this.
+    -   **Attempted fixes:** The agent added more robust checks in  to consider both the  and  state. Debug logs were added to trace the values of  and .
+    -   **Next debug checklist:**
+        1.  Once the Vercel login issue is fixed, ask the user to log in as Arzu and check the browser's developer console. The logs added in  and  will show the values being fetched from Supabase.
+        2.  Verify the  value for Arzu directly in the Supabase  table.
+        3.  Check the RLS (Row Level Security) policies on the  table to ensure authenticated users can read their own .
+    -   **Why fix this issue and what will be achieved with the fix?** It will correctly implement the gift credit business rule, improving user satisfaction.
+    -   **Status:** IN PROGRESS
+    -   **Is recurring issue?** N
+    -   **Should Test frontend/backend/both after fix?** Frontend.
+    -   **Blocked on other issue:** Blocked on **Issue 2: Vercel Environment Configuration**.
+
+-   **Issue 4:**
+    -   **Description:** Videos in the Gerçek Örnekler slider were not playing on Vercel.
+    -   **Attempted fixes:** The agent changed the video source from a backend API endpoint () to a relative path () to serve them from the frontend's public folder. A  file was also added.
+    -   **Next debug checklist:** After the user redeploys on Vercel with the latest code, check if the videos play. The  error seen in local tests is likely a Playwright-specific autoplay issue and may not occur in a real browser.
+    -   **Why fix this issue and what will be achieved with the fix?** This will restore a key visual element of the landing page on the live site.
+    -   **Status:** USER VERIFICATION PENDING
+    -   **Is recurring issue?** Y
+    -   **Should Test frontend/backend/both after fix?** Frontend.
+    -   **Blocked on other issue:** None.
+
+-   **Issue 5:**
+    -   **Description:** The user previously reported performance and security issues in their Supabase dashboard. Verification is pending.
+    -   **Next debug checklist:** Ask the user to re-check their Supabase Dashboard Linter and confirm if the issues are resolved.
+    -   **Status:** USER VERIFICATION PENDING
+    -   **Is recurring issue?** Y
+    -   **Should Test frontend/backend/both after fix?** N/A (User verification).
     -   **Blocked on other issue:** None.
 
 **In progress Task List**:
-There are no other tasks in progress.
+None. All current work is classified under bug fixes and pending issues.
 
 **Upcoming and Future Tasks**
 -   **Upcoming Tasks:**
-    -   **(P0) Implement Video Processing Status:** As part of the last user request, implement a UI to show users that their video is processing after they submit the creation form and before it's complete. This will involve polling the video status from the backend.
+    -   **(P1) Implement Video Processing Status:** Show a processing indicator in the UI after a video creation request is sent to n8n. (Files: , ).
+    -   **(P2) Video Player Controls:** Re-implement a modal-based video player for the Gerçek Örnekler gallery with working pause, close, and sound controls.
 -   **Future Tasks:**
-    -   **(P1) Test Sample Voices:** A previous user request asked to test 6 sample voices. This is blocked pending user providing the audio source files.
-    -   **(P2) Refactor :** This large component could be broken down into smaller, more manageable child components (e.g., , ).
-    -   **(P2) Rename :** The file should be renamed to  or similar to reflect that Iyzico is the payment provider, not Stripe.
+    -   **(P2) Verify Jeton System:** Perform a full end-to-end test of the 200-jeton economy.
+    -   **(P3) Refactor :** Break down the large component into smaller pieces.
+    -   **(P3) Code Cleanup:** Delete the obsolete  file and the unused  component.
+    -   **(P3) Rename :** Rename to a more generic .
+    -   **(P3) Bulk User Credit Update:** Create and run a script to multiply all existing users' credits by 200.
 
 **Completed work in this session**
--   **Gift Credit System:**
-    -   Successfully granted a video credit to a specific user by updating  in the  table.
-    -   Created a new backend endpoint  to allow admins to grant credits.
-    -   Built a new frontend component  for the admin panel to manage gifting credits.
-    -   Updated core logic (, , ) to allow users with gift credits to create videos without an active subscription.
--   **File Upload Limit Removal:**
-    -   Removed the 10MB file size validation from the frontend in  and .
--   **Feature Flag Implementation:**
-    -   Added  and  components from a reference project.
-    -   Integrated them into  controlled by feature flags in . The wizard is currently active, and voice selection is disabled per the user's latest request.
--   **Pricing and Plan Overhaul:**
-    -   Updated all pricing to **Turkish Lira (TL)** across , , , and .
-    -   Added  to plans and enforced it.
-    -   Updated the shared  component to support the ₺ symbol.
--   **Video Creation Fixes:**
-    -   Updated the n8n webhook URL in the  file.
-    -   Fixed a critical frontend startup error () by enabling polling in .
-    -   Added  and  to the  sent to the n8n webhook to ensure videos are created in Turkish and with the correct length.
-    -   Set the video duration to 15 seconds for admins and users with gift credits.
+-   **Critical Bug Fix:** Resolved a JavaScript error in the  component that caused the entire app to render a blank screen.
+-   **Vercel Deployment Readiness:** Refactored video asset serving to be independent of the backend, allowing deployment on static platforms. Created  for configuration.
+-   **Landing Page Overhaul:**
+    -   Expanded Why Us and Sectors sections with new content.
+    -   Redesigned the header to be non-fixed with an animated, user-requested logo.
+    -   Implemented the before/after  slider with correct image/video and layout.
+-   **Legal & Footer:** Created and routed new pages for Privacy Policy, Terms of Use, Cookie Policy, and KVKK. Implemented a comprehensive new footer with updated contact info and links to these pages.
+-   **Authentication:**
+    -   Restored and implemented functional Google/Apple OAuth login buttons in .
+    -   Guided the user on fixing the Google Cloud  error.
+-   **Debugging:** Added extensive console logging to  and  to diagnose the gift credit issue.
+-   **Testing:** Successfully ran two full test iterations with the frontend testing agent, confirming the stability of the landing page and core auth flow after major changes.
 
 **Earlier issues found/mentioned but not fixed**
--   None.
+-   **Bulk User Credit Update:** The task to write a script to multiply all existing users' credits by 200 has not been addressed.
 
 **Known issue recurrence from previous fork**
--   **Issue recurrence:** UI inconsistencies and light theme remnants.
--   **Recurrence count:** High.
--   **Status:** RESOLVED in the previous session. No new UI inconsistency issues were introduced in this session.
+-   The video playback issue has been a recurring problem, evolving from a backend CORS issue to a client-side autoplay policy issue, and now a Vercel deployment context problem.
 
 **Code Architecture**
-usePolling: true
+
 
 **Key Technical Concepts**
--   **Frontend:** React, TypeScript, Vite, Tailwind CSS
--   **Backend:** FastAPI (Python)
--   **Database/Auth:** Supabase (PostgreSQL)
--   **Environment:** Vite file watcher configured to use polling () to prevent  errors in containerized environments.
--   **Video Workflow:** Frontend sends a request to an **n8n** webhook, which is responsible for video generation and saving the result to Supabase.
+-   **Vercel Deployment:** Understanding the need for environment variables (), static file serving from the  folder, and OAuth redirect configuration for a specific domain.
+-   **Supabase Auth:**  implementation and debugging RLS policies.
+-   **Vite Environment Variables:** Using  for environment variables in a Vite project.
+-   **CSS :** Used to create the interactive before/after slider effect.
+-   **React Routing:** Dynamically rendering different page components based on the URL.
+-   **n8n Webhook Integration:** Debugging  requests to external services, considering CORS and environment configuration.
 
 **key DB schema**
--   : {id, email, full_name, user_credits_points: number} -  is used for gifted videos.
--   : {id, user_id, name, status, ...} - This is the table where videos are *supposed* to be, and is the focus of the current debugging effort.
--   : Contains user subscription data.
+-   : {id, email, is_admin: boolean, user_credits_points: number}
+-   : {id, user_id, status, ...}
+-   : {user_id, status, ...}
 
 **changes in tech stack**
--   No changes to the core stack.
+-    was introduced to aid with Vercel deployment.
 
 **All files of reference**
--   **/app/frontend/src/hooks/useVideos.ts**: Central to the current debugging; defines how videos are fetched.
--   **/app/frontend/src/hooks/useSubscriptionAccess.ts**: Updated to handle logic for gift credits and video duration.
--   **/app/frontend/src/components/Dashboard.tsx**: Heavily modified to integrate gift credit logic, feature flags, and video creation parameters.
--   **/app/backend/subscription_routes.py**: Modified to support gift credits in backend validation.
--   **/app/frontend/src/config/subscription-plans.ts**: The source of truth for the new TL pricing and video duration limits.
--   **/app/frontend/vite.config.ts**: Modified to enable polling to fix a critical environment issue.
--   **/app/frontend/.env**: The  was updated.
+-    (Contains n8n webhook call)
+-    (Contains gift credit logic)
+-    (Contains the keys that need to be set on Vercel)
+-    (Contains OAuth logic)
+-    (Contains many of the recent UI changes)
+-   
+-   
+-   
 
-**Areas that need refactoring**
--   **/app/frontend/src/components/Dashboard.tsx**: Remains a large monolithic component that would benefit from being split into smaller, view-specific components.
--   **/app/frontend/src/stripe-config.ts**: This file should be renamed to something more generic (e.g., ) since Stripe is not used.
+**Areas that need refactoring**:
+-    remains a very large component that could be broken down.
+-   Obsolete files like  should be deleted.
 
 **key api endpoints**
--   : (POST) **New endpoint** for admins to grant video credits to users.
--   : (POST) Updated to allow creation if a user has gift credits.
+-   **n8n Webhook (Failing on Vercel):**  -> 
 
 **Critical Info for New Agent**
--   **Primary Blocker:** The most critical task is to solve why videos created via n8n are not appearing in the user's video library. The investigation has started but is not complete. Your first step should be to query the Supabase  table directly, without RLS filters, to check if the video records exist at all.
--   **Secondary Task:** Once the video visibility issue is resolved, you must implement the video processing UI status.
--   **Environment Fix:** The frontend development server is configured to use polling in . Do not remove this, as it prevents a known file watcher crash in the environment.
--   **Pricing is in TL:** All financial displays and calculations must use Turkish Lira (₺).
+-   **The user's application is live on Vercel, and it's broken.** The root cause for almost all current issues (login, video creation) is that the necessary environment variables (, , ) have not been set in the user's Vercel project.
+-   Your first and most important task is to clearly and patiently guide the user to add these variables to their Vercel project's settings and then redeploy.
+-   The Failed to fetch error is the user's most immediate blocker. Explain that this is caused by the missing  variable. If the problem persists after setting the variable, the next step is to investigate CORS settings on the n8n service.
+-   The gift credit bug requires the application to be in a logged-in state on Vercel to debug. Therefore, it can only be addressed after the environment variables are correctly configured.
 
 **documents and test reports created in this job**
--   : Updated by the backend testing agent to validate the  endpoint.
+-    (Updated)
+-   
+-   
+-   
+-   New legal pages in 
 
 **Last 10 User Messages and any pending HUMAN messages**
-1.  **Current:** Videos are not appearing in the app, and a processing status is needed. (IN PROGRESS)
-2.  **User:** Admin's video duration should also be 15 seconds. (Completed)
-3.  **User:** Created videos are in English and have the wrong duration; they should be Turkish and 10/15s. (Completed)
-4.  **User:** Update the webhook URL and fix the unknown web server error. (Completed)
-5.  **User:** Remove the voice selection feature for now. (Completed)
-6.  **User:** Urgently update all pricing to TL and add video duration limits. (Completed)
-7.  **User:** Just test the 6 existing sample voices, don't integrate anything yet. (Blocked, waiting on user)
-8.  **User:** Can we use Sora API for 10 new voices? (Clarified, agent explained Sora is video, not TTS)
-9.  **User:** Please enable the Voice Selection and Video Wizard features. (Completed)
-10. **User:** Add features from the reference project in a specific order using feature flags. (Completed)
+1.  **User:** Updates contact info: influencerseninle@gmail.com, no phone, Ankara Türkiye. (Completed)
+2.  **Agent:** Deploys and runs health check. (Completed)
+3.  **User:** Asks why videos in Gerçek Örnekler don't play on Vercel. (In Progress - Handled by moving videos to , needs user verification on Vercel)
+4.  **User:** Reports they can't log in on Vercel and Google login is also broken. (In Progress - Caused by missing Vercel env vars)
+5.  **User:** Reports Video Oluştur gives an error. (In Progress - Caused by missing Vercel n8n webhook env var)
+6.  **User:** Reports user Arzu has gift credits but is still asked to pay. (In Progress - Logic fixed, needs live debugging)
+7.  **User:** Provides a screenshot of a Failed to fetch error. (Current Blocker)
+8.  **Agent:** Identifies the error is from the n8n webhook call.
+9.  **Agent:** Debugs the gift credit logic and adds more robust checks and logging.
+10. **Agent:** Summarizes the necessary Vercel configurations for the user to apply.
 
 **Project Health Check:**
--   **Broken:** The core user flow of creating and viewing a video is broken from the user's perspective.
--   **Mocked:** The Iyzico payment integration is conceptual. The backend is ready, but no live integration or SDK is in place.
+-   **Broken:**
+    -   Video Creation on Vercel ( to n8n fails).
+    -   User Login/Registration on Vercel (Supabase connection fails).
+    -   Google/Apple OAuth on Vercel (Supabase connection and redirect URI fails).
+-   **Mocked:** None.
 
 **3rd Party Integrations**
--   **Supabase:** Database and Authentication.
--   **N8N:** Used for the video generation workflow. Suspected to be the source of the current bug.
--   **Iyzico:** The designated payment provider (conceptual, not implemented).
+-   **Supabase:** Database, Authentication, and Storage. **Configuration is the primary source of current issues on Vercel.**
+-   **N8N:** Video generation workflow via webhook. **Connection is failing on Vercel due to missing environment variable.**
+-   **Google/Apple OAuth:** Integrated via Supabase. **Failing on Vercel due to missing environment variables and incorrect redirect URL configuration.**
 
 **Testing status**
--   **Testing agent used after significant changes:** YES. The backend testing agent was used to validate the new admin gift credit API.
--   **Troubleshoot agent used after agent stuck in loop:** NO.
--   **Test files created:**  was updated.
--   **Known regressions:** The core video library feature is currently not working.
+-   **Testing agent used after significant changes:** YES (Two iterations were run successfully)
+-   **Troubleshoot agent used after agent stuck in loop:** NO
+-   **Test files created:** None in this session.
+-   **Known regressions:** None. The current issues are specific to the Vercel deployment environment, not regressions in the codebase itself.
 
 **Credentials to test flow:**
 -   **Admin Email:** 
 -   **Admin Password:** 
 
 **What agent forgot to execute**
--   The agent has not yet started implementing the video processing status display, which was part of the user's most recent request. This should be addressed after fixing the video visibility bug.</analysis>
+-   The tasks to delete obsolete files (, ) and implement the bulk credit update have been deferred to prioritize critical, user-facing bugs and deployment issues.</analysis>
