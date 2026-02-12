@@ -286,9 +286,8 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
             <div>
               <h4 className="text-white font-semibold mb-4">İletişim</h4>
               <ul className="space-y-2">
-                <li className="text-gray-400 text-sm">📧 destek@influencerseninle.com</li>
-                <li className="text-gray-400 text-sm">📱 +90 (212) 000 00 00</li>
-                <li className="text-gray-400 text-sm">📍 İstanbul, Türkiye</li>
+                <li className="text-gray-400 text-sm">📧 influencerseninle@gmail.com</li>
+                <li className="text-gray-400 text-sm">📍 Ankara, Türkiye</li>
               </ul>
               <div className="flex gap-4 mt-4">
                 <a href="#" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors">
