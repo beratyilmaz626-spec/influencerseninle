@@ -177,26 +177,34 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
         </div>
       </section>
 
-      {/* Sectors Section - Simple Grid */}
+      {/* Sectors Section - Extended Grid */}
       <section id="sectors" className="py-20 bg-[#030712]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-white mb-4">
               Her Sektör İçin <span className="text-neon-purple">Çözüm</span>
             </h2>
-            <p className="text-gray-400">Hangi sektörde olursanız olun, size özel içerikler</p>
+            <p className="text-gray-400 text-lg">Hangi sektörde olursanız olun, size özel içerikler üretiyoruz</p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
             {sectors.map((sector, index) => (
               <div
                 key={index}
-                className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-neon-cyan/30 transition-colors text-center cursor-pointer"
+                className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-neon-cyan/30 hover:bg-white/10 transition-all text-center cursor-pointer group"
               >
-                <div className="text-4xl mb-3">{sector.icon}</div>
+                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{sector.icon}</div>
                 <p className="text-white font-medium">{sector.name}</p>
               </div>
             ))}
+          </div>
+
+          {/* +50 Sektör Badge */}
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 border border-neon-cyan/30">
+              <span className="text-2xl font-bold text-neon-cyan">+50</span>
+              <span className="text-gray-300">farklı sektörde hizmet veriyoruz</span>
+            </div>
           </div>
         </div>
       </section>
