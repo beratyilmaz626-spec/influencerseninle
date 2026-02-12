@@ -104,33 +104,8 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
             onPointerLeave={() => setIsDragging(false)}
           >
             <div className="absolute inset-[2px] rounded-3xl overflow-hidden bg-[#0a0f1a]">
-              {/* Before - Product Photo */}
+              {/* After - UGC Video (base layer - shows on LEFT) */}
               <div className="absolute inset-0">
-                <img 
-                  src="/images/product-before.jpeg" 
-                  alt="Ürün Fotoğrafı" 
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                
-                {/* Before Label */}
-                <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
-                  <div className="px-4 py-2 rounded-xl bg-red-500/20 border border-red-500/30">
-                    <span className="text-sm md:text-base font-semibold text-red-400">
-                      📸 Sıradan Fotoğraf
-                    </span>
-                  </div>
-                  <p className="text-gray-500 text-xs md:text-sm mt-2">
-                    Düşük etkileşim
-                  </p>
-                </div>
-              </div>
-
-              {/* After - UGC Video */}
-              <motion.div 
-                className="absolute inset-0"
-                style={{ clipPath }}
-              >
                 <video
                   ref={videoRef}
                   className="w-full h-full object-cover"
@@ -158,8 +133,8 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 
-                {/* After Label */}
-                <div className="absolute bottom-6 right-6 md:bottom-10 md:right-10 text-right">
+                {/* After Label - LEFT side */}
+                <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
                   <div className="px-4 py-2 rounded-xl bg-neon-cyan/20 border border-neon-cyan/30 inline-block">
                     <span className="text-sm md:text-base font-semibold text-neon-cyan">
                       🔥 AI UGC Video
@@ -172,7 +147,47 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
 
                 {/* Sound toggle */}
                 <button
-                  className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/50 flex items-center justify-center border border-white/20 hover:bg-black/70 transition-colors z-20"
+                  className="absolute top-4 left-4 w-10 h-10 rounded-full bg-black/50 flex items-center justify-center border border-white/20 hover:bg-black/70 transition-colors z-20"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsMuted(!isMuted);
+                    if (videoRef.current) {
+                      videoRef.current.muted = !isMuted;
+                    }
+                  }}
+                >
+                  {isMuted ? (
+                    <VolumeX className="w-4 h-4 text-white" />
+                  ) : (
+                    <Volume2 className="w-4 h-4 text-neon-cyan" />
+                  )}
+                </button>
+              </div>
+
+              {/* Before - Product Photo (clipped layer - shows on RIGHT) */}
+              <motion.div 
+                className="absolute inset-0"
+                style={{ clipPath }}
+              >
+                <img 
+                  src="/images/product-before.jpeg" 
+                  alt="Ürün Fotoğrafı" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                
+                {/* Before Label - RIGHT side */}
+                <div className="absolute bottom-6 right-6 md:bottom-10 md:right-10 text-right">
+                  <div className="px-4 py-2 rounded-xl bg-red-500/20 border border-red-500/30">
+                    <span className="text-sm md:text-base font-semibold text-red-400">
+                      📸 Sıradan Fotoğraf
+                    </span>
+                  </div>
+                  <p className="text-gray-500 text-xs md:text-sm mt-2">
+                    Düşük etkileşim
+                  </p>
+                </div>
+              </motion.div>
                   onClick={(e) => {
                     e.stopPropagation();
                     setIsMuted(!isMuted);
