@@ -17,6 +17,7 @@ export function useAuth() {
   // Kullanıcı profilini getir
   const fetchUserProfile = async (userId: string) => {
     setProfileLoading(true);
+    console.log('👤 fetchUserProfile başladı, userId:', userId);
     try {
       if (!supabase) {
         console.error('Supabase client not initialized. Please check environment variables.');
@@ -30,12 +31,15 @@ export function useAuth() {
         .eq('id', userId)
         .maybeSingle();
 
+      console.log('👤 Supabase users query result:', { data, error });
+
       if (error) {
         throw error;
       }
 
       // Eğer kullanıcı profili bulunamazsa, yeni bir profil oluştur
       if (!data) {
+        console.log('👤 Kullanıcı profili bulunamadı, yeni oluşturuluyor...');
         const { data: userData } = await supabase.auth.getUser();
         if (userData.user) {
           const newProfile = {
@@ -62,6 +66,9 @@ export function useAuth() {
         }
       }
 
+      console.log('👤 userProfile set ediliyor:', data);
+      console.log('👤 is_admin:', data?.is_admin);
+      console.log('👤 user_credits_points:', data?.user_credits_points);
       setUserProfile(data || null);
     } catch (error) {
       console.error('Kullanıcı profili getirilemedi:', error);
