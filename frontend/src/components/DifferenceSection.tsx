@@ -228,23 +228,23 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
 
           {/* Stats row */}
           <motion.div 
-            className="mt-12 grid grid-cols-3 gap-4 max-w-2xl mx-auto"
+            className="mt-8 sm:mt-12 grid grid-cols-3 gap-2 sm:gap-4 max-w-2xl mx-auto px-2"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
             viewport={{ once: true }}
           >
-            <div className="text-center p-4 rounded-2xl bg-white/5 border border-white/10">
-              <div className="text-2xl md:text-3xl font-black text-neon-cyan mb-1">%300+</div>
-              <div className="text-xs md:text-sm text-gray-400">Etkileşim Artışı</div>
+            <div className="text-center p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10">
+              <div className="text-xl sm:text-2xl md:text-3xl font-black text-neon-cyan mb-0.5 sm:mb-1">%300+</div>
+              <div className="text-[10px] sm:text-xs md:text-sm text-gray-400">Etkileşim Artışı</div>
             </div>
-            <div className="text-center p-4 rounded-2xl bg-white/5 border border-white/10">
-              <div className="text-2xl md:text-3xl font-black text-neon-purple mb-1">2 dk</div>
-              <div className="text-xs md:text-sm text-gray-400">Video Üretim</div>
+            <div className="text-center p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10">
+              <div className="text-xl sm:text-2xl md:text-3xl font-black text-neon-purple mb-0.5 sm:mb-1">2 dk</div>
+              <div className="text-[10px] sm:text-xs md:text-sm text-gray-400">Video Üretim</div>
             </div>
-            <div className="text-center p-4 rounded-2xl bg-white/5 border border-white/10">
-              <div className="text-2xl md:text-3xl font-black text-neon-pink mb-1">%90</div>
-              <div className="text-xs md:text-sm text-gray-400">Maliyet Tasarrufu</div>
+            <div className="text-center p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10">
+              <div className="text-xl sm:text-2xl md:text-3xl font-black text-neon-pink mb-0.5 sm:mb-1">%90</div>
+              <div className="text-[10px] sm:text-xs md:text-sm text-gray-400">Maliyet Tasarrufu</div>
             </div>
           </motion.div>
         </motion.div>
