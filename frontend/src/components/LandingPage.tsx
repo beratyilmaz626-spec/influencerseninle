@@ -45,33 +45,33 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
 
       {/* Header - Scrolls away with page, transparent background */}
       <header className="relative z-50">
-        <nav className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20 sm:h-32 md:h-52">
+        <nav className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16 sm:h-32 md:h-52">
             {/* Logo with animation */}
-            <div className="flex items-center space-x-1 sm:space-x-2 cursor-pointer">
+            <div className="flex items-center space-x-1 cursor-pointer flex-shrink-0">
               <img 
                 src="/images/logo.png" 
                 alt="InfluencerSeninle Logo" 
-                className="w-12 h-12 sm:w-24 sm:h-24 md:w-48 md:h-48 object-contain animate-float drop-shadow-[0_0_25px_rgba(0,240,255,0.5)]"
+                className="w-8 h-8 sm:w-24 sm:h-24 md:w-48 md:h-48 object-contain animate-float drop-shadow-[0_0_25px_rgba(0,240,255,0.5)]"
               />
-              <div className="text-base sm:text-xl md:text-2xl font-bold">
+              <div className="text-sm sm:text-xl md:text-2xl font-bold whitespace-nowrap">
                 <span className="text-white">Influencer</span>
                 <span className="text-neon-cyan">Seninle</span>
               </div>
             </div>
 
             {/* Navigation */}
-            <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="flex items-center space-x-1 sm:space-x-3 flex-shrink-0">
               <Button 
                 variant="ghost" 
                 onClick={() => setShowAuthModal(true)}
-                className="text-xs sm:text-sm px-2 sm:px-4"
+                className="text-[11px] sm:text-sm px-2 sm:px-4 h-8 sm:h-10"
               >
                 Giriş Yap
               </Button>
               <Button 
                 onClick={() => setShowAuthModal(true)}
-                className="text-xs sm:text-sm px-3 sm:px-4"
+                className="text-[11px] sm:text-sm px-2 sm:px-4 h-8 sm:h-10"
               >
                 Başlayın
               </Button>
