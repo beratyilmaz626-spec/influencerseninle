@@ -1,226 +1,238 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Play, ArrowRight, Volume2, VolumeX } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { motion } from 'framer-motion';
+import { Play, ArrowRight, Volume2, VolumeX, Image, Video } from 'lucide-react';
 
 interface DifferenceSectionProps {
   onGetStarted?: () => void;
 }
 
 export default function DifferenceSection({ onGetStarted }: DifferenceSectionProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [containerWidth, setContainerWidth] = useState(0);
-  const [videoLoaded, setVideoLoaded] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
 
-  // Use video from public folder for better compatibility
+  // Use video from public folder
   const videoUrl = '/videos/ugc_video_2.mp4';
 
-  const x = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 300, damping: 30 });
-
-  useEffect(() => {
-    const updateWidth = () => {
-      if (containerRef.current) {
-        const width = containerRef.current.offsetWidth;
-        setContainerWidth(width);
-        // Set initial position to 50%
-        if (x.get() === 0 && width > 0) {
-          x.set(width * 0.5);
-        }
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
       }
-    };
-    
-    // Initial setup
-    updateWidth();
-    
-    // Also update after a short delay for layout
-    const timer = setTimeout(updateWidth, 100);
-    
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (containerRef.current) {
-        const width = containerRef.current.offsetWidth;
-        setContainerWidth(width);
-        const currentPercent = x.get() / containerWidth;
-        x.set(width * currentPercent);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [containerWidth]);
-
-  const handleDrag = (event: any, info: any) => {
-    const newX = Math.max(0, Math.min(containerWidth, x.get() + info.delta.x));
-    x.set(newX);
+      setIsPlaying(!isPlaying);
+    }
   };
 
-  const clipPath = useTransform(springX, (value) => {
-    const percent = containerWidth > 0 ? (value / containerWidth) * 100 : 50;
-    // Clip from left - video shows on right side
-    return `inset(0 0 0 ${percent}%)`;
-  });
-
-  const sliderPosition = useTransform(springX, (value) => {
-    return containerWidth > 0 ? (value / containerWidth) * 100 : 50;
-  });
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
 
   return (
     <section 
       id="difference" 
       className="relative py-20 md:py-32 overflow-hidden bg-[#030712]"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Background effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-neon-cyan/5 rounded-full blur-[100px]" />
+        <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-neon-purple/5 rounded-full blur-[100px]" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
-          <motion.h2 
-            className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4"
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6"
           >
-            Farkı <span className="text-neon-cyan">Kendiniz</span> Görün
+            <span className="text-neon-cyan text-sm font-medium">✨ PROJELER</span>
+          </motion.div>
+          
+          <motion.h2 
+            className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true }}
+          >
+            Fotoğraf Ürününden <span className="text-neon-cyan">UGC Videoya</span>
           </motion.h2>
           <motion.p 
             className="text-gray-400 text-lg max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            Sıradan ürün fotoğrafından etkileyici UGC videoya dönüşüm
+            Sadece ürün fotoğrafınızı yükleyin, gerçek insanlarla profesyonel UGC videoları oluşturun.
           </motion.p>
         </div>
 
-        {/* Comparison Slider */}
+        {/* Before/After Comparison - Side by Side */}
         <motion.div 
-          className="relative max-w-4xl mx-auto"
+          className="relative max-w-6xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          {/* Animated border */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink rounded-3xl opacity-30" />
-          
-          {/* Main container */}
-          <div 
-            ref={containerRef}
-            className="relative aspect-[4/3] md:aspect-video rounded-3xl overflow-hidden cursor-ew-resize select-none touch-none"
-            onPointerDown={() => setIsDragging(true)}
-            onPointerUp={() => setIsDragging(false)}
-            onPointerLeave={() => setIsDragging(false)}
-          >
-            <div className="absolute inset-[2px] rounded-3xl overflow-hidden bg-[#0a0f1a]">
-              {/* BEFORE - Product Photo (base layer - shows on LEFT) */}
-              <div className="absolute inset-0">
-                <img 
-                  src="/images/ruj-urun.jpeg" 
-                  alt="Ürün Fotoğrafı" 
-                  className="w-full h-full object-cover object-top"
-                  onError={(e) => console.log('Image load error:', e)}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                
-                {/* Before Label - LEFT side */}
-                <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
-                  <div className="px-4 py-2 rounded-xl bg-red-500/20 border border-red-500/30">
-                    <span className="text-sm md:text-base font-semibold text-red-400">
-                      📸 Sıradan Fotoğraf
-                    </span>
-                  </div>
-                  <p className="text-gray-500 text-xs md:text-sm mt-2">
-                    Düşük etkileşim
-                  </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
+            
+            {/* BEFORE - Product Photo */}
+            <motion.div 
+              className="relative group"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              {/* Label */}
+              <div className="absolute -top-3 left-4 z-20">
+                <div className="px-4 py-1.5 rounded-full bg-gray-900 border border-white/20 shadow-lg">
+                  <span className="text-sm font-bold text-white">ÖNCE</span>
                 </div>
               </div>
+              
+              {/* Card */}
+              <div className="relative bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-200/50">
+                {/* Product Image */}
+                <div className="aspect-[4/5] relative bg-gray-50">
+                  <img 
+                    src="/images/ruj-product.jpeg" 
+                    alt="Ürün Fotoğrafı" 
+                    className="w-full h-full object-contain p-4"
+                  />
+                </div>
+                
+                {/* Footer */}
+                <div className="p-4 border-t border-gray-100 flex items-center gap-2 bg-white">
+                  <Image className="w-4 h-4 text-gray-400" />
+                  <span className="text-sm text-gray-500 font-medium">Ürün Fotoğrafı</span>
+                </div>
+              </div>
+              
+              {/* Decorative elements */}
+              <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-gray-200 rounded-full blur-2xl opacity-50" />
+            </motion.div>
 
-              {/* AFTER - UGC Video (clipped layer - shows on RIGHT) */}
+            {/* Arrow indicator for desktop */}
+            <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30">
               <motion.div 
-                className="absolute inset-0"
-                style={{ clipPath }}
+                className="w-16 h-16 rounded-full bg-gradient-to-r from-neon-cyan to-neon-purple flex items-center justify-center shadow-lg shadow-neon-cyan/30"
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
               >
-                {/* Video or gradient fallback */}
-                <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/30 via-neon-purple/20 to-neon-pink/30">
-                  <video
-                    ref={videoRef}
-                    className="w-full h-full object-cover"
-                    autoPlay
-                    muted={isMuted}
-                    loop
-                    playsInline
-                    preload="metadata"
-                    onLoadedData={() => setVideoLoaded(true)}
-                    onCanPlay={() => setVideoLoaded(true)}
-                    onError={(e) => console.log('DifferenceSection video error:', e)}
-                  >
-                    <source src={videoUrl} type="video/mp4" />
-                  </video>
-                </div>
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                
-                {/* After Label - RIGHT side */}
-                <div className="absolute bottom-6 right-6 md:bottom-10 md:right-10 text-right">
-                  <div className="px-4 py-2 rounded-xl bg-neon-cyan/20 border border-neon-cyan/30 inline-block">
-                    <span className="text-sm md:text-base font-semibold text-neon-cyan">
-                      🔥 AI UGC Video
-                    </span>
-                  </div>
-                  <p className="text-gray-300 text-xs md:text-sm mt-2">
-                    %300+ etkileşim artışı
-                  </p>
-                </div>
-
-                {/* Sound toggle */}
-                <button
-                  className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/50 flex items-center justify-center border border-white/20 hover:bg-black/70 transition-colors z-20"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsMuted(!isMuted);
-                    if (videoRef.current) {
-                      videoRef.current.muted = !isMuted;
-                    }
-                  }}
-                >
-                  {isMuted ? (
-                    <VolumeX className="w-4 h-4 text-white" />
-                  ) : (
-                    <Volume2 className="w-4 h-4 text-neon-cyan" />
-                  )}
-                </button>
-              </motion.div>
-
-              {/* Slider Handle */}
-              <motion.div
-                className="absolute top-0 bottom-0 w-1 bg-white shadow-lg z-30 cursor-ew-resize"
-                style={{ left: sliderPosition.get() + '%', x: '-50%' }}
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0}
-                onDrag={handleDrag}
-              >
-                {/* Handle circle */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
-                  <div className="flex items-center gap-0.5">
-                    <div className="w-0.5 h-4 bg-gray-400 rounded" />
-                    <div className="w-0.5 h-4 bg-gray-400 rounded" />
-                  </div>
-                </div>
-                
-                {/* Drag hint */}
-                <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap">
-                  <span className="text-xs text-gray-400 font-medium">← Kaydır →</span>
-                </div>
+                <ArrowRight className="w-7 h-7 text-white" />
               </motion.div>
             </div>
+
+            {/* Mobile arrow */}
+            <div className="flex lg:hidden justify-center -my-2">
+              <motion.div 
+                className="w-12 h-12 rounded-full bg-gradient-to-r from-neon-cyan to-neon-purple flex items-center justify-center shadow-lg rotate-90"
+                animate={{ y: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <ArrowRight className="w-5 h-5 text-white" />
+              </motion.div>
+            </div>
+
+            {/* AFTER - UGC Video */}
+            <motion.div 
+              className="relative group"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              {/* Label */}
+              <div className="absolute -top-3 left-4 z-20">
+                <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-neon-purple to-neon-cyan shadow-lg">
+                  <span className="text-sm font-bold text-white">SONRASINDA</span>
+                </div>
+              </div>
+              
+              {/* Card with glow */}
+              <div className="relative">
+                {/* Glow effect */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink rounded-3xl opacity-40 blur-lg group-hover:opacity-60 transition-opacity" />
+                
+                {/* Video container */}
+                <div className="relative bg-[#0a0f1a] rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+                  {/* Video */}
+                  <div className="aspect-[4/5] relative">
+                    <video
+                      ref={videoRef}
+                      className="w-full h-full object-cover"
+                      autoPlay
+                      muted={isMuted}
+                      loop
+                      playsInline
+                      preload="metadata"
+                    >
+                      <source src={videoUrl} type="video/mp4" />
+                    </video>
+                    
+                    {/* Video overlay gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                    
+                    {/* Sound toggle */}
+                    <button
+                      className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center border border-white/20 hover:bg-black/70 transition-all z-20"
+                      onClick={toggleMute}
+                    >
+                      {isMuted ? (
+                        <VolumeX className="w-4 h-4 text-white" />
+                      ) : (
+                        <Volume2 className="w-4 h-4 text-neon-cyan" />
+                      )}
+                    </button>
+                  </div>
+                  
+                  {/* Footer */}
+                  <div className="p-4 border-t border-white/10 flex items-center gap-2 bg-[#0a0f1a]">
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-neon-cyan/10 border border-neon-cyan/20">
+                      <Video className="w-4 h-4 text-neon-cyan" />
+                      <span className="text-sm text-neon-cyan font-medium">UGC Video</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Decorative elements */}
+              <div className="absolute -bottom-4 -left-4 w-20 h-20 bg-neon-purple/30 rounded-full blur-2xl" />
+            </motion.div>
           </div>
+
+          {/* Stats row */}
+          <motion.div 
+            className="mt-12 grid grid-cols-3 gap-4 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <div className="text-center p-4 rounded-2xl bg-white/5 border border-white/10">
+              <div className="text-2xl md:text-3xl font-black text-neon-cyan mb-1">%300+</div>
+              <div className="text-xs md:text-sm text-gray-400">Etkileşim Artışı</div>
+            </div>
+            <div className="text-center p-4 rounded-2xl bg-white/5 border border-white/10">
+              <div className="text-2xl md:text-3xl font-black text-neon-purple mb-1">2 dk</div>
+              <div className="text-xs md:text-sm text-gray-400">Video Üretim</div>
+            </div>
+            <div className="text-center p-4 rounded-2xl bg-white/5 border border-white/10">
+              <div className="text-2xl md:text-3xl font-black text-neon-pink mb-1">%90</div>
+              <div className="text-xs md:text-sm text-gray-400">Maliyet Tasarrufu</div>
+            </div>
+          </motion.div>
         </motion.div>
 
         {/* CTA */}
@@ -228,16 +240,16 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
           className="text-center mt-12 md:mt-16"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
           viewport={{ once: true }}
         >
           <button
             onClick={onGetStarted}
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold text-lg shadow-lg hover:shadow-neon-cyan/30 transition-shadow"
+            className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold text-lg shadow-lg hover:shadow-neon-cyan/40 transition-all hover:scale-105"
           >
             <Play className="w-5 h-5" />
             Hemen Deneyin
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </button>
         </motion.div>
       </div>
