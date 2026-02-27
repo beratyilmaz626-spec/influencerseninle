@@ -14,6 +14,9 @@ export default defineConfig({
       'dark-glass-ui.preview.emergentagent.com',
       '.emergentagent.com',
       '.preview.emergentagent.com',
+      '.emergentcf.cloud',
+      '.cluster-0.preview.emergentcf.cloud',
+      'ui-video-deploy.cluster-0.preview.emergentcf.cloud',
       'localhost',
     ],
     watch: {
