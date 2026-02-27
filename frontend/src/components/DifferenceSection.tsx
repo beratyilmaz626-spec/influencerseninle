@@ -13,7 +13,7 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
   const [videoLoaded, setVideoLoaded] = useState(false);
 
   // Use video from public folder
-  const videoUrl = '/videos/ugc_video_1.mp4';
+  const videoUrl = '/videos/ugc_video_2.mp4';
 
   const togglePlay = () => {
     if (videoRef.current) {
