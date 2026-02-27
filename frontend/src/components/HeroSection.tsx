@@ -6,26 +6,26 @@ interface HeroSectionProps {
 
 export default function HeroSection({ onGetStarted }: HeroSectionProps) {
   return (
-    <section className="relative min-h-[80vh] flex items-center justify-center">
+    <section className="relative min-h-[70vh] sm:min-h-[80vh] flex items-center justify-center px-4 py-8 sm:py-0">
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 text-center">
         {/* Badge */}
-        <div className="mb-8 animate-fade-in">
-          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neon-cyan/10 border border-neon-cyan/20">
-            <Sparkles className="w-4 h-4 text-neon-cyan" />
-            <span className="text-sm font-semibold text-gray-300">
+        <div className="mb-6 sm:mb-8 animate-fade-in">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full bg-neon-cyan/10 border border-neon-cyan/20">
+            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-neon-cyan" />
+            <span className="text-xs sm:text-sm font-semibold text-gray-300">
               Türkiye'nin #1 AI UGC Platformu
             </span>
             <div className="flex -space-x-1">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                <Star key={i} className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-yellow-400 fill-yellow-400" />
               ))}
             </div>
           </div>
         </div>
 
         {/* Main Heading */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight mb-8 animate-fade-in-up">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight mb-6 sm:mb-8 animate-fade-in-up">
           <span className="text-white">Yapay Zeka ile</span>
           <br />
           <span className="bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">
@@ -35,37 +35,37 @@ export default function HeroSection({ onGetStarted }: HeroSectionProps) {
         </h1>
 
         {/* Subtitle */}
-        <p className="text-lg sm:text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 animate-fade-in-up delay-100">
+        <p className="text-sm sm:text-lg md:text-xl lg:text-2xl text-gray-400 max-w-3xl mx-auto mb-8 sm:mb-12 animate-fade-in-up delay-100 px-2">
           Ürün fotoğraflarınızı <span className="text-neon-cyan font-semibold">profesyonel UGC videolara</span> dönüştürün.
           <br className="hidden md:block" />
           <span className="text-gray-500">Influencer aramadan, stüdyo kurmadan, dakikalar içinde.</span>
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-fade-in-up delay-200">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-16 animate-fade-in-up delay-200">
           <button
             onClick={onGetStarted}
-            className="group px-8 py-4 rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold text-lg hover:opacity-90 transition-opacity"
+            className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold text-base sm:text-lg hover:opacity-90 transition-opacity"
           >
-            <span className="flex items-center gap-2">
-              <Zap className="w-5 h-5" />
+            <span className="flex items-center justify-center gap-2">
+              <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
               Ücretsiz Başla
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
             </span>
           </button>
 
-          <button className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 transition-colors">
-            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
-              <Play className="w-5 h-5 text-neon-cyan fill-neon-cyan ml-0.5" />
+          <button className="flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto px-5 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 transition-colors">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/10 flex items-center justify-center">
+              <Play className="w-4 h-4 sm:w-5 sm:h-5 text-neon-cyan fill-neon-cyan ml-0.5" />
             </div>
-            <span>Demo İzle</span>
+            <span className="text-sm sm:text-base">Demo İzle</span>
           </button>
         </div>
 
         {/* Trust badges */}
-        <div className="flex flex-wrap items-center justify-center gap-6 text-gray-500 text-sm animate-fade-in delay-300">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-400" />
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-gray-500 text-xs sm:text-sm animate-fade-in delay-300 px-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-400" />
             <span>500+ Aktif Kullanıcı</span>
           </div>
           <div className="hidden sm:block w-px h-4 bg-gray-700" />
