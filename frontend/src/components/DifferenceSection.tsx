@@ -172,23 +172,28 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
                   <div className="aspect-[4/5] relative bg-gradient-to-br from-neon-cyan/10 via-neon-purple/10 to-neon-pink/10">
                     <video
                       ref={videoRef}
-                      className="w-full h-full object-cover"
+                      className={`w-full h-full object-cover transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
                       autoPlay
                       muted={isMuted}
                       loop
                       playsInline
                       preload="auto"
+                      onLoadedData={() => setVideoLoaded(true)}
+                      onCanPlay={() => setVideoLoaded(true)}
+                      onPlaying={() => setVideoLoaded(true)}
                     >
                       <source src={videoUrl} type="video/mp4" />
                     </video>
                     
-                    {/* Fallback content when video not loaded */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="text-center opacity-50">
-                        <Play className="w-16 h-16 text-white mx-auto mb-2" />
-                        <span className="text-white text-sm">Video Yükleniyor...</span>
+                    {/* Fallback content - only show when video not loaded */}
+                    {!videoLoaded && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center">
+                          <Play className="w-16 h-16 text-white/50 mx-auto mb-2" />
+                          <span className="text-white/50 text-sm">Video Yükleniyor...</span>
+                        </div>
                       </div>
-                    </div>
+                    )}
                     
                     {/* Video overlay gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
