@@ -67,7 +67,7 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
             Fotoğraf Ürününden <span className="text-neon-cyan">UGC Videoya</span>
           </motion.h2>
           <motion.p 
-            className="text-gray-400 text-lg max-w-2xl mx-auto"
+            className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-2"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
