@@ -36,6 +36,24 @@ export const VideoSlider = () => {
       order_index: 1,
       is_active: true,
       created_at: new Date().toISOString()
+    },
+    {
+      id: 'demo-3',
+      title: 'AI UGC Video 3',
+      video_url: '/videos/ugc_video_3.mp4',
+      thumbnail_url: null,
+      order_index: 2,
+      is_active: true,
+      created_at: new Date().toISOString()
+    },
+    {
+      id: 'demo-4',
+      title: 'AI UGC Video 4',
+      video_url: '/videos/ugc_video_4.mp4',
+      thumbnail_url: null,
+      order_index: 3,
+      is_active: true,
+      created_at: new Date().toISOString()
     }
   ];
 
