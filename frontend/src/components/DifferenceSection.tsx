@@ -10,9 +10,10 @@ export default function DifferenceSection({ onGetStarted }: DifferenceSectionPro
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   // Use video from public folder
-  const videoUrl = '/videos/ugc_video_2.mp4';
+  const videoUrl = '/videos/ugc_video_1.mp4';
 
   const togglePlay = () => {
     if (videoRef.current) {
