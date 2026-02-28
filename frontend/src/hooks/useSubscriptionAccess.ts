@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from './useAuth';
 import {
@@ -42,302 +42,261 @@ export function useSubscriptionAccess() {
   const [error, setError] = useState<string | null>(null);
   const [giftCredits, setGiftCredits] = useState<number>(0);
 
-  // Hediye kredilerini getir
-  const fetchGiftCredits = useCallback(async () => {
-    if (!user) {
-      console.log('🎁 fetchGiftCredits: Kullanıcı yok, 0 set ediliyor');
+  // Refs for preventing infinite loops
+  const hasFetchedRef = useRef(false);
+  const userIdRef = useRef<string | null>(null);
+  const subscriptionIdRef = useRef<string | null>(null);
+
+  // Memoized user ID for stable reference
+  const userId = user?.id ?? null;
+  const subscriptionId = subscription?.subscription_id ?? null;
+  const priceId = subscription?.price_id ?? null;
+  const periodEnd = subscription?.current_period_end ?? null;
+  const subscriptionStatus = subscription?.subscription_status ?? null;
+  const userCredits = userProfile?.user_credits_points ?? 0;
+
+  // Fetch gift credits
+  useEffect(() => {
+    if (!userId) {
       setGiftCredits(0);
       return;
     }
 
-    try {
-      console.log('🎁 fetchGiftCredits: Kullanıcı ID:', user.id);
-      
-      const { data, error: creditsError } = await supabase
-        .from('users')
-        .select('user_credits_points')
-        .eq('id', user.id)
-        .single();
+    const fetchGiftCredits = async () => {
+      try {
+        const { data, error: creditsError } = await supabase
+          .from('users')
+          .select('user_credits_points')
+          .eq('id', userId)
+          .single();
 
-      console.log('🎁 fetchGiftCredits response:', { data, error: creditsError });
-
-      if (creditsError) {
-        console.error('🎁 fetchGiftCredits error:', creditsError);
+        if (creditsError) {
+          console.error('Gift credits error:', creditsError);
+          setGiftCredits(0);
+          return;
+        }
+        
+        if (data) {
+          setGiftCredits(data.user_credits_points || 0);
+        }
+      } catch (err) {
+        console.error('Gift credit fetch failed:', err);
         setGiftCredits(0);
-        return;
       }
-      
-      if (data) {
-        console.log('🎁 Hediye kredisi set ediliyor:', data.user_credits_points);
-        setGiftCredits(data.user_credits_points || 0);
-      }
-    } catch (err) {
-      console.error('🎁 Hediye kredi bilgisi alınamadı:', err);
-      setGiftCredits(0);
-    }
-  }, [user?.id]); // Sadece user.id değiştiğinde yeniden oluştur
+    };
 
-  // Abonelik bilgilerini getir
-  const fetchSubscription = useCallback(async () => {
-    if (!user) {
+    // Only fetch once per user
+    if (userIdRef.current !== userId) {
+      userIdRef.current = userId;
+      fetchGiftCredits();
+    }
+  }, [userId]);
+
+  // Fetch subscription
+  useEffect(() => {
+    if (!userId) {
       setSubscription(null);
       setLoading(false);
       return;
     }
 
-    try {
-      setLoading(true);
-      setError(null);
+    const fetchSubscription = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-      const { data, error: subError } = await supabase
-        .from('user_subscriptions')
-        .select('*')
-        .maybeSingle();
+        const { data, error: subError } = await supabase
+          .from('user_subscriptions')
+          .select('*')
+          .maybeSingle();
 
-      if (subError) throw subError;
-      setSubscription(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Abonelik bilgisi alınamadı');
-      setSubscription(null);
-    } finally {
-      setLoading(false);
+        if (subError) throw subError;
+        setSubscription(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Subscription fetch failed');
+        setSubscription(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Only fetch once per user
+    if (!hasFetchedRef.current) {
+      hasFetchedRef.current = true;
+      fetchSubscription();
     }
-  }, [user?.id]); // Sadece user.id değiştiğinde yeniden oluştur
+  }, [userId]);
 
-  // Aylık kullanım bilgilerini getir
-  const fetchMonthlyUsage = useCallback(async () => {
-    if (!user || !subscription) {
+  // Fetch monthly usage when subscription changes
+  useEffect(() => {
+    if (!userId || !subscriptionId) {
       setMonthlyUsage({ videosCreated: 0, periodStart: null, periodEnd: null });
       return;
     }
 
-    try {
-      // Mevcut dönem başlangıç ve bitiş tarihleri
-      const periodStart = subscription.current_period_start
-        ? new Date(subscription.current_period_start * 1000)
-        : new Date(new Date().setDate(1)); // Ayın başı
-      
-      const periodEnd = subscription.current_period_end
-        ? new Date(subscription.current_period_end * 1000)
-        : new Date(new Date().setMonth(new Date().getMonth() + 1, 0)); // Ayın sonu
-
-      // Bu dönemde oluşturulan videoları say
-      const { count, error: countError } = await supabase
-        .from('videos')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id)
-        .gte('created_at', periodStart.toISOString())
-        .lte('created_at', periodEnd.toISOString());
-
-      if (countError) throw countError;
-
-      setMonthlyUsage({
-        videosCreated: count || 0,
-        periodStart,
-        periodEnd,
-      });
-    } catch (err) {
-      console.error('Aylık kullanım bilgisi alınamadı:', err);
+    // Skip if already fetched for this subscription
+    if (subscriptionIdRef.current === subscriptionId) {
+      return;
     }
-  }, [user?.id, subscription?.subscription_id]); // Sadece ID'ler değiştiğinde
+    subscriptionIdRef.current = subscriptionId;
 
-  // Ref to prevent multiple fetches
-  const hasFetchedRef = useRef(false);
-  const userIdRef = useRef<string | null>(null);
+    const fetchMonthlyUsage = async () => {
+      try {
+        const periodStart = subscription?.current_period_start
+          ? new Date(subscription.current_period_start * 1000)
+          : new Date(new Date().setDate(1));
+        
+        const periodEndDate = subscription?.current_period_end
+          ? new Date(subscription.current_period_end * 1000)
+          : new Date(new Date().setMonth(new Date().getMonth() + 1, 0));
 
-  useEffect(() => {
-    // Only fetch if user changed or first mount
-    if (user?.id && user.id !== userIdRef.current) {
-      userIdRef.current = user.id;
-      hasFetchedRef.current = false;
-    }
-    
-    if (!hasFetchedRef.current && user) {
-      hasFetchedRef.current = true;
-      fetchSubscription();
-      fetchGiftCredits();
-    }
-  }, [user?.id]); // Only depend on user.id, not the functions
+        const { count, error: countError } = await supabase
+          .from('videos')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', userId)
+          .gte('created_at', periodStart.toISOString())
+          .lte('created_at', periodEndDate.toISOString());
 
-  useEffect(() => {
-    if (subscription) {
-      fetchMonthlyUsage();
-    }
-  }, [subscription?.subscription_id]); // Only depend on subscription_id
+        if (countError) throw countError;
 
-  // Mevcut plan ID'sini al
-  const getCurrentPlanId = useCallback((): PlanId | null => {
-    if (!subscription?.price_id) return null;
-    const plan = getPlanByStripePriceId(subscription.price_id);
+        setMonthlyUsage({
+          videosCreated: count || 0,
+          periodStart,
+          periodEnd: periodEndDate,
+        });
+      } catch (err) {
+        console.error('Monthly usage fetch failed:', err);
+      }
+    };
+
+    fetchMonthlyUsage();
+  }, [userId, subscriptionId, subscription?.current_period_start, subscription?.current_period_end]);
+
+  // Memoized computed values - these don't cause re-renders
+  const currentPlanId = useMemo((): PlanId | null => {
+    if (!priceId) return null;
+    const plan = getPlanByStripePriceId(priceId);
     return plan?.id ?? null;
-  }, [subscription]);
+  }, [priceId]);
 
-  // Period geçerli mi kontrol et (30 gün kuralı)
-  const isPeriodValid = useCallback((): boolean => {
-    if (!subscription?.current_period_end) return false;
-    const periodEnd = new Date(subscription.current_period_end * 1000);
-    const now = new Date();
-    return now < periodEnd;
-  }, [subscription]);
+  const isPeriodValid = useMemo((): boolean => {
+    if (!periodEnd) return false;
+    const end = new Date(periodEnd * 1000);
+    return new Date() < end;
+  }, [periodEnd]);
 
-  // Abonelik aktif mi kontrol et (status + period)
-  const isSubscriptionActive = useCallback((): boolean => {
+  const isSubscriptionActive = useMemo((): boolean => {
     if (!subscription) return false;
-    const statusActive = subscription.subscription_status === 'active' || 
-                         subscription.subscription_status === 'trialing';
-    // Status aktif VE period geçerli olmalı
-    return statusActive && isPeriodValid();
-  }, [subscription, isPeriodValid]);
+    const statusActive = subscriptionStatus === 'active' || subscriptionStatus === 'trialing';
+    return statusActive && isPeriodValid;
+  }, [subscription, subscriptionStatus, isPeriodValid]);
 
-  // Belirli bir özelliğe erişim var mı kontrol et
-  const hasFeature = useCallback((featureId: FeatureId): boolean => {
-    if (!isSubscriptionActive()) return false;
-    const planId = getCurrentPlanId();
-    if (!planId) return false;
-    return checkFeature(planId, featureId);
-  }, [isSubscriptionActive, getCurrentPlanId]);
-
-  // Aylık video limiti
-  const getVideoLimit = useCallback((): number => {
-    // Admin için sınırsız (999 göster)
+  const videoLimit = useMemo((): number => {
     if (isAdmin) return 999;
-    
-    const planId = getCurrentPlanId();
-    if (!planId) return 0;
-    return getMonthlyVideoLimit(planId);
-  }, [isAdmin, getCurrentPlanId]);
+    if (!currentPlanId) return 0;
+    return getMonthlyVideoLimit(currentPlanId);
+  }, [isAdmin, currentPlanId]);
 
-  // Kalan video hakkı (abonelik + hediye kredisi)
-  const getRemainingVideos = useCallback((): number => {
-    // Admin için sınırsız
+  const currentPlan = useMemo(() => {
+    if (!currentPlanId) return null;
+    return SUBSCRIPTION_PLANS[currentPlanId];
+  }, [currentPlanId]);
+
+  const effectiveCredits = useMemo(() => {
+    return giftCredits > 0 ? giftCredits : userCredits;
+  }, [giftCredits, userCredits]);
+
+  const remainingVideos = useMemo((): number => {
     if (isAdmin) return 999;
-    
-    // Önce abonelik limitini kontrol et
-    const limit = getVideoLimit();
-    const subscriptionRemaining = Math.max(0, limit - monthlyUsage.videosCreated);
-    
-    // Hediye kredisi varsa ekle
-    return subscriptionRemaining + giftCredits;
-  }, [isAdmin, getVideoLimit, monthlyUsage.videosCreated, giftCredits]);
+    const subscriptionRemaining = Math.max(0, videoLimit - monthlyUsage.videosCreated);
+    return subscriptionRemaining + effectiveCredits;
+  }, [isAdmin, videoLimit, monthlyUsage.videosCreated, effectiveCredits]);
 
-  // Hediye kredisi var mı?
-  const hasGiftCredits = useCallback((): boolean => {
-    return giftCredits > 0;
-  }, [giftCredits]);
-
-  // Video oluşturabilir mi kontrol et
-  // NOT: 1 video = 200 jeton gerektirir
-  const VIDEO_COST_CHECK = 200;
-  
-  // Toplam loading durumu - hem profil hem abonelik yüklenene kadar bekle
   const isFullyLoaded = !profileLoading && !loading;
-  
-  // Efektif hediye kredisi - state veya userProfile'dan al
-  const effectiveGiftCredits = giftCredits > 0 ? giftCredits : (userProfile?.user_credits_points || 0);
-  
+
+  // Feature check function
+  const hasFeature = useCallback((featureId: FeatureId): boolean => {
+    if (!isSubscriptionActive) return false;
+    if (!currentPlanId) return false;
+    return checkFeature(currentPlanId, featureId);
+  }, [isSubscriptionActive, currentPlanId]);
+
+  // Has gift credits check
+  const hasGiftCredits = useCallback((): boolean => {
+    return effectiveCredits > 0;
+  }, [effectiveCredits]);
+
+  // Video cost constant
+  const VIDEO_COST = 200;
+
+  // Can create video check - uses memoized values
   const canCreateVideo = useCallback((): { allowed: boolean; reason?: string; useGiftCredits?: boolean } => {
-    console.log('🔍 canCreateVideo çağrıldı:');
-    console.log('  - profileLoading:', profileLoading);
-    console.log('  - loading:', loading);
-    console.log('  - isAdmin:', isAdmin);
-    console.log('  - giftCredits (state):', giftCredits);
-    console.log('  - userProfile?.user_credits_points:', userProfile?.user_credits_points);
-    console.log('  - effectiveGiftCredits:', effectiveGiftCredits);
-    
-    // 0. Admin ise her zaman video oluşturabilir (jeton gerekmez) 
-    // Admin kontrolü için profileLoading'in bitmesini bekle
+    // Admin check
     if (!profileLoading && isAdmin) {
-      console.log('  → Admin, izin veriliyor');
       return { allowed: true, useGiftCredits: false };
     }
     
-    // Loading durumunda bekle (profil veya abonelik yükleniyorsa)
+    // Loading state
     if (profileLoading || loading) {
-      console.log('  → Loading, bekleniyor');
       return { allowed: false, reason: 'Yükleniyor...' };
     }
     
-    // 1. Hediye kredisi varsa (en az 200 jeton), abonelik şart değil
-    // Hem state'i hem userProfile'ı kontrol et
-    const currentCredits = giftCredits > 0 ? giftCredits : (userProfile?.user_credits_points || 0);
-    
-    if (currentCredits >= VIDEO_COST_CHECK) {
-      console.log('  → Hediye kredisi yeterli:', currentCredits);
+    // Check gift credits
+    if (effectiveCredits >= VIDEO_COST) {
       return { allowed: true, useGiftCredits: true };
     }
     
-    // 1b. Hediye kredisi var ama yetersiz (200'den az)
-    if (currentCredits > 0 && currentCredits < VIDEO_COST_CHECK) {
-      console.log('  → Hediye kredisi yetersiz:', currentCredits);
+    // Insufficient credits
+    if (effectiveCredits > 0 && effectiveCredits < VIDEO_COST) {
       return {
         allowed: false,
-        reason: `Video oluşturmak için ${VIDEO_COST_CHECK} jeton gerekli. Mevcut jetonun: ${currentCredits}. Lütfen bir plan seçin.`,
+        reason: `Video oluşturmak için ${VIDEO_COST} jeton gerekli. Mevcut jetonun: ${effectiveCredits}. Lütfen bir plan seçin.`,
       };
     }
     
-    // 2. Abonelik aktif mi?
-    if (!isSubscriptionActive()) {
-      console.log('  → Abonelik aktif değil ve hediye kredisi yok');
+    // Check subscription
+    if (!isSubscriptionActive) {
       return {
         allowed: false,
         reason: 'Aktif bir aboneliğiniz veya yeterli hediye jetonunuz bulunmuyor. Lütfen bir plan seçin.',
       };
     }
 
-    // 3. Aylık limit aşıldı mı?
-    const limit = getVideoLimit();
-    const remaining = Math.max(0, limit - monthlyUsage.videosCreated);
+    // Check monthly limit
+    const remaining = Math.max(0, videoLimit - monthlyUsage.videosCreated);
     if (remaining <= 0) {
-      console.log('  → Aylık limit aşıldı');
       return {
         allowed: false,
-        reason: `Aylık video limitiniz (${limit} video) doldu. Yeni dönem başladığında tekrar video oluşturabilirsiniz veya planınızı yükseltin.`,
+        reason: `Aylık video limitiniz (${videoLimit} video) doldu. Yeni dönem başladığında tekrar video oluşturabilirsiniz veya planınızı yükseltin.`,
       };
     }
 
-    console.log('  → İzin veriliyor (abonelik)');
     return { allowed: true, useGiftCredits: false };
-  }, [profileLoading, loading, isAdmin, isSubscriptionActive, giftCredits, userProfile, getVideoLimit, monthlyUsage.videosCreated]);
+  }, [profileLoading, loading, isAdmin, effectiveCredits, isSubscriptionActive, videoLimit, monthlyUsage.videosCreated]);
 
-  // Video oluşturma sonrası kullanımı güncelle
-  // NOT: 1 video = 200 jeton tüketir
-  const VIDEO_COST = 200; // Her video 200 jeton
-  
-  const incrementVideoUsage = useCallback(async (useGiftCredits: boolean = false): Promise<void> => {
-    // Admin için kredi düşürme
-    if (isAdmin) {
-      return;
-    }
+  // Increment video usage
+  const incrementVideoUsage = useCallback(async (useGiftCreditsParam: boolean = false): Promise<void> => {
+    if (isAdmin) return;
     
-    if (useGiftCredits && giftCredits >= VIDEO_COST) {
-      // Hediye kredisini düş (200 jeton)
+    if (useGiftCreditsParam && giftCredits >= VIDEO_COST) {
       const newCredits = giftCredits - VIDEO_COST;
       setGiftCredits(newCredits);
       
-      // Veritabanını güncelle
-      if (user) {
+      if (userId) {
         await supabase
           .from('users')
           .update({ user_credits_points: newCredits })
-          .eq('id', user.id);
+          .eq('id', userId);
       }
     } else {
-      // Normal abonelik kullanımını artır
       setMonthlyUsage(prev => ({
         ...prev,
         videosCreated: prev.videosCreated + 1,
       }));
     }
-  }, [isAdmin, giftCredits, user]);
+  }, [isAdmin, giftCredits, userId]);
 
-  // Mevcut plan bilgilerini al
-  const getCurrentPlan = useCallback(() => {
-    const planId = getCurrentPlanId();
-    if (!planId) return null;
-    return SUBSCRIPTION_PLANS[planId];
-  }, [getCurrentPlanId]);
-
-  // Banner dismiss işlevi
+  // Banner dismiss
   const dismissLimitBanner = useCallback(() => {
     limitBannerDismissed = true;
   }, []);
@@ -346,67 +305,49 @@ export function useSubscriptionAccess() {
     return limitBannerDismissed;
   }, []);
 
-  // Abonelik durum kontrolü için helper
+  // Get subscription status message
   const getSubscriptionStatusMessage = useCallback((): { type: 'error' | 'warning' | 'info' | 'success'; message: string } | null => {
-    // DEBUG
-    console.log('🔍 getSubscriptionStatusMessage çağrıldı:');
-    console.log('  - profileLoading:', profileLoading);
-    console.log('  - loading:', loading);
-    console.log('  - isAdmin:', isAdmin);
-    console.log('  - giftCredits (state):', giftCredits);
-    console.log('  - userProfile?.user_credits_points:', userProfile?.user_credits_points);
-    
-    // Efektif kredi - hem state hem profile'dan kontrol
-    const currentCredits = giftCredits > 0 ? giftCredits : (userProfile?.user_credits_points || 0);
-    console.log('  - currentCredits:', currentCredits);
-    
-    // Profil veya abonelik yükleniyorsa banner gösterme
+    // Loading state - no banner
     if (profileLoading || loading) {
-      console.log('  → loading, null döndürülüyor');
       return null;
     }
     
-    // Admin için banner gösterme
+    // Admin - no banner
     if (isAdmin) {
-      console.log('  → isAdmin=true, null döndürülüyor (banner yok)');
       return null;
     }
     
-    // Hediye kredisi varsa, pozitif mesaj göster
-    // 200 jeton = 1 video, kaç video yapılabilir hesapla
-    if (currentCredits >= 200) {
-      const videosAvailable = Math.floor(currentCredits / 200);
-      console.log('  → Yeterli hediye kredisi var:', currentCredits);
+    // Sufficient gift credits
+    if (effectiveCredits >= VIDEO_COST) {
+      const videosAvailable = Math.floor(effectiveCredits / VIDEO_COST);
       return {
         type: 'success',
-        message: `🎁 ${currentCredits} jeton hediye hakkın var! (${videosAvailable} video oluşturabilirsin)`,
+        message: `🎁 ${effectiveCredits} jeton hediye hakkın var! (${videosAvailable} video oluşturabilirsin)`,
       };
     }
     
-    // Yetersiz hediye kredisi
-    if (currentCredits > 0 && currentCredits < 200) {
-      console.log('  → Yetersiz hediye kredisi:', currentCredits);
+    // Insufficient gift credits
+    if (effectiveCredits > 0 && effectiveCredits < VIDEO_COST) {
       return {
         type: 'warning',
-        message: `⚠️ ${currentCredits} jetonun var ama 1 video için 200 jeton gerekli. Lütfen bir plan seç.`,
+        message: `⚠️ ${effectiveCredits} jetonun var ama 1 video için ${VIDEO_COST} jeton gerekli. Lütfen bir plan seç.`,
       };
     }
     
-    if (!isSubscriptionActive()) {
-      console.log('  → Abonelik aktif değil, hata mesajı gösteriliyor');
+    // No active subscription
+    if (!isSubscriptionActive) {
       return {
         type: 'error',
         message: 'Aktif bir aboneliğin veya yeterli hediye jetonun bulunmuyor. Video oluşturmak için bir plan seç.',
       };
     }
     
-    const remaining = getRemainingVideos();
-    const limit = getVideoLimit();
+    const remaining = remainingVideos;
     
     if (remaining <= 0) {
       return {
         type: 'warning',
-        message: `Bu dönemlik video hakkın bitti (${limit} video). Dönem yenilenince devam edebilirsin.`,
+        message: `Bu dönemlik video hakkın bitti (${videoLimit} video). Dönem yenilenince devam edebilirsin.`,
       };
     }
     
@@ -418,7 +359,51 @@ export function useSubscriptionAccess() {
     }
     
     return null;
-  }, [profileLoading, loading, isAdmin, isSubscriptionActive, getRemainingVideos, getVideoLimit, giftCredits, userProfile]);
+  }, [profileLoading, loading, isAdmin, effectiveCredits, isSubscriptionActive, remainingVideos, videoLimit]);
+
+  // Refetch functions
+  const refetch = useCallback(async () => {
+    hasFetchedRef.current = false;
+    setLoading(true);
+    try {
+      const { data, error: subError } = await supabase
+        .from('user_subscriptions')
+        .select('*')
+        .maybeSingle();
+
+      if (subError) throw subError;
+      setSubscription(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Subscription fetch failed');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const refetchGiftCredits = useCallback(async () => {
+    if (!userId) return;
+    try {
+      const { data, error: creditsError } = await supabase
+        .from('users')
+        .select('user_credits_points')
+        .eq('id', userId)
+        .single();
+
+      if (!creditsError && data) {
+        setGiftCredits(data.user_credits_points || 0);
+      }
+    } catch (err) {
+      console.error('Gift credit refetch failed:', err);
+    }
+  }, [userId]);
+
+  // Max video duration
+  const maxVideoDuration = useMemo(() => {
+    if (isAdmin) return 15;
+    if (effectiveCredits > 0) return 15;
+    if (currentPlanId) return getMaxVideoDuration(currentPlanId);
+    return 15;
+  }, [isAdmin, effectiveCredits, currentPlanId]);
 
   return {
     // State
@@ -429,32 +414,31 @@ export function useSubscriptionAccess() {
     isFullyLoaded,
     error,
     
-    // Plan bilgileri
-    currentPlan: getCurrentPlan(),
-    currentPlanId: getCurrentPlanId(),
+    // Plan info
+    currentPlan,
+    currentPlanId,
     
-    // Admin durumu
+    // Admin status
     isAdmin,
     
-    // Erişim kontrolleri
-    isSubscriptionActive,
-    isPeriodValid,
+    // Access controls - return functions that return memoized values
+    isSubscriptionActive: useCallback(() => isSubscriptionActive, [isSubscriptionActive]),
+    isPeriodValid: useCallback(() => isPeriodValid, [isPeriodValid]),
     hasFeature,
     canCreateVideo,
     hasGiftCredits,
     
-    // Limitler
-    videoLimit: getVideoLimit(),
-    remainingVideos: getRemainingVideos(),
+    // Limits
+    videoLimit,
+    remainingVideos,
     videosUsed: monthlyUsage.videosCreated,
-    giftCredits,
-    // Video süresi (saniye) - Admin: 15sn, Hediye: 15sn, Starter: 10sn, Professional/Business: 15sn
-    maxVideoDuration: isAdmin ? 15 : (giftCredits > 0 ? 15 : (getCurrentPlanId() ? getMaxVideoDuration(getCurrentPlanId()!) : 15)),
+    giftCredits: effectiveCredits,
+    maxVideoDuration,
     
-    // Aksiyonlar
+    // Actions
     incrementVideoUsage,
-    refetch: fetchSubscription,
-    refetchGiftCredits: fetchGiftCredits,
+    refetch,
+    refetchGiftCredits,
     
     // Banner
     dismissLimitBanner,
