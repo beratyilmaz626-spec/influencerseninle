@@ -144,8 +144,16 @@ export function useVideos() {
   };
 
   useEffect(() => {
-    fetchVideos();
-  }, [user?.id]); // Sadece kullanıcı ID değiştiğinde videoları yeniden getir
+    // Only fetch once per user
+    if (user?.id && !fetchedRef.current) {
+      fetchedRef.current = true;
+      fetchVideos();
+    } else if (!user) {
+      fetchedRef.current = false;
+      setVideos([]);
+      setLoading(false);
+    }
+  }, [user?.id]);
 
   return {
     videos,
