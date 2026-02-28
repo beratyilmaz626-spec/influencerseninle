@@ -507,19 +507,20 @@ function HomeContent({
         transition={{ duration: 0.6, delay: 0.5 }}
       >
         <div className="flex items-center justify-between">
-          <h3 className="text-2xl font-bold text-white">Son Videolar</h3>
+          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white">Son Videolar</h3>
           <motion.button 
             onClick={() => {}}
-            className="text-neon-cyan hover:text-white font-medium text-sm transition-colors flex items-center gap-1"
+            className="text-neon-cyan hover:text-white font-medium text-xs sm:text-sm transition-colors flex items-center gap-1"
             whileHover={{ x: 5 }}
           >
-            Tümünü Görüntüle 
-            <span className="text-lg">→</span>
+            <span className="hidden sm:inline">Tümünü Görüntüle</span>
+            <span className="sm:hidden">Tümü</span>
+            <span className="text-base sm:text-lg">→</span>
           </motion.button>
         </div>
         
         {recentVideos.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
             {recentVideos.map((video, index) => (
               <motion.div
                 key={video.id}
@@ -529,25 +530,25 @@ function HomeContent({
                 className="group cursor-pointer"
                 whileHover={{ y: -8 }}
               >
-                <div className="relative rounded-2xl overflow-hidden bg-white/[0.02] border border-white/5 hover:border-neon-cyan/30 transition-all duration-300">
+                <div className="relative rounded-xl sm:rounded-2xl overflow-hidden bg-white/[0.02] border border-white/5 hover:border-neon-cyan/30 transition-all duration-300">
                   {/* Glow effect */}
                   <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/5 to-neon-purple/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
                   <div className="aspect-video relative">
                     <VideoThumbnail video={video} />
                   </div>
-                  <div className="p-4 relative">
-                    <h4 className="font-semibold text-white mb-2 line-clamp-1 group-hover:text-neon-cyan transition-colors">
+                  <div className="p-2 sm:p-3 md:p-4 relative">
+                    <h4 className="font-semibold text-white text-xs sm:text-sm md:text-base mb-1 sm:mb-2 line-clamp-1 group-hover:text-neon-cyan transition-colors">
                       {video.name}
                     </h4>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500">{video.views} görüntüleme</span>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    <div className="flex items-center justify-between text-[10px] sm:text-xs md:text-sm">
+                      <span className="text-gray-500">{video.views} <span className="hidden sm:inline">görüntüleme</span></span>
+                      <span className={`px-1.5 sm:px-2 md:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${
                         video.status === 'completed' 
                           ? 'bg-neon-green/10 text-neon-green border border-neon-green/20' 
                           : 'bg-orange-400/10 text-orange-400 border border-orange-400/20'
                       }`}>
-                        {video.status === 'completed' ? 'Hazır' : 'İşleniyor'}
+                        {video.status === 'completed' ? '✓' : '⏳'}
                       </span>
                     </div>
                   </div>
@@ -557,17 +558,17 @@ function HomeContent({
           </div>
         ) : (
           <motion.div 
-            className="text-center py-20 rounded-3xl bg-white/[0.02] border border-white/5"
+            className="text-center py-10 sm:py-16 md:py-20 rounded-2xl sm:rounded-3xl bg-white/[0.02] border border-white/5"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
           >
             <motion.div 
-              className="w-24 h-24 bg-gradient-to-br from-neon-cyan/20 to-neon-purple/20 rounded-full flex items-center justify-center mx-auto mb-6"
+              className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-neon-cyan/20 to-neon-purple/20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6"
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 3, repeat: Infinity }}
             >
-              <Video className="w-12 h-12 text-neon-cyan" />
+              <Video className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-neon-cyan" />
             </motion.div>
             <h4 className="text-xl font-semibold text-white mb-2">Henüz video yok</h4>
             <p className="text-gray-500 mb-6">İlk videonuzu oluşturmak için başlayın</p>
