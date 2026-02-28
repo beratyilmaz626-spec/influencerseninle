@@ -106,9 +106,13 @@ export function useAuth() {
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
-          fetchUserProfile(session.user.id);
+          // Only fetch if user changed
+          if (profileFetchedRef.current !== session.user.id) {
+            fetchUserProfile(session.user.id);
+          }
         } else {
           setUserProfile(null);
+          profileFetchedRef.current = null;
         }
         setLoading(false);
       });
