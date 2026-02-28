@@ -1301,7 +1301,13 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-full bg-transparent rounded-2xl overflow-hidden gap-6" data-testid="video-create-content">
+    <>
+      {/* Onboarding Modal - İlk kez giren kullanıcılar için */}
+      {showOnboarding && (
+        <VideoOnboarding onComplete={() => setShowOnboarding(false)} />
+      )}
+      
+      <div className="flex flex-col lg:flex-row h-full bg-transparent rounded-2xl overflow-hidden gap-6" data-testid="video-create-content">
       {/* Premium Left Panel - Controls */}
       <div className="w-full lg:w-80 bg-[#0a0f1a]/80  border border-white/5 rounded-2xl p-4 sm:p-6 space-y-4 overflow-y-auto flex-shrink-0">
         {/* Premium Header */}
