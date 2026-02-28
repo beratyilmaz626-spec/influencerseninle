@@ -19,9 +19,11 @@ export default defineConfig({
       'ui-video-deploy.cluster-0.preview.emergentcf.cloud',
       'localhost',
     ],
+    hmr: {
+      overlay: false, // Hata overlay'ini kapat - sayfa yenilemesi tetikleyebilir
+    },
     watch: {
-      usePolling: true,
-      interval: 1000,
+      usePolling: false, // Polling'i kapat - gereksiz yenileme tetikleyebilir
     },
   },
   preview: {
