@@ -167,7 +167,13 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 
 ## Test Durumu
 
-### Son Test - 4 Şubat 2025
+### Son Test - 28 Şubat 2026
+- **Kritik Bug Fix:** Sonsuz render döngüsü ve otomatik logout sorunu ÇÖZÜLDÜ
+- **Test Yöntemi:** Playwright ile 90+ saniye stabilite testi
+- **Sonuç:** Dashboard 90 saniye boyunca stabil kaldı, hiç logout olmadı
+- **Değiştirilen Dosyalar:** useAuth.ts, useSubscriptionAccess.ts, App.tsx
+
+### Önceki Test - 4 Şubat 2025
 - **Rapor:** `/app/test_reports/iteration_1.json`
 - **Frontend Success Rate:** 100%
 - **Backend:** Test edilmedi (skip)
