@@ -173,17 +173,16 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 
 ## Test Durumu
 
-### Son Test - 28 Şubat 2026
+### Son Test - 28 Şubat 2026 (GÜNCEL)
 - **Kritik Bug Fix:** Sonsuz render döngüsü ve otomatik logout sorunu ÇÖZÜLDÜ
-- **Test Yöntemi:** Playwright ile 90+ saniye stabilite testi
-- **Sonuç:** Dashboard 90 saniye boyunca stabil kaldı, hiç logout olmadı
-- **Değiştirilen Dosyalar:** useAuth.ts, useSubscriptionAccess.ts, App.tsx
-
-### Önceki Test - 4 Şubat 2025
-- **Rapor:** `/app/test_reports/iteration_1.json`
-- **Frontend Success Rate:** 100%
-- **Backend:** Test edilmedi (skip)
-- **Kritik:** process.env hatası düzeltildi, uygulama düzgün çalışıyor
+- **Test Yöntemi:** Playwright ile 120 saniye (2 dakika) stabilite testi
+- **Sonuç:** Dashboard 2 dakika boyunca stabil kaldı, hiç logout olmadı ✅
+- **Değiştirilen Dosyalar:** 
+  - `useAuth.ts` (tamamen yeniden yazıldı - global flag ile tek seferlik init)
+  - `useSubscriptionAccess.ts` (memoization düzeltmeleri)
+  - `useVideos.ts` (fetch guard eklendi)
+  - `supabase.ts` (PKCE flow eklendi)
+  - `main.tsx` (debug loglar kaldırıldı)
 
 ## Notlar
 - Iyzico entegrasyonu henüz yapılmadı (MOCKED)
