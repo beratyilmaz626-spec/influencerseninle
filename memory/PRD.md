@@ -86,16 +86,22 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 
 ## Bekleyen Görevler
 
-### ✅ P0 - Kritik Bug Fix - 28 Şubat 2026
+### ✅ P0 - Kritik Bug Fix - 28 Şubat 2026 (SON GÜNCELLEME)
 - [x] **Sonsuz Render Döngüsü & Otomatik Çıkış Sorunu ÇÖZÜLDÜ**
   - Sorun: Uygulama ~60 saniye sonra otomatik olarak kullanıcıyı çıkış yaptırıyordu
-  - Kök Neden: `useAuth.ts` ve `useSubscriptionAccess.ts` hook'larındaki unstable dependencies
+  - Kök Neden: 
+    1. Supabase `onAuthStateChange` her token refresh'te tetikleniyordu
+    2. `useAuth` hook'u her auth event'te state güncelliyordu
+    3. State değişiklikleri tüm component tree'yi re-render ediyordu
   - Çözüm:
-    - `onAuthStateChange` event'inde sadece önemli auth olayları işleniyor (SIGNED_IN, SIGNED_OUT, USER_UPDATED)
-    - `authInitializedRef` ile sadece bir kez başlatma
-    - `useCallback` ve `useMemo` ile memoization düzeltmeleri
-    - `App.tsx`'e user login durumunda otomatik dashboard yönlendirmesi eklendi
-  - Test: 90+ saniye boyunca dashboard stabil kaldı, logout olmadı
+    1. `useAuth.ts` tamamen yeniden yazıldı:
+       - Global flag (`globalAuthInitialized`) ile tek seferlik başlatma
+       - `onAuthStateChange` sadece `SIGNED_IN` ve `SIGNED_OUT` event'lerini işliyor
+       - `TOKEN_REFRESHED` ve diğer event'ler ignore ediliyor
+    2. `useSubscriptionAccess.ts` optimize edildi
+    3. `useVideos.ts`'e fetch guard eklendi
+    4. Gereksiz console.log'lar kaldırıldı
+  - Test: 2 dakika (120 saniye) boyunca dashboard stabil kaldı, hiç logout olmadı ✅
 
 ### P0 - Video Oynatma Sorunu (Devam Ediyor)
 - [ ] **Video Playback:** Tarayıcıda video yüklenmiyor (`net::ERR_ABORTED`)
