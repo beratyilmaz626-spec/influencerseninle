@@ -56,7 +56,7 @@ export default function HeroSection({ onGetStarted }: HeroSectionProps) {
         </div>
 
         {/* Trust badges */}
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-gray-500 text-xs sm:text-sm animate-fade-in delay-300 px-2">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-gray-500 text-xs sm:text-sm animate-fade-in delay-300 px-2 mb-16 sm:mb-20">
           <div className="flex items-center gap-1.5 sm:gap-2">
             <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-400" />
             <span>500+ Aktif Kullanıcı</span>
@@ -70,14 +70,12 @@ export default function HeroSection({ onGetStarted }: HeroSectionProps) {
             <span>%99.9 Müşteri Memnuniyeti</span>
           </div>
         </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <div 
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer animate-bounce"
-        onClick={() => document.getElementById('difference')?.scrollIntoView({ behavior: 'smooth' })}
-      >
-        <div className="flex flex-col items-center gap-2">
+        {/* Scroll indicator - moved inside content flow */}
+        <div 
+          className="flex flex-col items-center gap-2 cursor-pointer animate-bounce"
+          onClick={() => document.getElementById('difference')?.scrollIntoView({ behavior: 'smooth' })}
+        >
           <span className="text-xs text-gray-500 uppercase tracking-widest">Keşfet</span>
           <ChevronDown className="w-5 h-5 text-gray-500" />
         </div>
