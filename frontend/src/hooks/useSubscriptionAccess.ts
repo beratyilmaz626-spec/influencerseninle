@@ -102,7 +102,7 @@ export function useSubscriptionAccess() {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user?.id]); // Sadece user.id değiştiğinde yeniden oluştur
 
   // Aylık kullanım bilgilerini getir
   const fetchMonthlyUsage = useCallback(async () => {
