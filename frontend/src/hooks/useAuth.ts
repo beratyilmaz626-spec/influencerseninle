@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase, Database } from '../lib/supabase';
 
@@ -10,12 +10,21 @@ export function useAuth() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [profileLoading, setProfileLoading] = useState(true);
+  
+  // Prevent multiple profile fetches
+  const profileFetchedRef = useRef<string | null>(null);
 
   // Check if current user is admin
   const isAdmin = userProfile?.is_admin || false;
 
   // Kullanıcı profilini getir
-  const fetchUserProfile = async (userId: string) => {
+  const fetchUserProfile = useCallback(async (userId: string) => {
+    // Skip if already fetched for this user
+    if (profileFetchedRef.current === userId) {
+      return;
+    }
+    profileFetchedRef.current = userId;
+    
     setProfileLoading(true);
     console.log('👤 fetchUserProfile başladı, userId:', userId);
     try {
