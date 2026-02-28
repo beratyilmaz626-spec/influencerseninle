@@ -13,25 +13,24 @@ export function useAuth() {
   
   // Prevent multiple profile fetches
   const profileFetchedRef = useRef<string | null>(null);
+  const authInitializedRef = useRef(false);
 
-  // Check if current user is admin
-  const isAdmin = userProfile?.is_admin || false;
+  // Check if current user is admin - check both is_admin and role fields
+  const isAdmin = userProfile?.is_admin || (userProfile as any)?.role === 'admin' || false;
 
   // Kullanıcı profilini getir
   const fetchUserProfile = useCallback(async (userId: string) => {
     // Skip if already fetched for this user
     if (profileFetchedRef.current === userId) {
-      console.log('👤 fetchUserProfile zaten yapıldı, atlanıyor:', userId);
       return;
     }
     
-    console.log('👤 fetchUserProfile başladı, userId:', userId);
     profileFetchedRef.current = userId;
-    
     setProfileLoading(true);
+    
     try {
       if (!supabase) {
-        console.error('Supabase client not initialized. Please check environment variables.');
+        console.error('Supabase client not initialized');
         setProfileLoading(false);
         return;
       }
@@ -42,15 +41,12 @@ export function useAuth() {
         .eq('id', userId)
         .maybeSingle();
 
-      console.log('👤 Supabase users query result:', { data, error });
-
       if (error) {
         throw error;
       }
 
       // Eğer kullanıcı profili bulunamazsa, yeni bir profil oluştur
       if (!data) {
-        console.log('👤 Kullanıcı profili bulunamadı, yeni oluşturuluyor...');
         const { data: userData } = await supabase.auth.getUser();
         if (userData.user) {
           const newProfile = {
@@ -60,7 +56,7 @@ export function useAuth() {
             company_name: null,
             country: 'Türkiye',
             is_admin: userData.user.email === 'ogun.karabulut@hotmail.com' || userData.user.email === 'beratyilmaz626@gmail.com',
-            user_credits_points: 200  // Yeni kullanıcılara 200 jeton hediye (1 video = 200 jeton)
+            user_credits_points: 200
           };
 
           const { data: createdProfile, error: createError } = await supabase
@@ -70,19 +66,15 @@ export function useAuth() {
             .single();
 
           if (createError) throw createError;
-          console.log('✅ Yeni kullanıcı oluşturuldu, 200 jeton hediye edildi:', createdProfile);
           setUserProfile(createdProfile);
           setProfileLoading(false);
           return;
         }
       }
 
-      console.log('👤 userProfile set ediliyor:', data);
-      console.log('👤 is_admin:', data?.is_admin);
-      console.log('👤 user_credits_points:', data?.user_credits_points);
       setUserProfile(data || null);
     } catch (error) {
-      console.error('Kullanıcı profili getirilemedi:', error);
+      console.error('User profile fetch failed:', error);
       profileFetchedRef.current = null; // Allow retry on error
     } finally {
       setProfileLoading(false);
@@ -90,25 +82,33 @@ export function useAuth() {
   }, []);
 
   useEffect(() => {
-    // Get initial session
-    if (supabase) {
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          fetchUserProfile(session.user.id);
-        }
-        setLoading(false);
-      });
+    // Run only once
+    if (authInitializedRef.current) return;
+    authInitializedRef.current = true;
+    
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
 
-      // Listen for auth changes
-      const {
-        data: { subscription },
-      } = supabase.auth.onAuthStateChange((_event, session) => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        fetchUserProfile(session.user.id);
+      }
+      setLoading(false);
+    });
+
+    // Listen for auth changes - but only process significant changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      // Only handle actual auth state changes, not token refreshes
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'USER_UPDATED') {
         setSession(session);
         setUser(session?.user ?? null);
+        
         if (session?.user) {
-          // Only fetch if user changed
           if (profileFetchedRef.current !== session.user.id) {
             fetchUserProfile(session.user.id);
           }
@@ -117,14 +117,12 @@ export function useAuth() {
           profileFetchedRef.current = null;
         }
         setLoading(false);
-      });
+      }
+    });
 
-      return () => subscription.unsubscribe();
-    } else {
-      setLoading(false);
-    }
+    return () => subscription.unsubscribe();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty dependency - run only once on mount
+  }, []);
 
   const signUp = async (email: string, password: string, fullName?: string) => {
     try {
