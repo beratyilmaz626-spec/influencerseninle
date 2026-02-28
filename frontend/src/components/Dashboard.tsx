@@ -2300,5 +2300,6 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
         document.body
       )}
     </div>
+    </>
   );
 }
