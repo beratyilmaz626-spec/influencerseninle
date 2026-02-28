@@ -15,38 +15,38 @@ export default function CreditDisplay({ onBuyCredits }: CreditDisplayProps) {
   // Check both authLoading and creditsLoading
   if (authLoading || creditsLoading) {
     return (
-      <div className="flex items-center space-x-2 bg-gray-100 px-3 py-2 rounded-lg">
-        <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-        <span className="text-sm text-gray-600">Yükleniyor...</span>
+      <div className="flex items-center space-x-2 bg-gray-100 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg">
+        <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <span className="text-xs sm:text-sm text-gray-600">Yükleniyor...</span>
       </div>
     );
   }
 
   return (
     <>
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-4">
         {/* Credit Display */}
-        <div className="flex items-center space-x-2 bg-gradient-to-r from-blue-50 to-cyan-50 px-4 py-2 rounded-lg border border-blue-200">
-          <Coins className="w-5 h-5 text-blue-600" />
-          <span className="font-semibold text-blue-900">{credits}</span>
-          <span className="text-sm text-blue-700">Kredi</span>
+        <div className="flex items-center space-x-1 sm:space-x-2 bg-gradient-to-r from-blue-50 to-cyan-50 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg border border-blue-200">
+          <Coins className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+          <span className="font-semibold text-blue-900 text-sm sm:text-base">{credits}</span>
+          <span className="text-xs sm:text-sm text-blue-700 hidden xs:inline">Kredi</span>
         </div>
 
-        {/* History Button */}
+        {/* History Button - Hidden on smallest screens */}
         <button
           onClick={() => setShowHistory(true)}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="hidden sm:flex p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors"
           title="Kredi Geçmişi"
         >
-          <History className="w-5 h-5 text-gray-600" />
+          <History className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
         </button>
 
         {/* Buy Credits Button */}
         <button
           onClick={onBuyCredits}
-          className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
-          <Plus className="w-4 h-4" />
-          <span className="text-sm font-medium">Kredi Al</span>
+          className="flex items-center space-x-1 sm:space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg transition-colors">
+          <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span className="text-xs sm:text-sm font-medium hidden sm:inline">Kredi Al</span>
         </button>
       </div>
 
