@@ -21,7 +21,7 @@ import os
 from datetime import datetime, timezone, timedelta
 
 # Configuration
-BACKEND_URL = "https://ui-video-deploy.preview.emergentagent.com"
+BACKEND_URL = "https://ai-ugc-platform-2.preview.emergentagent.com"
 TEST_EMAIL = "beratyilmaz626@gmail.com"
 TEST_PASSWORD = "berat881612"
 

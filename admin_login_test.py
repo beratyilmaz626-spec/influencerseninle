@@ -14,7 +14,7 @@ import json
 from typing import Dict, Any, Optional
 
 # Configuration
-BACKEND_URL = "https://ui-video-deploy.preview.emergentagent.com"
+BACKEND_URL = "https://ai-ugc-platform-2.preview.emergentagent.com"
 ADMIN_EMAIL = "beratyilmaz626@gmail.com"
 ADMIN_PASSWORD = "berat881612"
 
