@@ -86,21 +86,35 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 
 ## Bekleyen Görevler
 
+### ✅ P0 - Kritik Bug Fix - 28 Şubat 2026
+- [x] **Sonsuz Render Döngüsü & Otomatik Çıkış Sorunu ÇÖZÜLDÜ**
+  - Sorun: Uygulama ~60 saniye sonra otomatik olarak kullanıcıyı çıkış yaptırıyordu
+  - Kök Neden: `useAuth.ts` ve `useSubscriptionAccess.ts` hook'larındaki unstable dependencies
+  - Çözüm:
+    - `onAuthStateChange` event'inde sadece önemli auth olayları işleniyor (SIGNED_IN, SIGNED_OUT, USER_UPDATED)
+    - `authInitializedRef` ile sadece bir kez başlatma
+    - `useCallback` ve `useMemo` ile memoization düzeltmeleri
+    - `App.tsx`'e user login durumunda otomatik dashboard yönlendirmesi eklendi
+  - Test: 90+ saniye boyunca dashboard stabil kaldı, logout olmadı
+
 ### P0 - Video Oynatma Sorunu (Devam Ediyor)
 - [ ] **Video Playback:** Tarayıcıda video yüklenmiyor (`net::ERR_ABORTED`)
   - Backend doğru çalışıyor (curl ile 200 OK, video/mp4)
   - Çözüm: Videoları Supabase Storage'a yüklemek (kullanıcı bucket oluşturmalı)
 
 ### P1 - Yüksek Öncelik
+- [ ] **Video İndirme Kalitesi** - Düzeltme yapıldı, kullanıcı doğrulaması bekliyor
 - [ ] **Google/Apple OAuth Yapılandırması** - Kullanıcının Supabase'de etkinleştirmesi gerekiyor
+- [ ] **Arzu kullanıcısı hediye kredi sorunu** - Gift credit logic test edilmeli
 - [ ] Supabase Dashboard'dan performans/güvenlik uyarıları kontrol edilmeli (USER VERIFICATION)
 - [ ] Video işleniyor durumu UI'da gösterimi iyileştirilmeli
 
 ### P2 - Orta Öncelik
-- [ ] Dashboard.tsx refaktör (bileşenlere ayır)
+- [ ] Dashboard.tsx refaktör (bileşenlere ayır - 2300+ satır!)
 - [ ] `stripe-config.ts` → `plan-config.ts` olarak yeniden adlandır
 - [ ] Iyzico ödeme entegrasyonu (MOCKED)
 - [ ] Eski dosyaları temizle (ComparisonTable.tsx, supabase_fixes.sql)
+- [ ] **Vercel Deployment** - Ortam değişkenleri kullanıcı tarafından eklenmeli
 
 ### P3 - Düşük Öncelik
 - [ ] Tüm mevcut kullanıcıların kredilerini 200x çarp (bulk update)
