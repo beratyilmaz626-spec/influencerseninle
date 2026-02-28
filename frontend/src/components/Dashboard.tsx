@@ -448,50 +448,50 @@ function HomeContent({
         {/* Animated border */}
         <div className="absolute -inset-[1px] bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink rounded-3xl opacity-30 group-hover:opacity-60 transition duration-500 blur-sm" />
         
-        <div className="relative p-8 md:p-10 bg-[#0a0f1a]/90 rounded-3xl overflow-hidden">
+        <div className="relative p-4 sm:p-6 md:p-8 lg:p-10 bg-[#0a0f1a]/90 rounded-3xl overflow-hidden">
           {/* Background effects */}
           <motion.div 
-            className="absolute top-0 right-0 w-96 h-96 bg-neon-cyan/5 rounded-full blur-3xl"
+            className="absolute top-0 right-0 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-neon-cyan/5 rounded-full blur-3xl"
             animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
             transition={{ duration: 8, repeat: Infinity }}
           />
           <motion.div 
-            className="absolute bottom-0 left-0 w-96 h-96 bg-neon-purple/5 rounded-full blur-3xl"
+            className="absolute bottom-0 left-0 w-48 sm:w-64 md:w-96 h-48 sm:h-64 md:h-96 bg-neon-purple/5 rounded-full blur-3xl"
             animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.4, 0.3] }}
             transition={{ duration: 10, repeat: Infinity }}
           />
           
-          <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="flex-1">
+          <div className="relative flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 md:gap-8">
+            <div className="flex-1 text-center md:text-left">
               <motion.div 
-                className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-4"
+                className="inline-flex items-center space-x-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 border border-white/10 mb-3 sm:mb-4"
                 whileHover={{ scale: 1.05 }}
               >
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
                 >
-                  <Sparkles className="w-4 h-4 text-neon-cyan" />
+                  <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-neon-cyan" />
                 </motion.div>
-                <span className="text-sm font-semibold text-gray-300">AI Destekli</span>
+                <span className="text-xs sm:text-sm font-semibold text-gray-300">AI Destekli</span>
               </motion.div>
-              <h3 className="text-3xl md:text-4xl font-black text-white mb-3 leading-tight">
+              <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white mb-2 sm:mb-3 leading-tight">
                 Etkileyici Videolar Oluşturun
               </h3>
-              <p className="text-gray-400 text-lg leading-relaxed max-w-xl">
+              <p className="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl mx-auto md:mx-0">
                 AI teknolojisi ile fikirlerinizi saniyeler içinde profesyonel videolara dönüştürün
               </p>
             </div>
             <motion.button
               onClick={onCreateVideo}
-              className="relative group/btn"
+              className="relative group/btn w-full sm:w-auto"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
               data-testid="create-video-btn"
             >
-              <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-2xl blur opacity-50 group-hover/btn:opacity-100 transition duration-300"></div>
-              <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-10 py-5 rounded-2xl font-bold text-lg inline-flex items-center space-x-3 shadow-[0_0_30px_rgba(0,240,255,0.3)]">
-                <Plus className="w-6 h-6 group-hover/btn:rotate-90 transition-transform duration-500" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-xl sm:rounded-2xl blur opacity-50 group-hover/btn:opacity-100 transition duration-300"></div>
+              <div className="relative bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base md:text-lg inline-flex items-center justify-center space-x-2 sm:space-x-3 shadow-[0_0_30px_rgba(0,240,255,0.3)] w-full sm:w-auto">
+                <Plus className="w-5 h-5 sm:w-6 sm:h-6 group-hover/btn:rotate-90 transition-transform duration-500" />
                 <span>Video Oluştur</span>
               </div>
             </motion.button>
