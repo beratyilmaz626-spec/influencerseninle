@@ -932,10 +932,18 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   const [selectedLanguage, setSelectedLanguage] = useState('tr');
   
   // Onboarding state - ilk kez giren kullanıcılar için
-  const [showOnboarding, setShowOnboarding] = useState(() => {
-    const completed = localStorage.getItem('video_onboarding_completed');
-    return completed !== 'true';
-  });
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [onboardingChecked, setOnboardingChecked] = useState(false);
+  
+  // Check onboarding on mount (client-side only)
+  useEffect(() => {
+    if (!onboardingChecked) {
+      const completed = localStorage.getItem('video_onboarding_completed');
+      console.log('🎓 Onboarding durumu:', completed ? 'Tamamlanmış' : 'Gösterilecek');
+      setShowOnboarding(completed !== 'true');
+      setOnboardingChecked(true);
+    }
+  }, [onboardingChecked]);
   
   // Modal state
   const [showSectorModal, setShowSectorModal] = useState(false);
