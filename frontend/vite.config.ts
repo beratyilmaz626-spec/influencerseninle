@@ -19,12 +19,8 @@ export default defineConfig({
       'ui-video-deploy.cluster-0.preview.emergentcf.cloud',
       'localhost',
     ],
-    hmr: {
-      overlay: false, // Hata overlay'ini kapat - sayfa yenilemesi tetikleyebilir
-    },
-    watch: {
-      usePolling: false, // Polling'i kapat - gereksiz yenileme tetikleyebilir
-    },
+    hmr: false, // HMR tamamen kapalı - otomatik yenileme olmayacak
+    watch: null, // Dosya izleme kapalı
   },
   preview: {
     port: 3000,
