@@ -86,22 +86,16 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 
 ## Bekleyen Görevler
 
-### ✅ P0 - Kritik Bug Fix - 28 Şubat 2026 (SON GÜNCELLEME)
+### ✅ P0 - KRİTİK BUG FIX TAMAMLANDI - 28 Şubat 2026
 - [x] **Sonsuz Render Döngüsü & Otomatik Çıkış Sorunu ÇÖZÜLDÜ**
-  - Sorun: Uygulama ~60 saniye sonra otomatik olarak kullanıcıyı çıkış yaptırıyordu
-  - Kök Neden: 
-    1. Supabase `onAuthStateChange` her token refresh'te tetikleniyordu
-    2. `useAuth` hook'u her auth event'te state güncelliyordu
-    3. State değişiklikleri tüm component tree'yi re-render ediyordu
-  - Çözüm:
-    1. `useAuth.ts` tamamen yeniden yazıldı:
-       - Global flag (`globalAuthInitialized`) ile tek seferlik başlatma
-       - `onAuthStateChange` sadece `SIGNED_IN` ve `SIGNED_OUT` event'lerini işliyor
-       - `TOKEN_REFRESHED` ve diğer event'ler ignore ediliyor
-    2. `useSubscriptionAccess.ts` optimize edildi
-    3. `useVideos.ts`'e fetch guard eklendi
-    4. Gereksiz console.log'lar kaldırıldı
-  - Test: 2 dakika (120 saniye) boyunca dashboard stabil kaldı, hiç logout olmadı ✅
+  - Test: 2+ dakika (125 saniye) boyunca dashboard stabil kaldı ✅
+  - Çözüm: Singleton pattern ile global auth state yönetimi
+  - `useAuth.ts` tamamen yeniden yazıldı
+  - StrictMode kaldırıldı (production-like davranış)
+  
+- [x] **Admin Videolar Yeniden Yüklendi**
+  - 6 demo video Supabase'e eklendi
+  - Admin kullanıcı (beratyilmaz626) profili aktif
 
 ### P0 - Video Oynatma Sorunu (Devam Ediyor)
 - [ ] **Video Playback:** Tarayıcıda video yüklenmiyor (`net::ERR_ABORTED`)
