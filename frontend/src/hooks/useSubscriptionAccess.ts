@@ -148,16 +148,29 @@ export function useSubscriptionAccess() {
     }
   }, [user, subscription]);
 
+  // Ref to prevent multiple fetches
+  const hasFetchedRef = useRef(false);
+  const userIdRef = useRef<string | null>(null);
+
   useEffect(() => {
-    fetchSubscription();
-    fetchGiftCredits();
-  }, [fetchSubscription, fetchGiftCredits]);
+    // Only fetch if user changed or first mount
+    if (user?.id && user.id !== userIdRef.current) {
+      userIdRef.current = user.id;
+      hasFetchedRef.current = false;
+    }
+    
+    if (!hasFetchedRef.current && user) {
+      hasFetchedRef.current = true;
+      fetchSubscription();
+      fetchGiftCredits();
+    }
+  }, [user?.id]); // Only depend on user.id, not the functions
 
   useEffect(() => {
     if (subscription) {
       fetchMonthlyUsage();
     }
-  }, [subscription, fetchMonthlyUsage]);
+  }, [subscription?.subscription_id]); // Only depend on subscription_id
 
   // Mevcut plan ID'sini al
   const getCurrentPlanId = useCallback((): PlanId | null => {
