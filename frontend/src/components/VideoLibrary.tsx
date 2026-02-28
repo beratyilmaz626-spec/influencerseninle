@@ -18,12 +18,13 @@ export default function VideoLibrary() {
   };
 
   // Polling: İşleniyor durumundaki videolar varsa otomatik yenile
+  const processingVideoCount = videos.filter(v => v.status === 'processing').length;
+  
   useEffect(() => {
-    const hasProcessingVideos = videos.some(v => v.status === 'processing');
     let pollInterval: NodeJS.Timeout | null = null;
     
-    if (hasProcessingVideos) {
-      console.log('📊 Processing videolar var, polling başlatılıyor...');
+    if (processingVideoCount > 0) {
+      console.log('📊 Processing videolar var (' + processingVideoCount + '), polling başlatılıyor...');
       pollInterval = setInterval(() => {
         console.log('🔄 Video listesi yenileniyor (polling)...');
         refetch();
@@ -37,7 +38,7 @@ export default function VideoLibrary() {
         clearInterval(pollInterval);
       }
     };
-  }, [videos.filter(v => v.status === 'processing').length, refetch]); // Sadece processing video sayısı değiştiğinde
+  }, [processingVideoCount, refetch]); // Sadece processing video sayısı değiştiğinde
 
   const filteredVideos = videos.filter((video) => {
     const matchesSearch = video.name.toLowerCase().includes(searchQuery.toLowerCase());
