@@ -41,24 +41,17 @@ export default function HeroSection({ onGetStarted }: HeroSectionProps) {
           <span className="text-gray-500">Influencer aramadan, stüdyo kurmadan, dakikalar içinde.</span>
         </p>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-16 animate-fade-in-up delay-200">
+        {/* CTA Button - Centered */}
+        <div className="flex items-center justify-center mb-10 sm:mb-16 animate-fade-in-up delay-200">
           <button
             onClick={onGetStarted}
-            className="group w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold text-base sm:text-lg hover:opacity-90 transition-opacity"
+            className="group px-8 sm:px-10 md:px-12 py-3 sm:py-4 md:py-5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-neon-cyan to-neon-purple text-white font-bold text-base sm:text-lg md:text-xl hover:opacity-90 hover:scale-105 transition-all shadow-lg shadow-neon-cyan/30"
           >
-            <span className="flex items-center justify-center gap-2">
-              <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="flex items-center justify-center gap-2 sm:gap-3">
+              <Zap className="w-5 h-5 sm:w-6 sm:h-6" />
               Ücretsiz Başla
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover:translate-x-1 transition-transform" />
             </span>
-          </button>
-
-          <button className="flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto px-5 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 transition-colors">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/10 flex items-center justify-center">
-              <Play className="w-4 h-4 sm:w-5 sm:h-5 text-neon-cyan fill-neon-cyan ml-0.5" />
-            </div>
-            <span className="text-sm sm:text-base">Demo İzle</span>
           </button>
         </div>
 
