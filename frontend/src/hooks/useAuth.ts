@@ -1,226 +1,227 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
+import { User, Session } from '@supabase/supabase-js';
 import { supabase, Database } from '../lib/supabase';
 
 type UserProfile = Database['public']['Tables']['users']['Row'];
 
-// Global flag to prevent multiple initializations across re-renders
-let globalAuthInitialized = false;
-let globalUserId: string | null = null;
+// Singleton pattern - hook dışında global state
+let _user: User | null = null;
+let _session: Session | null = null;
+let _userProfile: UserProfile | null = null;
+let _isInitialized = false;
+let _listeners: Set<() => void> = new Set();
+
+// Notify all listeners
+const notifyListeners = () => {
+  _listeners.forEach(listener => listener());
+};
+
+// Initialize auth once globally
+const initializeAuth = async () => {
+  if (_isInitialized || !supabase) return;
+  _isInitialized = true;
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    _session = session;
+    _user = session?.user ?? null;
+    
+    if (_user) {
+      await fetchProfile(_user.id);
+    }
+    
+    notifyListeners();
+  } catch (error) {
+    console.error('Auth init error:', error);
+  }
+};
+
+// Fetch profile
+const fetchProfile = async (userId: string) => {
+  if (!supabase) return;
+  
+  try {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (!data) {
+      // Create new profile
+      const { data: userData } = await supabase.auth.getUser();
+      if (userData.user) {
+        const newProfile = {
+          id: userId,
+          email: userData.user.email || '',
+          full_name: userData.user.user_metadata?.full_name || userData.user.email?.split('@')[0] || 'Kullanıcı',
+          company_name: null,
+          country: 'Türkiye',
+          is_admin: userData.user.email === 'ogun.karabulut@hotmail.com' || userData.user.email === 'beratyilmaz626@gmail.com',
+          user_credits_points: 200
+        };
+
+        const { data: createdProfile } = await supabase
+          .from('users')
+          .upsert(newProfile, { onConflict: 'id' })
+          .select()
+          .single();
+
+        _userProfile = createdProfile;
+      }
+    } else {
+      _userProfile = data;
+    }
+    
+    notifyListeners();
+  } catch (error) {
+    console.error('Profile fetch error:', error);
+  }
+};
+
+// Setup auth listener once
+let _authListenerSetup = false;
+const setupAuthListener = () => {
+  if (_authListenerSetup || !supabase) return;
+  _authListenerSetup = true;
+
+  supabase.auth.onAuthStateChange((event, session) => {
+    // ONLY handle real sign in/out - ignore everything else
+    if (event === 'SIGNED_OUT') {
+      _user = null;
+      _session = null;
+      _userProfile = null;
+      _isInitialized = false;
+      notifyListeners();
+    }
+  });
+};
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [profileLoading, setProfileLoading] = useState(true);
-  
-  // Check if current user is admin
-  const isAdmin = userProfile?.is_admin || (userProfile as any)?.role === 'admin' || false;
+  const [, forceUpdate] = useState({});
+  const mountedRef = useRef(true);
 
-  // Fetch user profile - only once per user
-  const fetchUserProfile = useCallback(async (userId: string) => {
-    // Skip if already fetched for this user globally
-    if (globalUserId === userId) {
-      return;
-    }
-    
-    globalUserId = userId;
-    setProfileLoading(true);
-    
-    try {
-      if (!supabase) {
-        setProfileLoading(false);
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', userId)
-        .maybeSingle();
-
-      if (error) throw error;
-
-      if (!data) {
-        // Create new user profile
-        const { data: userData } = await supabase.auth.getUser();
-        if (userData.user) {
-          const newProfile = {
-            id: userId,
-            email: userData.user.email || '',
-            full_name: userData.user.user_metadata?.full_name || userData.user.email?.split('@')[0] || 'Kullanıcı',
-            company_name: null,
-            country: 'Türkiye',
-            is_admin: userData.user.email === 'ogun.karabulut@hotmail.com' || userData.user.email === 'beratyilmaz626@gmail.com',
-            user_credits_points: 200
-          };
-
-          const { data: createdProfile, error: createError } = await supabase
-            .from('users')
-            .upsert(newProfile, { onConflict: 'id' })
-            .select()
-            .single();
-
-          if (createError) throw createError;
-          setUserProfile(createdProfile);
-          setProfileLoading(false);
-          return;
-        }
-      }
-
-      setUserProfile(data || null);
-    } catch (error) {
-      console.error('Profile fetch failed:', error);
-      globalUserId = null; // Allow retry on error
-    } finally {
-      setProfileLoading(false);
-    }
-  }, []);
-
+  // Subscribe to global state changes
   useEffect(() => {
-    // Strict single initialization using global flag
-    if (globalAuthInitialized) {
-      setLoading(false);
-      return;
-    }
-    globalAuthInitialized = true;
+    mountedRef.current = true;
     
-    if (!supabase) {
-      setLoading(false);
-      return;
+    const listener = () => {
+      if (mountedRef.current) {
+        forceUpdate({});
+      }
+    };
+    
+    _listeners.add(listener);
+    
+    // Initialize on first mount
+    if (!_isInitialized) {
+      initializeAuth();
+      setupAuthListener();
     }
-
-    // Get initial session once
-    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
-      setSession(initialSession);
-      setUser(initialSession?.user ?? null);
-      if (initialSession?.user) {
-        fetchUserProfile(initialSession.user.id);
-      }
-      setLoading(false);
-    });
-
-    // Listen for auth changes - ONLY handle real sign in/out events
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, newSession) => {
-      // CRITICAL: Only process actual authentication changes
-      // Ignore: TOKEN_REFRESHED, INITIAL_SESSION, MFA events
-      if (event === 'SIGNED_IN') {
-        // Only update if this is a real sign in (not just a token refresh)
-        if (!session && newSession) {
-          setSession(newSession);
-          setUser(newSession.user);
-          if (newSession.user && globalUserId !== newSession.user.id) {
-            fetchUserProfile(newSession.user.id);
-          }
-        }
-      } else if (event === 'SIGNED_OUT') {
-        setSession(null);
-        setUser(null);
-        setUserProfile(null);
-        globalUserId = null;
-      }
-      // Explicitly ignore: TOKEN_REFRESHED, USER_UPDATED, PASSWORD_RECOVERY, etc.
-    });
 
     return () => {
-      subscription.unsubscribe();
+      mountedRef.current = false;
+      _listeners.delete(listener);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const signUp = async (email: string, password: string, fullName?: string) => {
-    if (!supabase) {
-      return { data: null, error: { message: 'Supabase connection not available' } };
-    }
+  const isAdmin = _userProfile?.is_admin || (_userProfile as any)?.role === 'admin' || false;
 
+  const signUp = useCallback(async (email: string, password: string) => {
+    if (!supabase) return { data: null, error: { message: 'Not connected' } };
+    
     try {
       const { data, error } = await supabase.auth.signUp({ email, password });
       return { data, error };
     } catch (error) {
       return { data: null, error };
     }
-  };
+  }, []);
 
-  const signOut = async () => {
-    if (!supabase) {
-      return { error: { message: 'Supabase connection not available' } };
-    }
-
-    try {
-      // Reset global state on sign out
-      globalAuthInitialized = false;
-      globalUserId = null;
-      
-      const { error } = await supabase.auth.signOut();
-      
-      // Force clear local state
-      setSession(null);
-      setUser(null);
-      setUserProfile(null);
-      
-      return { error };
-    } catch (error) {
-      return { error };
-    }
-  };
-
-  const signIn = async (email: string, password: string) => {
-    if (!supabase) {
-      return { data: null, error: { message: 'Supabase connection not available' } };
-    }
+  const signIn = useCallback(async (email: string, password: string) => {
+    if (!supabase) return { data: null, error: { message: 'Not connected' } };
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       
       if (!error && data.session) {
-        // Immediately update state on successful sign in
-        setSession(data.session);
-        setUser(data.user);
+        _session = data.session;
+        _user = data.user;
+        _isInitialized = true;
+        
         if (data.user) {
-          fetchUserProfile(data.user.id);
+          await fetchProfile(data.user.id);
         }
+        
+        notifyListeners();
       }
       
       return { data, error };
     } catch (error) {
       return { data: null, error };
     }
-  };
+  }, []);
 
-  const updateProfile = async (updates: Partial<UserProfile>) => {
-    if (!user || !supabase) {
-      return { error: { message: 'Not authenticated' } };
+  const signOut = useCallback(async () => {
+    if (!supabase) return { error: { message: 'Not connected' } };
+
+    try {
+      const { error } = await supabase.auth.signOut();
+      
+      _user = null;
+      _session = null;
+      _userProfile = null;
+      _isInitialized = false;
+      
+      notifyListeners();
+      
+      return { error };
+    } catch (error) {
+      return { error };
     }
+  }, []);
+
+  const updateProfile = useCallback(async (updates: Partial<UserProfile>) => {
+    if (!_user || !supabase) return { error: { message: 'Not authenticated' } };
 
     try {
       const { data, error } = await supabase
         .from('users')
         .update(updates)
-        .eq('id', user.id)
+        .eq('id', _user.id)
         .select()
         .single();
 
-      if (error) throw error;
+      if (!error && data) {
+        _userProfile = data;
+        notifyListeners();
+      }
       
-      setUserProfile(data);
-      return { data, error: null };
+      return { data, error };
     } catch (error) {
       return { data: null, error };
     }
-  };
+  }, []);
+
+  const refreshProfile = useCallback(async () => {
+    if (_user) {
+      await fetchProfile(_user.id);
+    }
+  }, []);
 
   return {
-    user,
-    session,
-    userProfile,
+    user: _user,
+    session: _session,
+    userProfile: _userProfile,
     isAdmin,
-    loading,
-    profileLoading,
+    loading: !_isInitialized,
+    profileLoading: false,
     signUp,
     signIn,
     signOut,
     updateProfile,
-    fetchUserProfile,
+    fetchUserProfile: refreshProfile,
   };
 }
