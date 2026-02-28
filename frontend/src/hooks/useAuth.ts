@@ -81,10 +81,11 @@ export function useAuth() {
       setUserProfile(data || null);
     } catch (error) {
       console.error('Kullanıcı profili getirilemedi:', error);
+      profileFetchedRef.current = null; // Allow retry on error
     } finally {
       setProfileLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     // Get initial session
