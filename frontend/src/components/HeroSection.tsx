@@ -1,4 +1,4 @@
-import { Play, Sparkles, ArrowRight, Zap, Star, ChevronDown } from 'lucide-react';
+import { Sparkles, ArrowRight, Zap, Star, ChevronDown } from 'lucide-react';
 
 interface HeroSectionProps {
   onGetStarted: () => void;
