@@ -48,8 +48,8 @@ function App() {
     setShowAuthModal(false);
   };
 
-  const handleLogout = () => {
-    signOut();
+  const handleLogout = async () => {
+    await signOut();
     setView('landing');
   };
 
