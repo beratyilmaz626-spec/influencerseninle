@@ -79,17 +79,21 @@ export type Database = {
         Row: {
           id: string;
           email: string;
-          full_name: string | null;
-          company_name: string | null;
-          country: string;
+          password?: string;
+          role?: string;
+          full_name?: string | null;
+          company_name?: string | null;
+          country?: string;
           is_admin: boolean;
           user_credits_points: number;
           created_at: string;
-          updated_at: string;
+          updated_at?: string;
         };
         Insert: {
           id: string;
           email: string;
+          password?: string;
+          role?: string;
           full_name?: string | null;
           company_name?: string | null;
           country?: string;
@@ -101,6 +105,8 @@ export type Database = {
         Update: {
           id?: string;
           email?: string;
+          password?: string;
+          role?: string;
           full_name?: string | null;
           company_name?: string | null;
           country?: string;
