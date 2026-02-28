@@ -156,8 +156,9 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 - `/app/frontend/src/components/HeroSection.tsx` - Hero bölümü
 - `/app/frontend/src/components/DifferenceSection.tsx` - Karşılaştırma bölümü
 - `/app/frontend/src/components/AuthModal.tsx` - Giriş modal (Google/Apple UI)
-- `/app/frontend/src/hooks/useAuth.ts` - Auth ve admin durumu
-- `/app/frontend/src/hooks/useSubscriptionAccess.ts` - İzin kontrolü
+- `/app/frontend/src/hooks/useAuth.ts` - Auth ve admin durumu (28 Şubat 2026 güncellendi)
+- `/app/frontend/src/hooks/useSubscriptionAccess.ts` - İzin kontrolü (28 Şubat 2026 yeniden yazıldı)
+- `/app/frontend/src/App.tsx` - Ana app (28 Şubat 2026 auto-redirect eklendi)
 - `/app/design_guidelines.json` - Tasarım kuralları
 
 ## Admin Hesabı
