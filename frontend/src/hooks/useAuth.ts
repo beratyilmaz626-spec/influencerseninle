@@ -123,7 +123,8 @@ export function useAuth() {
     } else {
       setLoading(false);
     }
-  }, [fetchUserProfile]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency - run only once on mount
 
   const signUp = async (email: string, password: string, fullName?: string) => {
     try {
