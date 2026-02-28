@@ -497,7 +497,7 @@ function VideoCard({
                 <Download className="w-4 h-4" />
                 <span>URL Yok</span>
               </button>
-            )}}
+            )}
             <button 
               onClick={() => video.video_url && onPreview(video.video_url, video.name)}
               className="p-2 border border-border hover:bg-surface-elevated hover:border-neon-cyan rounded-xl transition-all"
