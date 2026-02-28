@@ -413,27 +413,82 @@ function VideoCard({
         {video.status === 'completed' && (
           <div className="flex gap-2">
             {video.video_url ? (
-              <a
-                href={video.video_url}
-                download={`${video.name.replace(/[^a-zA-Z0-9-_]/g, '_')}.mp4`}
-                target="_blank"
-                rel="noreferrer"
-                className="flex-1 bg-gradient-to-r from-neon-cyan to-neon-purple hover:shadow-glow-cyan text-white py-2 rounded-xl text-sm font-medium transition-all flex items-center justify-center space-x-1 hover:scale-[1.02]"
-                onClick={(e) => {
-                  // Direct download attempt
-                  e.preventDefault();
-                  const link = document.createElement('a');
-                  link.href = video.video_url!;
-                  link.download = `${video.name.replace(/[^a-zA-Z0-9-_]/g, '_')}.mp4`;
-                  link.target = '_blank';
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
+              <button
+                onClick={async () => {
+                  try {
+                    // Show loading state
+                    const button = document.activeElement as HTMLButtonElement;
+                    if (button) {
+                      button.disabled = true;
+                      button.innerHTML = '<svg class="animate-spin w-4 h-4" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" opacity="0.25"></circle><path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg><span>İndiriliyor...</span>';
+                    }
+                    
+                    // Fetch the video file as blob (no re-encoding)
+                    const response = await fetch(video.video_url!, {
+                      method: 'GET',
+                      mode: 'cors',
+                    });
+                    
+                    if (!response.ok) {
+                      throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    // Get the blob - this is the ORIGINAL file, no re-encoding
+                    const blob = await response.blob();
+                    
+                    // Create blob URL and download
+                    const blobUrl = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    
+                    // Use original filename or generate one
+                    const filename = `${video.name.replace(/[^a-zA-Z0-9-_\s]/g, '').replace(/\s+/g, '_')}_original.mp4`;
+                    link.download = filename;
+                    
+                    // Trigger download
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Clean up blob URL after download starts
+                    setTimeout(() => {
+                      window.URL.revokeObjectURL(blobUrl);
+                    }, 1000);
+                    
+                    // Reset button state
+                    if (button) {
+                      button.disabled = false;
+                      button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span>İndir</span>';
+                    }
+                    
+                    console.log('✅ Video indirildi (orijinal kalite):', filename, 'Boyut:', (blob.size / 1024 / 1024).toFixed(2), 'MB');
+                    
+                  } catch (error) {
+                    console.error('❌ Video indirme hatası:', error);
+                    
+                    // Fallback: Try direct link download
+                    console.log('⚠️ Blob indirme başarısız, direkt link deneniyor...');
+                    const link = document.createElement('a');
+                    link.href = video.video_url!;
+                    link.download = `${video.name.replace(/[^a-zA-Z0-9-_]/g, '_')}.mp4`;
+                    link.target = '_blank';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Reset button
+                    const button = document.activeElement as HTMLButtonElement;
+                    if (button) {
+                      button.disabled = false;
+                      button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span>İndir</span>';
+                    }
+                  }
                 }}
+                className="flex-1 bg-gradient-to-r from-neon-cyan to-neon-purple hover:shadow-glow-cyan text-white py-2 rounded-xl text-sm font-medium transition-all flex items-center justify-center space-x-1 hover:scale-[1.02]"
               >
                 <Download className="w-4 h-4" />
                 <span>İndir</span>
-              </a>
+              </button>
             ) : (
               <button 
                 disabled
@@ -442,7 +497,7 @@ function VideoCard({
                 <Download className="w-4 h-4" />
                 <span>URL Yok</span>
               </button>
-            )}
+            )}}
             <button 
               onClick={() => video.video_url && onPreview(video.video_url, video.name)}
               className="p-2 border border-border hover:bg-surface-elevated hover:border-neon-cyan rounded-xl transition-all"
