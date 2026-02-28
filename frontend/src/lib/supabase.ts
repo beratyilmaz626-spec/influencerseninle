@@ -13,10 +13,13 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = supabaseUrl && supabaseAnonKey 
   ? createClient(supabaseUrl, supabaseAnonKey, {
       auth: {
-        persistSession: true, // Session'ı localStorage'da sakla
-        autoRefreshToken: true, // Token otomatik yenilensin
-        detectSessionInUrl: true, // URL'deki session'ı algıla (OAuth için)
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
         storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+        // Token yenilemesini daha az agresif yap
+        storageKey: 'influencer-seninle-auth',
+        flowType: 'pkce',
       },
     })
   : null;
