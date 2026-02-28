@@ -171,7 +171,7 @@ export function useVideos() {
 
   useEffect(() => {
     fetchVideos();
-  }, [user]); // Kullanıcı değiştiğinde videoları yeniden getir
+  }, [user?.id]); // Sadece kullanıcı ID değiştiğinde videoları yeniden getir
 
   return {
     videos,
