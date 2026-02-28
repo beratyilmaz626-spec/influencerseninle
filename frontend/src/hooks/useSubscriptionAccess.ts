@@ -139,7 +139,7 @@ export function useSubscriptionAccess() {
     } catch (err) {
       console.error('Aylık kullanım bilgisi alınamadı:', err);
     }
-  }, [user, subscription]);
+  }, [user?.id, subscription?.subscription_id]); // Sadece ID'ler değiştiğinde
 
   // Ref to prevent multiple fetches
   const hasFetchedRef = useRef(false);
