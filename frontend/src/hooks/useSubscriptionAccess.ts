@@ -63,11 +63,7 @@ export function useSubscriptionAccess() {
 
       if (creditsError) {
         console.error('🎁 fetchGiftCredits error:', creditsError);
-        // RLS hatası olabilir, userProfile'dan almayı dene
-        if (userProfile?.user_credits_points !== undefined) {
-          console.log('🎁 userProfile\'dan alınıyor:', userProfile.user_credits_points);
-          setGiftCredits(userProfile.user_credits_points || 0);
-        }
+        setGiftCredits(0);
         return;
       }
       
@@ -77,12 +73,9 @@ export function useSubscriptionAccess() {
       }
     } catch (err) {
       console.error('🎁 Hediye kredi bilgisi alınamadı:', err);
-      // Fallback: userProfile'dan al
-      if (userProfile?.user_credits_points !== undefined) {
-        setGiftCredits(userProfile.user_credits_points || 0);
-      }
+      setGiftCredits(0);
     }
-  }, [user, userProfile]);
+  }, [user?.id]); // Sadece user.id değiştiğinde yeniden oluştur
 
   // Abonelik bilgilerini getir
   const fetchSubscription = useCallback(async () => {
