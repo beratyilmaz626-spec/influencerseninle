@@ -1,8 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { User, Session } from '@supabase/supabase-js';
+import { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
 import { supabase, Database } from '../lib/supabase';
 
 type UserProfile = Database['public']['Tables']['users']['Row'];
+
+// Global flag to prevent multiple initializations across re-renders
+let globalAuthInitialized = false;
+let globalUserId: string | null = null;
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -11,26 +15,21 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
   const [profileLoading, setProfileLoading] = useState(true);
   
-  // Prevent multiple profile fetches
-  const profileFetchedRef = useRef<string | null>(null);
-  const authInitializedRef = useRef(false);
-
-  // Check if current user is admin - check both is_admin and role fields
+  // Check if current user is admin
   const isAdmin = userProfile?.is_admin || (userProfile as any)?.role === 'admin' || false;
 
-  // Kullanıcı profilini getir
+  // Fetch user profile - only once per user
   const fetchUserProfile = useCallback(async (userId: string) => {
-    // Skip if already fetched for this user
-    if (profileFetchedRef.current === userId) {
+    // Skip if already fetched for this user globally
+    if (globalUserId === userId) {
       return;
     }
     
-    profileFetchedRef.current = userId;
+    globalUserId = userId;
     setProfileLoading(true);
     
     try {
       if (!supabase) {
-        console.error('Supabase client not initialized');
         setProfileLoading(false);
         return;
       }
@@ -41,12 +40,10 @@ export function useAuth() {
         .eq('id', userId)
         .maybeSingle();
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
-      // Eğer kullanıcı profili bulunamazsa, yeni bir profil oluştur
       if (!data) {
+        // Create new user profile
         const { data: userData } = await supabase.auth.getUser();
         if (userData.user) {
           const newProfile = {
@@ -74,69 +71,71 @@ export function useAuth() {
 
       setUserProfile(data || null);
     } catch (error) {
-      console.error('User profile fetch failed:', error);
-      profileFetchedRef.current = null; // Allow retry on error
+      console.error('Profile fetch failed:', error);
+      globalUserId = null; // Allow retry on error
     } finally {
       setProfileLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    // Run only once
-    if (authInitializedRef.current) return;
-    authInitializedRef.current = true;
+    // Strict single initialization using global flag
+    if (globalAuthInitialized) {
+      setLoading(false);
+      return;
+    }
+    globalAuthInitialized = true;
     
     if (!supabase) {
       setLoading(false);
       return;
     }
 
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchUserProfile(session.user.id);
+    // Get initial session once
+    supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
+      setSession(initialSession);
+      setUser(initialSession?.user ?? null);
+      if (initialSession?.user) {
+        fetchUserProfile(initialSession.user.id);
       }
       setLoading(false);
     });
 
-    // Listen for auth changes - but only process significant changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      // Only handle actual auth state changes, not token refreshes
-      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'USER_UPDATED') {
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        if (session?.user) {
-          if (profileFetchedRef.current !== session.user.id) {
-            fetchUserProfile(session.user.id);
+    // Listen for auth changes - ONLY handle real sign in/out events
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, newSession) => {
+      // CRITICAL: Only process actual authentication changes
+      // Ignore: TOKEN_REFRESHED, INITIAL_SESSION, MFA events
+      if (event === 'SIGNED_IN') {
+        // Only update if this is a real sign in (not just a token refresh)
+        if (!session && newSession) {
+          setSession(newSession);
+          setUser(newSession.user);
+          if (newSession.user && globalUserId !== newSession.user.id) {
+            fetchUserProfile(newSession.user.id);
           }
-        } else {
-          setUserProfile(null);
-          profileFetchedRef.current = null;
         }
-        setLoading(false);
+      } else if (event === 'SIGNED_OUT') {
+        setSession(null);
+        setUser(null);
+        setUserProfile(null);
+        globalUserId = null;
       }
+      // Explicitly ignore: TOKEN_REFRESHED, USER_UPDATED, PASSWORD_RECOVERY, etc.
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const signUp = async (email: string, password: string, fullName?: string) => {
-    try {
-      if (!supabase) {
-        return { data: null, error: { message: 'Supabase connection not available' } };
-      }
+    if (!supabase) {
+      return { data: null, error: { message: 'Supabase connection not available' } };
+    }
 
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-        }
-      });
-      
+    try {
+      const { data, error } = await supabase.auth.signUp({ email, password });
       return { data, error };
     } catch (error) {
       return { data: null, error };
@@ -144,12 +143,22 @@ export function useAuth() {
   };
 
   const signOut = async () => {
-    try {
-      if (!supabase) {
-        return { error: { message: 'Supabase connection not available' } };
-      }
+    if (!supabase) {
+      return { error: { message: 'Supabase connection not available' } };
+    }
 
+    try {
+      // Reset global state on sign out
+      globalAuthInitialized = false;
+      globalUserId = null;
+      
       const { error } = await supabase.auth.signOut();
+      
+      // Force clear local state
+      setSession(null);
+      setUser(null);
+      setUserProfile(null);
+      
       return { error };
     } catch (error) {
       return { error };
@@ -157,16 +166,22 @@ export function useAuth() {
   };
 
   const signIn = async (email: string, password: string) => {
+    if (!supabase) {
+      return { data: null, error: { message: 'Supabase connection not available' } };
+    }
+
     try {
-      if (!supabase) {
-        return { data: null, error: { message: 'Supabase connection not available' } };
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      
+      if (!error && data.session) {
+        // Immediately update state on successful sign in
+        setSession(data.session);
+        setUser(data.user);
+        if (data.user) {
+          fetchUserProfile(data.user.id);
+        }
       }
-
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
+      
       return { data, error };
     } catch (error) {
       return { data: null, error };
@@ -174,18 +189,11 @@ export function useAuth() {
   };
 
   const updateProfile = async (updates: Partial<UserProfile>) => {
-    if (!user) {
-      console.error('❌ updateProfile: Kullanıcı oturumu bulunamadı');
-      return { error: { message: 'Kullanıcı oturumu bulunamadı' } };
-    }
-    if (!supabase) {
-      console.error('❌ updateProfile: Supabase connection not available');
-      return { error: { message: 'Supabase connection not available' } };
+    if (!user || !supabase) {
+      return { error: { message: 'Not authenticated' } };
     }
 
     try {
-      console.log('📝 updateProfile: Güncelleniyor...', { userId: user.id, updates });
-      
       const { data, error } = await supabase
         .from('users')
         .update(updates)
@@ -193,16 +201,11 @@ export function useAuth() {
         .select()
         .single();
 
-      if (error) {
-        console.error('❌ updateProfile Hata:', error);
-        throw error;
-      }
+      if (error) throw error;
       
-      console.log('✅ updateProfile Başarılı:', data);
       setUserProfile(data);
       return { data, error: null };
     } catch (error) {
-      console.error('❌ updateProfile Catch:', error);
       return { data: null, error };
     }
   };
