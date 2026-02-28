@@ -32,6 +32,13 @@ function App() {
     }
   }, []);
 
+  // Auto-redirect to dashboard when user is logged in
+  useEffect(() => {
+    if (!loading && user && view === 'landing') {
+      setView('dashboard');
+    }
+  }, [user, loading, view]);
+
   const handleGetStarted = () => {
     setView('dashboard');
   };
