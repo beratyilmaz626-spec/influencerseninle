@@ -1510,6 +1510,50 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
               )}
             </motion.div>
 
+            {/* Dil Seçimi */}
+            <motion.div 
+              className="space-y-2 relative"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.32 }}
+            >
+              <h3 className="text-sm font-semibold text-white">🌍 Video Dili</h3>
+              <button
+                onClick={() => setOpenDropdown(openDropdown === 'language' ? null : 'language')}
+                className={`w-full p-3 rounded-xl border bg-white/[0.02] text-white transition-all duration-300 text-left flex items-center justify-between hover:border-neon-cyan/30 ${openDropdown === 'language' ? 'border-neon-cyan/50 shadow-[0_0_15px_rgba(0,240,255,0.1)]' : 'border-white/10'}`}
+              >
+                <span className="text-sm font-medium flex items-center gap-2">
+                  <span className="text-base">{languageOptions.find(l => l.id === selectedLanguage)?.flag}</span>
+                  {languageOptions.find(l => l.id === selectedLanguage)?.name || 'Dil Seçin'}
+                </span>
+                <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-300 ${openDropdown === 'language' ? 'rotate-180' : ''}`} />
+              </button>
+              {openDropdown === 'language' && (
+                <motion.div 
+                  className="absolute z-50 w-full bg-[#0a0f1a] border border-white/10 rounded-xl shadow-elevated mt-2 overflow-hidden max-h-48 overflow-y-auto"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  {languageOptions.map((lang) => (
+                    <button
+                      key={lang.id}
+                      onClick={() => {
+                        setSelectedLanguage(lang.id);
+                        setOpenDropdown(null);
+                      }}
+                      className={`w-full p-3 text-sm text-left transition-all duration-200 border-b border-white/5 last:border-0 hover:bg-white/5 flex items-center gap-3 ${
+                        selectedLanguage === lang.id ? 'bg-neon-cyan/10 text-neon-cyan font-semibold' : 'text-white'
+                      }`}
+                    >
+                      <span className="text-lg">{lang.flag}</span>
+                      <span>{lang.name}</span>
+                      <span className="text-xs text-gray-500 ml-auto">{lang.code}</span>
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </motion.div>
+
             {/* Sektör */}
             <motion.div 
               className="space-y-2"
