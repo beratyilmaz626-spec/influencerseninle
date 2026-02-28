@@ -11,7 +11,14 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = supabaseUrl && supabaseAnonKey 
-  ? createClient(supabaseUrl, supabaseAnonKey)
+  ? createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: true, // Session'ı localStorage'da sakla
+        autoRefreshToken: true, // Token otomatik yenilensin
+        detectSessionInUrl: true, // URL'deki session'ı algıla (OAuth için)
+        storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+      },
+    })
   : null;
 
 // Upload file to Supabase Storage
