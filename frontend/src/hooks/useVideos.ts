@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase, Database } from '../lib/supabase';
 import { useAuth } from './useAuth';
 
@@ -11,6 +11,7 @@ export function useVideos() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
+  const fetchedRef = useRef(false);
 
   const fetchVideos = async () => {
     try {
@@ -18,49 +19,22 @@ export function useVideos() {
       setError(null);
       
       if (!user) {
-        console.log('❌ No user logged in, skipping video fetch');
         setVideos([]);
         setLoading(false);
         return;
       }
 
-      console.log('🔍 Fetching videos for user:', user.id);
-
-      // 🎯 BU SATIRDA FİLTRELEME YAPIYORUM:
-      // .eq('user_id', user.id) ile sadece giriş yapan kullanıcının videolarını getiriyorum
       const { data, error } = await supabase
         .from('videos')
         .select('*')
-        .eq('user_id', user.id)  // 👈 BURADA FİLTRELEME!
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false });
       
       if (error) throw error;
       
-      console.log('=== VIDEO FİLTRELEME DETAYLARI ===');
-      console.log('🔑 Giriş yapan kullanıcı ID:', user?.id);
-      console.log('📊 Bu kullanıcının video sayısı:', data?.length || 0);
-      console.log('📹 Bulunan videolar:', data);
-      
-      if (data && data.length > 0) {
-        console.log('📝 Video detayları:');
-        data.forEach((video, index) => {
-          console.log(`  ${index + 1}. "${video.name}"`);
-          console.log(`     - Video ID: ${video.id}`);
-          console.log(`     - Sahibi: ${video.user_id}`);
-          console.log(`     - Durum: ${video.status}`);
-          console.log(`     - Tarih: ${video.created_at}`);
-        });
-      } else {
-        console.log('❌ Bu kullanıcı için video bulunamadı!');
-        console.log('💡 Kontrol edilecekler:');
-        console.log('   - Kullanıcı ID doğru mu?');
-        console.log('   - Videolar bu kullanıcı ID ile kaydedildi mi?');
-      }
-      console.log('================================');
-      
       setVideos(data || []);
     } catch (err) {
-      console.error('❌ Video getirme hatası:', err);
+      console.error('Video fetch error:', err);
       setError(err instanceof Error ? err.message : 'Bir hata oluştu');
       setVideos([]);
     } finally {
