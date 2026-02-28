@@ -20,16 +20,24 @@ export default function VideoLibrary() {
   // Polling: İşleniyor durumundaki videolar varsa otomatik yenile
   useEffect(() => {
     const hasProcessingVideos = videos.some(v => v.status === 'processing');
+    let pollInterval: NodeJS.Timeout | null = null;
     
     if (hasProcessingVideos) {
-      const pollInterval = setInterval(() => {
-        console.log('🔄 Polling: İşleniyor durumundaki videolar için yenileme...');
+      console.log('📊 Processing videolar var, polling başlatılıyor...');
+      pollInterval = setInterval(() => {
+        console.log('🔄 Video listesi yenileniyor (polling)...');
         refetch();
-      }, 5000); // 5 saniyede bir kontrol et
-      
-      return () => clearInterval(pollInterval);
+      }, 10000); // Her 10 saniyede bir kontrol et
     }
-  }, [videos, refetch]);
+    
+    // Cleanup - component unmount olduğunda veya processing video kalmadığında
+    return () => {
+      if (pollInterval) {
+        console.log('🛑 Polling durduruluyor');
+        clearInterval(pollInterval);
+      }
+    };
+  }, [videos.filter(v => v.status === 'processing').length, refetch]); // Sadece processing video sayısı değiştiğinde
 
   const filteredVideos = videos.filter((video) => {
     const matchesSearch = video.name.toLowerCase().includes(searchQuery.toLowerCase());
