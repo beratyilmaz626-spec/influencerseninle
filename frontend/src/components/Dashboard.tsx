@@ -928,6 +928,15 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   // Voice Selection state (Feature Flag: VOICE_SELECTION)
   const [selectedVoice, setSelectedVoice] = useState<string | null>(null);
   
+  // Language Selection state
+  const [selectedLanguage, setSelectedLanguage] = useState('tr');
+  
+  // Onboarding state - ilk kez giren kullanıcılar için
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    const completed = localStorage.getItem('video_onboarding_completed');
+    return completed !== 'true';
+  });
+  
   // Modal state
   const [showSectorModal, setShowSectorModal] = useState(false);
   const [showWarningModal, setShowWarningModal] = useState(false);
@@ -940,6 +949,15 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
   
   // Abonelik durumu mesajı
   const subscriptionStatus = getSubscriptionStatusMessage();
+
+  // Dil seçenekleri
+  const languageOptions = [
+    { id: 'tr', name: 'Türkçe', flag: '🇹🇷', code: 'TR' },
+    { id: 'en', name: 'İngilizce', flag: '🇬🇧', code: 'GB' },
+    { id: 'es', name: 'İspanyolca', flag: '🇪🇸', code: 'ES' },
+    { id: 'it', name: 'İtalyanca', flag: '🇮🇹', code: 'IT' },
+    { id: 'ar', name: 'Arapça', flag: '🇸🇦', code: 'SA' },
+  ];
 
   const formats = [
     { id: '16:9', name: 'Yatay' },
