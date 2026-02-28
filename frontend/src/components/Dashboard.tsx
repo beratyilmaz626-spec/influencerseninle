@@ -391,9 +391,9 @@ function HomeContent({
   const recentVideos = videos.slice(0, 4);
 
   return (
-    <div className="space-y-8" data-testid="home-content">
+    <div className="space-y-6 sm:space-y-8" data-testid="home-content">
       {/* Premium KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
         {stats.map((stat, index) => (
           <motion.div
             key={index}
@@ -403,7 +403,7 @@ function HomeContent({
             className="group"
           >
             <motion.div
-              className="relative p-6 rounded-2xl bg-white/[0.02] border border-white/5  overflow-hidden"
+              className="relative p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl bg-white/[0.02] border border-white/5  overflow-hidden"
               whileHover={{ y: -4, borderColor: 'rgba(255,255,255,0.1)' }}
               transition={{ type: "spring", stiffness: 400 }}
               style={{ boxShadow: `0 0 40px ${stat.glowColor}` }}
@@ -412,25 +412,25 @@ function HomeContent({
               <div className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br ${stat.gradient} rounded-full opacity-10 blur-3xl group-hover:opacity-20 transition-opacity duration-500`} />
               
               <div className="relative">
-                <div className="flex items-start justify-between mb-4">
+                <div className="flex items-start justify-between mb-2 sm:mb-4">
                   <motion.div 
-                    className={`w-12 h-12 bg-gradient-to-br ${stat.gradient} rounded-xl flex items-center justify-center`}
+                    className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-gradient-to-br ${stat.gradient} rounded-lg sm:rounded-xl flex items-center justify-center`}
                     whileHover={{ rotate: 5, scale: 1.1 }}
                     transition={{ type: "spring", stiffness: 400 }}
                   >
-                    <stat.icon className="w-6 h-6 text-white" />
+                    <stat.icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
                   </motion.div>
                 </div>
                 <div>
                   <motion.p 
-                    className="text-4xl font-black text-white mb-1"
+                    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white mb-0.5 sm:mb-1"
                     initial={{ scale: 0.5 }}
                     animate={{ scale: 1 }}
                     transition={{ delay: index * 0.1 + 0.3, type: "spring" }}
                   >
                     {stat.value}
                   </motion.p>
-                  <p className="text-gray-500 text-sm font-medium">{stat.title}</p>
+                  <p className="text-gray-500 text-[10px] sm:text-xs md:text-sm font-medium">{stat.title}</p>
                 </div>
               </div>
             </motion.div>
