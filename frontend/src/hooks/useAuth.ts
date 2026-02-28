@@ -123,7 +123,7 @@ export function useAuth() {
     } else {
       setLoading(false);
     }
-  }, []);
+  }, [fetchUserProfile]);
 
   const signUp = async (email: string, password: string, fullName?: string) => {
     try {
