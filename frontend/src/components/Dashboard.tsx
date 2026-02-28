@@ -122,21 +122,21 @@ export default function Dashboard({ onLogout }: DashboardProps) {
       </div>
 
       {/* Mobile Header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-[#030712]/90  border-b border-white/5 flex items-center justify-between px-4">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-white" />
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-[#030712]/90  border-b border-white/5 flex items-center justify-between px-2 sm:px-4">
+        <div className="flex items-center space-x-1.5 sm:space-x-2 min-w-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-lg flex items-center justify-center flex-shrink-0">
+            <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
           </div>
-          <span className="font-bold text-white">InfluencerSeninle</span>
+          <span className="font-bold text-white text-sm sm:text-base truncate">InfluencerSeninle</span>
         </div>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-2 rounded-lg hover:bg-white/5 transition-colors"
+          className="p-1.5 sm:p-2 rounded-lg hover:bg-white/5 transition-colors flex-shrink-0"
         >
           {mobileMenuOpen ? (
-            <X className="w-6 h-6 text-white" />
+            <X className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           ) : (
-            <Menu className="w-6 h-6 text-white" />
+            <Menu className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           )}
         </button>
       </header>
