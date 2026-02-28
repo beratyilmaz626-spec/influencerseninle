@@ -11,6 +11,7 @@ import SliderVideoManager from './SliderVideoManager';
 import VideoStyleManager from './VideoStyleManager';
 import GiftTokenManager from './GiftTokenManager';
 import DatabaseMaintenance from './DatabaseMaintenance';
+import VideoOnboarding from './VideoOnboarding';
 import { BackgroundGradient } from './ui/background-gradient';
 import ImageUploadSection from './video-creation/ImageUploadSection';
 import FormatSelectionSection from './video-creation/FormatSelectionSection';
