@@ -21,12 +21,14 @@ export function useAuth() {
   const fetchUserProfile = useCallback(async (userId: string) => {
     // Skip if already fetched for this user
     if (profileFetchedRef.current === userId) {
+      console.log('👤 fetchUserProfile zaten yapıldı, atlanıyor:', userId);
       return;
     }
+    
+    console.log('👤 fetchUserProfile başladı, userId:', userId);
     profileFetchedRef.current = userId;
     
     setProfileLoading(true);
-    console.log('👤 fetchUserProfile başladı, userId:', userId);
     try {
       if (!supabase) {
         console.error('Supabase client not initialized. Please check environment variables.');
