@@ -1100,9 +1100,10 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       const videoDescription = `${gender}, ${age}, ${location} - ${dialogType === 'custom' ? customDialog : 'Otomatik diyalog'}`;
       
       // Debug: FormData içeriğini logla
+      const selectedLang = languageOptions.find(l => l.id === selectedLanguage);
       console.log('📤 N8N webhook\'a gönderilen veriler:');
       console.log('  - user_id:', user?.id);
-      console.log('  - language:', 'tr (Türkçe)');
+      console.log('  - language:', selectedLanguage, `(${selectedLang?.name})`);
       console.log('  - videoDuration:', maxVideoDuration, 'saniye');
       console.log('  - format:', selectedFormat);
       console.log('  - gender:', gender);
