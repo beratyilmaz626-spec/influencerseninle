@@ -4,22 +4,22 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables:', {
-    VITE_SUPABASE_URL: supabaseUrl ? 'Set' : 'Missing',
-    VITE_SUPABASE_ANON_KEY: supabaseAnonKey ? 'Set' : 'Missing'
-  });
+  console.error('Missing Supabase environment variables');
 }
 
 export const supabase = supabaseUrl && supabaseAnonKey 
   ? createClient(supabaseUrl, supabaseAnonKey, {
       auth: {
         persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true,
+        autoRefreshToken: false, // Token refresh kapatıldı - manuel kontrol
+        detectSessionInUrl: false,
         storage: typeof window !== 'undefined' ? window.localStorage : undefined,
-        // Token yenilemesini daha az agresif yap
         storageKey: 'influencer-seninle-auth',
-        flowType: 'pkce',
+      },
+      realtime: {
+        params: {
+          eventsPerSecond: 0, // Realtime kapatıldı
+        },
       },
     })
   : null;
