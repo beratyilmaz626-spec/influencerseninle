@@ -1,148 +1,82 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase, Database } from '../lib/supabase';
 
 type UserProfile = Database['public']['Tables']['users']['Row'];
 
-// Singleton pattern - hook dışında global state
+// Global singleton state - prevents re-renders
 let _user: User | null = null;
 let _session: Session | null = null;
 let _userProfile: UserProfile | null = null;
-let _isInitialized = false;
+let _initialized = false;
 let _listeners: Set<() => void> = new Set();
 
-// Notify all listeners
-const notifyListeners = () => {
-  _listeners.forEach(listener => listener());
-};
+const notify = () => _listeners.forEach(l => l());
 
-// Initialize auth once globally
-const initializeAuth = async () => {
-  if (_isInitialized || !supabase) return;
-  _isInitialized = true;
+// Initialize once
+const init = async () => {
+  if (_initialized || !supabase) return;
+  _initialized = true;
 
   try {
     const { data: { session } } = await supabase.auth.getSession();
     _session = session;
     _user = session?.user ?? null;
-    
+
     if (_user) {
-      await fetchProfile(_user.id);
-    }
-    
-    notifyListeners();
-  } catch (error) {
-    console.error('Auth init error:', error);
-  }
-};
-
-// Fetch profile
-const fetchProfile = async (userId: string) => {
-  if (!supabase) return;
-  
-  try {
-    const { data, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', userId)
-      .maybeSingle();
-
-    if (error) throw error;
-
-    // User profile found
-    if (data) {
+      const { data } = await supabase.from('users').select('*').eq('id', _user.id).maybeSingle();
       _userProfile = data;
-      notifyListeners();
-      return;
     }
-    
-    // No profile - user will need to be created manually or via trigger
-    // Don't try to create here as it may fail due to schema constraints
-    console.log('No user profile found for:', userId);
-    _userProfile = null;
-    notifyListeners();
-  } catch (error) {
-    console.error('Profile fetch error:', error);
+
+    notify();
+  } catch (e) {
+    console.error('Auth init error:', e);
   }
-};
-
-// Setup auth listener once
-let _authListenerSetup = false;
-const setupAuthListener = () => {
-  if (_authListenerSetup || !supabase) return;
-  _authListenerSetup = true;
-
-  supabase.auth.onAuthStateChange((event, session) => {
-    // ONLY handle real sign in/out - ignore everything else
-    if (event === 'SIGNED_OUT') {
-      _user = null;
-      _session = null;
-      _userProfile = null;
-      _isInitialized = false;
-      notifyListeners();
-    }
-  });
 };
 
 export function useAuth() {
   const [, forceUpdate] = useState({});
-  const mountedRef = useRef(true);
 
-  // Subscribe to global state changes
   useEffect(() => {
-    mountedRef.current = true;
-    
-    const listener = () => {
-      if (mountedRef.current) {
-        forceUpdate({});
-      }
-    };
-    
+    const listener = () => forceUpdate({});
     _listeners.add(listener);
-    
-    // Initialize on first mount
-    if (!_isInitialized) {
-      initializeAuth();
-      setupAuthListener();
-    }
 
-    return () => {
-      mountedRef.current = false;
-      _listeners.delete(listener);
-    };
+    if (!_initialized) init();
+
+    return () => { _listeners.delete(listener); };
   }, []);
 
   const isAdmin = _userProfile?.is_admin || (_userProfile as any)?.role === 'admin' || false;
-
-  const signUp = useCallback(async (email: string, password: string) => {
-    if (!supabase) return { data: null, error: { message: 'Not connected' } };
-    
-    try {
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      return { data, error };
-    } catch (error) {
-      return { data: null, error };
-    }
-  }, []);
 
   const signIn = useCallback(async (email: string, password: string) => {
     if (!supabase) return { data: null, error: { message: 'Not connected' } };
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      
+
       if (!error && data.session) {
         _session = data.session;
         _user = data.user;
-        _isInitialized = true;
-        
+
         if (data.user) {
-          await fetchProfile(data.user.id);
+          const { data: profile } = await supabase.from('users').select('*').eq('id', data.user.id).maybeSingle();
+          _userProfile = profile;
         }
-        
-        notifyListeners();
+
+        notify();
       }
-      
+
+      return { data, error };
+    } catch (error) {
+      return { data: null, error };
+    }
+  }, []);
+
+  const signUp = useCallback(async (email: string, password: string) => {
+    if (!supabase) return { data: null, error: { message: 'Not connected' } };
+
+    try {
+      const { data, error } = await supabase.auth.signUp({ email, password });
       return { data, error };
     } catch (error) {
       return { data: null, error };
@@ -154,14 +88,14 @@ export function useAuth() {
 
     try {
       const { error } = await supabase.auth.signOut();
-      
+
       _user = null;
       _session = null;
       _userProfile = null;
-      _isInitialized = false;
-      
-      notifyListeners();
-      
+      _initialized = false;
+
+      notify();
+
       return { error };
     } catch (error) {
       return { error };
@@ -181,18 +115,20 @@ export function useAuth() {
 
       if (!error && data) {
         _userProfile = data;
-        notifyListeners();
+        notify();
       }
-      
+
       return { data, error };
     } catch (error) {
       return { data: null, error };
     }
   }, []);
 
-  const refreshProfile = useCallback(async () => {
-    if (_user) {
-      await fetchProfile(_user.id);
+  const fetchUserProfile = useCallback(async () => {
+    if (_user && supabase) {
+      const { data } = await supabase.from('users').select('*').eq('id', _user.id).maybeSingle();
+      _userProfile = data;
+      notify();
     }
   }, []);
 
@@ -201,12 +137,12 @@ export function useAuth() {
     session: _session,
     userProfile: _userProfile,
     isAdmin,
-    loading: !_isInitialized,
+    loading: !_initialized,
     profileLoading: false,
     signUp,
     signIn,
     signOut,
     updateProfile,
-    fetchUserProfile: refreshProfile,
+    fetchUserProfile,
   };
 }
