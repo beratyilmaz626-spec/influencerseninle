@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from './useAuth';
 import {
@@ -27,72 +27,22 @@ interface MonthlyUsage {
   periodEnd: Date | null;
 }
 
-// Banner dismiss state - persists until page refresh
-let limitBannerDismissed = false;
+// Global caches
+let _subCache: { id: string; data: SubscriptionData | null } | null = null;
+let _creditsCache: { id: string; credits: number } | null = null;
+let _usageCache: { id: string; usage: MonthlyUsage } | null = null;
+let _bannerDismissed = false;
 
 export function useSubscriptionAccess() {
   const { user, userProfile, isAdmin, profileLoading } = useAuth();
+  const userId = user?.id ?? null;
+
   const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
-  const [monthlyUsage, setMonthlyUsage] = useState<MonthlyUsage>({
-    videosCreated: 0,
-    periodStart: null,
-    periodEnd: null,
-  });
+  const [monthlyUsage, setMonthlyUsage] = useState<MonthlyUsage>({ videosCreated: 0, periodStart: null, periodEnd: null });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [giftCredits, setGiftCredits] = useState<number>(0);
 
-  // Refs for preventing infinite loops
-  const hasFetchedRef = useRef(false);
-  const userIdRef = useRef<string | null>(null);
-  const subscriptionIdRef = useRef<string | null>(null);
-
-  // Memoized user ID for stable reference
-  const userId = user?.id ?? null;
-  const subscriptionId = subscription?.subscription_id ?? null;
-  const priceId = subscription?.price_id ?? null;
-  const periodEnd = subscription?.current_period_end ?? null;
-  const subscriptionStatus = subscription?.subscription_status ?? null;
-  const userCredits = userProfile?.user_credits_points ?? 0;
-
-  // Fetch gift credits
-  useEffect(() => {
-    if (!userId) {
-      setGiftCredits(0);
-      return;
-    }
-
-    const fetchGiftCredits = async () => {
-      try {
-        const { data, error: creditsError } = await supabase
-          .from('users')
-          .select('user_credits_points')
-          .eq('id', userId)
-          .single();
-
-        if (creditsError) {
-          console.error('Gift credits error:', creditsError);
-          setGiftCredits(0);
-          return;
-        }
-        
-        if (data) {
-          setGiftCredits(data.user_credits_points || 0);
-        }
-      } catch (err) {
-        console.error('Gift credit fetch failed:', err);
-        setGiftCredits(0);
-      }
-    };
-
-    // Only fetch once per user
-    if (userIdRef.current !== userId) {
-      userIdRef.current = userId;
-      fetchGiftCredits();
-    }
-  }, [userId]);
-
-  // Fetch subscription
+  // Fetch subscription once per user
   useEffect(() => {
     if (!userId) {
       setSubscription(null);
@@ -100,347 +50,215 @@ export function useSubscriptionAccess() {
       return;
     }
 
-    const fetchSubscription = async () => {
+    // Use cache if available
+    if (_subCache?.id === userId) {
+      setSubscription(_subCache.data);
+      setLoading(false);
+      return;
+    }
+
+    const fetch = async () => {
       try {
-        setLoading(true);
-        setError(null);
-
-        const { data, error: subError } = await supabase
-          .from('user_subscriptions')
-          .select('*')
-          .maybeSingle();
-
-        if (subError) throw subError;
+        const { data } = await supabase.from('user_subscriptions').select('*').maybeSingle();
+        _subCache = { id: userId, data };
         setSubscription(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Subscription fetch failed');
-        setSubscription(null);
+      } catch (e) {
+        console.error('Sub fetch error:', e);
       } finally {
         setLoading(false);
       }
     };
-
-    // Only fetch once per user
-    if (!hasFetchedRef.current) {
-      hasFetchedRef.current = true;
-      fetchSubscription();
-    }
+    fetch();
   }, [userId]);
 
-  // Fetch monthly usage when subscription changes
+  // Fetch credits once per user
   useEffect(() => {
-    if (!userId || !subscriptionId) {
+    if (!userId) {
+      setGiftCredits(0);
+      return;
+    }
+
+    if (_creditsCache?.id === userId) {
+      setGiftCredits(_creditsCache.credits);
+      return;
+    }
+
+    const fetch = async () => {
+      try {
+        const { data } = await supabase.from('users').select('user_credits_points').eq('id', userId).single();
+        const credits = data?.user_credits_points || 0;
+        _creditsCache = { id: userId, credits };
+        setGiftCredits(credits);
+      } catch (e) {
+        console.error('Credits fetch error:', e);
+      }
+    };
+    fetch();
+  }, [userId]);
+
+  // Fetch usage once per user
+  useEffect(() => {
+    if (!userId || !subscription?.subscription_id) {
       setMonthlyUsage({ videosCreated: 0, periodStart: null, periodEnd: null });
       return;
     }
 
-    // Skip if already fetched for this subscription
-    if (subscriptionIdRef.current === subscriptionId) {
+    if (_usageCache?.id === userId) {
+      setMonthlyUsage(_usageCache.usage);
       return;
     }
-    subscriptionIdRef.current = subscriptionId;
 
-    const fetchMonthlyUsage = async () => {
+    const fetch = async () => {
       try {
-        const periodStart = subscription?.current_period_start
+        const periodStart = subscription.current_period_start
           ? new Date(subscription.current_period_start * 1000)
           : new Date(new Date().setDate(1));
-        
-        const periodEndDate = subscription?.current_period_end
+        const periodEnd = subscription.current_period_end
           ? new Date(subscription.current_period_end * 1000)
           : new Date(new Date().setMonth(new Date().getMonth() + 1, 0));
 
-        const { count, error: countError } = await supabase
+        const { count } = await supabase
           .from('videos')
           .select('*', { count: 'exact', head: true })
           .eq('user_id', userId)
           .gte('created_at', periodStart.toISOString())
-          .lte('created_at', periodEndDate.toISOString());
+          .lte('created_at', periodEnd.toISOString());
 
-        if (countError) throw countError;
-
-        setMonthlyUsage({
-          videosCreated: count || 0,
-          periodStart,
-          periodEnd: periodEndDate,
-        });
-      } catch (err) {
-        console.error('Monthly usage fetch failed:', err);
+        const usage = { videosCreated: count || 0, periodStart, periodEnd };
+        _usageCache = { id: userId, usage };
+        setMonthlyUsage(usage);
+      } catch (e) {
+        console.error('Usage fetch error:', e);
       }
     };
+    fetch();
+  }, [userId, subscription?.subscription_id, subscription?.current_period_start, subscription?.current_period_end]);
 
-    fetchMonthlyUsage();
-  }, [userId, subscriptionId, subscription?.current_period_start, subscription?.current_period_end]);
-
-  // Memoized computed values - these don't cause re-renders
+  // Computed values
   const currentPlanId = useMemo((): PlanId | null => {
-    if (!priceId) return null;
-    const plan = getPlanByStripePriceId(priceId);
-    return plan?.id ?? null;
-  }, [priceId]);
-
-  const isPeriodValid = useMemo((): boolean => {
-    if (!periodEnd) return false;
-    const end = new Date(periodEnd * 1000);
-    return new Date() < end;
-  }, [periodEnd]);
+    if (!subscription?.price_id) return null;
+    return getPlanByStripePriceId(subscription.price_id)?.id ?? null;
+  }, [subscription?.price_id]);
 
   const isSubscriptionActive = useMemo((): boolean => {
     if (!subscription) return false;
-    const statusActive = subscriptionStatus === 'active' || subscriptionStatus === 'trialing';
-    return statusActive && isPeriodValid;
-  }, [subscription, subscriptionStatus, isPeriodValid]);
+    const statusOk = subscription.subscription_status === 'active' || subscription.subscription_status === 'trialing';
+    const periodOk = subscription.current_period_end ? new Date() < new Date(subscription.current_period_end * 1000) : false;
+    return statusOk && periodOk;
+  }, [subscription]);
 
-  const videoLimit = useMemo((): number => {
+  const videoLimit = useMemo(() => {
     if (isAdmin) return 999;
     if (!currentPlanId) return 0;
     return getMonthlyVideoLimit(currentPlanId);
   }, [isAdmin, currentPlanId]);
 
-  const currentPlan = useMemo(() => {
-    if (!currentPlanId) return null;
-    return SUBSCRIPTION_PLANS[currentPlanId];
-  }, [currentPlanId]);
+  const userCredits = userProfile?.user_credits_points ?? 0;
+  const effectiveCredits = giftCredits > 0 ? giftCredits : userCredits;
 
-  const effectiveCredits = useMemo(() => {
-    return giftCredits > 0 ? giftCredits : userCredits;
-  }, [giftCredits, userCredits]);
-
-  const remainingVideos = useMemo((): number => {
+  const remainingVideos = useMemo(() => {
     if (isAdmin) return 999;
-    const subscriptionRemaining = Math.max(0, videoLimit - monthlyUsage.videosCreated);
-    return subscriptionRemaining + effectiveCredits;
+    return Math.max(0, videoLimit - monthlyUsage.videosCreated) + effectiveCredits;
   }, [isAdmin, videoLimit, monthlyUsage.videosCreated, effectiveCredits]);
 
-  const isFullyLoaded = !profileLoading && !loading;
-
-  // Feature check function
-  const hasFeature = useCallback((featureId: FeatureId): boolean => {
-    if (!isSubscriptionActive) return false;
-    if (!currentPlanId) return false;
-    return checkFeature(currentPlanId, featureId);
-  }, [isSubscriptionActive, currentPlanId]);
-
-  // Has gift credits check
-  const hasGiftCredits = useCallback((): boolean => {
-    return effectiveCredits > 0;
-  }, [effectiveCredits]);
-
-  // Video cost constant
   const VIDEO_COST = 200;
 
-  // Can create video check - uses memoized values
   const canCreateVideo = useCallback((): { allowed: boolean; reason?: string; useGiftCredits?: boolean } => {
-    // Admin check
-    if (!profileLoading && isAdmin) {
-      return { allowed: true, useGiftCredits: false };
-    }
-    
-    // Loading state
-    if (profileLoading || loading) {
-      return { allowed: false, reason: 'Yükleniyor...' };
-    }
-    
-    // Check gift credits
-    if (effectiveCredits >= VIDEO_COST) {
-      return { allowed: true, useGiftCredits: true };
-    }
-    
-    // Insufficient credits
+    if (isAdmin) return { allowed: true, useGiftCredits: false };
+    if (profileLoading || loading) return { allowed: false, reason: 'Yükleniyor...' };
+    if (effectiveCredits >= VIDEO_COST) return { allowed: true, useGiftCredits: true };
     if (effectiveCredits > 0 && effectiveCredits < VIDEO_COST) {
-      return {
-        allowed: false,
-        reason: `Video oluşturmak için ${VIDEO_COST} jeton gerekli. Mevcut jetonun: ${effectiveCredits}. Lütfen bir plan seçin.`,
-      };
+      return { allowed: false, reason: `Video için ${VIDEO_COST} jeton gerekli. Mevcut: ${effectiveCredits}` };
     }
-    
-    // Check subscription
     if (!isSubscriptionActive) {
-      return {
-        allowed: false,
-        reason: 'Aktif bir aboneliğiniz veya yeterli hediye jetonunuz bulunmuyor. Lütfen bir plan seçin.',
-      };
+      return { allowed: false, reason: 'Aktif abonelik veya yeterli jeton bulunmuyor.' };
     }
-
-    // Check monthly limit
     const remaining = Math.max(0, videoLimit - monthlyUsage.videosCreated);
     if (remaining <= 0) {
-      return {
-        allowed: false,
-        reason: `Aylık video limitiniz (${videoLimit} video) doldu. Yeni dönem başladığında tekrar video oluşturabilirsiniz veya planınızı yükseltin.`,
-      };
+      return { allowed: false, reason: `Aylık limit (${videoLimit}) doldu.` };
     }
-
     return { allowed: true, useGiftCredits: false };
-  }, [profileLoading, loading, isAdmin, effectiveCredits, isSubscriptionActive, videoLimit, monthlyUsage.videosCreated]);
+  }, [isAdmin, profileLoading, loading, effectiveCredits, isSubscriptionActive, videoLimit, monthlyUsage.videosCreated]);
 
-  // Increment video usage
-  const incrementVideoUsage = useCallback(async (useGiftCreditsParam: boolean = false): Promise<void> => {
+  const incrementVideoUsage = useCallback(async (useGift: boolean = false) => {
     if (isAdmin) return;
-    
-    if (useGiftCreditsParam && giftCredits >= VIDEO_COST) {
+    if (useGift && giftCredits >= VIDEO_COST) {
       const newCredits = giftCredits - VIDEO_COST;
       setGiftCredits(newCredits);
-      
+      _creditsCache = userId ? { id: userId, credits: newCredits } : null;
       if (userId) {
-        await supabase
-          .from('users')
-          .update({ user_credits_points: newCredits })
-          .eq('id', userId);
+        await supabase.from('users').update({ user_credits_points: newCredits }).eq('id', userId);
       }
     } else {
-      setMonthlyUsage(prev => ({
-        ...prev,
-        videosCreated: prev.videosCreated + 1,
-      }));
+      setMonthlyUsage(prev => ({ ...prev, videosCreated: prev.videosCreated + 1 }));
     }
   }, [isAdmin, giftCredits, userId]);
 
-  // Banner dismiss
-  const dismissLimitBanner = useCallback(() => {
-    limitBannerDismissed = true;
-  }, []);
+  const hasFeature = useCallback((f: FeatureId) => {
+    if (!isSubscriptionActive || !currentPlanId) return false;
+    return checkFeature(currentPlanId, f);
+  }, [isSubscriptionActive, currentPlanId]);
 
-  const isLimitBannerDismissed = useCallback(() => {
-    return limitBannerDismissed;
-  }, []);
+  const hasGiftCredits = useCallback(() => effectiveCredits > 0, [effectiveCredits]);
 
-  // Get subscription status message
-  const getSubscriptionStatusMessage = useCallback((): { type: 'error' | 'warning' | 'info' | 'success'; message: string } | null => {
-    // Loading state - no banner
-    if (profileLoading || loading) {
-      return null;
-    }
-    
-    // Admin - no banner
-    if (isAdmin) {
-      return null;
-    }
-    
-    // Sufficient gift credits
+  const dismissLimitBanner = useCallback(() => { _bannerDismissed = true; }, []);
+  const isLimitBannerDismissed = useCallback(() => _bannerDismissed, []);
+
+  const getSubscriptionStatusMessage = useCallback(() => {
+    if (profileLoading || loading) return null;
+    if (isAdmin) return null;
     if (effectiveCredits >= VIDEO_COST) {
-      const videosAvailable = Math.floor(effectiveCredits / VIDEO_COST);
-      return {
-        type: 'success',
-        message: `🎁 ${effectiveCredits} jeton hediye hakkın var! (${videosAvailable} video oluşturabilirsin)`,
-      };
+      return { type: 'success' as const, message: `🎁 ${effectiveCredits} jeton hediye hakkın var!` };
     }
-    
-    // Insufficient gift credits
     if (effectiveCredits > 0 && effectiveCredits < VIDEO_COST) {
-      return {
-        type: 'warning',
-        message: `⚠️ ${effectiveCredits} jetonun var ama 1 video için ${VIDEO_COST} jeton gerekli. Lütfen bir plan seç.`,
-      };
+      return { type: 'warning' as const, message: `⚠️ ${effectiveCredits} jetonun var ama ${VIDEO_COST} gerekli.` };
     }
-    
-    // No active subscription
     if (!isSubscriptionActive) {
-      return {
-        type: 'error',
-        message: 'Aktif bir aboneliğin veya yeterli hediye jetonun bulunmuyor. Video oluşturmak için bir plan seç.',
-      };
+      return { type: 'error' as const, message: 'Aktif abonelik veya yeterli jeton bulunmuyor.' };
     }
-    
-    const remaining = remainingVideos;
-    
-    if (remaining <= 0) {
-      return {
-        type: 'warning',
-        message: `Bu dönemlik video hakkın bitti (${videoLimit} video). Dönem yenilenince devam edebilirsin.`,
-      };
+    if (remainingVideos <= 0) {
+      return { type: 'warning' as const, message: `Bu dönemlik video hakkın bitti.` };
     }
-    
-    if (remaining <= 3) {
-      return {
-        type: 'info',
-        message: `Dikkat: Bu dönem sadece ${remaining} video hakkın kaldı.`,
-      };
+    if (remainingVideos <= 3) {
+      return { type: 'info' as const, message: `Sadece ${remainingVideos} video hakkın kaldı.` };
     }
-    
     return null;
-  }, [profileLoading, loading, isAdmin, effectiveCredits, isSubscriptionActive, remainingVideos, videoLimit]);
+  }, [profileLoading, loading, isAdmin, effectiveCredits, isSubscriptionActive, remainingVideos]);
 
-  // Refetch functions
   const refetch = useCallback(async () => {
-    hasFetchedRef.current = false;
+    _subCache = null;
+    _creditsCache = null;
+    _usageCache = null;
     setLoading(true);
-    try {
-      const { data, error: subError } = await supabase
-        .from('user_subscriptions')
-        .select('*')
-        .maybeSingle();
-
-      if (subError) throw subError;
-      setSubscription(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Subscription fetch failed');
-    } finally {
-      setLoading(false);
-    }
+    // Re-trigger effects by changing state
   }, []);
-
-  const refetchGiftCredits = useCallback(async () => {
-    if (!userId) return;
-    try {
-      const { data, error: creditsError } = await supabase
-        .from('users')
-        .select('user_credits_points')
-        .eq('id', userId)
-        .single();
-
-      if (!creditsError && data) {
-        setGiftCredits(data.user_credits_points || 0);
-      }
-    } catch (err) {
-      console.error('Gift credit refetch failed:', err);
-    }
-  }, [userId]);
-
-  // Max video duration
-  const maxVideoDuration = useMemo(() => {
-    if (isAdmin) return 15;
-    if (effectiveCredits > 0) return 15;
-    if (currentPlanId) return getMaxVideoDuration(currentPlanId);
-    return 15;
-  }, [isAdmin, effectiveCredits, currentPlanId]);
 
   return {
-    // State
     subscription,
     monthlyUsage,
     loading,
     profileLoading,
-    isFullyLoaded,
-    error,
-    
-    // Plan info
-    currentPlan,
+    isFullyLoaded: !profileLoading && !loading,
+    error: null,
+    currentPlan: currentPlanId ? SUBSCRIPTION_PLANS[currentPlanId] : null,
     currentPlanId,
-    
-    // Admin status
     isAdmin,
-    
-    // Access controls - return functions that return memoized values
     isSubscriptionActive: useCallback(() => isSubscriptionActive, [isSubscriptionActive]),
-    isPeriodValid: useCallback(() => isPeriodValid, [isPeriodValid]),
+    isPeriodValid: useCallback(() => {
+      if (!subscription?.current_period_end) return false;
+      return new Date() < new Date(subscription.current_period_end * 1000);
+    }, [subscription?.current_period_end]),
     hasFeature,
     canCreateVideo,
     hasGiftCredits,
-    
-    // Limits
     videoLimit,
     remainingVideos,
     videosUsed: monthlyUsage.videosCreated,
     giftCredits: effectiveCredits,
-    maxVideoDuration,
-    
-    // Actions
+    maxVideoDuration: isAdmin ? 15 : (effectiveCredits > 0 ? 15 : (currentPlanId ? getMaxVideoDuration(currentPlanId) : 15)),
     incrementVideoUsage,
     refetch,
-    refetchGiftCredits,
-    
-    // Banner
+    refetchGiftCredits: refetch,
     dismissLimitBanner,
     isLimitBannerDismissed,
     getSubscriptionStatusMessage,
