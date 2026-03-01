@@ -15,15 +15,26 @@ interface Subscription {
   payment_method_last4: string | null;
 }
 
+// Global cache to prevent multiple fetches
+let _subscriptionCache: { userId: string; data: Subscription | null } | null = null;
+
 export function useSubscription() {
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
+  const userId = user?.id;
 
   const fetchSubscription = async () => {
-    if (!user) {
+    if (!userId) {
       setSubscription(null);
+      setLoading(false);
+      return;
+    }
+
+    // Return cached data if available for same user
+    if (_subscriptionCache?.userId === userId) {
+      setSubscription(_subscriptionCache.data);
       setLoading(false);
       return;
     }
@@ -37,10 +48,10 @@ export function useSubscription() {
         .select('*')
         .maybeSingle();
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
+      // Cache the result
+      _subscriptionCache = { userId, data };
       setSubscription(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch subscription');
@@ -51,25 +62,23 @@ export function useSubscription() {
   };
 
   useEffect(() => {
-    fetchSubscription();
-  }, [user]);
+    if (userId) {
+      fetchSubscription();
+    } else {
+      setSubscription(null);
+      setLoading(false);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
 
   const getActiveProduct = () => {
     if (!subscription?.price_id) return null;
     return getProductByPriceId(subscription.price_id);
   };
 
-  const isActive = () => {
-    return subscription?.subscription_status === 'active';
-  };
-
-  const isPastDue = () => {
-    return subscription?.subscription_status === 'past_due';
-  };
-
-  const isCanceled = () => {
-    return subscription?.subscription_status === 'canceled';
-  };
+  const isActive = () => subscription?.subscription_status === 'active';
+  const isPastDue = () => subscription?.subscription_status === 'past_due';
+  const isCanceled = () => subscription?.subscription_status === 'canceled';
 
   return {
     subscription,
