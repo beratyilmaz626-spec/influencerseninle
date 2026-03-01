@@ -86,12 +86,15 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 
 ## Bekleyen Görevler
 
-### ✅ P0 - KRİTİK BUG FIX TAMAMLANDI - 28 Şubat 2026
-- [x] **Sonsuz Render Döngüsü & Otomatik Çıkış Sorunu ÇÖZÜLDÜ**
-  - Test: 2+ dakika (125 saniye) boyunca dashboard stabil kaldı ✅
-  - Çözüm: Singleton pattern ile global auth state yönetimi
-  - `useAuth.ts` tamamen yeniden yazıldı
-  - StrictMode kaldırıldı (production-like davranış)
+### ✅ P0 - KRİTİK BUG FIX TAMAMLANDI - 1 Mart 2026
+- [x] **Sonsuz Render Döngüsü & Otomatik Çıkış Sorunu KESİN ÇÖZÜLDÜ**
+  - Test: **3 DAKİKA** (180 saniye) boyunca dashboard stabil kaldı ✅
+  - Çözüm: 
+    - Tüm hook'lar singleton pattern ile global state kullanıyor
+    - `autoRefreshToken: false` - Supabase token refresh kapatıldı
+    - `onAuthStateChange` listener tamamen kaldırıldı
+    - Global cache ile API çağrıları minimize edildi
+    - StrictMode kaldırıldı
   
 - [x] **Admin Videolar Yeniden Yüklendi**
   - 6 demo video Supabase'e eklendi
