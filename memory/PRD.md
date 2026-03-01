@@ -170,16 +170,17 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 
 ## Test Durumu
 
-### Son Test - 28 Şubat 2026 (BAŞARILI)
-- **Kritik Bug Fix:** Sonsuz render döngüsü ve otomatik logout sorunu ÇÖZÜLDÜ ✅
-- **Test Yöntemi:** Playwright ile 125 saniye (2+ dakika) stabilite testi
-- **Sonuç:** Dashboard 2+ dakika boyunca stabil kaldı, hiç logout olmadı
+### Son Test - 1 Mart 2026 (BAŞARILI)
+- **Kritik Bug Fix:** Sonsuz render döngüsü ve otomatik logout sorunu KESİN ÇÖZÜLDÜ ✅
+- **Test Yöntemi:** Playwright ile **180 saniye (3 dakika)** stabilite testi
+- **Sonuç:** Dashboard 3 dakika boyunca stabil kaldı, hiç logout olmadı
 - **Videolar:** 6 demo video başarıyla yüklendi ve gösteriliyor
 - **Değiştirilen Dosyalar:** 
-  - `useAuth.ts` - Singleton pattern ile global state (tamamen yeniden yazıldı)
-  - `useSubscriptionAccess.ts` - Memoization düzeltmeleri
-  - `useVideos.ts` - Fetch guard eklendi
-  - `supabase.ts` - Database tipleri güncellendi
+  - `useAuth.ts` - Singleton pattern, listener kaldırıldı
+  - `useVideos.ts` - Global cache eklendi
+  - `useSubscription.ts` - Global cache eklendi
+  - `useSubscriptionAccess.ts` - Tamamen yeniden yazıldı
+  - `supabase.ts` - autoRefreshToken: false, realtime kapatıldı
   - `main.tsx` - StrictMode kaldırıldı
 
 ## Notlar
