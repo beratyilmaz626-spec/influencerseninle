@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase, Database } from '../lib/supabase';
 import { useAuth } from './useAuth';
 
@@ -6,33 +6,45 @@ type Video = Database['public']['Tables']['videos']['Row'];
 type VideoInsert = Database['public']['Tables']['videos']['Insert'];
 type VideoUpdate = Database['public']['Tables']['videos']['Update'];
 
+// Global cache
+let _videosCache: { userId: string; videos: Video[] } | null = null;
+
 export function useVideos() {
   const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
-  const fetchedRef = useRef(false);
+  const userId = user?.id ?? null;
 
-  const fetchVideos = async () => {
+  const fetchVideos = useCallback(async () => {
+    if (!userId) {
+      setVideos([]);
+      setLoading(false);
+      return;
+    }
+
+    // Use cache if available
+    if (_videosCache?.userId === userId) {
+      setVideos(_videosCache.videos);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
-      
-      if (!user) {
-        setVideos([]);
-        setLoading(false);
-        return;
-      }
 
-      const { data, error } = await supabase
+      const { data, error: fetchError } = await supabase
         .from('videos')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', userId)
         .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      
-      setVideos(data || []);
+
+      if (fetchError) throw fetchError;
+
+      const videoList = data || [];
+      _videosCache = { userId, videos: videoList };
+      setVideos(videoList);
     } catch (err) {
       console.error('Video fetch error:', err);
       setError(err instanceof Error ? err.message : 'Bir hata oluştu');
@@ -40,40 +52,31 @@ export function useVideos() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
 
-  const createVideo = async (videoData: Omit<VideoInsert, 'user_id'>) => {
-    if (!user) throw new Error('Kullanıcı girişi yapılmamış');
+  // Fetch videos once when user changes
+  useEffect(() => {
+    fetchVideos();
+  }, [fetchVideos]);
 
-    // NOT: Kredi/abonelik kontrolü Dashboard.tsx'de useSubscriptionAccess ile yapılıyor.
-    // Bu fonksiyon sadece video kaydı oluşturur.
-    
+  const createVideo = async (video: Omit<VideoInsert, 'user_id'>) => {
+    if (!userId) throw new Error('Kullanıcı girişi gerekli');
+
     try {
-      console.log('🎬 Yeni video oluşturuluyor, kullanıcı:', user.id);
-      console.log('📝 Video data:', videoData);
-      
-      // 🎯 YENİ VİDEO OLUŞTURURKEN user_id EKLİYORUM:
-      const { data, error } = await supabase
+      const { data, error: createError } = await supabase
         .from('videos')
-        .insert({
-          ...videoData,
-          user_id: user.id,  // 👈 BURADA KULLANICI ID'Sİ EKLENİYOR!
-        })
+        .insert({ ...video, user_id: userId })
         .select()
         .single();
 
-      if (error) {
-        console.error('❌ Supabase insert error:', error);
-        throw error;
-      }
-      
-      console.log('✅ Video başarıyla oluşturuldu:', data.id);
-      
-      // Yerel state'e ekle
-      setVideos(prev => [data, ...prev]);
+      if (createError) throw createError;
+
+      // Update cache and state
+      const newVideos = [data, ...videos];
+      _videosCache = { userId, videos: newVideos };
+      setVideos(newVideos);
       return data;
     } catch (err) {
-      console.error('❌ createVideo error:', err);
       const errorMessage = err instanceof Error ? err.message : 'Video oluşturulamadı';
       setError(errorMessage);
       throw new Error(errorMessage);
@@ -82,20 +85,18 @@ export function useVideos() {
 
   const updateVideo = async (id: string, updates: VideoUpdate) => {
     try {
-      const { data, error } = await supabase
+      const { data, error: updateError } = await supabase
         .from('videos')
         .update(updates)
         .eq('id', id)
         .select()
         .single();
 
-      if (error) throw error;
+      if (updateError) throw updateError;
 
-      // Yerel state'i güncelle
-      setVideos(prev => prev.map(video => 
-        video.id === id ? { ...video, ...data } : video
-      ));
-      
+      const newVideos = videos.map(v => v.id === id ? { ...v, ...data } : v);
+      if (userId) _videosCache = { userId, videos: newVideos };
+      setVideos(newVideos);
       return data;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Video güncellenemedi';
@@ -106,15 +107,12 @@ export function useVideos() {
 
   const deleteVideo = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('videos')
-        .delete()
-        .eq('id', id);
+      const { error: deleteError } = await supabase.from('videos').delete().eq('id', id);
+      if (deleteError) throw deleteError;
 
-      if (error) throw error;
-
-      // Yerel state'den kaldır
-      setVideos(prev => prev.filter(video => video.id !== id));
+      const newVideos = videos.filter(v => v.id !== id);
+      if (userId) _videosCache = { userId, videos: newVideos };
+      setVideos(newVideos);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Video silinemedi';
       setError(errorMessage);
@@ -127,33 +125,20 @@ export function useVideos() {
       const video = videos.find(v => v.id === id);
       if (!video) return;
 
-      const { error } = await supabase
-        .from('videos')
-        .update({ views: video.views + 1 })
-        .eq('id', id);
+      await supabase.from('videos').update({ views: (video.views || 0) + 1 }).eq('id', id);
 
-      if (error) throw error;
-
-      // Yerel state'i güncelle
-      setVideos(prev => prev.map(v => 
-        v.id === id ? { ...v, views: v.views + 1 } : v
-      ));
+      const newVideos = videos.map(v => v.id === id ? { ...v, views: (v.views || 0) + 1 } : v);
+      if (userId) _videosCache = { userId, videos: newVideos };
+      setVideos(newVideos);
     } catch (err) {
-      console.error('İzlenme sayısı artırılamadı:', err);
+      console.error('Views increment failed:', err);
     }
   };
 
-  useEffect(() => {
-    // Only fetch once per user
-    if (user?.id && !fetchedRef.current) {
-      fetchedRef.current = true;
-      fetchVideos();
-    } else if (!user) {
-      fetchedRef.current = false;
-      setVideos([]);
-      setLoading(false);
-    }
-  }, [user?.id]);
+  const refetch = useCallback(() => {
+    _videosCache = null;
+    fetchVideos();
+  }, [fetchVideos]);
 
   return {
     videos,
@@ -163,6 +148,6 @@ export function useVideos() {
     updateVideo,
     deleteVideo,
     incrementViews,
-    refetch: fetchVideos,
+    refetch,
   };
 }
