@@ -2231,10 +2231,10 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                   : 'Video oluşturmaya başlamak için bir plan seçin.'}
               </p>
               
-              {/* USD Bilgilendirme */}
+              {/* Kredi Bilgilendirme */}
               <div className="p-2 rounded-lg bg-neon-cyan/5 border border-neon-cyan/20">
                 <p className="text-xs text-gray-400">
-                  💱 Ödeme USD ($) olarak alınır. Bankanız TL karşılığını yansıtabilir.
+                  💰 1 Video = 100 Kredi • Yeni üyeler 200 kredi hediye kazanır
                 </p>
               </div>
               
