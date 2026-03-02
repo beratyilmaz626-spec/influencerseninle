@@ -182,7 +182,7 @@ export const getMonthlyVideoLimit = (planId: PlanId): number => {
 };
 
 export const getMaxVideoDuration = (planId: PlanId): number => {
-  return SUBSCRIPTION_PLANS[planId]?.maxVideoDuration ?? 10;
+  return SUBSCRIPTION_PLANS[planId]?.maxVideoDuration ?? 15; // Default 15 saniye
 };
 
 export const getAllPlans = (): SubscriptionPlan[] => {
