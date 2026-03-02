@@ -141,35 +141,39 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
 // Özellik Açıklamaları
 export const FEATURE_LABELS: Record<FeatureId, { name: string; description: string }> = {
   hd_video: {
-    name: 'HD 1080p Video',
-    description: 'Yüksek kaliteli 1080p video dışa aktarma',
+    name: 'HD kalite video',
+    description: 'Yüksek kaliteli HD video dışa aktarma',
   },
   no_watermark: {
-    name: 'Filigransız Video',
+    name: 'Filigransız videolar',
     description: 'Videolarda filigran olmadan dışa aktarma',
   },
   basic_templates: {
-    name: 'Temel Şablonlar',
+    name: 'Temel şablonlar',
     description: 'Temel video şablonlarına erişim',
   },
   premium_templates: {
-    name: 'Premium Şablonlar',
+    name: 'Premium şablonlar',
     description: 'Tüm premium video şablonlarına erişim',
   },
+  custom_templates: {
+    name: 'Özel şablonlar',
+    description: 'Özelleştirilebilir video şablonları',
+  },
   email_support: {
-    name: 'E-posta Desteği',
+    name: 'E-posta desteği',
     description: 'E-posta ile teknik destek',
   },
   priority_support: {
-    name: 'Öncelikli Destek',
+    name: 'Öncelikli destek',
     description: 'Öncelikli müşteri desteği',
   },
   dedicated_support: {
-    name: 'Özel Destek',
+    name: 'Özel destek',
     description: 'Özel müşteri temsilcisi',
   },
   api_access: {
-    name: 'API Erişimi',
+    name: 'API erişimi',
     description: 'REST API erişimi',
   },
   advanced_api: {
