@@ -1,5 +1,5 @@
 // Aylık Abonelik Paketleri Konfigürasyonu
-// SADECE AYLIK ABONELİK - TEK SEFERLİK VEYA YILLIK ÖDEME YOK
+// KREDİ BAZLI SİSTEM - Her video 100 kredi
 // Ödeme: İyzico (TL bazlı)
 
 export type PlanId = 'starter' | 'professional' | 'enterprise';
@@ -14,7 +14,6 @@ export type FeatureId =
   | 'api_access'
   | 'advanced_api'
   | 'white_label'
-  | 'video_10sec'
   | 'video_15sec';
 
 export interface SubscriptionPlan {
@@ -26,11 +25,18 @@ export interface SubscriptionPlan {
   priceMonthlyUSD?: number;  // USD karşılığı (referans)
   currency: string;
   stripePriceId: string;     // İyzico için de kullanılabilir
-  monthlyVideoLimit: number;
+  monthlyCredits: number;    // Aylık kredi miktarı
+  monthlyVideoLimit: number; // Video limiti (kredi/100)
   maxVideoDuration: number;  // Saniye cinsinden video süresi
   features: FeatureId[];
   isPopular?: boolean;
 }
+
+// Video başına kredi maliyeti - SABİT
+export const VIDEO_CREDIT_COST = 100;
+
+// Yeni kullanıcı hediye kredisi
+export const NEW_USER_BONUS_CREDITS = 200;
 
 // İyzico Price ID'leri - AYLIK ABONELİK
 export const IYZICO_PRICE_IDS = {
@@ -45,13 +51,14 @@ export const STRIPE_PRICE_IDS = IYZICO_PRICE_IDS;
 export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
   starter: {
     id: 'starter',
-    name: 'Starter',
+    name: 'Başlangıç',
     nameEn: 'Starter',
-    description: '15 saniyelik videolar ile başlangıç paketi',
+    description: '2000 Kredi • 20 Video • 15 sn',
     priceMonthly: 949,
     priceMonthlyUSD: 27,
     currency: 'TRY',
     stripePriceId: IYZICO_PRICE_IDS.starter,
+    monthlyCredits: 2000,
     monthlyVideoLimit: 20,
     maxVideoDuration: 15,
     features: [
@@ -65,13 +72,14 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
   },
   professional: {
     id: 'professional',
-    name: 'Professional',
+    name: 'Profesyonel',
     nameEn: 'Professional',
-    description: '15 saniyelik videolar ile profesyonel paket',
+    description: '4500 Kredi • 45 Video • 15 sn',
     priceMonthly: 3799,
     priceMonthlyUSD: 108,
     currency: 'TRY',
     stripePriceId: IYZICO_PRICE_IDS.professional,
+    monthlyCredits: 4500,
     monthlyVideoLimit: 45,
     maxVideoDuration: 15,
     features: [
@@ -89,11 +97,12 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
     id: 'enterprise',
     name: 'Business',
     nameEn: 'Business',
-    description: '15 saniyelik videolar ile kurumsal paket',
+    description: '10000 Kredi • 100 Video • 15 sn',
     priceMonthly: 8549,
     priceMonthlyUSD: 244,
     currency: 'TRY',
     stripePriceId: IYZICO_PRICE_IDS.enterprise,
+    monthlyCredits: 10000,
     monthlyVideoLimit: 100,
     maxVideoDuration: 15,
     features: [
