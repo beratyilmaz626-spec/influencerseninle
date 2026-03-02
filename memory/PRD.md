@@ -89,16 +89,18 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 ### ✅ P0 - KRİTİK BUG FIX TAMAMLANDI - 1 Mart 2026
 - [x] **Sonsuz Render Döngüsü & Otomatik Çıkış Sorunu KESİN ÇÖZÜLDÜ**
   - Test: **3 DAKİKA** (180 saniye) boyunca dashboard stabil kaldı ✅
-  - Çözüm: 
-    - Tüm hook'lar singleton pattern ile global state kullanıyor
-    - `autoRefreshToken: false` - Supabase token refresh kapatıldı
-    - `onAuthStateChange` listener tamamen kaldırıldı
-    - Global cache ile API çağrıları minimize edildi
-    - StrictMode kaldırıldı
-  
-- [x] **Admin Videolar Yeniden Yüklendi**
-  - 6 demo video Supabase'e eklendi
-  - Admin kullanıcı (beratyilmaz626) profili aktif
+
+### ✅ KREDİ SİSTEMİ GÜNCELLEMESİ - 2 Mart 2026
+- [x] **Video Maliyeti 100 Kredi olarak güncellendi** (önceki: 200)
+- [x] **Yeni kullanıcı hediyesi: 200 kredi** (2 video hakkı)
+- [x] **Paketler kredi bazlı modele geçirildi:**
+  - Başlangıç: ₺949/ay • 2.000 Kredi • 20 Video • 15 sn
+  - Profesyonel: ₺3.799/ay • 4.500 Kredi • 45 Video • 15 sn
+  - Business: ₺8.549/ay • 10.000 Kredi • 100 Video • 15 sn
+- [x] **Frontend güncellemeleri:**
+  - Video oluşturma sayfasında "Video Maliyeti: 100 Kredi" ve bakiye gösterimi
+  - Admin için "Sınırsız" bakiye gösterimi
+  - Plan kartları kredi bilgisiyle güncellendi
 
 ### P0 - Video Oynatma Sorunu (Devam Ediyor)
 - [ ] **Video Playback:** Tarayıcıda video yüklenmiyor (`net::ERR_ABORTED`)
