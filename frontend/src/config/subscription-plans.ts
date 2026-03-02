@@ -1,6 +1,6 @@
 // Aylık Abonelik Paketleri Konfigürasyonu
 // KREDİ BAZLI SİSTEM - Her video 100 kredi
-// Ödeme: İyzico (TL bazlı)
+// Ödeme: USD bazlı
 
 export type PlanId = 'starter' | 'professional' | 'enterprise';
 export type FeatureId = 
@@ -8,6 +8,7 @@ export type FeatureId =
   | 'no_watermark'
   | 'basic_templates'
   | 'premium_templates'
+  | 'custom_templates'
   | 'email_support'
   | 'priority_support'
   | 'dedicated_support'
@@ -21,14 +22,14 @@ export interface SubscriptionPlan {
   name: string;
   nameEn: string;
   description: string;
-  priceMonthly: number;      // TL fiyat
-  priceMonthlyUSD?: number;  // USD karşılığı (referans)
+  priceMonthly: number;      // USD fiyat
   currency: string;
-  stripePriceId: string;     // İyzico için de kullanılabilir
+  stripePriceId: string;
   monthlyCredits: number;    // Aylık kredi miktarı
   monthlyVideoLimit: number; // Video limiti (kredi/100)
   maxVideoDuration: number;  // Saniye cinsinden video süresi
   features: FeatureId[];
+  featureDescriptions: string[]; // Görüntülenecek özellikler
   isPopular?: boolean;
 }
 
@@ -38,11 +39,11 @@ export const VIDEO_CREDIT_COST = 100;
 // Yeni kullanıcı hediye kredisi
 export const NEW_USER_BONUS_CREDITS = 200;
 
-// İyzico Price ID'leri - AYLIK ABONELİK
+// Price ID'leri - AYLIK ABONELİK
 export const IYZICO_PRICE_IDS = {
-  starter: 'iyzico_starter_monthly',
-  professional: 'iyzico_professional_monthly',
-  enterprise: 'iyzico_enterprise_monthly',
+  starter: 'price_starter_monthly',
+  professional: 'price_professional_monthly',
+  enterprise: 'price_enterprise_monthly',
 } as const;
 
 // Legacy Stripe Price ID'leri (geriye uyumluluk için)
@@ -51,12 +52,11 @@ export const STRIPE_PRICE_IDS = IYZICO_PRICE_IDS;
 export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
   starter: {
     id: 'starter',
-    name: 'Başlangıç',
-    nameEn: 'Starter',
-    description: '2000 Kredi • 20 Video • 15 sn',
-    priceMonthly: 949,
-    priceMonthlyUSD: 27,
-    currency: 'TRY',
+    name: 'Başlangıç Paketi',
+    nameEn: 'Starter Package',
+    description: '2000 kredi - 20 adet HD kalite ve filigransız video üretin',
+    priceMonthly: 9.90,
+    currency: 'USD',
     stripePriceId: IYZICO_PRICE_IDS.starter,
     monthlyCredits: 2000,
     monthlyVideoLimit: 20,
@@ -68,16 +68,21 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
       'email_support',
       'video_15sec',
     ],
+    featureDescriptions: [
+      '20 adet HD kalite video',
+      'Filigransız videolar',
+      'Temel şablonlar',
+      'E-posta desteği'
+    ],
     isPopular: false,
   },
   professional: {
     id: 'professional',
-    name: 'Profesyonel',
-    nameEn: 'Professional',
-    description: '4500 Kredi • 45 Video • 15 sn',
-    priceMonthly: 3799,
-    priceMonthlyUSD: 108,
-    currency: 'TRY',
+    name: 'Profesyonel Paketi',
+    nameEn: 'Professional Package',
+    description: '4500 kredi - 45 adet HD kalite ve filigransız video üretin',
+    priceMonthly: 19.90,
+    currency: 'USD',
     stripePriceId: IYZICO_PRICE_IDS.professional,
     monthlyCredits: 4500,
     monthlyVideoLimit: 45,
@@ -91,16 +96,22 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
       'api_access',
       'video_15sec',
     ],
+    featureDescriptions: [
+      '45 adet HD kalite video',
+      'Filigransız videolar',
+      'Premium şablonlar',
+      'Öncelikli destek',
+      'API erişimi'
+    ],
     isPopular: true,
   },
   enterprise: {
     id: 'enterprise',
-    name: 'Business',
-    nameEn: 'Business',
-    description: '10000 Kredi • 100 Video • 15 sn',
-    priceMonthly: 8549,
-    priceMonthlyUSD: 244,
-    currency: 'TRY',
+    name: 'Kurumsal Paketi',
+    nameEn: 'Enterprise Package',
+    description: '10000 kredi - 100 adet HD kalite ve filigransız video üretin',
+    priceMonthly: 39.90,
+    currency: 'USD',
     stripePriceId: IYZICO_PRICE_IDS.enterprise,
     monthlyCredits: 10000,
     monthlyVideoLimit: 100,
@@ -108,13 +119,20 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
     features: [
       'hd_video',
       'no_watermark',
-      'basic_templates',
-      'premium_templates',
+      'custom_templates',
       'dedicated_support',
       'api_access',
       'advanced_api',
       'white_label',
       'video_15sec',
+    ],
+    featureDescriptions: [
+      '100 adet HD kalite video',
+      'Filigransız videolar',
+      'Özel şablonlar',
+      'Özel destek',
+      'Gelişmiş API',
+      'Beyaz etiket seçeneği'
     ],
     isPopular: false,
   },
