@@ -1,0 +1,116 @@
+{
+  "summary": "Frontend testing completed for QuickVid AI / InfluencerSeninle. All requested features verified: Login/logout flow, dashboard stability (no auto-logout after 2 minutes), pricing format ($X.XX /ay without icons) on both landing page and subscription/plans page, navigation between dashboard sections, video list display, credit display in header, and Instagram link in footer.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "CreditDisplay",
+        "issues": ["Credit display shows '0' in header - missing data-testid attribute for easier testing"]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/.screenshots/landing_page.png",
+    "/.screenshots/pricing_section_landing.png",
+    "/.screenshots/footer_section.png",
+    "/.screenshots/auth_modal.png",
+    "/.screenshots/login_form_filled.png",
+    "/.screenshots/after_login.png",
+    "/.screenshots/videos_section.png",
+    "/.screenshots/video_create_section.png",
+    "/.screenshots/plans_page.png",
+    "/.screenshots/dashboard_initial.png",
+    "/.screenshots/dashboard_2min.png",
+    "/.screenshots/after_logout.png"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Pricing format correctly shows USD ($9.90, $19.90, $39.90) with /ay suffix on both landing page and subscription panel",
+    "No TL currency symbols found - USD format is correct",
+    "Dashboard stability verified - no auto-logout after 2 minutes of idle time",
+    "Login/logout flow works correctly with admin credentials",
+    "All navigation items (Ana Sayfa, Videolarım, Video Üret, Planlar, Ayarlar) are accessible",
+    "Video list displays correctly with 3 demo videos",
+    "Instagram link in footer points to correct URL (https://instagram.com/influencerseninle)"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A - skipped per request",
+    "frontend": "100%"
+  },
+  "test_credentials": {
+    "email": "beratyilmaz626@gmail.com",
+    "password": "berat881612"
+  },
+  "seed_data_creation": "None - used existing test user",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "All features working correctly. Dashboard stability verified - no auto-logout bug. Pricing shows correct USD format ($X.XX /ay) without icons. Login flow works with provided admin credentials. User has 3 demo videos and 0 credits.",
+  "tests_executed": [
+    {
+      "test": "Landing page loads without errors",
+      "result": "PASS",
+      "details": "Page loads with HTTP 200, hero section visible with 'Yapay Zeka ile UGC Video Üret'"
+    },
+    {
+      "test": "Pricing format on landing page",
+      "result": "PASS",
+      "details": "Shows $9.90 /ay, $19.90 /ay, $39.90 /ay - correct USD format without icons"
+    },
+    {
+      "test": "Instagram link in footer",
+      "result": "PASS",
+      "details": "Link found pointing to https://instagram.com/influencerseninle"
+    },
+    {
+      "test": "Login with admin credentials",
+      "result": "PASS",
+      "details": "Successfully logged in as beratyilmaz626@gmail.com with Admin badge"
+    },
+    {
+      "test": "Dashboard loads after login",
+      "result": "PASS",
+      "details": "Dashboard shows with sidebar, stats (3 videos, 435 views), and admin menu items"
+    },
+    {
+      "test": "Navigation - Videolarım",
+      "result": "PASS",
+      "details": "Video library shows 3 videos (UGC Video Demo 4, 3, 2) with download/share options"
+    },
+    {
+      "test": "Navigation - Video Üret",
+      "result": "PASS",
+      "details": "Video creation page loads with onboarding modal showing photo guidelines"
+    },
+    {
+      "test": "Navigation - Planlar",
+      "result": "PASS",
+      "details": "Plans page shows correct USD pricing ($9.90, $19.90, $39.90 /ay)"
+    },
+    {
+      "test": "Pricing format on subscription/plans page",
+      "result": "PASS",
+      "details": "Shows $9.90 /ay, $19.90 /ay, $39.90 /ay - correct USD format without icons"
+    },
+    {
+      "test": "Credit display in header",
+      "result": "PASS",
+      "details": "Credit value '0' visible in header with 'Kredi Al' button"
+    },
+    {
+      "test": "Dashboard stability (2 minutes)",
+      "result": "PASS",
+      "details": "User remained logged in for 2 minutes without auto-logout or page refresh"
+    },
+    {
+      "test": "Logout flow",
+      "result": "PASS",
+      "details": "Successfully logged out and returned to landing page"
+    }
+  ]
+}
