@@ -2248,9 +2248,9 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                   >
                     <div className="flex items-center justify-between mb-2">
                       <span className="font-bold text-white">Başlangıç</span>
-                      <span className="text-neon-green font-bold">$10/ay</span>
+                      <span className="text-neon-green font-bold">₺949/ay</span>
                     </div>
-                    <p className="text-xs text-gray-400 mb-2">20 video/ay • HD 1080p • Filigransız • E-posta desteği</p>
+                    <p className="text-xs text-gray-400 mb-2">2.000 Kredi • 20 Video • 15sn • HD 1080p • E-posta desteği</p>
                     <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-green to-emerald-500 text-white text-sm font-semibold hover:shadow-[0_0_15px_rgba(0,255,136,0.3)] transition-all">
                       Başlangıç'a Geç
                     </button>
@@ -2268,9 +2268,9 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                         <span className="font-bold text-white">Profesyonel</span>
                         <span className="text-xs px-2 py-0.5 rounded-full bg-neon-cyan/20 text-neon-cyan">Popüler</span>
                       </div>
-                      <span className="text-neon-cyan font-bold">$20/ay</span>
+                      <span className="text-neon-cyan font-bold">₺3.799/ay</span>
                     </div>
-                    <p className="text-xs text-gray-400 mb-2">45 video/ay • Premium şablonlar • Öncelikli destek • API erişimi</p>
+                    <p className="text-xs text-gray-400 mb-2">4.500 Kredi • 45 Video • 15sn • Premium şablonlar • API erişimi</p>
                     <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-cyan to-neon-purple text-white text-sm font-semibold hover:shadow-[0_0_15px_rgba(0,240,255,0.3)] transition-all">
                       Profesyonel'e Geç
                     </button>
@@ -2285,9 +2285,9 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                         <span className="font-bold text-white">Profesyonel</span>
                         <span className="text-xs px-2 py-0.5 rounded-full bg-neon-cyan/30 text-neon-cyan">Mevcut Plan</span>
                       </div>
-                      <span className="text-neon-cyan font-bold">$20/ay</span>
+                      <span className="text-neon-cyan font-bold">₺3.799/ay</span>
                     </div>
-                    <p className="text-xs text-gray-400 mb-2">45 video/ay • Premium şablonlar • Öncelikli destek • API erişimi</p>
+                    <p className="text-xs text-gray-400 mb-2">4.500 Kredi • 45 Video • 15sn • Premium şablonlar • API erişimi</p>
                     <button disabled className="w-full py-2 rounded-lg bg-white/5 text-gray-500 text-sm font-semibold cursor-not-allowed">
                       ✓ Mevcut Planın
                     </button>
@@ -2301,12 +2301,12 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                     whileHover={{ scale: 1.02 }}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="font-bold text-white">Kurumsal</span>
-                      <span className="text-neon-purple font-bold">$40/ay</span>
+                      <span className="font-bold text-white">Business</span>
+                      <span className="text-neon-purple font-bold">₺8.549/ay</span>
                     </div>
-                    <p className="text-xs text-gray-400 mb-2">100 video/ay • Tüm özellikler • Özel destek • Beyaz etiket</p>
+                    <p className="text-xs text-gray-400 mb-2">10.000 Kredi • 100 Video • 15sn • Tüm özellikler • Beyaz etiket</p>
                     <button className="w-full py-2 rounded-lg bg-gradient-to-r from-neon-purple to-neon-pink text-white text-sm font-semibold hover:shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all">
-                      Kurumsal'a Geç
+                      Business'a Geç
                     </button>
                   </motion.div>
                 )}
@@ -2317,7 +2317,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                     <div className="text-4xl mb-3">🎉</div>
                     <h4 className="text-lg font-bold text-white mb-2">Zaten en yüksek plandasın!</h4>
                     <p className="text-sm text-gray-400">
-                      Kurumsal plan ile tüm özelliklere ve en yüksek video limitine sahipsin.
+                      Business plan ile tüm özelliklere ve en yüksek video limitine sahipsin.
                     </p>
                   </div>
                 )}
