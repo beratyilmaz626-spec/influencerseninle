@@ -207,3 +207,21 @@ export const formatPriceTRY = (price: number): string => {
     maximumFractionDigits: 0,
   }).format(price);
 };
+
+// Kredi bazlı yardımcı fonksiyonlar
+export const getMonthlyCredits = (planId: PlanId): number => {
+  return SUBSCRIPTION_PLANS[planId]?.monthlyCredits ?? 0;
+};
+
+export const calculateVideosFromCredits = (credits: number): number => {
+  return Math.floor(credits / VIDEO_CREDIT_COST);
+};
+
+export const calculateCreditsNeeded = (videoCount: number): number => {
+  return videoCount * VIDEO_CREDIT_COST;
+};
+
+// Yeni kullanıcı için başlangıç kredisi (2 video hakkı)
+export const getNewUserCredits = (): number => {
+  return NEW_USER_BONUS_CREDITS;
+};
