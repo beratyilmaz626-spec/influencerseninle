@@ -195,28 +195,7 @@ export function Pricing({
               <div className="mb-6">
                 <div className="flex items-baseline justify-center">
                   <span className="text-5xl font-bold text-text-primary">
-                    {plan.currency === '₺' ? (
-                      <span className="tabular-nums">₺{plan.price}</span>
-                    ) : (
-                      <NumberFlow
-                        value={
-                          isMonthly ? Number(plan.price.replace(/\./g, '')) : Number(plan.yearlyPrice.replace(/\./g, ''))
-                        }
-                        format={{
-                          style: "currency",
-                          currency: plan.currency === '₺' ? "TRY" : "USD",
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 0,
-                        }}
-                        formatter={(value) => plan.price === "Özel" ? "Özel" : plan.currency === '₺' ? `₺${value.toLocaleString('tr-TR')}` : `$${value}`}
-                        transformTiming={{
-                          duration: 500,
-                          easing: "ease-out",
-                        }}
-                        willChange
-                        className="tabular-nums"
-                      />
-                    )}
+                    <span className="tabular-nums">${plan.price}</span>
                   </span>
                   {plan.price !== "Özel" && (
                     <span className="text-text-secondary ml-2">{plan.period}</span>
