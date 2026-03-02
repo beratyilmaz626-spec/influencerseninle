@@ -9,44 +9,48 @@ export interface StripeProduct {
   mode: 'payment' | 'subscription';
   videoLimit: number;
   videoDuration: number;  // Saniye cinsinden
+  monthlyCredits: number; // Aylık kredi miktarı
 }
 
 export const stripeProducts: StripeProduct[] = [
   {
     id: 'prod_starter',
     priceId: 'iyzico_starter_monthly',
-    name: 'Starter',
-    description: '20 video/ay • 10 saniyelik videolar',
+    name: 'Başlangıç',
+    description: '2.000 Kredi • 20 Video • 15 sn',
     price: 949,
     priceUSD: 27,
     currency: 'TRY',
     mode: 'subscription',
     videoLimit: 20,
-    videoDuration: 10
+    videoDuration: 15,
+    monthlyCredits: 2000
   },
   {
     id: 'prod_professional',
     priceId: 'iyzico_professional_monthly',
-    name: 'Professional',
-    description: '45 video/ay • 15 saniyelik videolar',
+    name: 'Profesyonel',
+    description: '4.500 Kredi • 45 Video • 15 sn',
     price: 3799,
     priceUSD: 108,
     currency: 'TRY',
     mode: 'subscription',
     videoLimit: 45,
-    videoDuration: 15
+    videoDuration: 15,
+    monthlyCredits: 4500
   },
   {
     id: 'prod_business',
     priceId: 'iyzico_enterprise_monthly',
     name: 'Business',
-    description: '100 video/ay • 15 saniyelik videolar',
+    description: '10.000 Kredi • 100 Video • 15 sn',
     price: 8549,
     priceUSD: 244,
     currency: 'TRY',
     mode: 'subscription',
     videoLimit: 100,
-    videoDuration: 15
+    videoDuration: 15,
+    monthlyCredits: 10000
   }
 ];
 
