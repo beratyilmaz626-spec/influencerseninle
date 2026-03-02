@@ -1062,7 +1062,9 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       
       // ÖNEMLİ: Dil ve video süresi parametreleri
       formData.append('language', selectedLanguage);  // Seçilen dil
-      formData.append('videoDuration', maxVideoDuration.toString());  // 10 veya 15 saniye
+      formData.append('videoDuration', '15');  // Her zaman 15 saniye gönder
+      
+      console.log('🎬 Video süresi: 15 saniye (sabit)');
       
       // Add all form fields
       formData.append('format', selectedFormat);
