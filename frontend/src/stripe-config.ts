@@ -53,7 +53,7 @@ export const stripeProducts: StripeProduct[] = [
   {
     id: 'prod_business',
     priceId: 'iyzico_enterprise_monthly',
-    name: 'Kurumsal Paketi',
+    name: 'İşletme Paketi',
     description: '10000 kredi - 100 adet HD kalite ve filigransız video üretin',
     price: 39.90,
     currency: 'USD',
