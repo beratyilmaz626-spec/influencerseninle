@@ -9,6 +9,7 @@ import {
   hasFeature as checkFeature,
   getMonthlyVideoLimit,
   getMaxVideoDuration,
+  VIDEO_CREDIT_COST,
 } from '../config/subscription-plans';
 
 interface SubscriptionData {
