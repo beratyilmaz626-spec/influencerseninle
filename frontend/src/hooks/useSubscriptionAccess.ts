@@ -255,7 +255,7 @@ export function useSubscriptionAccess() {
     remainingVideos,
     videosUsed: monthlyUsage.videosCreated,
     giftCredits: effectiveCredits,
-    maxVideoDuration: isAdmin ? 15 : (effectiveCredits > 0 ? 15 : (currentPlanId ? getMaxVideoDuration(currentPlanId) : 15)),
+    maxVideoDuration: 15, // Her zaman 15 saniye - tüm kullanıcılar için sabit
     incrementVideoUsage,
     refetch,
     refetchGiftCredits: refetch,
