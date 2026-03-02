@@ -1882,9 +1882,13 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className="text-gray-400 text-xs">Bakiye:</span>
-                  <span className={`font-bold text-sm ${giftCredits >= 100 ? 'text-green-400' : 'text-red-400'}`}>
-                    {giftCredits} Kredi
-                  </span>
+                  {isAdmin ? (
+                    <span className="font-bold text-sm text-green-400">♾️ Sınırsız</span>
+                  ) : (
+                    <span className={`font-bold text-sm ${giftCredits >= 100 ? 'text-green-400' : 'text-red-400'}`}>
+                      {giftCredits} Kredi
+                    </span>
+                  )}
                 </div>
               </div>
               
