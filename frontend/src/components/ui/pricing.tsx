@@ -189,10 +189,11 @@ export function Pricing({
               <div className="mb-6">
                 <div className="flex items-baseline justify-center">
                   <span className="text-5xl font-bold text-text-primary">
-                    <span className="tabular-nums">${plan.price}</span>
+                    <span className="mr-2">💵</span>
+                    <span className="tabular-nums">{plan.price}</span>
                   </span>
                   {plan.price !== "Özel" && (
-                    <span className="text-text-secondary ml-2">{plan.period}</span>
+                    <span className="text-text-secondary ml-2">/ Ay</span>
                   )}
                 </div>
                 <p className="text-text-secondary mt-2">{plan.description}</p>
