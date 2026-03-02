@@ -162,7 +162,7 @@ export function useSubscriptionAccess() {
     return Math.max(0, videoLimit - monthlyUsage.videosCreated) + effectiveCredits;
   }, [isAdmin, videoLimit, monthlyUsage.videosCreated, effectiveCredits]);
 
-  const VIDEO_COST = 100; // Her video 100 kredi
+  const VIDEO_COST = VIDEO_CREDIT_COST; // Config'den alınan sabit değer (100 kredi)
 
   const canCreateVideo = useCallback((): { allowed: boolean; reason?: string; useGiftCredits?: boolean } => {
     if (isAdmin) return { allowed: true, useGiftCredits: false };
