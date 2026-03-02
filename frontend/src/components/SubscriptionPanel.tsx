@@ -13,7 +13,7 @@ export default function SubscriptionPanel() {
   const activeProduct = getActiveProduct();
   const currentPlan = activeProduct?.name.toLowerCase().includes('başlangıç') ? 'starter' :
                     activeProduct?.name.toLowerCase().includes('profesyonel') ? 'professional' :
-                    activeProduct?.name.toLowerCase().includes('kurumsal') ? 'enterprise' : null;
+                    activeProduct?.name.toLowerCase().includes('işletme') ? 'enterprise' : null;
 
   const planIcons: Record<string, any> = {
     starter: Zap,
