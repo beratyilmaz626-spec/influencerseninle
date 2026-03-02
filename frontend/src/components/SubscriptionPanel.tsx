@@ -105,10 +105,11 @@ export default function SubscriptionPanel() {
                 {/* Price */}
                 <div className="mb-6">
                   <div className="flex items-baseline">
+                    <span className="text-2xl mr-2">💵</span>
                     <span className={`text-4xl font-bold ${colors.text}`}>
-                      ${product.price.toFixed(2)}
+                      {product.price.toFixed(2)}
                     </span>
-                    <span className="text-gray-400 ml-2">/ay</span>
+                    <span className="text-gray-400 ml-2">/ Ay</span>
                   </div>
                   <p className="text-sm text-gray-500 mt-1">{product.description}</p>
                 </div>
