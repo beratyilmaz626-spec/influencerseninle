@@ -39,14 +39,13 @@ interface PricingProps {
 const getDefaultPlans = (): PricingPlan[] => {
   return Object.values(SUBSCRIPTION_PLANS).map(plan => ({
     name: plan.name,
-    price: plan.priceMonthly.toLocaleString('tr-TR'),
-    yearlyPrice: (plan.priceMonthly * 10).toLocaleString('tr-TR'),
+    price: plan.priceMonthly.toFixed(2),
+    yearlyPrice: (plan.priceMonthly * 10).toFixed(2),
     period: '/ay',
-    currency: '₺',
-    features: [
-      `${plan.monthlyCredits.toLocaleString('tr-TR')} Kredi`,
+    currency: '$',
+    features: plan.featureDescriptions || [
+      `${plan.monthlyCredits.toLocaleString('en-US')} Kredi`,
       `${plan.monthlyVideoLimit} Video`,
-      `${plan.maxVideoDuration} Saniye Video Süresi`,
       ...plan.features.map(f => FEATURE_LABELS[f]?.name || f),
     ],
     description: plan.description,
