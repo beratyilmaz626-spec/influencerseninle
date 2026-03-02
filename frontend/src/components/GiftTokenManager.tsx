@@ -21,7 +21,7 @@ export default function GiftTokenManager() {
   // Backend URL - Vite uses import.meta.env, check for both naming conventions
   const backendUrl = import.meta.env.VITE_BACKEND_URL || 
                      import.meta.env.REACT_APP_BACKEND_URL || 
-                     'https://ai-ugc-platform-2.preview.emergentagent.com';
+                     'https://quick-vid-ai-7.preview.emergentagent.com';
 
   useEffect(() => {
     fetchUsers();
