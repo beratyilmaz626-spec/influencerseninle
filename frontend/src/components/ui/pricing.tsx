@@ -134,20 +134,14 @@ export function Pricing({
         </p>
       </div>
 
-      <div className="flex justify-center items-center mb-10 space-x-4">
-        <span className="font-semibold text-text-primary">Tek Seferlik</span>
-        <Label>
-          <Switch
-            ref={switchRef as any}
-            checked={false}
-            onCheckedChange={() => {}}
-            disabled={true}
-            className="relative"
-          />
-        </Label>
-        <span className="font-semibold text-text-muted opacity-50">
-          Abonelik (Yakında)
-        </span>
+      {/* Kredi Bilgilendirme */}
+      <div className="flex justify-center mb-10">
+        <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20 rounded-full px-6 py-2">
+          <span className="text-cyan-400">💡</span>
+          <span className="text-sm text-gray-300">
+            Her video <span className="font-bold text-cyan-400">100 kredi</span> • Yeni üyeler <span className="font-bold text-emerald-400">200 kredi hediye</span> kazanır
+          </span>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
