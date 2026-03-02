@@ -76,12 +76,15 @@ export const getProductByPriceId = (priceId: string): StripeProduct | undefined 
   return stripeProducts.find(product => product.priceId === priceId);
 };
 
-// TL formatı için yardımcı fonksiyon
-export const formatPriceTRY = (price: number): string => {
-  return new Intl.NumberFormat('tr-TR', {
+// USD formatı için yardımcı fonksiyon
+export const formatPriceUSD = (price: number): string => {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'TRY',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(price);
 };
+
+// Legacy TL format fonksiyonu (geriye uyumluluk)
+export const formatPriceTRY = formatPriceUSD;
