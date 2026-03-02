@@ -1114,7 +1114,7 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       console.log('📤 N8N webhook\'a gönderilen veriler:');
       console.log('  - user_id:', user?.id);
       console.log('  - language:', selectedLanguage, `(${selectedLang?.name})`);
-      console.log('  - videoDuration:', maxVideoDuration, 'saniye');
+      console.log('  - videoDuration: 15 saniye (sabit)');
       console.log('  - format:', selectedFormat);
       console.log('  - gender:', gender);
       console.log('  - sector:', sector);
