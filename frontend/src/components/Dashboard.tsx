@@ -1874,6 +1874,20 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
             <div className="space-y-2 pt-2">
               <h3 className="text-sm font-semibold text-text-primary">🚀 Video Oluşturmaya Hazır mısınız?</h3>
               
+              {/* Kredi bilgisi */}
+              <div className="flex items-center justify-between bg-blue-500/10 border border-blue-500/20 rounded-lg p-2">
+                <div className="flex items-center space-x-2">
+                  <span className="text-blue-400 text-xs">💰 Video Maliyeti:</span>
+                  <span className="text-white font-bold text-sm">100 Kredi</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-gray-400 text-xs">Bakiye:</span>
+                  <span className={`font-bold text-sm ${giftCredits >= 100 ? 'text-green-400' : 'text-red-400'}`}>
+                    {giftCredits} Kredi
+                  </span>
+                </div>
+              </div>
+              
               {/* Form validation hatası gösterimi */}
               {!isFormValid() && !isGenerating && (
                 <p className="text-xs text-orange-400 bg-orange-400/10 p-2 rounded-lg border border-orange-400/20">
