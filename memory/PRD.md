@@ -90,17 +90,19 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 - [x] **Sonsuz Render Döngüsü & Otomatik Çıkış Sorunu KESİN ÇÖZÜLDÜ**
   - Test: **3 DAKİKA** (180 saniye) boyunca dashboard stabil kaldı ✅
 
-### ✅ KREDİ SİSTEMİ GÜNCELLEMESİ - 2 Mart 2026
+### ✅ KREDİ SİSTEMİ & FİYATLANDIRMA GÜNCELLEMESİ - 2 Mart 2026
 - [x] **Video Maliyeti 100 Kredi olarak güncellendi** (önceki: 200)
 - [x] **Yeni kullanıcı hediyesi: 200 kredi** (2 video hakkı)
-- [x] **Paketler kredi bazlı modele geçirildi:**
-  - Başlangıç: ₺949/ay • 2.000 Kredi • 20 Video • 15 sn
-  - Profesyonel: ₺3.799/ay • 4.500 Kredi • 45 Video • 15 sn
-  - Business: ₺8.549/ay • 10.000 Kredi • 100 Video • 15 sn
+- [x] **Paketler USD bazlı yeni fiyatlara güncellendi:**
+  - Başlangıç: $9.90 /ay • 2.000 Kredi • 20 Video • 15 sn
+  - Profesyonel: $19.90 /ay • 4.500 Kredi • 45 Video • 15 sn
+  - İşletme: $39.90 /ay • 10.000 Kredi • 100 Video • 15 sn
 - [x] **Frontend güncellemeleri:**
   - Video oluşturma sayfasında "Video Maliyeti: 100 Kredi" ve bakiye gösterimi
   - Admin için "Sınırsız" bakiye gösterimi
-  - Plan kartları kredi bilgisiyle güncellendi
+  - Plan kartları USD formatında ($X.XX /ay) - ikon olmadan
+  - Landing page ve Dashboard Planlar sayfası fiyatları senkronize
+- [x] **Instagram linki footer'a eklendi** (influencerseninle)
 
 ### P0 - Video Oynatma Sorunu (Devam Ediyor)
 - [ ] **Video Playback:** Tarayıcıda video yüklenmiyor (`net::ERR_ABORTED`)
