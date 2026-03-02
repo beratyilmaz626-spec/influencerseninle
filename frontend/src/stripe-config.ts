@@ -3,54 +3,72 @@ export interface StripeProduct {
   priceId: string;
   name: string;
   description: string;
-  price: number;          // TL fiyat
-  priceUSD?: number;      // USD karşılığı (referans)
+  price: number;          // USD fiyat
   currency: string;
   mode: 'payment' | 'subscription';
   videoLimit: number;
   videoDuration: number;  // Saniye cinsinden
   monthlyCredits: number; // Aylık kredi miktarı
+  features: string[];     // Özellikler listesi
 }
 
 export const stripeProducts: StripeProduct[] = [
   {
     id: 'prod_starter',
     priceId: 'iyzico_starter_monthly',
-    name: 'Başlangıç',
-    description: '2.000 Kredi • 20 Video • 15 sn',
-    price: 949,
-    priceUSD: 27,
-    currency: 'TRY',
+    name: 'Başlangıç Paketi',
+    description: '2000 kredi - 20 adet HD kalite ve filigransız video üretin',
+    price: 9.90,
+    currency: 'USD',
     mode: 'subscription',
     videoLimit: 20,
     videoDuration: 15,
-    monthlyCredits: 2000
+    monthlyCredits: 2000,
+    features: [
+      '20 adet HD kalite video',
+      'Filigransız videolar',
+      'Temel şablonlar',
+      'E-posta desteği'
+    ]
   },
   {
     id: 'prod_professional',
     priceId: 'iyzico_professional_monthly',
-    name: 'Profesyonel',
-    description: '4.500 Kredi • 45 Video • 15 sn',
-    price: 3799,
-    priceUSD: 108,
-    currency: 'TRY',
+    name: 'Profesyonel Paketi',
+    description: '4500 kredi - 45 adet HD kalite ve filigransız video üretin',
+    price: 19.90,
+    currency: 'USD',
     mode: 'subscription',
     videoLimit: 45,
     videoDuration: 15,
-    monthlyCredits: 4500
+    monthlyCredits: 4500,
+    features: [
+      '45 adet HD kalite video',
+      'Filigransız videolar',
+      'Premium şablonlar',
+      'Öncelikli destek',
+      'API erişimi'
+    ]
   },
   {
     id: 'prod_business',
     priceId: 'iyzico_enterprise_monthly',
-    name: 'Business',
-    description: '10.000 Kredi • 100 Video • 15 sn',
-    price: 8549,
-    priceUSD: 244,
-    currency: 'TRY',
+    name: 'Kurumsal Paketi',
+    description: '10000 kredi - 100 adet HD kalite ve filigransız video üretin',
+    price: 39.90,
+    currency: 'USD',
     mode: 'subscription',
     videoLimit: 100,
     videoDuration: 15,
-    monthlyCredits: 10000
+    monthlyCredits: 10000,
+    features: [
+      '100 adet HD kalite video',
+      'Filigransız videolar',
+      'Özel şablonlar',
+      'Özel destek',
+      'Gelişmiş API',
+      'Beyaz etiket seçeneği'
+    ]
   }
 ];
 
