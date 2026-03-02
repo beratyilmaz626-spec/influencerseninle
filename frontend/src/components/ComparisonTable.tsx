@@ -16,8 +16,8 @@ const comparisonData = [
     icon: DollarSign,
     us: '%70 Daha Uygun', 
     them: 'Yüksek Ücretler',
-    usDetail: '₺949-8.549/ay',
-    themDetail: 'Binlerce TL'
+    usDetail: '$9.90-39.90/ay',
+    themDetail: 'Yüzlerce $'
   },
   { 
     feature: 'Lojistik & Kargo', 
