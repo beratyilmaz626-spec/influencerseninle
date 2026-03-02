@@ -126,7 +126,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
                 {[
                   'Influencer bulma: 2-4 hafta araştırma',
                   'Çekim ve düzenleme: 1-2 hafta bekleme',
-                  'Maliyet: 5.000₺ - 50.000₺ arası',
+                  'Maliyet: $500 - $5.000 arası',
                   'Revizyon süreci uzun ve karmaşık',
                   'Sonuç garantisi yok',
                   'Influencer ile iletişim zorlukları',
@@ -147,7 +147,7 @@ export default function LandingPage({ onGetStarted, onAuthSuccess }: LandingPage
                 {[
                   'AI ile anında video: Dakikalar içinde hazır',
                   'Profesyonel kalite: 4K çözünürlük',
-                  'Uygun fiyat: Aylık 299₺\'den başlayan fiyatlar',
+                  'Uygun fiyat: Aylık $9.90\'dan başlayan fiyatlar',
                   'Sınırsız revizyon hakkı',
                   '7/24 destek ve memnuniyet garantisi',
                   'Tek tıkla farklı dillerde içerik',
