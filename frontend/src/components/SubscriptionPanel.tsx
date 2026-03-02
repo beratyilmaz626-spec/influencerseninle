@@ -1,8 +1,8 @@
-import { CheckCircle2, Crown, Zap, Building2, Download, Clock } from 'lucide-react';
+import { CheckCircle2, Crown, Zap, Building2, Sparkles } from 'lucide-react';
 import { useSubscription } from '../hooks/useSubscription';
 import { useStripe } from '../hooks/useStripe';
-import { stripeProducts, formatPriceTRY } from '../stripe-config';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { stripeProducts, formatPriceUSD } from '../stripe-config';
+import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 
@@ -11,285 +11,191 @@ export default function SubscriptionPanel() {
   const { redirectToCheckout, loading: stripeLoading } = useStripe();
   
   const activeProduct = getActiveProduct();
-  const currentPlan = activeProduct?.name.toLowerCase().includes('starter') ? 'starter' :
-                    activeProduct?.name.toLowerCase().includes('professional') ? 'professional' :
-                    activeProduct?.name.toLowerCase().includes('business') ? 'enterprise' : null;
+  const currentPlan = activeProduct?.name.toLowerCase().includes('başlangıç') ? 'starter' :
+                    activeProduct?.name.toLowerCase().includes('profesyonel') ? 'professional' :
+                    activeProduct?.name.toLowerCase().includes('kurumsal') ? 'enterprise' : null;
+
+  const planIcons: Record<string, any> = {
+    starter: Zap,
+    professional: Crown,
+    enterprise: Building2,
+  };
+
+  const planColors: Record<string, { border: string; bg: string; text: string; glow: string }> = {
+    starter: {
+      border: 'border-emerald-500/30',
+      bg: 'bg-emerald-500/10',
+      text: 'text-emerald-400',
+      glow: 'shadow-emerald-500/20',
+    },
+    professional: {
+      border: 'border-cyan-500/30',
+      bg: 'bg-cyan-500/10',
+      text: 'text-cyan-400',
+      glow: 'shadow-cyan-500/20',
+    },
+    enterprise: {
+      border: 'border-purple-500/30',
+      bg: 'bg-purple-500/10',
+      text: 'text-purple-400',
+      glow: 'shadow-purple-500/20',
+    },
+  };
 
   return (
     <div className="space-y-8">
-      {/* Premium Header */}
-      <div>
+      {/* Header */}
+      <div className="text-center">
         <h1 className="text-3xl font-bold text-text-primary mb-2">Planlar ve Faturalandırma</h1>
-        <p className="text-text-secondary">Aboneliğinizi ve faturalandırma detaylarınızı yönetin</p>
+        <p className="text-text-secondary">İhtiyacınıza en uygun planı seçin</p>
       </div>
 
-      {/* Premium Current Plan Card */}
-      <Card className="relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-neon-cyan/5 rounded-full blur-3xl"></div>
-        <CardContent className="p-6 relative">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div className="flex-1">
-              <div className="flex items-center space-x-3 mb-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-neon-cyan to-neon-purple rounded-xl flex items-center justify-center shadow-glow-cyan">
-                  <Crown className="w-6 h-6 text-white" />
+      {/* Plans Grid */}
+      <div className="grid md:grid-cols-3 gap-6">
+        {stripeProducts.map((product) => {
+          const planType = product.name.toLowerCase().includes('başlangıç') ? 'starter' :
+                         product.name.toLowerCase().includes('profesyonel') ? 'professional' :
+                         product.name.toLowerCase().includes('kurumsal') ? 'enterprise' : 'other';
+          
+          const isCurrentPlan = currentPlan === planType;
+          const colors = planColors[planType] || planColors.starter;
+          const Icon = planIcons[planType] || Zap;
+          const isPopular = planType === 'professional';
+          
+          return (
+            <Card 
+              key={product.id} 
+              className={`relative overflow-hidden transition-all duration-300 hover:scale-[1.02] ${
+                isCurrentPlan 
+                  ? `${colors.border} ${colors.bg} ring-2 ring-offset-2 ring-offset-bg-primary ${colors.border.replace('border-', 'ring-')}` 
+                  : 'border-white/10 hover:border-white/20'
+              }`}
+            >
+              {/* Popüler Badge */}
+              {isPopular && (
+                <div className="absolute top-0 right-0">
+                  <div className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white text-xs font-bold px-4 py-1.5 rounded-bl-xl">
+                    <Sparkles className="w-3 h-3 inline mr-1" />
+                    EN POPÜLER
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-text-primary">
-                    {loading ? 'Yükleniyor...' : activeProduct?.name || 'Plan Bulunamadı'}
-                  </h2>
-                  <p className="text-text-secondary text-sm">
-                    {isActive() ? 'Aktif aboneliğiniz' : 'Abonelik durumu'}
-                  </p>
+              )}
+
+              {/* Mevcut Plan Badge */}
+              {isCurrentPlan && (
+                <div className="absolute top-4 left-4">
+                  <Badge className={`${colors.bg} ${colors.text} border-0`}>
+                    ✓ Mevcut Plan
+                  </Badge>
                 </div>
+              )}
+
+              <CardContent className="p-6 pt-12">
+                {/* Plan Icon & Name */}
+                <div className="flex items-center space-x-3 mb-4">
+                  <div className={`w-12 h-12 rounded-xl ${colors.bg} flex items-center justify-center`}>
+                    <Icon className={`w-6 h-6 ${colors.text}`} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">{product.name}</h3>
+                    <p className="text-sm text-gray-400">{product.monthlyCredits.toLocaleString()} kredi</p>
+                  </div>
+                </div>
+
+                {/* Price */}
+                <div className="mb-6">
+                  <div className="flex items-baseline">
+                    <span className={`text-4xl font-bold ${colors.text}`}>
+                      ${product.price.toFixed(2)}
+                    </span>
+                    <span className="text-gray-400 ml-2">/ay</span>
+                  </div>
+                  <p className="text-sm text-gray-500 mt-1">{product.description}</p>
+                </div>
+
+                {/* Features */}
+                <ul className="space-y-3 mb-6">
+                  {product.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-center text-sm">
+                      <CheckCircle2 className={`w-5 h-5 ${colors.text} mr-3 flex-shrink-0`} />
+                      <span className="text-gray-300">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA Button */}
+                <Button
+                  onClick={() => !isCurrentPlan && redirectToCheckout(product.priceId)}
+                  disabled={isCurrentPlan || stripeLoading}
+                  className={`w-full py-3 font-semibold transition-all ${
+                    isCurrentPlan
+                      ? 'bg-white/5 text-gray-500 cursor-not-allowed'
+                      : `bg-gradient-to-r ${
+                          planType === 'starter' ? 'from-emerald-500 to-green-600 hover:shadow-lg hover:shadow-emerald-500/25' :
+                          planType === 'professional' ? 'from-cyan-500 to-purple-600 hover:shadow-lg hover:shadow-cyan-500/25' :
+                          'from-purple-500 to-pink-600 hover:shadow-lg hover:shadow-purple-500/25'
+                        } text-white`
+                  }`}
+                >
+                  {isCurrentPlan ? '✓ Mevcut Planınız' : 
+                   stripeLoading ? 'Yükleniyor...' : 
+                   `${product.name}'i Seç`}
+                </Button>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* Info Box */}
+      <Card className="border-cyan-500/20 bg-cyan-500/5">
+        <CardContent className="p-4">
+          <div className="flex items-start space-x-3">
+            <div className="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0">
+              <span className="text-cyan-400">💡</span>
+            </div>
+            <div>
+              <h4 className="text-sm font-semibold text-white mb-1">Kredi Sistemi Nasıl Çalışır?</h4>
+              <p className="text-xs text-gray-400">
+                Her video oluşturma işlemi <span className="text-cyan-400 font-semibold">100 kredi</span> harcar. 
+                Yeni üyeler <span className="text-emerald-400 font-semibold">200 kredi hediye</span> kazanır (2 video hakkı).
+                Kullanılmayan krediler bir sonraki aya devretmez.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Current Subscription Info */}
+      {isActive() && subscription && (
+        <Card className="border-white/10">
+          <CardContent className="p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">Abonelik Bilgileri</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-white/5 rounded-lg p-3">
+                <p className="text-xs text-gray-400 mb-1">Mevcut Plan</p>
+                <p className="text-sm font-semibold text-white">{activeProduct?.name || 'Yok'}</p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                <div className="glass-card px-5 py-3 rounded-xl">
-                  <p className="text-text-muted text-sm mb-1">Kalan Krediler</p>
-                  <p className="text-2xl font-bold text-neon-cyan">
-                    {loading ? '...' : subscription ? '-- / --' : '0 / 0'}
-                  </p>
-                </div>
-                <div className="glass-card px-5 py-3 rounded-xl">
-                  <p className="text-text-muted text-sm mb-1">Yenileme Tarihi</p>
-                  <p className="text-lg font-semibold text-text-primary">
-                    {loading ? '...' : subscription?.current_period_end 
-                      ? new Date(subscription.current_period_end * 1000).toLocaleDateString('tr-TR')
-                      : '--'
-                    }
-                  </p>
-                </div>
+              <div className="bg-white/5 rounded-lg p-3">
+                <p className="text-xs text-gray-400 mb-1">Aylık Kredi</p>
+                <p className="text-sm font-semibold text-cyan-400">{activeProduct?.monthlyCredits?.toLocaleString() || 0}</p>
+              </div>
+              <div className="bg-white/5 rounded-lg p-3">
+                <p className="text-xs text-gray-400 mb-1">Yenileme Tarihi</p>
+                <p className="text-sm font-semibold text-white">
+                  {subscription.current_period_end 
+                    ? new Date(subscription.current_period_end * 1000).toLocaleDateString('tr-TR')
+                    : '--'}
+                </p>
+              </div>
+              <div className="bg-white/5 rounded-lg p-3">
+                <p className="text-xs text-gray-400 mb-1">Durum</p>
+                <Badge className="bg-emerald-500/20 text-emerald-400 border-0">Aktif</Badge>
               </div>
             </div>
-            <Button variant="outline">
-              Aboneliği Yönet
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Premium Plans Grid */}
-      <div>
-        <h2 className="text-2xl font-bold text-text-primary mb-6">Mevcut Planlar</h2>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {stripeProducts.map((product) => {
-            const planType = product.name.toLowerCase().includes('starter') ? 'starter' :
-                           product.name.toLowerCase().includes('professional') ? 'professional' :
-                           product.name.toLowerCase().includes('business') ? 'enterprise' : 'other';
-            
-            const isCurrentPlan = currentPlan === planType;
-            
-            return (
-              <PlanCard
-                key={product.id}
-                name={product.name}
-                icon={planType === 'starter' ? <Zap className="w-8 h-8" /> :
-                      planType === 'professional' ? <Crown className="w-8 h-8" /> :
-                      <Building2 className="w-8 h-8" />}
-                price={product.price}
-                videoDuration={product.videoDuration}
-                videoLimit={product.videoLimit}
-                description={product.description}
-                features={getFeaturesByPlan(planType, product.videoDuration, product.videoLimit)}
-                isActive={isCurrentPlan}
-                highlighted={planType === 'professional'}
-                buttonText={isCurrentPlan ? 'Mevcut Plan' : 
-                           planType === 'enterprise' ? 'Satış Ekibiyle İletişime Geç' : 
-                           'Planı Seç'}
-                onButtonClick={() => {
-                  if (!isCurrentPlan && planType !== 'enterprise') {
-                    redirectToCheckout(product.priceId, 'payment');
-                  }
-                }}
-                loading={stripeLoading}
-              />
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Premium Billing History */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Faturalandırma Geçmişi</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            <BillingRow date="12 Eki 2025" amount="₺3.799" status="Ödendi" plan="Professional Plan" />
-            <BillingRow date="12 Eyl 2025" amount="₺3.799" status="Ödendi" plan="Professional Plan" />
-            <BillingRow date="12 Ağu 2025" amount="₺949" status="Ödendi" plan="Starter Plan" />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Premium Help Card */}
-      <Card className="bg-gradient-to-br from-neon-cyan/10 to-neon-purple/10 border-neon-cyan/30">
-        <CardContent className="p-6">
-          <h3 className="text-lg font-semibold text-text-primary mb-2">Seçim Yapmakta Yardıma İhtiyacınız Var mı?</h3>
-          <p className="text-text-secondary mb-4">
-            Ekibimiz ihtiyaçlarınız için mükemmel planı bulmanızda size yardımcı olmak için burada
-          </p>
-          <Button variant="premium">
-            Görüşme Planla
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-function getFeaturesByPlan(planType: string, videoDuration: number, videoLimit: number): string[] {
-  const durationText = `${videoDuration} saniyelik videolar`;
-  const limitText = `${videoLimit} video/ay`;
-  
-  switch (planType) {
-    case 'starter':
-      return [
-        limitText,
-        durationText,
-        'HD 1080p dışa aktarma',
-        'Filigransız videolar',
-        'Temel şablonlar',
-        'E-posta desteği'
-      ];
-    case 'professional':
-      return [
-        limitText,
-        durationText,
-        'HD 1080p dışa aktarma',
-        'Filigransız videolar',
-        'Premium şablonlar',
-        'Öncelikli destek',
-        'API erişimi'
-      ];
-    case 'enterprise':
-      return [
-        limitText,
-        durationText,
-        'HD 1080p dışa aktarma',
-        'Filigransız videolar',
-        'Premium şablonlar',
-        'Özel destek',
-        'Gelişmiş API',
-        'Beyaz etiket seçeneği'
-      ];
-    default:
-      return [];
-  }
-}
-
-function PlanCard({
-  name,
-  icon,
-  price,
-  videoDuration,
-  videoLimit,
-  description,
-  features,
-  isActive,
-  highlighted = false,
-  buttonText,
-  onButtonClick,
-  loading = false,
-}: {
-  name: string;
-  icon: React.ReactNode;
-  price: number;
-  videoDuration: number;
-  videoLimit: number;
-  description: string;
-  features: string[];
-  isActive: boolean;
-  highlighted?: boolean;
-  buttonText: string;
-  onButtonClick?: () => void;
-  loading?: boolean;
-}) {
-  return (
-    <div
-      className={`relative glass-card p-6 ${
-        highlighted ? 'ring-2 ring-neon-cyan shadow-glow-cyan' : ''
-      } hover:shadow-glow-cyan transition-all duration-300`}
-    >
-      {highlighted && (
-        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-          <Badge variant="info" className="text-xs font-semibold">
-            En Popüler
-          </Badge>
-        </div>
+          </CardContent>
+        </Card>
       )}
-
-      <div className="text-center mb-6">
-        <div
-          className={`w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center ${
-            highlighted 
-              ? 'bg-gradient-to-br from-neon-cyan to-neon-purple text-white shadow-glow-cyan' 
-              : 'bg-surface-elevated text-neon-cyan'
-          }`}
-        >
-          {icon}
-        </div>
-        <h3 className="text-2xl font-bold text-text-primary mb-2">{name}</h3>
-        <div className="flex items-baseline justify-center mb-2">
-          <span className="text-4xl font-bold bg-gradient-to-r from-neon-cyan to-neon-purple bg-clip-text text-transparent">
-            {formatPriceTRY(price)}
-          </span>
-          <span className="text-text-muted ml-2">/ay</span>
-        </div>
-        <div className="flex items-center justify-center gap-2 text-text-secondary text-sm">
-          <Clock className="w-4 h-4" />
-          <span>{videoDuration} saniye video</span>
-          <span className="text-text-muted">•</span>
-          <span>{videoLimit} video/ay</span>
-        </div>
-      </div>
-
-      <ul className="space-y-3 mb-6">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-start space-x-3">
-            <CheckCircle2 className="w-5 h-5 text-neon-green flex-shrink-0 mt-0.5" />
-            <span className="text-text-secondary text-sm">{feature}</span>
-          </li>
-        ))}
-      </ul>
-
-      <Button
-        disabled={isActive || loading}
-        onClick={onButtonClick}
-        variant={isActive ? 'outline' : highlighted ? 'premium' : 'default'}
-        className="w-full"
-      >
-        {loading ? 'Yükleniyor...' : buttonText}
-      </Button>
-    </div>
-  );
-}
-
-function BillingRow({
-  date,
-  amount,
-  status,
-  plan,
-}: {
-  date: string;
-  amount: string;
-  status: string;
-  plan: string;
-}) {
-  return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between py-4 border-b border-border last:border-0">
-      <div className="mb-2 sm:mb-0">
-        <p className="font-medium text-text-primary">{plan}</p>
-        <p className="text-sm text-text-muted">{date}</p>
-      </div>
-      <div className="flex items-center space-x-4">
-        <span className="font-semibold text-text-primary">{amount}</span>
-        <Badge variant="success">{status}</Badge>
-        <Button variant="ghost" size="sm">
-          <Download className="w-4 h-4 mr-2" />
-          İndir
-        </Button>
-      </div>
     </div>
   );
 }
