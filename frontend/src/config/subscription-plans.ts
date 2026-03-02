@@ -107,8 +107,8 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
   },
   enterprise: {
     id: 'enterprise',
-    name: 'Kurumsal Paketi',
-    nameEn: 'Enterprise Package',
+    name: 'İşletme Paketi',
+    nameEn: 'Business Package',
     description: '10000 kredi - 100 adet HD kalite ve filigransız video üretin',
     priceMonthly: 39.90,
     currency: 'USD',
