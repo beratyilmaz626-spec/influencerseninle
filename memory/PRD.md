@@ -205,5 +205,6 @@ AI destekli video oluşturma platformu. Kullanıcılar fotoğraf yükleyerek, st
 ## Notlar
 - Iyzico entegrasyonu henüz yapılmadı (MOCKED)
 - Google/Apple OAuth UI hazır, Supabase yapılandırması bekliyor
-- Tüm fiyatlar Türk Lirası (TL)
+- **Tüm fiyatlar USD ($9.90, $19.90, $39.90) - TL değil**
 - Video işleme n8n webhook üzerinden yapılıyor
+- Sayfa yenileme/otomatik çıkış bug'ı çözüldü (2 Mart 2026)
