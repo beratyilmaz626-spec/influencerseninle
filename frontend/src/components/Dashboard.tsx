@@ -1121,36 +1121,42 @@ function VideoCreateContent({ styleOptions }: { styleOptions: any[] }) {
       console.log('  - webhookUrl:', webhookUrl);
       
       // Send to n8n webhook
-      const response = await fetch(webhookUrl, {
-        method: 'POST',
-        body: formData,
-      });
+      let response;
+      let result = null;
       
-      // Response'u parse et
-      const result = await response.json().catch(() => null);
-      console.log('📥 N8N Response:', response.status, result);
-      
-      // N8N webhook 404 hatası - webhook test modunda veya aktif değil
-      if (response.status === 404) {
-        const isTestMode = result?.hint?.includes('test mode') || 
-                          result?.message?.includes('not registered') ||
-                          webhookUrl.includes('webhook-test');
+      try {
+        response = await fetch(webhookUrl, {
+          method: 'POST',
+          body: formData,
+        });
         
-        if (isTestMode) {
-          alert('⚠️ N8N Webhook Test Modunda!\n\n' +
-                'Webhook şu anda "test" modunda çalışıyor. Bu mod sadece n8n editöründen manuel olarak tetiklendiğinde çalışır.\n\n' +
-                '📋 Çözüm:\n' +
-                '1. n8n editörünüze gidin\n' +
-                '2. Workflow\'u açın\n' +
-                '3. Webhook node\'unu "Production" moduna geçirin\n' +
-                '4. Veya URL\'deki "webhook-test" kısmını "webhook" olarak değiştirin\n\n' +
-                'Production URL örneği:\n' +
-                'webhook-test → webhook');
-        } else {
-          alert('❌ N8N Webhook Bulunamadı!\n\n' +
-                'Webhook URL\'i geçersiz veya workflow aktif değil.\n\n' +
-                'Lütfen n8n ayarlarınızı kontrol edin.');
-        }
+        // Response'u parse et
+        result = await response.json().catch(() => null);
+        console.log('📥 N8N Response:', response.status, result);
+      } catch (fetchError: any) {
+        console.error('❌ Fetch Error:', fetchError);
+        // CORS veya network hatası
+        alert('❌ N8N Sunucusuna Bağlanılamadı!\n\n' +
+              'Hata: ' + (fetchError.message || 'Network Error') + '\n\n' +
+              'Olası nedenler:\n' +
+              '• CORS hatası (n8n CORS ayarları)\n' +
+              '• N8N sunucusu kapalı\n' +
+              '• Ağ bağlantı sorunu\n\n' +
+              'Webhook URL: ' + webhookUrl);
+        setIsGenerating(false);
+        return;
+      }
+      
+      // N8N webhook 404 hatası
+      if (response.status === 404) {
+        alert('❌ N8N Webhook 404 Hatası!\n\n' +
+              'Webhook bulunamadı veya aktif değil.\n\n' +
+              'Kontrol edin:\n' +
+              '1. n8n workflow aktif mi?\n' +
+              '2. Webhook node "Production" modunda mı?\n' +
+              '3. URL doğru mu?\n\n' +
+              'Kullanılan URL:\n' + webhookUrl + '\n\n' +
+              'Sunucu yanıtı: ' + JSON.stringify(result));
         setIsGenerating(false);
         return;
       }
